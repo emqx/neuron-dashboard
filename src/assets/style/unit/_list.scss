@@ -1,0 +1,15 @@
+$breakpoint: (
+  'xs': 576px,
+  'sm': 768px,
+  'md': 992px,
+  'lg': 1200px,
+  'xl': 1920px,
+);
+
+$marginList:(
+  'sm': $margin,
+  'xs': $margin,
+  'md': $margin,
+  'lg': 0,
+  'xl': 0,
+);

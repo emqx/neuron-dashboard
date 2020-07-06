@@ -1,0 +1,21 @@
+// 优化显示
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+  #app {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pre {
+      margin: 0;
+      border-radius: 4px;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+}
