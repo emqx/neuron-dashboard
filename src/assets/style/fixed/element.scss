@@ -98,27 +98,23 @@
 }
 .el-input__inner {
   &::placeholder {
-    color: #444a58;
+    color: #666e81;
   }
-
   &::-webkit-input-placeholder {
     /* WebKit browsers 适配谷歌 */
     color: #666e81;
   }
-
   &:-moz-placeholder {
     /* Mozilla Firefox 4 to 18 适配火狐 */
-    color: #495062;
+    color: #666e81;
   }
-
   &::-moz-placeholder {
     /* Mozilla Firefox 19+ 适配火狐 */
-    color: #495062;
+    color: #666e81;
   }
-
   &:-ms-input-placeholder {
     /* Internet Explorer 10+  适配ie*/
-    color: #495062;
+    color: #666e81;
   }
 }
 
