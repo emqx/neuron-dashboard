@@ -1,5 +1,5 @@
 let customServerBaseUrl
-// window.serverBaseUrl = 'ws://52.53.170.189:7681/'
+window.serverBaseUrl = 'ws://52.53.170.189:7000/'
 try {
   customServerBaseUrl = window.serverBaseUrl
 } catch (e) {}

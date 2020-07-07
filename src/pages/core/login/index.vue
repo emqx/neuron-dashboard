@@ -78,8 +78,8 @@ export default {
   created () {
     if (this.$env) {
       this.formLogin = {
-        username: 'root',
-        password: '0000'
+        username: 'admin',
+        password: '1234'
       }
     }
   }
