@@ -64,12 +64,6 @@ class DataSource {
       })
     })
   }
-  // login (data) {
-  //   if (data.func === 10) {
-  //     this.remove(this.login)
-  //     console.log(data)
-  //   }
-  // }
   close () {
     if (this.websocket) {
       this.websocket.close()
