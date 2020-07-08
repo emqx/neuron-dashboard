@@ -4,34 +4,14 @@
     <div class="dd-layout-header">
       <div class="logo-group">
         <p>NEURON</p>
-        <!-- <img v-if="collapse"
-             src="@/assets/image/logo/header-icon-only.png">
-        <img v-else
-             src="@/assets/image/logo/header.png"> -->
       </div>
-      <!-- <el-tooltip placement="bottom"
-                  v-if="hasSideMenu">
-        <div slot="content">{{content}}</div>
-        <div class="toggle-sidemenu-btn"
-             @click="toggleAside">
-          <Icon name="bars"
-                :style="rotate"></Icon>
-        </div>
-      </el-tooltip> -->
       <HeaderMenu></HeaderMenu>
       <HeaderRight></HeaderRight>
     </div>
     <div class="dd-layout-container">
-      <!-- <div class="dd-layout-aside"
-           :style="logoGroupStyle"
-           v-if="hasSideMenu"> -->
-      <!-- <SideMenu :collapse="collapse"></SideMenu> -->
-      <!-- </div> -->
       <div class="dd-layout-main">
         <transition name="fade-transverse">
-          <!-- <keep-alive :include="keepAliveList"> -->
           <router-view></router-view>
-          <!-- </keep-alive> -->
         </transition>
         <StatuBar />
       </div>

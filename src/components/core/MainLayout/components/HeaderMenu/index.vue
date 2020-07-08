@@ -92,7 +92,20 @@ export default {
       if (this.routeName === name || (item.redirect && item.redirect.name === this.routeName)) {
         return
       }
-      if (name === '') {
+      if (name === 'Administration-logout') {
+        const currentUser = JSON.parse(sessionStorage.getItem('user'))
+        const logoutInfo = {
+          func: 11,
+          name: currentUser.name
+        }
+        this.$ws().set({ success: (data) => {
+          if (data.func === 11 && data.errc === 0) {
+            sessionStorage.removeItem('user')
+            this.$ws().close()
+            this.$router.push({ name })
+          }
+        } }).send(logoutInfo)
+      } else if (name === '') {
         this.$router.push({ path: '/' })
       } else {
         this.$router.push({ name })
@@ -127,7 +140,6 @@ export default {
     },
     handleSubmit () {
       this.$ws().send({ func: 91, keyv: this.license })
-      // this.$ws().set({ success: this.setData }).send({ func: 91 })
       this.dialogVisible1 = false
     }
   },

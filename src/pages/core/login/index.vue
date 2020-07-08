@@ -55,9 +55,11 @@ export default {
     submit () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          const { username: name, password: pass } = this.formLogin
           this.$ws({
-            name: this.formLogin.username,
-            pass: this.formLogin.password
+            func: 10,
+            name,
+            pass
           }).connect().then(userInfo => {
             sessionStorage.setItem('user', JSON.stringify(userInfo))
             this.$router.push({ name: 'index' })
