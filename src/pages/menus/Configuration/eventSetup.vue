@@ -160,14 +160,16 @@ export default {
         const data = this.resultData[j]
         const { objn, preAndSuff, oatt } = data
         const attr = oatt.map(i => i.attn)
-        for (let i = 0, psLen = preAndSuff.length; i < psLen; i++) {
-          let { pref, suff } = preAndSuff[i]
-          pref = pref ? pref + '_' : ''
-          suff = suff ? '_' + suff : ''
-          list.push({
-            name: pref + objn + suff,
-            attr
-          })
+        if (preAndSuff) {
+          for (let i = 0, psLen = preAndSuff.length; i < psLen; i++) {
+            let { pref, suff } = preAndSuff[i]
+            pref = pref ? pref + '_' : ''
+            suff = suff ? '_' + suff : ''
+            list.push({
+              name: pref + objn + suff,
+              attr
+            })
+          }
         }
       }
       this.objectList = Object.freeze(list)

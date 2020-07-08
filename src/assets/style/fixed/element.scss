@@ -31,9 +31,6 @@
 }
 .el-table .el-input__inner {
   border: 1px solid $color-border-main;
-  // border-radius: 4px;
-  line-height: 28px;
-  height: 28px;
 }
 .el-table tr {
   background-color: $color-table-body;
@@ -55,6 +52,9 @@
 }
 .el-table__expand-icon {
   color: $color-text-main;
+}
+.el-table .el-button.el-button--text {
+  padding: 3px 0px;
 }
 
 /* Menu */

@@ -2,9 +2,9 @@
   <el-table :data='objectList'
             @selection-change="handleSelectionChange"
             style="width: 100%">
-    <el-table-column type="selection"
+    <!-- <el-table-column type="selection"
                      v-if='showBtn'
-                     width="55" />
+                     width="55" /> -->
     <el-table-column type="expand"
                      v-if="showAttr">
       <template slot-scope="props">

@@ -60,7 +60,7 @@
     </el-row>
     <el-table :data='data'
               style="width: 100%;margin-top:20px;">
-      <el-table-column min-width="30"
+      <el-table-column min-width="60"
                        prop="anum"
                        label="Index" />
       <el-table-column min-width="130"
@@ -74,9 +74,9 @@
                        label="Categ" />
       <el-table-column prop="stat"
                        label="State"
-                       min-width="50" />
+                       min-width="60" />
       <el-table-column prop="uack"
-                       min-width="50"
+                       min-width="60"
                        label="Uack">
       </el-table-column>
       <el-table-column prop="comt"

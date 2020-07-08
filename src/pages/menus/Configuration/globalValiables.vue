@@ -7,13 +7,14 @@
         <el-button @click='handleSubmit'>submit</el-button>
       </div>
     </div>
-    <el-table class="scriptTable"
+    <el-table class="script-table"
               :data='varData'>
       <el-table-column label="Variable G."
                        min-width="120">
         <template slot-scope="scope">
           <el-input placeholder=""
                     @keyup.enter.native='add(scope.$index)'
+                    size="mini"
                     v-model="scope.row.glov">
           </el-input>
         </template>
@@ -23,20 +24,15 @@
         <template slot-scope="scope">
           <el-input placeholder=""
                     @keyup.enter.native='add(scope.$index)'
+                    size="mini"
                     v-model="scope.row.leng" />
-          <!-- <el-input-number placeholder=""
-                           class="input-number"
-                           style='width:100%;'
-                           v-model="scope.row.leng"
-                           :min='0'
-                           :precision='0'
-                           :controls='false' /> -->
         </template>
       </el-table-column>
       <el-table-column label="Description"
                        min-width="300">
         <template slot-scope="scope">
           <el-input placeholder=""
+                    size="mini"
                     v-model="scope.row.comt">
           </el-input>
         </template>

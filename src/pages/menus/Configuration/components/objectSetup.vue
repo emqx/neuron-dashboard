@@ -86,12 +86,12 @@
             </el-table-column>
             <el-table-column label="Prefix">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.pref"></el-input>
+                <el-input v-model="scope.row.pref" size="mini"></el-input>
               </template>
             </el-table-column>
             <el-table-column label="Suffix">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.suff"></el-input>
+                <el-input v-model="scope.row.suff" size="mini"></el-input>
               </template>
             </el-table-column>
           </el-table>
