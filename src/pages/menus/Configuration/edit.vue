@@ -106,7 +106,7 @@
                          prop="suff" />
         <el-table-column label="Address">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.addr"></el-input>
+            <el-input v-model="scope.row.addr" size="mini"></el-input>
           </template>
         </el-table-column>
       </el-table>
@@ -238,7 +238,6 @@ export default {
     },
     init () {
       let name = this.$route.params.data
-      console.log(name)
       if (name) {
         this.objn = name
         this.objectData.some(i => {

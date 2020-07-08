@@ -13,7 +13,7 @@
                    @click='handleSubmit'>submit</el-button>
       </div>
     </div>
-    <el-table class="scriptTable"
+    <el-table class="script-table"
               :data='scriptData'>
       <el-table-column label="statement"
                        min-width="120">
@@ -21,7 +21,8 @@
           <el-select v-model="scope.row.stmt"
                      @change="handleChange($event,scope.$index)"
                      clearable
-                     style='width:100%;'>
+                     style='width:100%;'
+                     size="mini">
             <el-option v-for="item in scriptList"
                        :key="item.val"
                        :label="item.val"
@@ -34,6 +35,7 @@
                        min-width="300">
         <template slot-scope="scope">
           <el-input placeholder=""
+                    size="mini"
                     v-model="scope.row.expr">
           </el-input>
         </template>
@@ -57,7 +59,8 @@
       <el-input-number v-model="pos"
                        :min="1"
                        :max="999"
-                       :controls="false"></el-input-number>
+                       :controls="false"
+                       size="mini"></el-input-number>
       <span slot="footer"
             class="dialog-footer">
         <el-button @click="dialogVisible = false">cancel</el-button>
@@ -177,10 +180,7 @@ export default {
 
 <style scoped lang='scss'>
 @import "@/assets/style/public";
-.scriptTable {
-  /deep/input {
-    border-color: transparent;
-  }
+.script-table {
   /deep/td {
     padding: 10px 0;
   }

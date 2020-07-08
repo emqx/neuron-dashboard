@@ -51,8 +51,8 @@ export default {
       scriptType: null,
       scriptTypeList: [
         { name: 'Main', subr: -10 },
-        { name: 'Auto', subr: -20 },
-        { name: 'Manual', subr: -30 }
+        { name: 'Auto', subr: -22 },
+        { name: 'Manual', subr: -20 }
       ],
       dialogVisible: false,
       subroutineForm: {

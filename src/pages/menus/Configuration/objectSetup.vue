@@ -18,7 +18,6 @@
 import indexMixin from '../mixins'
 import DriverSetup from './components/driverSetup'
 import ObjectSetup from './components/objectSetup'
-// import { Ethernet, Serial } from '@/config/index'
 import { mapState, mapGetters } from 'vuex'
 export default {
   mixins: [indexMixin],
