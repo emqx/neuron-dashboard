@@ -165,7 +165,6 @@ export default {
   },
   methods: {
     close () {
-
     },
     addressClosed () {
       this.preAndSuff.addr = ''
@@ -311,5 +310,8 @@ export default {
   &:last-child {
     border: none;
   }
+}
+.el-select {
+  width: 100%;
 }
 </style>
