@@ -17,10 +17,11 @@
     </div>
     <div>
       <AttrbuteTable v-model="multipleSelection"
-                     :attributeList='attributeList'
-                     :showBtn='true'
-                     :objectName='objn'
-                     @add='addAddress' />
+                     :attributeList="attributeList"
+                     :showBtn="true"
+                     :objectName="objn"
+                     @add="addAddress"
+                     @edit="editAddress" />
     </div>
     <el-dialog title="Data Attribute Setup"
                :visible.sync="dialogTableVisible"
@@ -31,7 +32,7 @@
                label-width="120px">
         <el-form-item label="Attribute name"
                       prop="attn">
-          <el-input v-model="AttributeSetupFrom.attn"></el-input>
+          <el-input v-model="AttributeSetupFrom.attn" :disabled="isEdit"></el-input>
         </el-form-item>
         <el-form-item label="Attribute type"
                       prop="attn">
@@ -131,6 +132,7 @@ export default {
       objn: '',
       preAndSuff: [],
       dialogTableVisible: false,
+      isEdit: false,
       attributeList: [],
       AttributeSetupFrom: {},
       AttributeSetupFromRules: {
@@ -165,6 +167,9 @@ export default {
   },
   methods: {
     close () {
+      this.isEdit = false
+      this.AttributeSetupFrom = {}
+      this.preAndSuff = []
     },
     addressClosed () {
       this.preAndSuff.addr = ''
@@ -177,10 +182,22 @@ export default {
     submitAttributeSetupFrom () {
       this.$refs.AttributeSetupFrom.validate((valid) => {
         if (valid) {
-          this.attributeList.push({
-            ...this.AttributeSetupFrom,
-            aadd: clone(this.preAndSuff)
-          })
+          if (this.isEdit) {
+            const findIndex = this.attributeList.findIndex(attr => attr.attn === this.AttributeSetupFrom.attn)
+            if (findIndex !== -1) {
+              const attrData = [...this.attributeList]
+              attrData[findIndex] = {
+                ...this.AttributeSetupFrom,
+                aadd: clone(this.preAndSuff)
+              }
+              this.attributeList = attrData
+            }
+          } else {
+            this.attributeList.push({
+              ...this.AttributeSetupFrom,
+              aadd: clone(this.preAndSuff)
+            })
+          }
           this.dialogTableVisible = false
           this.AttributeSetupFrom = {}
         } else {
@@ -195,12 +212,20 @@ export default {
         name: 'Configuration-objectSetup'
       })
     },
-    addAddress (row) {
-      this.activeAttributeRow = row
-      if (row.aadd.length) {
-        this.preAndSuff = clone(row.aadd)
+    addAddress (data) {
+      this.activeAttributeRow = data
+      if (data.aadd.length) {
+        this.preAndSuff = clone(data.aadd)
       }
       this.addressVisible = true
+    },
+    editAddress (data) {
+      this.isEdit = true
+      this.AttributeSetupFrom = data
+      this.dialogTableVisible = true
+      if (data.aadd.length) {
+        this.preAndSuff = clone(data.aadd)
+      }
     },
     addressSubmit () {
       this.addressVisible = false

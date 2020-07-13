@@ -51,9 +51,11 @@
                      :min-width="minWidth"
                      label="Rtime" />
     <el-table-column label="Address"
-                     :min-width="minWidth"
+                     :min-width="100"
                      v-if="showBtn">
       <template slot-scope="scope">
+        <el-button type="text"
+                   @click="handleEdit(scope.row)">Edit</el-button>
         <el-button type='text'
                    @click="addAddress(scope.row)">Address</el-button>
       </template>
@@ -63,6 +65,8 @@
 
 <script>
 import Mixins from '@/mixins'
+import { clone } from '@/utils'
+
 export default {
   mixins: [Mixins],
   props: {
@@ -84,7 +88,7 @@ export default {
   },
   data () {
     return {
-      minWidth: '40',
+      minWidth: '60',
       multipleSelection: []
     }
   },
@@ -100,6 +104,9 @@ export default {
       pref = pref ? pref + '_' : ''
       suff = suff ? '_' + suff : ''
       return pref + this.objectName + suff
+    },
+    handleEdit (row) {
+      this.$emit('edit', clone(row))
     }
   },
   watch: {

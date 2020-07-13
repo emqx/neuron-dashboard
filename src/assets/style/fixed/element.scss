@@ -117,6 +117,11 @@
     color: #666e81;
   }
 }
+.el-input.is-disabled .el-input__inner {
+  color: #ffffff;
+  background-color: transparent;
+  border: 1px solid #495062;
+}
 
 /* Date Picker */
 .el-date-editor .el-range-input {

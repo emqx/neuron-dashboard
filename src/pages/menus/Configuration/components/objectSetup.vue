@@ -8,9 +8,10 @@
     </div>
     <div class="row">
       <ObjectTable :showBtn='true'
-                   v-model="multipleSelection" />
+                   v-model="multipleSelection"
+                   @edit="onEdit" />
     </div>
-    <el-dialog @closed='close'
+    <el-dialog @closed='onClose'
                :title='isDetail?"Object setup":"Object index setup"'
                :visible.sync="dialogTableVisible">
       <template v-if="isDetail">
@@ -23,7 +24,7 @@
                   label-width="160px">
             <el-form-item label="Object name"
                           prop="objn">
-              <el-input v-model="objectSetupFrom.objn"></el-input>
+              <el-input v-model="objectSetupFrom.objn" :disabled="isEdit"></el-input>
             </el-form-item>
             <el-form-item label="Object size"
                           prop="obsz">
@@ -115,6 +116,7 @@ export default {
     return {
       dialogTableVisible: false,
       isDetail: true,
+      isEdit: false,
       objectSetupFrom: {},
       objectSetupFromRules: {
         objn: [
@@ -142,16 +144,23 @@ export default {
     }
   },
   watch: {
-    'objectSetupFrom.obsz' (val) {
-      let res = []
-      for (let i = 0; i < val; i++) {
-        res.push({
-          obix: i,
-          pref: '',
-          suff: ''
-        })
+    'objectSetupFrom.obsz' (val, oldVal) {
+      const initData = () => {
+        const res = []
+        for (let i = 0; i < val; i++) {
+          res.push({
+            obix: i,
+            pref: '',
+            suff: ''
+          })
+        }
+        return res
       }
-      this.objectIndexSetupList = res
+      if (this.isEdit && oldVal === undefined) {
+        this.objectIndexSetupList = this.objectSetupFrom.preAndSuff || initData()
+      } else {
+        this.objectIndexSetupList = initData()
+      }
     }
   },
   methods: {
@@ -159,7 +168,6 @@ export default {
       this.$refs.objectSetupFrom.validate((valid) => {
         if (valid) {
           this.isDetail = false
-          // alert('submit!')
         } else {
           console.log('error submit!!')
           return false
@@ -172,7 +180,11 @@ export default {
       let newLength = [...new Set(list)].length
       if (length && length === newLength) {
         this.objectSetupFrom.preAndSuff = this.objectIndexSetupList
-        this.addObjectData(this.objectSetupFrom)
+        if (this.isEdit) {
+          this.editObjectData(this.objectSetupFrom)
+        } else {
+          this.addObjectData(this.objectSetupFrom)
+        }
         this.dialogTableVisible = false
       } else {
         this.$message.error("Don't repeat")
@@ -180,11 +192,13 @@ export default {
     },
     handleCancel () {
       this.isDetail = true
-      this.objectIndexSetupList = this.objectIndexSetupList.map(i => {
-        i.pref = ''
-        i.suff = ''
-        return i
-      })
+      if (!this.isEdit) {
+        this.objectIndexSetupList = this.objectIndexSetupList.map(i => {
+          i.pref = ''
+          i.suff = ''
+          return i
+        })
+      }
     },
     handleDelete () {
       this.$confirm('Are you sure delete these object?', 'delete object', {
@@ -194,7 +208,8 @@ export default {
       }).catch(() => {
       })
     },
-    close () {
+    onClose () {
+      this.isEdit = false
       this.isDetail = true
       this.objectSetupFrom = {
         oatt: []
@@ -202,7 +217,13 @@ export default {
       this.objectIndexSetupList = []
       this.$refs.objectSetupFrom && this.$refs.objectSetupFrom.clearValidate()
     },
-    ...mapMutations(['addObjectData', 'deleteObjectData'])
+    onEdit (data) {
+      this.isEdit = true
+      this.objectSetupFrom = data
+      this.objectIndexSetupList = this.objectSetupFrom.preAndSuff || []
+      this.dialogTableVisible = true
+    },
+    ...mapMutations(['addObjectData', 'deleteObjectData', 'editObjectData'])
   },
   components: {
     ObjectTable

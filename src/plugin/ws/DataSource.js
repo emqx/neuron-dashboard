@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import BaseConfig from './config.js'
+import router from '../../router'
 import {
   Message
 } from 'element-ui'
@@ -16,7 +17,7 @@ class DataSource {
     this.wsUri = BaseConfig.serverBaseUrl
     this.websocket = null
     this.type = 'datathread' // datathread
-    this.wtrm = 'DEMO-Neuron-1001_1532419775357_240'
+    this.wtrm = 'neuron'
     this.name = name || storage.name
     this.pass = pass || storage.pass
     this.onsuccess = new Set()
@@ -25,6 +26,12 @@ class DataSource {
     this.onclose = () => {
       Message.warning('socket closed')
       console.log('socket closed')
+      const currentName = window.location.href.split('/')[4]
+      if (currentName !== 'login') {
+        router.push({
+          name: 'login'
+        })
+      }
     }
     this.onerror = (e) => {
       Message.error('socket error')
@@ -38,12 +45,13 @@ class DataSource {
     return new Promise((resolve, reject) => {
       this.websocket = new WebSocket(this.wsUri, this.type)
       this.websocket.addEventListener('open', () => {
-        var j = {
+        var authInfo = {
           func: 10,
           name: this.name,
-          pass: this.pass
+          pass: this.pass,
+          wtrm: this.wtrm
         }
-        var txt = JSON.stringify(j)
+        var txt = JSON.stringify(authInfo)
         this.websocket.send(txt)
       })
       this.websocket.onclose = this.onclose
@@ -126,7 +134,13 @@ Vue.prototype.$ws = function getDataSource (config) {
   if (!dataSource) {
     dataSource = new DataSource(config)
   } else {
-    if (config) dataSource.set(config)
+    if (config) {
+      if (config.name && config.pass) {
+        dataSource = new DataSource(config)
+      } else {
+        dataSource.set(config)
+      }
+    }
   }
   return dataSource
 }

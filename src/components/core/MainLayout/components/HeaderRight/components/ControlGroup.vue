@@ -40,10 +40,14 @@ export default {
       })
     },
     handleRestartNew () {
-      this.$ws().set().send({
-        func: 70,
-        'acts': 'restartnew'
-      })
+      this.$confirm('Are you sure New operation', 'New', {
+        type: 'warning'
+      }).then(() => {
+        this.$ws().set().send({
+          func: 70,
+          'acts': 'restartnew'
+        })
+      }).catch()
     }
   }
 }

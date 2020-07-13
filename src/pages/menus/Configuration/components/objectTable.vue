@@ -14,6 +14,10 @@
                        :objectName='props.row.objn' />
       </template>
     </el-table-column>
+    <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
     <el-table-column type='index'
                      width="100"
                      label="No" />
@@ -55,6 +59,8 @@
                      v-if="showBtn">
       <template slot-scope="scope">
         <el-button type="text"
+                   @click="handleEdit(scope.row)">Edit</el-button>
+        <el-button type="text"
                    @click="go(scope.row)">Attribute</el-button>
       </template>
     </el-table-column>
@@ -65,6 +71,8 @@
 import Mixins from '@/mixins'
 import { mapState } from 'vuex'
 import AttrbuteTable from './attrbuteTable'
+import { clone } from '@/utils'
+
 export default {
   mixins: [Mixins],
   props: {
@@ -98,6 +106,9 @@ export default {
     },
     go (row) {
       this.$router.push({ name: 'Configuration-edit', params: { data: row.objn } })
+    },
+    handleEdit (row) {
+      this.$emit('edit', clone(row))
     }
   },
   watch: {
