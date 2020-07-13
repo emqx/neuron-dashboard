@@ -98,13 +98,16 @@ export default {
           func: 11,
           name: currentUser.name
         }
-        this.$ws().set({ success: (data) => {
-          if (data.func === 11 && data.errc === 0) {
-            sessionStorage.removeItem('user')
-            this.$ws().close()
-            this.$router.push({ name })
-          }
-        } }).send(logoutInfo)
+        this.$confirm('Are you sure logout?', 'Logout', {
+          type: 'warning'
+        }).then(() => {
+          this.$ws().set({ success: (data) => {
+            if (data.func === 11 && data.errc === 0) {
+              this.$router.push({ name })
+              this.$ws().close()
+            }
+          } }).send(logoutInfo)
+        }).catch()
       } else if (name === '') {
         this.$router.push({ path: '/' })
       } else {

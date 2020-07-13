@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     setData (data) {
-      if (data.func === 13) {
+      if (data.func === 13 && data.user) {
         this.tableData = data.user.map((item) => ({
           name: item
         }))

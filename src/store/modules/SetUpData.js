@@ -35,13 +35,18 @@ export default {
       state.driverData.chdv = chdv || ''
       state.driverData.chnl = chnl
       state.eventData = msgd
-      const localObjectData = JSON.parse(localStorage.getItem('objectData'))
-      const filterData = localObjectData.filter((obj) => {
-        return !objd.some((obj2) => {
-          return obj.objn === obj2.objn
-        })
-      })
-      state.objectData = [...objd, ...filterData]
+      const localObjectData = localStorage.getItem('objectData')
+      // const filterData = localObjectData.filter((obj) => {
+      //   return !objd.some((obj2) => {
+      //     return obj.objn === obj2.objn
+      //   })
+      // })
+      // state.objectData = [...objd, ...filterData]
+      if (localObjectData) {
+        state.objectData = JSON.parse(localObjectData)
+      } else {
+        state.objectData = objd
+      }
     },
     setDriverData (state, {
       chdv,
@@ -52,6 +57,15 @@ export default {
     },
     addObjectData (state, objectData) {
       state.objectData.push(objectData)
+      localStorage.setItem('objectData', JSON.stringify(state.objectData))
+    },
+    editObjectData (state, objectData) {
+      const findIndex = state.objectData.findIndex((obj) => obj.objn === objectData.objn)
+      if (findIndex !== -1) {
+        const stateData = [...state.objectData]
+        stateData[findIndex] = { ...objectData }
+        state.objectData = stateData
+      }
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
     },
     deleteObjectData (state, objNameList) {

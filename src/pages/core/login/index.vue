@@ -56,11 +56,12 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           const { username: name, password: pass } = this.formLogin
-          this.$ws({
+          const loginInfo = {
             func: 10,
             name,
             pass
-          }).connect().then(userInfo => {
+          }
+          this.$ws(loginInfo).connect().then(userInfo => {
             sessionStorage.setItem('user', JSON.stringify(userInfo))
             this.$router.push({ name: 'index' })
           })
@@ -71,7 +72,7 @@ export default {
     },
     init () {
       sessionStorage.removeItem('user')
-      this.$dataSource && this.$dataSource.close()
+      localStorage.removeItem('objectData')
     }
   },
   mounted () {
