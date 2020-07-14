@@ -7,7 +7,7 @@
       <div>
         <el-button @click='handleSubmit'>submit</el-button>
         <el-button @click='addEvent'
-                   type="primary">Created</el-button>
+                   type="primary">Create</el-button>
         <el-button @click='handleDelete'
                    type="danger">Delete</el-button>
       </div>

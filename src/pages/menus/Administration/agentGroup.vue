@@ -42,47 +42,47 @@ export default {
           minWidth: '160'
         },
         {
-          label: 'no. tags',
+          label: 'No. tags',
           val: 'natt',
           minWidth: '100'
         },
         {
-          label: 'total tags',
+          label: 'Total tags',
           val: 'tatt',
           minWidth: '100'
         },
         {
-          label: 'max tags',
+          label: 'Max tags',
           val: 'matt',
           minWidth: '100'
         },
         {
-          label: 'no. alarms',
+          label: 'No. alarms',
           val: 'nalr',
           minWidth: '100'
         },
         {
-          label: 'total alarms',
+          label: 'Total alarms',
           val: 'talr',
           minWidth: '100'
         },
         {
-          label: 'max alarms',
+          label: 'Max alarms',
           val: 'malr',
           minWidth: '100'
         },
         {
-          label: 'data usage',
+          label: 'Data usage',
           val: 'data',
           minWidth: '120'
         },
         {
-          label: 'total usage',
+          label: 'Total usage',
           val: 'tusg',
           minWidth: '120'
         },
         {
-          label: 'max usage',
+          label: 'Max usage',
           val: 'musg',
           minWidth: '120'
         },

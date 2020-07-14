@@ -10,12 +10,12 @@
         &nbsp;&nbsp;
         <el-button class='dd-fr'
                    type="primary"
-                   @click='handleSubmit'>submit</el-button>
+                   @click='handleSubmit'>Submit</el-button>
       </div>
     </div>
     <el-table class="script-table"
               :data='scriptData'>
-      <el-table-column label="statement"
+      <el-table-column label="Comment"
                        min-width="120">
         <template slot-scope="scope">
           <el-select v-model="scope.row.stmt"
@@ -31,11 +31,13 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="expression"
+      <el-table-column label="Statement"
                        min-width="300">
         <template slot-scope="scope">
           <el-input placeholder=""
+                    type="textarea"
                     size="mini"
+                    :rows="1"
                     v-model="scope.row.expr">
           </el-input>
         </template>
@@ -130,7 +132,7 @@ export default {
     },
     handleSubmit () {
       if (!this.type.subr) {
-        this.$message.error('select a subroutine')
+        this.$message.error('select a routine')
         return
       }
       this.$confirm('Are you sure submit these script programming', 'Submit', {

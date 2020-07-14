@@ -19,12 +19,12 @@
                        prop="atim"
                        label="Time">
         <template slot-scope="scope">
-          {{format(scope.row.atim||'')}}
+          {{ format(scope.row.atim || '') }}
         </template>
       </el-table-column>
       <el-table-column min-width="60"
                        prop="acat"
-                       label="Categ" />
+                       label="Category" />
       <el-table-column prop="astt"
                        label="State"
                        min-width="50" />
@@ -38,10 +38,15 @@
       <el-table-column min-width="100"
                        label="">
         <template slot-scope="scope">
-          <el-button type='text'
+          <el-button v-if="actn !== 'acknowledge'" type='text'
                      @click="handleClick(scope.row)">
             <!-- acknowledge or enable or disable -->
-            {{actn}}
+            {{ actn }}
+          </el-button>
+          <el-button v-else-if="scope.row.amod === 'UNACKALARM'" type='text'
+                     @click="handleClick(scope.row)">
+            <!-- acknowledge or enable or disable -->
+            {{ actn }}
           </el-button>
         </template>
       </el-table-column>
@@ -97,6 +102,10 @@ export default {
       return res
     }
   },
+  created () {
+    this.action = 'act_en'
+    this.handleChange()
+  },
   methods: {
     handleClick (row) {
       if (this.action === 'all_alm') return
@@ -106,7 +115,7 @@ export default {
         actn: this.actn
       })
     },
-    handleChange (e) {
+    handleChange () {
       this.$ws().send({
         func: 79,
         actn: this.action

@@ -4,13 +4,13 @@
              width="500px"
              @closed="handleClose">
     <span>
-      value:
+      Value:
     </span>
     <el-input v-model="val"
               style='width:400px;'></el-input>
     <span slot="footer"
           class="dialog-footer">
-      <el-button @click="dialogVisible = false">cancle</el-button>
+      <el-button @click="dialogVisible = false">cancel</el-button>
       <el-button type="primary"
                  @click="handleSubmit">submit</el-button>
     </span>

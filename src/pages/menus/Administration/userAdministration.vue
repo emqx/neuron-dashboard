@@ -14,9 +14,6 @@
       <el-table-column label="Actions"
                        width="280px">
         <template slot-scope="scope">
-          <!-- <el-button type="primary"
-                     size="mini"
-                     @click="handleChange(scope.row)">Change</el-button> -->
           <el-button type="danger"
                      size="mini"
                      @click="handleRemove(scope.row)">Remove</el-button>

@@ -33,7 +33,7 @@ export default {
   },
   children: [
     maker('objectSetup'),
-    maker('edit', true),
+    maker('attributeSetup', true),
     maker('eventSetup'),
     maker('overview'),
     maker('globalValiables'),

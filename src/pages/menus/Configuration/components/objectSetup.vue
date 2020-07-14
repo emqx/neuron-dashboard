@@ -48,23 +48,9 @@
                               :precision='0'
                               :min="0" />
             </el-form-item>
-            <el-form-item label="Timestamp Display"
+            <el-form-item label="Timestamp display"
                           prop="logt">
               <el-radio-group v-model="objectSetupFrom.tstd">
-                <el-radio :label="1">Yes</el-radio>
-                <el-radio :label="0">No</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="Visible"
-                          prop="disp">
-              <el-radio-group v-model="objectSetupFrom.disp">
-                <el-radio :label="1">Yes</el-radio>
-                <el-radio :label="0">No</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="Logging"
-                          prop="logs">
-              <el-radio-group v-model="objectSetupFrom.logs">
                 <el-radio :label="1">Yes</el-radio>
                 <el-radio :label="0">No</el-radio>
               </el-radio-group>
@@ -131,12 +117,6 @@ export default {
         ],
         logt: [
           { required: true, message: 'logging time is required', trigger: 'blur' }
-        ],
-        disp: [
-          { required: true, message: 'display is required', trigger: 'blur' }
-        ],
-        logs: [
-          { required: true, message: 'logging is required', trigger: 'blur' }
         ]
       },
       objectIndexSetupList: [],

@@ -2,7 +2,7 @@
   <Container type="card-full"
              :scorll='false'>
     <div class="row flex">
-      <div class="dd-title">Attribute</div>
+      <div class="dd-title">Attribute Setup</div>
       <div>
         <el-button @click='$router.go(-1)'>Back</el-button>
         <el-button @click='dialogTableVisible=true'
@@ -137,23 +137,23 @@ export default {
       AttributeSetupFrom: {},
       AttributeSetupFromRules: {
         attn: [
-          { required: true, message: 'pleace input Name', trigger: 'blur' },
+          { required: true, message: 'Please input Name', trigger: 'blur' },
           { max: 30, message: 'max 30', trigger: 'blur' }
         ],
         attt: [
-          { required: true, message: 'pleace select Type', trigger: 'blur' }
+          { required: true, message: 'Please select Type', trigger: 'blur' }
         ],
         deci: [
-          { required: true, message: 'pleace input Decimal', trigger: 'blur' }
+          { required: true, message: 'Please input Decimal', trigger: 'blur' }
         ],
         adis: [
-          { required: true, message: 'pleace select Display', trigger: 'blur' }
+          { required: true, message: 'Please select Display', trigger: 'blur' }
         ],
         achg: [
-          { required: true, message: 'pleace select Change', trigger: 'blur' }
+          { required: true, message: 'Please select Change', trigger: 'blur' }
         ],
         attr: [
-          { required: true, message: 'pleace select Direction', trigger: 'blur' }
+          { required: true, message: 'Please select Direction', trigger: 'blur' }
         ],
         rtim: [
           { required: true, message: 'pleact input Time', trigger: 'blur' }
