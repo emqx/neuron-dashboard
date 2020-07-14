@@ -9,7 +9,6 @@
                    type="primary">Create</el-button>
         <el-button @click='handleDelete'
                    type="danger">Delete</el-button>
-        <el-button @click='handleDummy'>Dummy</el-button>
         <el-button @click='handleSubmit'
                    type="primary"
                    :disabled="!canSubmit">Submit</el-button>
@@ -21,7 +20,8 @@
                      :showBtn="true"
                      :objectName="objn"
                      @add="addAddress"
-                     @edit="editAddress" />
+                     @edit="editAddress"
+                     @dummy="onDummy" />
     </div>
     <el-dialog title="Data Attribute Setup"
                :visible.sync="dialogTableVisible"
@@ -249,7 +249,8 @@ export default {
       }).catch(() => {
       })
     },
-    handleDummy () {
+    onDummy (data) {
+      this.multipleSelection.push(data)
       if (!this.multipleSelection.length) return
       this.multipleSelection.forEach(i => {
         i.attr = '-'
