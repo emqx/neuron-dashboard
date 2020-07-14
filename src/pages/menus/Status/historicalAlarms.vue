@@ -4,63 +4,52 @@
              :scorll='false'>
     <div class="dd-title">Historical Alarms</div>
     <el-row :gutter="20">
-      <el-col :span="12">
-        date: <el-date-picker v-model="time"
-                        class="input"
-                        range-separator="-"
-                        start-placeholder="start"
-                        end-placeholder="end"
-                        type="datetimerange">
-        </el-date-picker>
-      </el-col>
-      <el-col :span='12'>
-        patn: <el-input v-model="patn"
-                  class="input"></el-input>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20"
-            class="dd-mt">
-      <el-col :span="6">
-        srch: <el-select v-model="srch"
-                   class="input"
-                   clearable>
-          <el-option v-for="item in srchList"
-                     :key="item"
-                     :label="item"
-                     :value="item">
-          </el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="6">
-        sett: <el-select v-model="sett"
-                   class="input"
-                   clearable>
-          <el-option v-for="item in settList"
-                     :key="item"
-                     :label="item"
-                     :value="item">
-          </el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="6">
-        cate: <el-select v-model="cate"
-                   class="input"
-                   clearable>
-          <el-option v-for="item in cateList"
-                     :key="item"
-                     :label="item"
-                     :value="item">
-          </el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="6" style="text-align: right">
-        <el-button class="btn"
-                   @click='handleSubmit("")'>submit</el-button>
-      </el-col>
+      <el-form>
+        <el-col :span="7">
+          <el-form-item label="Date:">
+            <el-date-picker
+              v-model="time"
+              class="input"
+              range-separator="-"
+              start-placeholder="start"
+              end-placeholder="end"
+              type="datetimerange">
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="Pattern:">
+            <el-input v-model="patn"
+                      class="input"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="Category:">
+            <el-select
+              v-model="cate"
+              class="input"
+              clearable>
+              <el-option
+                v-for="item in cateList"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item>
+            <el-button
+              class="btn filter"
+              @click='handleSubmit("")'>submit</el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
     </el-row>
     <el-table :data='data'
               style="width: 100%;margin-top:20px;">
-      <el-table-column min-width="60"
+      <el-table-column min-width="130"
                        prop="anum"
                        label="Index" />
       <el-table-column min-width="130"
@@ -69,15 +58,15 @@
           {{format(scope.row.tstp||'')}}
         </template>
       </el-table-column>
-      <el-table-column min-width="60"
+      <el-table-column min-width="130"
                        prop="cate"
-                       label="Categ" />
+                       label="Category" />
       <el-table-column prop="stat"
                        label="State"
-                       min-width="60" />
+                       min-width="130" />
       <el-table-column prop="uack"
-                       min-width="60"
-                       label="Uack">
+                       min-width="130"
+                       label="Remark">
       </el-table-column>
       <el-table-column prop="comt"
                        min-width="400"
@@ -96,10 +85,7 @@ export default {
       data: [],
       params: {},
       time: [moment().subtract(1, 'hours'), moment()],
-      srch: '',
-      srchList: ['FromFirst', 'FromLast', 'UseID', 'Blank'],
-      sett: '',
-      settList: ['Today', 'Yesterday', 'ThisWeek', 'LastWeek', 'ThisMonth', 'LastMonth'],
+      srch: 'FromFirst',
       cate: '',
       cateList: ['critical', 'alarm', 'warning', 'event', 'view'],
       patn: ''
@@ -159,8 +145,14 @@ export default {
   .el-row {
     margin-top: 20px;
   }
-}
-.input {
-  width: calc(100% - 46px);
+  .btn.filter {
+    float: right;
+    position: relative;
+    top: 38px;
+  }
+  .el-select,
+  .el-range-editor.el-input__inner {
+    width: 100%;
+  }
 }
 </style>

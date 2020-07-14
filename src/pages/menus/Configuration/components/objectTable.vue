@@ -2,14 +2,9 @@
   <el-table :data='objectList'
             @selection-change="handleSelectionChange"
             style="width: 100%">
-    <!-- <el-table-column type="selection"
-                     v-if='showBtn'
-                     width="55" /> -->
     <el-table-column type="expand"
                      v-if="showAttr">
       <template slot-scope="props">
-        <!-- <el-button @click="go(props.row)">new</el-button>
-        <el-button>delete</el-button> -->
         <AttrbuteTable :attributeList='props.row.oatt'
                        :objectName='props.row.objn' />
       </template>
@@ -22,40 +17,25 @@
                      width="100"
                      label="No" />
     <el-table-column prop="objn"
-                     label="Name"
-                     min-width="200" />
+                     label="Object Name"
+                     min-width="250" />
     <el-table-column prop="obsz"
-                     width="100"
+                     :min-width="100"
                      label="Size" />
     <el-table-column prop="updt"
-                     :width="140"
+                     :min-width="100"
                      label="Update Time" />
     <el-table-column prop="logt"
-                     :width="120"
+                     :min-width="100"
                      label="Log Time" />
     <el-table-column prop="tstd"
-                     :width="120"
+                     :min-width="100"
                      label="Timestamp">
       <template slot-scope='scope'>
         {{scope.row.tstd?'YES':'NO'}}
       </template>
     </el-table-column>
-    <el-table-column prop="disp"
-                     :width="minWidth"
-                     label="Visible">
-      <template slot-scope='scope'>
-        {{scope.row.disp?'YES':'NO'}}
-      </template>
-    </el-table-column>
-    <el-table-column prop="logs"
-                     :width="minWidth"
-                     label="Logging">
-      <template slot-scope='scope'>
-        {{scope.row.logs?'YES':'NO'}}
-      </template>
-    </el-table-column>
-    <el-table-column label="Attribute"
-                     :min-width="minWidth"
+    <el-table-column :width="180"
                      v-if="showBtn">
       <template slot-scope="scope">
         <el-button type="text"
@@ -105,7 +85,7 @@ export default {
       this.$emit('input', this.multipleSelection)
     },
     go (row) {
-      this.$router.push({ name: 'Configuration-edit', params: { data: row.objn } })
+      this.$router.push({ name: 'Configuration-attributeSetup', params: { data: row.objn } })
     },
     handleEdit (row) {
       this.$emit('edit', clone(row))

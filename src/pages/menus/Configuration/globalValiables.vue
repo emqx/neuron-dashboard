@@ -37,8 +37,7 @@
           </el-input>
         </template>
       </el-table-column>
-      <el-table-column label="edit"
-                       min-width="60">
+      <el-table-column min-width="60">
         <template slot-scope="scope">
           <div class='btn'>
             <i class="el-icon-circle-plus plus"

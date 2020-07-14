@@ -4,7 +4,7 @@
     <div class="row flex">
       <div class="dd-title">Data Monitoring</div>
       <div class="btnGroup">
-        <span>Object Name: </span>
+        <span>Object name: </span>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <el-select v-model="objName">
           <el-option v-for="item in objList"
@@ -14,8 +14,8 @@
           </el-option>
         </el-select>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button @click='handleShow(null,"History")'>history</el-button>
-        <el-button @click='handleShow(null,"Current")'>current</el-button>
+        <el-button @click='handleShow(null,"History")'>History</el-button>
+        <el-button @click='handleShow(null,"Current")'>Current</el-button>
       </div>
     </div>
     <el-table :data="tableData.length ? data: []"
@@ -31,11 +31,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="prop"
-                       label="attrbute"
+                       label="Attrbute"
                        min-width="180">
       </el-table-column>
       <el-table-column prop="val"
-                       label="value"
+                       label="Value"
                        min-width="180">
       </el-table-column>
       <el-table-column width="200">
@@ -44,11 +44,11 @@
                v-if="scope.row.prop!=='Time'">
             <el-button type="text"
                        v-if="scope.row.writable"
-                       @click='handleWrite(scope.row)'>write</el-button>
+                       @click='handleWrite(scope.row)'>Write</el-button>
             <el-button type="text"
-                       @click='handleShow(scope.row,"History")'>history</el-button>
+                       @click='handleShow(scope.row,"History")'>History</el-button>
             <el-button type="text"
-                       @click='handleShow(scope.row,"Current")'>current</el-button>
+                       @click='handleShow(scope.row,"Current")'>Current</el-button>
           </div>
         </template>
       </el-table-column>

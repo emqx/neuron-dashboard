@@ -10,7 +10,7 @@
           <template v-for="(subMenu,subIndex) in item.children">
             <el-menu-item :index="subMenu.name"
                           @click.native="active(subMenu)"
-                          v-if="!subMenu.meta.hide"
+                          v-show="!subMenu.meta.hide"
                           :key='subMenu.name'>
               {{subMenu.title}}
             </el-menu-item>

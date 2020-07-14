@@ -1,9 +1,9 @@
 <template>
   <div style="display:inline-block;">
-    <span>subroutine:</span>
+    <span>Routine:</span>
     &nbsp;&nbsp;
     <el-select v-model="scriptType.subr"
-               style="width:300px;"
+               style="width:400px;"
                @change="handleSelect"
                placeholder="">
       <el-option v-for="item in scriptTypeList"
@@ -14,24 +14,26 @@
     </el-select>
     &nbsp;&nbsp;
     <el-button @click='handleDelete'
-               type='danger'>delete</el-button>
+               type='danger'
+               :disabled="[-10, -22, -20].includes(scriptType.subr) || !scriptType.subr">Delete</el-button>
     <el-button @click='handleCreate'
-               type="primary">create</el-button>
+               type="primary">Create</el-button>
 
     <el-dialog title="Create Subroutine"
                @closed='handleClose'
                :visible.sync="dialogVisible">
       <el-form :model="subroutineForm"
                :rules="subroutineFormRules"
-               label-width="100px"
+               label-width="160px"
+               label-position="left"
                ref='subroutineForm'>
         <el-form-item prop="name"
-                      label="name">
+                      label="Subroutine name">
           <el-input v-model="subroutineForm.name"></el-input>
         </el-form-item>
         <el-form-item prop="subr"
-                      label="subr">
-          <el-input v-model="subroutineForm.subr"></el-input>
+                      label="Subroutine number">
+          <el-input v-model.number="subroutineForm.subr" type="number" placeholder="1 - 999"></el-input>
         </el-form-item>
       </el-form>
       <template slot="footer">
@@ -47,6 +49,20 @@
 export default {
   props: ['value'],
   data () {
+    const checkSubr = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('Subroutine number is required'))
+      }
+      if (!Number.isInteger(value)) {
+        callback(new Error('Please input digits'))
+      } else {
+        if (value <= 1 || value >= 999) {
+          callback(new Error('Values range from 1 to 999'))
+        } else {
+          callback()
+        }
+      }
+    }
     return {
       scriptType: null,
       scriptTypeList: [
@@ -64,7 +80,8 @@ export default {
           { required: true, message: '', trigger: 'blur' }
         ],
         subr: [
-          { required: true, message: '', trigger: 'blur' }
+          { required: true, message: '', trigger: 'blur' },
+          { validator: checkSubr, trigger: 'blur' }
         ]
       }
     }

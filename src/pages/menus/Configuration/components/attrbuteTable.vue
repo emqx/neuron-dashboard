@@ -7,15 +7,9 @@
                      width="55">
     </el-table-column>
     <el-table-column prop="attn"
-                     :min-width="minWidth"
+                     :min-width="80"
                      label="Name" />
-    <el-table-column prop="attt"
-                     :min-width="minWidth"
-                     label="Type" />
-    <el-table-column prop="deci"
-                     :min-width="minWidth"
-                     label="Decimal" />
-    <el-table-column label="Key: Address"
+    <el-table-column label="Object: Address"
                      min-width="250">
       <template slot-scope="scope">
         <div>
@@ -30,28 +24,33 @@
         <!-- <span>{{scope.row.aadd}}</span> -->
       </template>
     </el-table-column>
+    <el-table-column prop="attt"
+                     :width="minWidth"
+                     label="Type" />
+    <el-table-column prop="deci"
+                     :width="minWidth"
+                     label="Decimal" />
     <el-table-column prop="adis"
-                     :min-width="minWidth"
+                     :width="minWidth"
                      label="Visible">
       <template slot-scope='scope'>
         {{scope.row.adis?'YES':'NO'}}
       </template>
     </el-table-column>
     <el-table-column prop="achg"
-                     :min-width="minWidth"
+                     :width="minWidth"
                      label="Change">
       <template slot-scope='scope'>
         {{scope.row.achg?'YES':'NO'}}
       </template>
     </el-table-column>
     <el-table-column prop="attr"
-                     :min-width="minWidth"
+                     :width="minWidth"
                      label="RW" />
     <el-table-column prop="rtim"
-                     :min-width="minWidth"
+                     :width="minWidth"
                      label="Rtime" />
-    <el-table-column label="Address"
-                     :min-width="100"
+    <el-table-column :width="180"
                      v-if="showBtn">
       <template slot-scope="scope">
         <el-button type="text"
@@ -88,7 +87,7 @@ export default {
   },
   data () {
     return {
-      minWidth: '60',
+      minWidth: '90',
       multipleSelection: []
     }
   },
