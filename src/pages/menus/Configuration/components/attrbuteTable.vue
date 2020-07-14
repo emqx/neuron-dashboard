@@ -16,12 +16,11 @@
           <div v-for="item in scope.row.aadd"
                class="addrs"
                :key='getFullName(item.pref,item.suff)'>
-            {{getFullName(item.pref,item.suff)}}:
+            {{ getFullName(item.pref,item.suff) }}:
             &nbsp;
-            {{item.addr}}
+            {{ item.addr }}
           </div>
         </div>
-        <!-- <span>{{scope.row.aadd}}</span> -->
       </template>
     </el-table-column>
     <el-table-column prop="attt"
@@ -34,14 +33,14 @@
                      :width="minWidth"
                      label="Visible">
       <template slot-scope='scope'>
-        {{scope.row.adis?'YES':'NO'}}
+        {{ scope.row.adis ? 'YES' : 'NO'}}
       </template>
     </el-table-column>
     <el-table-column prop="achg"
                      :width="minWidth"
                      label="Change">
       <template slot-scope='scope'>
-        {{scope.row.achg?'YES':'NO'}}
+        {{ scope.row.achg ? 'YES' : 'NO' }}
       </template>
     </el-table-column>
     <el-table-column prop="attr"
@@ -50,13 +49,14 @@
     <el-table-column prop="rtim"
                      :width="minWidth"
                      label="Rtime" />
-    <el-table-column :width="180"
+    <el-table-column :width="200"
                      v-if="showBtn">
       <template slot-scope="scope">
         <el-button type="text"
                    @click="handleEdit(scope.row)">Edit</el-button>
         <el-button type='text'
-                   @click="addAddress(scope.row)">Address</el-button>
+                   @click="addAddress(scope.row)">Addr</el-button>
+        <el-button type="text" @click='handleDummy(scope.row)'>Dummy</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -106,6 +106,9 @@ export default {
     },
     handleEdit (row) {
       this.$emit('edit', clone(row))
+    },
+    handleDummy (row) {
+      this.$emit('dummy', row)
     }
   },
   watch: {

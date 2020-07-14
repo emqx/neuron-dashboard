@@ -56,7 +56,7 @@ export default {
       if (!Number.isInteger(value)) {
         callback(new Error('Please input digits'))
       } else {
-        if (value <= 1 || value >= 999) {
+        if (value < 1 || value > 999) {
           callback(new Error('Values range from 1 to 999'))
         } else {
           callback()
@@ -100,8 +100,9 @@ export default {
           if (!this.scriptTypeList.some(j => j.subr === i.subr)) {
             this.scriptTypeList.unshift({
               subr: i.subr,
-              name: `${i.subr}     ${i.name}`
+              name: `SR${i.subr} - ${i.name}`
             })
+            this.scriptTypeList.sort((prev, next) => prev.subr - next.subr)
           }
         })
       }
