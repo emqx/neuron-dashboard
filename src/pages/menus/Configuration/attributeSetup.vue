@@ -4,15 +4,12 @@
     <div class="row flex">
       <div class="dd-title">Attribute Setup</div>
       <div>
-        <el-button @click='$router.go(-1)'>Back</el-button>
+        <el-button @click='handleBack'>Back</el-button>
         <el-button @click='dialogTableVisible=true'
                    type="primary">Create</el-button>
         <el-button @click='onDelete(null)'
                    :disabled="!multipleSelection.length"
                    type="danger">Delete</el-button>
-        <el-button @click='handleSubmit'
-                   type="primary"
-                   :disabled="!canSubmit">Submit</el-button>
       </div>
     </div>
     <div>
@@ -202,17 +199,21 @@ export default {
           }
           this.dialogTableVisible = false
           this.AttributeSetupFrom = {}
+          this.confirmSubmit()
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
-    handleSubmit () {
-      this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
-      this.$router.push({
-        name: 'Configuration-objectSetup'
-      })
+    confirmSubmit () {
+      if (!this.canSubmit) {
+        this.$message.warning('Address is requried')
+      } else {
+        setTimeout(() => {
+          this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
+        }, 1000)
+      }
     },
     addAddress (data) {
       this.activeAttributeRow = data
@@ -233,6 +234,7 @@ export default {
       this.addressVisible = false
       this.$set(this.activeAttributeRow, 'aadd', clone(this.preAndSuff))
       this.resetPreAndSuff()
+      this.confirmSubmit()
     },
     resetPreAndSuff () {
       this.preAndSuff = this.preAndSuff.map(i => {
@@ -257,6 +259,10 @@ export default {
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
       }).catch(() => {
       })
+    },
+    handleBack () {
+      this.$router.go(-1)
+      this.confirmSubmit()
     },
     onDummy (data) {
       data.attr = '-'
@@ -318,7 +324,7 @@ export default {
     if (to.params.data) {
       next()
     } else {
-      next({ name: 'index' })
+      next({ name: 'Configuration-objectSetup' })
     }
   },
   components: {
