@@ -26,11 +26,19 @@
     <el-table-column prop="subr"
                      :min-width="minWidth"
                      label="Subroutine" />
+     <el-table-column :width="100"
+                     v-if="showBtn">
+        <template slot-scope="scope">
+          <el-button type="text"
+                    @click="handleDelete(scope.row)">Delete</el-button>
+        </template>
+      </el-table-column>
   </el-table>
 </template>
 
 <script>
 import Mixins from '@/mixins'
+
 export default {
   mixins: [Mixins],
   props: {
@@ -56,6 +64,9 @@ export default {
     handleSelectionChange (val) {
       this.multipleSelection = val
       this.$emit('input', this.multipleSelection)
+    },
+    handleDelete (row) {
+      this.$emit('delete', row)
     }
   },
   watch: {

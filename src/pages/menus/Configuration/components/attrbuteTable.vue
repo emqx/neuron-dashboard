@@ -49,7 +49,7 @@
     <el-table-column prop="rtim"
                      :width="minWidth"
                      label="Rtime" />
-    <el-table-column :width="200"
+    <el-table-column :width="250"
                      v-if="showBtn">
       <template slot-scope="scope">
         <el-button type="text"
@@ -57,6 +57,8 @@
         <el-button type='text'
                    @click="addAddress(scope.row)">Addr</el-button>
         <el-button type="text" @click='handleDummy(scope.row)'>Dummy</el-button>
+        <el-button type="text"
+                   @click="handleDelete(scope.row)">Delete</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -109,6 +111,9 @@ export default {
     },
     handleDummy (row) {
       this.$emit('dummy', row)
+    },
+    handleDelete (row) {
+      this.$emit('delete', clone(row))
     }
   },
   watch: {

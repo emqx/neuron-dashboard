@@ -5,7 +5,7 @@
     <el-table-column type="expand"
                      v-if="showAttr">
       <template slot-scope="props">
-        <AttrbuteTable :attributeList='props.row.oatt'
+        <AttrbuteTable :attributeList='props.row.oatt || []'
                        :objectName='props.row.objn' />
       </template>
     </el-table-column>
@@ -35,13 +35,15 @@
         {{scope.row.tstd?'YES':'NO'}}
       </template>
     </el-table-column>
-    <el-table-column :width="180"
+    <el-table-column :width="200"
                      v-if="showBtn">
       <template slot-scope="scope">
         <el-button type="text"
                    @click="handleEdit(scope.row)">Edit</el-button>
         <el-button type="text"
-                   @click="go(scope.row)">Attribute</el-button>
+                   @click="goToAttrPage(scope.row)">Attribute</el-button>
+        <el-button type="text"
+                   @click="handleDelete(scope.row)">Delete</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -84,11 +86,14 @@ export default {
       this.multipleSelection = val
       this.$emit('input', this.multipleSelection)
     },
-    go (row) {
+    goToAttrPage (row) {
       this.$router.push({ name: 'Configuration-attributeSetup', params: { data: row.objn } })
     },
     handleEdit (row) {
       this.$emit('edit', clone(row))
+    },
+    handleDelete (row) {
+      this.$emit('delete', clone(row))
     }
   },
   watch: {

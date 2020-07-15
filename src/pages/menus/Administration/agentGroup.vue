@@ -24,7 +24,7 @@ export default {
         {
           label: 'UUID',
           val: 'uuid',
-          minWidth: '300'
+          minWidth: '250'
         },
         {
           label: 'Report date',
@@ -49,27 +49,27 @@ export default {
         {
           label: 'Total tags',
           val: 'tatt',
-          minWidth: '100'
+          minWidth: '120'
         },
         {
           label: 'Max tags',
           val: 'matt',
-          minWidth: '100'
+          minWidth: '120'
         },
         {
           label: 'No. alarms',
           val: 'nalr',
-          minWidth: '100'
+          minWidth: '120'
         },
         {
           label: 'Total alarms',
           val: 'talr',
-          minWidth: '100'
+          minWidth: '120'
         },
         {
           label: 'Max alarms',
           val: 'malr',
-          minWidth: '100'
+          minWidth: '120'
         },
         {
           label: 'Data usage',

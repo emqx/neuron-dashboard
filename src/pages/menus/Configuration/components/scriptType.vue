@@ -13,12 +13,11 @@
       </el-option>
     </el-select>
     &nbsp;&nbsp;
+    <el-button @click='handleCreate'
+               type="primary">Create</el-button>
     <el-button @click='handleDelete'
                type='danger'
                :disabled="[-10, -22, -20].includes(scriptType.subr) || !scriptType.subr">Delete</el-button>
-    <el-button @click='handleCreate'
-               type="primary">Create</el-button>
-
     <el-dialog title="Create Subroutine"
                @closed='handleClose'
                :visible.sync="dialogVisible">

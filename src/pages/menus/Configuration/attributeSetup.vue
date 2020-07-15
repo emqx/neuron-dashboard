@@ -7,7 +7,8 @@
         <el-button @click='$router.go(-1)'>Back</el-button>
         <el-button @click='dialogTableVisible=true'
                    type="primary">Create</el-button>
-        <el-button @click='handleDelete'
+        <el-button @click='onDelete(null)'
+                   :disabled="!multipleSelection.length"
                    type="danger">Delete</el-button>
         <el-button @click='handleSubmit'
                    type="primary"
@@ -21,7 +22,8 @@
                      :objectName="objn"
                      @add="addAddress"
                      @edit="editAddress"
-                     @dummy="onDummy" />
+                     @dummy="onDummy"
+                     @delete="onDelete" />
     </div>
     <el-dialog title="Data Attribute Setup"
                :visible.sync="dialogTableVisible"
@@ -238,27 +240,30 @@ export default {
         return i
       })
     },
-    handleDelete () {
-      if (!this.multipleSelection.length) return
-      this.$confirm('Are you sure delete these attribute?', 'delete attribute', {
+    onDelete (data) {
+      const deleteData = []
+      let confirmMsg = 'Are you sure delete these attribute?'
+      if (data) {
+        deleteData.push(data)
+        confirmMsg = 'Are you sure delete this attribute?'
+      } else {
+        deleteData.push(...this.multipleSelection)
+      }
+      this.$confirm(confirmMsg, 'delete attribute', {
         type: 'warning'
       }).then(() => {
-        const deleteList = this.multipleSelection.map(i => i.attn)
+        const deleteList = deleteData.map(i => i.attn)
         this.attributeList = this.attributeList.filter(i => !deleteList.includes(i.attn))
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
       }).catch(() => {
       })
     },
     onDummy (data) {
-      this.multipleSelection.push(data)
-      if (!this.multipleSelection.length) return
-      this.multipleSelection.forEach(i => {
-        i.attr = '-'
-        i.rtim = 0
-        i.aadd.forEach(j => {
-          j.addr = '-'
-          return j
-        })
+      data.attr = '-'
+      data.rtim = 0
+      data.aadd.forEach(item => {
+        item.addr = '-'
+        return item
       })
     },
     init () {

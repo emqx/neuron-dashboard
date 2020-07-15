@@ -1,15 +1,17 @@
 <template>
   <div class="object-setup">
     <div class="dd-mb dd-fr">
-      <el-button @click='dialogTableVisible=true'
-                 type="primary">Create</el-button>
-      <el-button @click='handleDelete'
-                 type="danger">Delete</el-button>
+      <el-button type="primary"
+                 @click='dialogTableVisible=true'>Create</el-button>
+      <el-button type="danger"
+                 :disabled="!multipleSelection.length"
+                 @click='onDelete(null)'>Delete</el-button>
     </div>
     <div class="row">
       <ObjectTable :showBtn='true'
                    v-model="multipleSelection"
-                   @edit="onEdit" />
+                   @edit="onEdit"
+                   @delete="onDelete" />
     </div>
     <el-dialog @closed='onClose'
                :title='isDetail?"Object setup":"Object index setup"'
@@ -180,11 +182,19 @@ export default {
         })
       }
     },
-    handleDelete () {
-      this.$confirm('Are you sure delete these object?', 'delete object', {
+    onDelete (data) {
+      const deleteData = []
+      let confirmMsg = 'Are you sure delete these object?'
+      if (data) {
+        deleteData.push(data)
+        confirmMsg = 'Are you sure delete this object?'
+      } else {
+        deleteData.push(...this.multipleSelection)
+      }
+      this.$confirm(confirmMsg, 'delete object', {
         type: 'warning'
       }).then(() => {
-        this.deleteObjectData(this.multipleSelection.map(i => i.objn))
+        this.deleteObjectData(deleteData.map(i => i.objn))
       }).catch(() => {
       })
     },

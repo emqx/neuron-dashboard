@@ -8,13 +8,15 @@
         <el-button @click='handleSubmit'>submit</el-button>
         <el-button @click='addEvent'
                    type="primary">Create</el-button>
-        <el-button @click='handleDelete'
+        <el-button @click='onDelete(null)'
+                   :disabled="!multipleSelection.length"
                    type="danger">Delete</el-button>
       </div>
     </div>
     <EventTable v-model="multipleSelection"
                 :showBtn='true'
-                :eventList='msgd' />
+                :eventList='msgd'
+                 @delete="onDelete" />
     <el-dialog title="Event Setup"
                @closed='close'
                :visible.sync="dialogTableVisible">
@@ -186,12 +188,19 @@ export default {
       }
       return []
     },
-    handleDelete () {
-      if (!this.multipleSelection.length) return
-      this.$confirm('Are you sure delete these event?', 'delete event', {
+    onDelete (data) {
+      const deleteData = []
+      let confirmMsg = 'Are you sure delete these event?'
+      if (data) {
+        deleteData.push(data)
+        confirmMsg = 'Are you sure delete this event?'
+      } else {
+        deleteData.push(...this.multipleSelection)
+      }
+      this.$confirm(confirmMsg, 'delete event', {
         type: 'warning'
       }).then(() => {
-        this.deleteEventData(this.multipleSelection)
+        this.deleteEventData(deleteData)
       }).catch(() => {
       })
     },
