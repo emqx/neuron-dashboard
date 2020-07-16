@@ -64,7 +64,7 @@
           <el-button @click='submitObjectSetupFrom'>submit</el-button>
         </span>
       </template>
-      <template v-if="objectIndexSetupList.length &&!isDetail">
+      <template v-if="objectIndexSetupList.length && !isDetail">
         <div class="row">
           <el-table :data='objectIndexSetupList'
                     class="dd-mb">

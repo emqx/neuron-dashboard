@@ -26,9 +26,11 @@
     <el-table-column prop="subr"
                      :min-width="minWidth"
                      label="Subroutine" />
-     <el-table-column :width="100"
+     <el-table-column :width="160"
                      v-if="showBtn">
         <template slot-scope="scope">
+          <el-button type="text"
+                    @click="handleEdit(scope.row, scope.$index)">Edit</el-button>
           <el-button type="text"
                     @click="handleDelete(scope.row)">Delete</el-button>
         </template>
@@ -38,6 +40,7 @@
 
 <script>
 import Mixins from '@/mixins'
+import { clone } from '@/utils/index'
 
 export default {
   mixins: [Mixins],
@@ -67,6 +70,9 @@ export default {
     },
     handleDelete (row) {
       this.$emit('delete', row)
+    },
+    handleEdit (row, index) {
+      this.$emit('edit', clone(row), index)
     }
   },
   watch: {

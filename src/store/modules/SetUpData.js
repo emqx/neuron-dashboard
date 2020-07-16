@@ -1,3 +1,16 @@
+const constructObjd = (data) => {
+  const res = data.map((item) => {
+    if (item.oatt && item.oatt.length) {
+      item.preAndSuff = item.oatt[0].aadd.map((presuff) => {
+        const { addr, ...rest } = presuff
+        return { ...rest }
+      })
+    }
+    return item
+  })
+  return res
+}
+
 export default {
   state: {
     driverData: {
@@ -34,19 +47,16 @@ export default {
     }) {
       state.driverData.chdv = chdv || ''
       state.driverData.chnl = chnl
-      state.eventData = msgd
+      const localEventData = localStorage.getItem('eventData')
       const localObjectData = localStorage.getItem('objectData')
+      state.objectData = localObjectData ? JSON.parse(localObjectData) : constructObjd(objd)
+      state.eventData = localEventData ? JSON.parse(localEventData) : msgd
       // const filterData = localObjectData.filter((obj) => {
       //   return !objd.some((obj2) => {
       //     return obj.objn === obj2.objn
       //   })
       // })
       // state.objectData = [...objd, ...filterData]
-      if (localObjectData) {
-        state.objectData = JSON.parse(localObjectData)
-      } else {
-        state.objectData = objd
-      }
     },
     setDriverData (state, {
       chdv,
@@ -72,12 +82,6 @@ export default {
       state.objectData = state.objectData.filter(i => !objNameList.includes(i.objn))
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
     },
-    addEventData (state, eventData) {
-      state.eventData.push(eventData)
-    },
-    deleteEventData (state, eventDataList) {
-      state.eventData = state.eventData.filter(i => !eventDataList.includes(i))
-    },
     setObjectAttribute (state, {
       name,
       attributeList
@@ -89,6 +93,19 @@ export default {
         return i
       })
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
+    },
+    addEventData (state, eventData) {
+      state.eventData.push(eventData)
+      localStorage.setItem('eventData', JSON.stringify(state.eventData))
+    },
+    editEventData (state, eventData) {
+      const { data, index } = eventData
+      state.eventData.splice(index, 1, data)
+      localStorage.setItem('eventData', JSON.stringify(state.eventData))
+    },
+    deleteEventData (state, eventDataList) {
+      state.eventData = state.eventData.filter(i => !eventDataList.includes(i))
+      localStorage.setItem('eventData', JSON.stringify(state.eventData))
     }
   }
 }
