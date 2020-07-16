@@ -4,14 +4,14 @@
         <el-card>
           <el-row>
             <el-col :span="12">
-              <img class="login-bg" src="../../../assets/login-neuron.png" alt="login-neuron">
+              <img class="login-bg" src="@/assets/login-neuron.png" alt="login-neuron">
             </el-col>
             <el-col :span="12">
               <el-form :model="formLogin"
                       :rules="rules"
                       ref="loginForm">
                 <div class="logo-group">
-                  <img class="neuron-logo" src="../../../assets/neuron-logo.png" alt="neuron logo">
+                  <img class="neuron-logo" src="@/assets/neuron-logo.png" alt="neuron logo">
                 </div>
                 <el-form-item prop="username">
                   <el-input type="text"
@@ -73,6 +73,7 @@ export default {
     init () {
       sessionStorage.removeItem('user')
       localStorage.removeItem('objectData')
+      localStorage.removeItem('eventData')
     }
   },
   mounted () {

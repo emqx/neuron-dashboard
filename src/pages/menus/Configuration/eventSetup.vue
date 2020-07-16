@@ -5,7 +5,6 @@
     <div class='flex dd-mb'>
       <div class="dd-title">Event Setup</div>
       <div>
-        <el-button @click='handleSubmit'>submit</el-button>
         <el-button @click='addEvent'
                    type="primary">Create</el-button>
         <el-button @click='onDelete(null)'
@@ -16,7 +15,8 @@
     <EventTable v-model="multipleSelection"
                 :showBtn='true'
                 :eventList='msgd'
-                 @delete="onDelete" />
+                 @delete="onDelete"
+                 @edit="onEdit" />
     <el-dialog title="Event Setup"
                @closed='close'
                :visible.sync="dialogTableVisible">
@@ -92,7 +92,7 @@
       </el-form>
       <span slot="footer"
           class="dialog-footer">
-        <el-button @click='submitNewEvent'>submit</el-button>
+        <el-button @click='submitEvent'>submit</el-button>
       </span>
     </el-dialog>
   </Container>
@@ -108,6 +108,8 @@ export default {
   mixins: [indexMixin],
   data () {
     return {
+      isEdit: false,
+      editIndex: null,
       dialogTableVisible: false,
       eventForm: {},
       eventFormRules: {},
@@ -118,7 +120,7 @@ export default {
     }
   },
   created () {
-    if (!this.resultData.length) {
+    if (!this.objectData.length) {
       this.$message.error('please setup object!')
       this.$router.push({ name: 'Configuration-objectSetup' })
     }
@@ -126,7 +128,7 @@ export default {
   },
   computed: {
     ...mapState({
-      resultData: state => state.SetUpData.objectData,
+      objectData: state => state.SetUpData.objectData,
       msgd: state => state.SetUpData.eventData
     })
   },
@@ -134,16 +136,20 @@ export default {
     init () {
       this.buildObjectList()
     },
-    handleSubmit () {
-      this.$router.push({ name: 'Configuration-overview' })
-    },
     addEvent () {
       this.dialogTableVisible = true
     },
-    submitNewEvent () {
+    submitEvent () {
       this.$refs.eventForm.validate((valid) => {
         if (valid) {
-          this.addEventData(clone(this.eventForm))
+          if (this.isEdit) {
+            this.editEventData({
+              data: clone(this.eventForm),
+              index: this.editIndex
+            })
+          } else {
+            this.addEventData(clone(this.eventForm))
+          }
           this.dialogTableVisible = false
         } else {
           console.log('error submit!!')
@@ -152,14 +158,16 @@ export default {
       })
     },
     close () {
+      this.isEdit = false
+      this.editIndex = null
       this.eventForm = {}
       this.$refs.eventForm && this.$refs.eventForm.clearValidate()
     },
     buildObjectList () {
       let list = []
 
-      for (let j = 0, jlen = this.resultData ? this.resultData.length : 0; j < jlen; j++) {
-        const data = this.resultData[j]
+      for (let j = 0, jlen = this.objectData ? this.objectData.length : 0; j < jlen; j++) {
+        const data = this.objectData[j]
         const { objn, preAndSuff, oatt } = data
         if (oatt) {
           const attr = oatt.map(i => i.attn)
@@ -204,7 +212,13 @@ export default {
       }).catch(() => {
       })
     },
-    ...mapMutations(['addEventData', 'deleteEventData'])
+    onEdit (data, index) {
+      this.editIndex = index
+      this.dialogTableVisible = true
+      this.eventForm = data
+      this.isEdit = true
+    },
+    ...mapMutations(['addEventData', 'deleteEventData', 'editEventData'])
   },
   components: {
     EventTable

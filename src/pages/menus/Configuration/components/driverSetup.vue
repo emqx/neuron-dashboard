@@ -1,6 +1,6 @@
 <template>
   <div class="driver-setup" style="display:inline-block;">
-    <el-button @click="dialogTableVisible=true">{{driverData.chdv===''?'New':'Edit'}} Driver</el-button>
+    <el-button @click="dialogTableVisible=true">{{ driverData.chdv === '' ? 'New' : 'Edit' }} Driver</el-button>
     <el-dialog title="Driver Setup"
                @closed='close'
                :visible.sync="dialogTableVisible">
@@ -35,6 +35,8 @@
                                  :precision='0'
                                  :min="0" />
               </el-form-item>
+              <i v-if="index > 0" class="el-icon-remove remove"
+               @click='removeAddEthernetFormItem(index)'></i>
             </div>
           </el-form>
         </template>
@@ -96,9 +98,16 @@ export default {
         })
       }
     },
+    removeAddEthernetFormItem (index) {
+      this.chnl.splice(index, 1)
+    },
     submit () {
       this.dialogTableVisible = false
-      this.setDriverData({ chdv: this.chdv, chnl: this.chnl })
+      let chnl = []
+      if (this.chdv === 'mbstcp') {
+        chnl = this.chnl.filter((item) => item.tcph && item.tcpp)
+      }
+      this.setDriverData({ chdv: this.chdv, chnl })
     },
     close () {
       this.$nextTick(this.init)
@@ -158,6 +167,15 @@ export default {
         margin-left: 20px;
       }
     }
+  }
+  .remove {
+    color: #F36164;
+    cursor: pointer;
+    height: 100%;
+    font-size: 20px;
+    position: relative;
+    top: 10px;
+    left: 10px;
   }
 }
 .EthernetFormItem {
