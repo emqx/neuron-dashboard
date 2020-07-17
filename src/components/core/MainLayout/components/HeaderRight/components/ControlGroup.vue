@@ -10,7 +10,7 @@
                @click="handleStop">Stop</el-button>
     <el-button type="primary"
                size="small"
-               @click="handleRestartNew">Restart</el-button>
+               @click="handleRestart">Restart</el-button>
     <el-button type="primary"
                size="small"
                @click="submit">Send</el-button>
@@ -45,13 +45,13 @@ export default {
         'stat': 'standby'
       })
     },
-    handleRestartNew () {
+    handleRestart () {
       this.$confirm('Are you sure Restart Gateway', 'Restart', {
         type: 'warning'
       }).then(() => {
         this.$ws().set().send({
           func: 70,
-          'acts': 'restartnew'
+          'acts': 'restart'
         })
       }).catch()
     },
@@ -77,7 +77,7 @@ export default {
           this.$message.info('Restarting...')
           this.$ws().set().send({
             func: 70,
-            'acts': 'restart'
+            'acts': 'restartnew'
           })
         }, 2000)
       }
