@@ -190,3 +190,21 @@
     display: block;
   }
 }
+
+/* breadcrumb */
+.el-breadcrumb {
+  .el-breadcrumb__inner {
+    .dd-title {
+      color: #fff;
+    }
+  }
+  .el-breadcrumb__separator[class*=icon] {
+    font-size: 20px;
+  }
+  .el-breadcrumb__inner.is-link,
+  .el-breadcrumb__inner a {
+    .dd-title:hover {
+      color: #34C388;
+    }
+  }
+}

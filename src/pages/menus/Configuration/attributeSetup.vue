@@ -2,9 +2,15 @@
   <Container type="card-full"
              :scorll='false'>
     <div class="row flex">
-      <div class="dd-title">Attribute Setup</div>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/Configuration/objectSetup' }">
+          <span class="dd-title">Object Setup</span>
+        </el-breadcrumb-item>
+        <el-breadcrumb-item>
+          <span class="dd-title">Attribute Setup</span>
+        </el-breadcrumb-item>
+      </el-breadcrumb>
       <div>
-        <el-button @click='handleBack'>Back</el-button>
         <el-button @click='dialogTableVisible=true'
                    type="primary">Create</el-button>
         <el-button @click='onDelete(null)'
@@ -22,20 +28,21 @@
                      @dummy="onDummy"
                      @delete="onDelete" />
     </div>
+
     <el-dialog title="Data Attribute Setup"
                :visible.sync="dialogTableVisible"
                @closed='close'>
-      <el-form ref='AttributeSetupFrom'
-               :model="AttributeSetupFrom"
-               :rules="AttributeSetupFromRules"
+      <el-form ref='AttributeSetupForm'
+               :model="AttributeSetupForm"
+               :rules="AttributeSetupFormRules"
                label-width="120px">
         <el-form-item label="Attribute name"
                       prop="attn">
-          <el-input v-model="AttributeSetupFrom.attn" :disabled="isEdit"></el-input>
+          <el-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></el-input>
         </el-form-item>
         <el-form-item label="Attribute type"
                       prop="attn">
-          <el-select v-model="AttributeSetupFrom.attt">
+          <el-select v-model="AttributeSetupForm.attt">
             <el-option v-for="item in AttributeTypeList"
                        :key="item.val"
                        :label="item.val"
@@ -46,28 +53,28 @@
         <el-form-item label="Decimal"
                       v-if="showDecimal"
                       prop="deci">
-          <el-input-number v-model="AttributeSetupFrom.deci"
+          <el-input-number v-model="AttributeSetupForm.deci"
                            :controls='false'
                            :precision='0'
                            :min="0" />
         </el-form-item>
         <el-form-item label="Visible"
                       prop="adis">
-          <el-radio-group v-model="AttributeSetupFrom.adis">
+          <el-radio-group v-model="AttributeSetupForm.adis">
             <el-radio :label="1">Yes</el-radio>
             <el-radio :label="0">No</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="Change"
                       prop="achg">
-          <el-radio-group v-model="AttributeSetupFrom.achg">
+          <el-radio-group v-model="AttributeSetupForm.achg">
             <el-radio :label="1">Yes</el-radio>
             <el-radio :label="0">No</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="Direction"
                       prop="attr">
-          <el-radio-group v-model="AttributeSetupFrom.attr">
+          <el-radio-group v-model="AttributeSetupForm.attr">
             <el-radio label="R">R</el-radio>
             <el-radio label="W">W</el-radio>
             <el-radio label="RW">RW</el-radio>
@@ -76,7 +83,7 @@
         <el-form-item label="Read time"
                       prop="rtim"
                       v-if="showReadTime">
-          <el-input-number v-model="AttributeSetupFrom.rtim"
+          <el-input-number v-model="AttributeSetupForm.rtim"
                            :controls='false'
                            :precision='0'
                            :min="0" />
@@ -87,6 +94,7 @@
         <el-button @click='submitAttributeSetupFrom'>submit</el-button>
       </span>
     </el-dialog>
+
     <el-dialog title="Data Address Setup"
                @closed='addressClosed'
                :visible.sync="addressVisible">
@@ -133,8 +141,8 @@ export default {
       dialogTableVisible: false,
       isEdit: false,
       attributeList: [],
-      AttributeSetupFrom: {},
-      AttributeSetupFromRules: {
+      AttributeSetupForm: {},
+      AttributeSetupFormRules: {
         attn: [
           { required: true, message: 'Please input Name', trigger: 'blur' },
           { max: 30, message: 'max 30', trigger: 'blur' }
@@ -167,7 +175,7 @@ export default {
   methods: {
     close () {
       this.isEdit = false
-      this.AttributeSetupFrom = {}
+      this.AttributeSetupForm = {}
       this.preAndSuff = []
     },
     addressClosed () {
@@ -178,27 +186,38 @@ export default {
       suff = suff ? '_' + suff : ''
       return pref + this.objn + suff
     },
+    validataAddr (attribute) {
+      return this.attributeList.length && this.attributeList.every(
+        attr => !attr.aadd.some(
+          ad => ad.addr === '' || ad.addr === undefined
+        )
+      )
+    },
     submitAttributeSetupFrom () {
-      this.$refs.AttributeSetupFrom.validate((valid) => {
+      this.$refs.AttributeSetupForm.validate((valid) => {
         if (valid) {
+          const { attr, rtim } = this.AttributeSetupForm
+          if (attr === 'W' && rtim === undefined) {
+            this.AttributeSetupForm.rtim = 0
+          }
           if (this.isEdit) {
-            const findIndex = this.attributeList.findIndex(attr => attr.attn === this.AttributeSetupFrom.attn)
+            const findIndex = this.attributeList.findIndex(attr => attr.attn === this.AttributeSetupForm.attn)
             if (findIndex !== -1) {
               const attrData = [...this.attributeList]
               attrData[findIndex] = {
-                ...this.AttributeSetupFrom,
+                ...this.AttributeSetupForm,
                 aadd: clone(this.preAndSuff)
               }
               this.attributeList = attrData
             }
           } else {
             this.attributeList.push({
-              ...this.AttributeSetupFrom,
+              ...this.AttributeSetupForm,
               aadd: clone(this.preAndSuff)
             })
           }
           this.dialogTableVisible = false
-          this.AttributeSetupFrom = {}
+          this.AttributeSetupForm = {}
           this.confirmSubmit()
         } else {
           console.log('error submit!!')
@@ -207,13 +226,12 @@ export default {
       })
     },
     confirmSubmit () {
-      if (!this.canSubmit) {
-        this.$message.warning('Address is requried')
-      } else {
-        setTimeout(() => {
-          this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
-        }, 1000)
+      if (!this.validataAddr()) {
+        this.$openMessage.warning('Address is requried, please click the addr button to configure the address!')
       }
+      setTimeout(() => {
+        this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
+      }, 1000)
     },
     addAddress (data) {
       this.activeAttributeRow = data
@@ -224,7 +242,7 @@ export default {
     },
     editAddress (data) {
       this.isEdit = true
-      this.AttributeSetupFrom = data
+      this.AttributeSetupForm = data
       this.dialogTableVisible = true
       if (data.aadd.length) {
         this.preAndSuff = clone(data.aadd)
@@ -259,10 +277,6 @@ export default {
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
       }).catch(() => {
       })
-    },
-    handleBack () {
-      this.$router.go(-1)
-      this.confirmSubmit()
     },
     onDummy (data) {
       data.attr = '-'
@@ -300,25 +314,26 @@ export default {
   },
   computed: {
     showDecimal () {
-      return this.AttributeSetupFrom.attt && this.AttributeSetupFrom.attt.indexOf('word') !== -1
+      return this.AttributeSetupForm.attt && this.AttributeSetupForm.attt.indexOf('word') !== -1
     },
     showReadTime () {
-      return this.AttributeSetupFrom.attr && this.AttributeSetupFrom.attr !== 'W'
-    },
-    canSubmit () {
-      return this.attributeList.length && this.attributeList.every(i => !i.aadd.some(j => j.addr === ''))
+      return this.AttributeSetupForm.attr && this.AttributeSetupForm.attr !== 'W'
     },
     ...mapState({
       objectData: state => state.SetUpData.objectData
     })
   },
   watch: {
-    'AttributeSetupFrom.attt' (val) {
-      this.AttributeSetupFrom.deci = 0
+    'AttributeSetupForm.attt' (val) {
+      this.AttributeSetupForm.deci = 0
     }
   },
   created () {
     this.init()
+  },
+  beforeRouteLeave (to, from, next) {
+    this.confirmSubmit()
+    next()
   },
   beforeRouteEnter (to, from, next) {
     if (to.params.data) {

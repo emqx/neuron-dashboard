@@ -169,7 +169,7 @@ export default {
         }
         this.dialogTableVisible = false
       } else {
-        this.$message.error("Don't repeat")
+        this.$openMessage.error("Don't repeat")
       }
     },
     handleCancel () {
