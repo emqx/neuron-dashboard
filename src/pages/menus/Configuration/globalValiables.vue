@@ -4,7 +4,7 @@
     <div class="flex dd-mb">
       <div class="dd-title">Global Valiables</div>
       <div>
-        <el-button @click='handleSubmit'>submit</el-button>
+        <el-button @click='handleSubmit(null)'>submit</el-button>
       </div>
     </div>
     <el-table class="script-table"
@@ -53,12 +53,14 @@
 
 <script>
 import Mixins from '@/mixins'
-import { clone } from '@/utils'
+import _ from 'lodash'
+
 export default {
   mixins: [Mixins],
   data () {
     return {
       varData: [],
+      oldVarData: [],
       func: 30
     }
   },
@@ -72,6 +74,7 @@ export default {
     readGlobalVariable (data) {
       if (data.func === this.func) {
         this.$ws().remove(this.readGlobalVariable)
+        this.varData = []
         this.varData = data.rows
         let i = 5
         while (i--) {
@@ -81,23 +84,38 @@ export default {
             'comt': ''
           })
         }
+        this.oldVarData = _.cloneDeep(this.varData)
       }
     },
-    handleSubmit () {
-      this.$confirm('Are you sure submit these gloabl valiables', 'Submit', {
-        type: 'warning'
-      }).then(() => {
-        const res = clone(this.varData).filter(i => {
+    setData (data) {
+      if (data.func === 31 && data.errc === 0) {
+        this.$ws().remove(this.setData)
+        this.oldVarData = []
+        this.oldVarData = _.cloneDeep(this.varData)
+      }
+    },
+    handleSubmit (callback) {
+      const sendData = () => {
+        const res = _.cloneDeep(this.varData).filter(i => {
           i.leng = +i.leng
           return i.glov && i.leng
         })
-        this.$ws().set().send({
+        this.$ws().set({ success: this.setData }).send({
           func: 31,
           nrow: res.length,
           rows: res
         })
-      }).catch(() => {
-      })
+      }
+      if (callback) {
+        sendData()
+        callback()
+      } else {
+        this.$confirm('Are you sure submit these gloabl valiables', 'Submit', {
+          type: 'warning'
+        }).then(() => {
+          sendData()
+        }).catch(() => {})
+      }
     },
     add (index) {
       this.varData.splice(index + 1, 0, {
@@ -108,6 +126,22 @@ export default {
     },
     remove (index) {
       this.varData.splice(index, 1)
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (_.isEqual(this.oldVarData, this.varData)) {
+      next()
+    } else {
+      this.$confirm('You have unsubmitted changes, submit and proceed? ', 'Confirm', {
+        type: 'warning',
+        distinguishCancelAndClose: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Discard Changes'
+      }).then(() => {
+        this.handleSubmit(next)
+      }).catch(() => {
+        next()
+      })
     }
   }
 }

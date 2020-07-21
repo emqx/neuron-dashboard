@@ -77,11 +77,14 @@
 import indexMixin from '../mixins'
 import { ScriptList } from '@/config/index'
 import ScriptTypeSelect from './components/scriptType'
+import _ from 'lodash'
+
 export default {
   mixins: [indexMixin],
   data () {
     return {
       scriptData: [],
+      oldScriptData: [],
       scriptList: ScriptList,
       type: {
         name: '',
@@ -102,6 +105,7 @@ export default {
           expr: ''
         })
       }
+      this.oldScriptData = _.cloneDeep(this.scriptData)
     },
     readSubroutine (subr) {
       this.$ws().set({ success: this.getData }).send({ func: 33, subr: +subr })
@@ -114,6 +118,7 @@ export default {
             this.init()
           } else {
             this.scriptData = data.rows
+            this.oldScriptData = _.cloneDeep(this.scriptData)
           }
         } else {
           this.init()
@@ -132,7 +137,7 @@ export default {
     },
     handleSubmit () {
       if (!this.type.subr) {
-        this.$message.error('select a routine')
+        this.$openMessage.error('select a routine')
         return
       }
       this.$confirm('Are you sure submit these script programming', 'Submit', {
@@ -148,7 +153,7 @@ export default {
       if (!rows) {
         rows = []
       }
-      this.$ws().set().send({
+      this.$ws().set({ success: this.setData }).send({
         func: 34,
         csub: 0,
         name,
@@ -156,6 +161,13 @@ export default {
         nrow: rows.length,
         rows
       })
+    },
+    setData (data) {
+      if (data.func === 34 && data.errc === 0) {
+        this.$ws().remove(this.setData)
+        this.oldScriptData = []
+        this.oldScriptData = _.cloneDeep(this.scriptData)
+      }
     },
     handleClosed () {
       this.currentIndex = 0
@@ -165,6 +177,21 @@ export default {
     },
     remove (index) {
       this.scriptData.splice(index, 1)
+    },
+    promptUnsubmitted (callback) {
+      this.$confirm('You have unsubmitted changes, submit and proceed? ', 'Confirm', {
+        type: 'warning',
+        distinguishCancelAndClose: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Discard Changes'
+      }).then(() => {
+        const rows = this.scriptData
+        const { name, subr } = this.type
+        this.submit(name, subr, rows)
+        callback()
+      }).catch(() => {
+        callback()
+      })
     }
   },
   watch: {
@@ -176,6 +203,13 @@ export default {
   },
   components: {
     ScriptTypeSelect
+  },
+  beforeRouteLeave (to, from, next) {
+    if (_.isEqual(this.oldScriptData, this.scriptData)) {
+      next()
+    } else {
+      this.promptUnsubmitted(next)
+    }
   }
 }
 </script>

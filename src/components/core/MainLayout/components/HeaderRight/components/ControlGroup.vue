@@ -70,11 +70,11 @@ export default {
     handleSuccess (data) {
       if (data.func === 21 && data.errc === 0) {
         this.$ws().remove(this.handleSuccess)
-        this.$message.success('Submit success!')
+        this.$openMessage.success('Submit success!')
         localStorage.removeItem('objectData')
         localStorage.removeItem('eventDaata')
         setTimeout(() => {
-          this.$message.info('Restarting...')
+          this.$openMessage.info('Restarting...')
           this.$ws().set().send({
             func: 70,
             'acts': 'restartnew'

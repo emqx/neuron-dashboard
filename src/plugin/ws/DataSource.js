@@ -24,7 +24,10 @@ class DataSource {
     this.tmp = null
     success && this.onsuccess.add(success)
     this.onclose = () => {
-      Message.warning('socket closed')
+      Message.warning({
+        message: 'socket closed',
+        duration: 6000
+      })
       console.log('socket closed')
       const currentName = window.location.href.split('/')[4]
       if (currentName !== 'login') {
@@ -34,7 +37,10 @@ class DataSource {
       }
     }
     this.onerror = (e) => {
-      Message.error('socket error')
+      Message.error({
+        message: 'socket error',
+        duration: 6000
+      })
       console.log('socket error')
       throw e
     }
@@ -91,13 +97,17 @@ class DataSource {
         const data = e.data && JSON.parse(e.data)
         this.onsuccess.forEach(i => {
           if (!data.wtrm || (data.wtrm === this.wtrm)) {
-            if (data.errc) Message.error(data.emsg)
+            if (data.errc) {
+              Message.error({
+                message: data.emsg,
+                duration: 6000
+              })
+            }
             i(data)
           }
         })
       }
     }
-
     return this
   }
   remove (func) {

@@ -121,7 +121,7 @@ export default {
   },
   created () {
     if (!this.objectData.length) {
-      this.$message.error('please setup object!')
+      this.$openMessage.error('please setup object!')
       this.$router.push({ name: 'Configuration-objectSetup' })
     }
     this.init()

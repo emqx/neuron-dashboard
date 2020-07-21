@@ -19,7 +19,28 @@ import '@/components'
 // 插件
 import '@/plugin/register'
 
+// Element
+ElementUI.Dialog.props.closeOnClickModal.default = false
+const $message = options => {
+  return ElementUI.Message({
+    ...options,
+    duration: 6000
+  })
+}
+['success', 'warning', 'info', 'error'].forEach(type => {
+  $message[type] = options => {
+    if (typeof options === 'string') {
+      options = {
+        message: options,
+        duration: 6000
+      }
+    }
+    options.type = type
+    return ElementUI.Message(options)
+  }
+})
 Vue.use(ElementUI, { locale })
+Vue.prototype.$openMessage = $message
 
 Vue.config.productionTip = false
 

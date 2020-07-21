@@ -87,7 +87,7 @@ export default {
       this.$refs.userForm.validate(valid => {
         if (valid) {
           if (!this.form.alwl.length) {
-            this.$message.error('select allowed levels')
+            this.$openMessage.error('select allowed levels')
             return
           }
           const data = {

@@ -84,7 +84,7 @@ export default {
       if (data.func === 15 || data.func === 16) {
         this.$ws().remove(this.setUser)
         if (!data.errc) {
-          this.$message.success('success')
+          this.$openMessage.success('success')
         }
         this.$ws().set({ success: this.setData }).send({ func: 13 })
       }

@@ -54,7 +54,7 @@ export default {
           const { password, newPassword, reNewPassword } = this.passwordForm
           const name = JSON.parse(sessionStorage.getItem('user')).name
           if (newPassword !== reNewPassword) {
-            this.$message.error('error password')
+            this.$openMessage.error('error password')
             return false
           }
           this.$ws().set({ success: this.setPassword }).send({ func: 12, name, pass: password, npwd: newPassword })
@@ -67,7 +67,7 @@ export default {
       if (data.func === 12) {
         this.$ws().remove(this.setPassword)
         if (!data.errc) {
-          this.$message.success('success')
+          this.$openMessage.success('success')
         }
         console.log(data)
       }
