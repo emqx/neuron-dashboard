@@ -57,8 +57,8 @@ class DataSource {
           pass: this.pass,
           wtrm: this.wtrm
         }
-        var txt = JSON.stringify(authInfo)
-        this.websocket.send(txt)
+        var authText = JSON.stringify(authInfo)
+        this.websocket.send(authText)
       })
       this.websocket.onclose = this.onclose
       this.websocket.onerror = this.onerror
@@ -67,6 +67,7 @@ class DataSource {
           if (data.func === 10) {
             if (data.errc) {
               dataSource = null
+              reject(data.errc)
             } else {
               resolve({
                 name: this.name,
