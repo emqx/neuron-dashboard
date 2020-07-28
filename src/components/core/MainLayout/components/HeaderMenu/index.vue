@@ -103,6 +103,9 @@ export default {
         }).then(() => {
           this.$ws().set({ success: (data) => {
             if (data.func === 11 && data.errc === 0) {
+              sessionStorage.removeItem('user')
+              localStorage.removeItem('objectData')
+              localStorage.removeItem('eventData')
               this.$router.push({ name })
               this.$ws().close()
             }

@@ -72,7 +72,7 @@ export default {
         this.$ws().remove(this.handleSuccess)
         this.$openMessage.success('Submit success!')
         localStorage.removeItem('objectData')
-        localStorage.removeItem('eventDaata')
+        localStorage.removeItem('eventData')
         setTimeout(() => {
           this.$openMessage.info('Restarting...')
           this.$ws().set().send({

@@ -104,7 +104,12 @@ export default {
     submit () {
       this.dialogTableVisible = false
       let chnl = []
-      if (this.chdv === 'mbstcp') {
+      const ipPortChdvTypes = ['ethip', 'mbstcp', 'mele71',
+        'finstc', 's7iso', 'siefw', 'tsxmbt',
+        'mbstcp', 'mbsrot', 'bacnip', 'opcua',
+        'i61850', 'snmpd', 'g26875'
+      ]
+      if (ipPortChdvTypes.indexOf(this.chdv) !== -1) {
         chnl = this.chnl.filter((item) => item.tcph && item.tcpp)
       }
       this.setDriverData({ chdv: this.chdv, chnl })

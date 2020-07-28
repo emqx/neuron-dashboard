@@ -11,6 +11,7 @@
         </el-breadcrumb-item>
       </el-breadcrumb>
       <div>
+        <el-button @click='$router.go(-1)'>Back</el-button>
         <el-button @click='dialogTableVisible=true'
                    type="primary">Create</el-button>
         <el-button @click='onDelete(null)'
