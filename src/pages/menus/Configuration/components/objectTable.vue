@@ -10,6 +10,7 @@
       </template>
     </el-table-column>
     <el-table-column
+      v-if="showSelection"
       type="selection"
       width="55">
     </el-table-column>
@@ -68,6 +69,10 @@ export default {
     showAttr: {
       type: Boolean,
       default: false
+    },
+    showSelection: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {

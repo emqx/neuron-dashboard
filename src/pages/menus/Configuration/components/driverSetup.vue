@@ -71,8 +71,8 @@
 </template>
 
 <script>
-// import { Ethernet, Serial } from '@/config/index'
 import { mapMutations, mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -145,13 +145,6 @@ export default {
     driverType () {
       let tmp = this.driverList.find(i => i.val === this.chdv)
       return tmp ? tmp.type : ''
-      // const chdv = this.chdv
-      // let tmp
-      // tmp = Ethernet.filter(i => i.val === chdv)[0]
-      // if (tmp) return 'Ethernet drivers'
-      // tmp = Serial.filter(i => i.val === chdv)[0]
-      // if (tmp) return 'Serial drivers'
-      // return ''
     },
     ...mapState({
       driverData: state => state.SetUpData.driverData

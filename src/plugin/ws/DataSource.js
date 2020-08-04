@@ -30,6 +30,9 @@ class DataSource {
       })
       console.log('socket closed')
       const currentName = window.location.href.split('/')[4]
+      sessionStorage.removeItem('user')
+      localStorage.removeItem('objectData')
+      localStorage.removeItem('eventData')
       if (currentName !== 'login') {
         router.push({
           name: 'login'
