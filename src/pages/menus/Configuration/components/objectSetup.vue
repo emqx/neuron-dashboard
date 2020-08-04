@@ -1,6 +1,26 @@
 <template>
   <div class="object-setup">
     <div class="dd-mb dd-fr">
+      <el-upload
+        ref="upload"
+        class="upload-excel"
+        action=""
+        accept=".xlsx"
+        :show-file-list="false"
+        :limit="1"
+        :file-list="fileList"
+        :auto-upload="false"
+        :on-change="handleUploadChange"
+        :on-error="handleUploadError"
+      >
+        <el-button
+          slot="trigger"
+          icon="el-icon-upload2"
+          :loading="uploadLoading"
+        >
+          Import
+        </el-button>
+      </el-upload>
       <el-button type="primary"
                  @click='dialogTableVisible=true'>Create</el-button>
       <el-button type="danger"
@@ -99,12 +119,17 @@
 <script>
 import ObjectTable from './objectTable'
 import { mapMutations } from 'vuex'
+import _ from 'lodash'
+import getExcelData from '@/utils/excelData'
+
 export default {
   data () {
     return {
       dialogTableVisible: false,
       isDetail: true,
       isEdit: false,
+      uploadLoading: false,
+      fileList: [],
       objectSetupFrom: {},
       objectSetupFromRules: {
         objn: [
@@ -182,6 +207,68 @@ export default {
         })
       }
     },
+    genObjListData (sheets) {
+      const objList = _.uniqBy(sheets.map((sheet) => ({
+        objn: sheet.objn,
+        logt: sheet.logt,
+        tstd: sheet.tstd,
+        updt: sheet.updt,
+        obsz: sheet.obsz
+      })), sheet => sheet.objn)
+      objList.forEach((obj) => {
+        const currentObjs = sheets.filter((sheet) => sheet.objn === obj.objn)
+        const attrbutes = _.uniqBy(currentObjs.map((currentObj) => ({
+          attn: currentObj.attn,
+          attt: currentObj.attt,
+          attr: currentObj.attr,
+          deci: currentObj.deci,
+          rtim: currentObj.rtim,
+          adis: currentObj.adis,
+          achg: currentObj.achg
+        })), currentObj => currentObj.attn)
+        attrbutes.forEach((attr) => {
+          const aadds = currentObjs
+            .map((currentObj) => {
+              if (currentObj.attn === attr.attn) {
+                return {
+                  suff: currentObj.suff || '',
+                  pref: currentObj.pref || '',
+                  addr: currentObj.addr
+                }
+              }
+            })
+            .filter((currentAadd) => currentAadd)
+            .map((currentAadd, index) => {
+              currentAadd.obix = index
+              return currentAadd
+            })
+          attr.aadd = aadds
+        })
+        obj.oatt = attrbutes
+        obj.preAndSuff = obj.oatt[0].aadd.map(i => ({
+          pref: i.pref,
+          obix: i.obix,
+          suff: i.suff
+        }))
+      })
+      return objList
+    },
+    handleUploadChange (file) {
+      this.uploadLoading = true
+      getExcelData(file).then((res) => {
+        const { sheet: sheets } = res[0]
+        const objList = this.genObjListData(sheets)
+        this.setObjectData(objList)
+        this.$refs.upload.clearFiles()
+        this.uploadLoading = false
+      }).catch((error) => {
+        this.$message.error(error.toString())
+        this.uploadLoading = false
+      })
+    },
+    handleUploadError (error) {
+      this.$message.error(error.toString())
+    },
     onDelete (data) {
       const deleteData = []
       let confirmMsg = 'Are you sure delete these object?'
@@ -213,7 +300,7 @@ export default {
       this.objectIndexSetupList = this.objectSetupFrom.preAndSuff || []
       this.dialogTableVisible = true
     },
-    ...mapMutations(['addObjectData', 'deleteObjectData', 'editObjectData'])
+    ...mapMutations(['setObjectData', 'addObjectData', 'deleteObjectData', 'editObjectData'])
   },
   components: {
     ObjectTable
@@ -226,6 +313,10 @@ export default {
 .object-setup {
   .dd-mb {
     margin-top: 8px;
+  }
+  .upload-excel {
+    display: inline-block;
+    margin-right: 10px;
   }
 }
 </style>

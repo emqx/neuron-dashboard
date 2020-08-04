@@ -7,7 +7,7 @@
     <p>Driver Name: {{deviceObj.label}} &nbsp;&nbsp;&nbsp;&nbsp; {{deviceObj.type}}</p>
     <div class="dd-mb">
       <p>Object:</p>
-      <ObjectTable showAttr />
+      <ObjectTable showAttr :showSelection="false" />
     </div>
 
     <div class="dd-mb">

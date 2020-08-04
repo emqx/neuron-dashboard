@@ -65,6 +65,10 @@ export default {
       state.driverData.chdv = chdv
       state.driverData.chnl = chnl
     },
+    setObjectData (state, objectData) {
+      state.objectData = [...state.objectData, ...objectData]
+      localStorage.setItem('objectData', JSON.stringify(state.objectData))
+    },
     addObjectData (state, objectData) {
       state.objectData.push(objectData)
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
