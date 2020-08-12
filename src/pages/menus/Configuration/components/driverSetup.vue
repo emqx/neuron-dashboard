@@ -1,50 +1,36 @@
 <template>
-  <div class="driver-setup" style="display:inline-block;">
-    <el-button @click="dialogTableVisible=true">{{ driverData.chdv === '' ? 'New' : 'Edit' }} Driver</el-button>
-    <el-dialog title="Driver Setup"
-               @closed='close'
-               :visible.sync="dialogTableVisible">
+  <div class="driver-setup" style="display: inline-block;">
+    <el-button @click="dialogTableVisible = true">{{ driverData.chdv === '' ? 'New' : 'Edit' }} Driver</el-button>
+    <el-dialog title="Driver Setup" @closed="close" :visible.sync="dialogTableVisible">
       <div class="row">
         <el-select v-model="chdv">
-          <el-option v-for="item in driverList"
-                     :key="item.val"
-                     :label="item.label"
-                     :value="item.val">
-          </el-option>
+          <el-option v-for="item in driverList" :key="item.val" :label="item.label" :value="item.val"> </el-option>
         </el-select>
         &nbsp;&nbsp;
-        {{driverType}}
+        {{ driverType }}
       </div>
       <div class="row edit-drivers-row">
-        <template v-if="driverType==='Ethernet drivers'">
-          <h3>Ethernet driver setup
+        <template v-if="driverType === 'Ethernet drivers'">
+          <h3>
+            Ethernet driver setup
             <el-button class="add-btn" @click="addEthernetFormItem">add</el-button>
           </h3>
-          <el-form ref="driverSetupForm"
-                   label-width="100px">
-            <div v-for="(item,index) in chnl"
-                 :key="index"
-                 class="EthernetFormItem">
-              <el-form-item :label="`Host name ${index+1}`">
+          <el-form ref="driverSetupForm" label-width="100px">
+            <div v-for="(item, index) in chnl" :key="index" class="EthernetFormItem">
+              <el-form-item :label="`Host name ${index + 1}`">
                 <el-input v-model="chnl[index].tcph"></el-input>
               </el-form-item>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <el-form-item :label="`Port no ${index+1}`">
-                <el-input-number v-model="chnl[index].tcpp"
-                                 :controls='false'
-                                 :precision='0'
-                                 :min="0" />
+              <el-form-item :label="`Port no ${index + 1}`">
+                <el-input-number v-model="chnl[index].tcpp" :controls="false" :precision="0" :min="0" />
               </el-form-item>
-              <i v-if="index > 0" class="el-icon-remove remove"
-               @click='removeAddEthernetFormItem(index)'></i>
+              <i v-if="index > 0" class="el-icon-remove remove" @click="removeAddEthernetFormItem(index)"></i>
             </div>
           </el-form>
         </template>
-        <template v-else-if="driverType==='Serial drivers'">
+        <template v-else-if="driverType === 'Serial drivers'">
           <h3>Serial driver setup</h3>
-          <el-form ref="driverSetupForm"
-                   label-width="100px"
-                   :model="chnl[0]">
+          <el-form ref="driverSetupForm" label-width="100px" :model="chnl[0]">
             <el-form-item label="Device name">
               <el-input v-model="chnl[0].ttyc"></el-input>
             </el-form-item>
@@ -74,85 +60,98 @@
 import { mapMutations, mapState } from 'vuex'
 
 export default {
-  data () {
+  data() {
     return {
       dialogTableVisible: false,
       chdv: '', // Channel driver name
-      chnl: [{}] // Channel Details
+      chnl: [{}], // Channel Details
     }
   },
   methods: {
     ...mapMutations({
-      setDriverData: 'setDriverData'
+      setDriverData: 'setDriverData',
     }),
-    addEthernetFormItem () {
+    addEthernetFormItem() {
       if (this.chnl.length && this.chnl.length < 9) {
         this.chnl.push({
           tcph: '',
           tcpp: '',
-          'ttyc': '',
-          'ttyb': 0,
-          'ttyd': 0,
-          'ttys': '',
-          'ttyp': ''
+          ttyc: '',
+          ttyb: 0,
+          ttyd: 0,
+          ttys: '',
+          ttyp: '',
         })
       }
     },
-    removeAddEthernetFormItem (index) {
+    removeAddEthernetFormItem(index) {
       this.chnl.splice(index, 1)
     },
-    submit () {
+    submit() {
       this.dialogTableVisible = false
       let chnl = []
-      const ipPortChdvTypes = ['ethip', 'mbstcp', 'mele71',
-        'finstc', 's7iso', 'siefw', 'tsxmbt',
-        'mbstcp', 'mbsrot', 'bacnip', 'opcua',
-        'i61850', 'snmpd', 'g26875'
+      const ipPortChdvTypes = [
+        'ethip',
+        'mbstcp',
+        'mele71',
+        'finstc',
+        's7iso',
+        'siefw',
+        'tsxmbt',
+        'mbstcp',
+        'mbsrot',
+        'bacnip',
+        'opcua',
+        'i61850',
+        'snmpd',
+        'g26875',
       ]
       if (ipPortChdvTypes.indexOf(this.chdv) !== -1) {
         chnl = this.chnl.filter((item) => item.tcph && item.tcpp)
       }
       this.setDriverData({ chdv: this.chdv, chnl })
     },
-    close () {
+    close() {
       this.$nextTick(this.init)
     },
-    init () {
+    init() {
       const { chdv, chnl } = this.driverData
       this.chdv = chdv
       this.chnl = chnl
-    }
+    },
   },
-  mounted () {
+  mounted() {
     this.init()
   },
   watch: {
-    chdv () {
+    chdv() {
       if (this.dialogTableVisible) {
-        this.chnl = [{
-          tcph: '',
-          tcpp: '',
-          'ttyc': '',
-          'ttyb': 0,
-          'ttyd': 0,
-          'ttys': '',
-          'ttyp': ''
-        }]
+        this.chnl = [
+          {
+            tcph: '',
+            tcpp: '',
+            ttyc: '',
+            ttyb: 0,
+            ttyd: 0,
+            ttys: '',
+            ttyp: '',
+          },
+        ]
       }
-    }
+    },
   },
   computed: {
-    driverType () {
-      let tmp = this.driverList.find(i => i.val === this.chdv)
+    driverType() {
+      let tmp = this.driverList.find((i) => i.val === this.chdv)
       return tmp ? tmp.type : ''
     },
     ...mapState({
-      driverData: state => state.SetUpData.driverData
+      driverData: (state) => state.SetUpData.driverData,
     }),
-    driverList () {
+    driverList() {
       return this.$store.state.Device.deviceList
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -167,7 +166,7 @@ export default {
     }
   }
   .remove {
-    color: #F36164;
+    color: #f36164;
     cursor: pointer;
     height: 100%;
     font-size: 20px;

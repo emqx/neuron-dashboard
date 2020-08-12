@@ -13,10 +13,9 @@ export default {
   components: {
     // FullScreen: () => import('./components/FullScreen'),
     // UserDropdown: () => import('./components/UserDropdown'),
-    ControlGroup: () => import('./components/ControlGroup')
-  }
+    ControlGroup: () => import('./components/ControlGroup'),
+  },
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

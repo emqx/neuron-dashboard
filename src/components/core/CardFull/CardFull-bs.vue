@@ -1,20 +1,14 @@
 <template>
-  <div class="dd-card-full"
-       :style="cardStyle">
-    <div v-if="$slots.header"
-         class="dd-card-full__header"
-         ref="header">
+  <div class="dd-card-full" :style="cardStyle">
+    <div v-if="$slots.header" class="dd-card-full__header" ref="header">
       <slot name="header"></slot>
     </div>
-    <div class="dd-card-full__body"
-         ref="wrapper">
-      <div class='dd-card-full__main'>
+    <div class="dd-card-full__body" ref="wrapper">
+      <div class="dd-card-full__main">
         <slot />
       </div>
     </div>
-    <div v-if="$slots.footer"
-         class="dd-card-full__footer"
-         ref="footer">
+    <div v-if="$slots.footer" class="dd-card-full__footer" ref="footer">
       <slot name="footer"></slot>
     </div>
   </div>
@@ -28,45 +22,45 @@ export default {
     top: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     right: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     bottom: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     left: {
       type: Number,
       required: false,
-      default: 0
-    }
+      default: 0,
+    },
   },
-  data () {
+  data() {
     return {
       headerHeight: 0,
       footerHeight: 0,
-      BS: null
+      BS: null,
     }
   },
-  mounted () {
+  mounted() {
     this.scrollInit()
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.scrollDestroy()
   },
   computed: {
-    cardStyle () {
+    cardStyle() {
       return `
       top:${this.top}px;
       right:${this.right}px;
       bottom:${this.bottom}px;
       left:${this.left}px`
-    }
+    },
     // bodyStyle () {
     //   return `
     //   top:${this.headerHeight}px;
@@ -74,21 +68,21 @@ export default {
     // }
   },
   methods: {
-    scrollInit () {
+    scrollInit() {
       this.BS = new BScroll(this.$refs.wrapper, {
         mouseWheel: true,
         scrollbar: {
           fade: true,
-          interactive: false
-        }
+          interactive: false,
+        },
       })
     },
-    scrollDestroy () {
+    scrollDestroy() {
       if (this.BS) {
         this.BS.destroy()
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -106,8 +100,7 @@ export default {
   flex-direction: column;
   overflow: hidden;
   &:hover {
-    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
-      0 2px 4px 0 rgba(232, 237, 250, 0.5);
+    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6), 0 2px 4px 0 rgba(232, 237, 250, 0.5);
   }
   .dd-card-full__header {
     padding: $margin;
@@ -121,7 +114,7 @@ export default {
     padding: $margin;
     position: relative;
     .dd-card-full__main {
-      padding:$margin 0;
+      padding: $margin 0;
       // position: relative;
       // height:100%;
     }

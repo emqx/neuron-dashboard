@@ -1,6 +1,5 @@
 <template>
-  <Container type="card-full"
-             :scorll='false'>
+  <Container type="card-full" :scorll="false">
     <div class="row flex">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/Configuration/objectSetup' }">
@@ -11,118 +10,88 @@
         </el-breadcrumb-item>
       </el-breadcrumb>
       <div>
-        <el-button @click='$router.go(-1)'>Back</el-button>
-        <el-button @click='dialogTableVisible=true'
-                   type="primary">Create</el-button>
-        <el-button @click='onDelete(null)'
-                   :disabled="!multipleSelection.length"
-                   type="danger">Delete</el-button>
+        <el-button @click="$router.go(-1)">Back</el-button>
+        <el-button @click="dialogTableVisible = true" type="primary">Create</el-button>
+        <el-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">Delete</el-button>
       </div>
     </div>
     <div>
-      <AttrbuteTable v-model="multipleSelection"
-                     :attributeList="attributeList"
-                     :showBtn="true"
-                     :objectName="objn"
-                     @add="addAddress"
-                     @edit="editAddress"
-                     @dummy="onDummy"
-                     @delete="onDelete" />
+      <AttrbuteTable
+        v-model="multipleSelection"
+        :attributeList="attributeList"
+        :showBtn="true"
+        :objectName="objn"
+        @add="addAddress"
+        @edit="editAddress"
+        @dummy="onDummy"
+        @delete="onDelete"
+      />
     </div>
 
-    <el-dialog title="Data Attribute Setup"
-               :visible.sync="dialogTableVisible"
-               @closed='close'>
-      <el-form ref='AttributeSetupForm'
-               :model="AttributeSetupForm"
-               :rules="AttributeSetupFormRules"
-               label-width="120px">
-        <el-form-item label="Attribute name"
-                      prop="attn">
+    <el-dialog title="Data Attribute Setup" :visible.sync="dialogTableVisible" @closed="close">
+      <el-form
+        ref="AttributeSetupForm"
+        :model="AttributeSetupForm"
+        :rules="AttributeSetupFormRules"
+        label-width="120px"
+      >
+        <el-form-item label="Attribute name" prop="attn">
           <el-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></el-input>
         </el-form-item>
-        <el-form-item label="Attribute type"
-                      prop="attn">
+        <el-form-item label="Attribute type" prop="attn">
           <el-select v-model="AttributeSetupForm.attt">
-            <el-option v-for="item in AttributeTypeList"
-                       :key="item.val"
-                       :label="item.val"
-                       :value="item.val">
+            <el-option v-for="item in AttributeTypeList" :key="item.val" :label="item.val" :value="item.val">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Decimal"
-                      v-if="showDecimal"
-                      prop="deci">
-          <el-input-number v-model="AttributeSetupForm.deci"
-                           :controls='false'
-                           :precision='0'
-                           :min="0" />
+        <el-form-item label="Decimal" v-if="showDecimal" prop="deci">
+          <el-input-number v-model="AttributeSetupForm.deci" :controls="false" :precision="0" :min="0" />
         </el-form-item>
-        <el-form-item label="Visible"
-                      prop="adis">
+        <el-form-item label="Visible" prop="adis">
           <el-radio-group v-model="AttributeSetupForm.adis">
             <el-radio :label="1">Yes</el-radio>
             <el-radio :label="0">No</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Change"
-                      prop="achg">
+        <el-form-item label="Change" prop="achg">
           <el-radio-group v-model="AttributeSetupForm.achg">
             <el-radio :label="1">Yes</el-radio>
             <el-radio :label="0">No</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Direction"
-                      prop="attr">
+        <el-form-item label="Direction" prop="attr">
           <el-radio-group v-model="AttributeSetupForm.attr">
             <el-radio label="R">R</el-radio>
             <el-radio label="W">W</el-radio>
             <el-radio label="RW">RW</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Read time"
-                      prop="rtim"
-                      v-if="showReadTime">
-          <el-input-number v-model="AttributeSetupForm.rtim"
-                           :controls='false'
-                           :precision='0'
-                           :min="0" />
+        <el-form-item label="Read time" prop="rtim" v-if="showReadTime">
+          <el-input-number v-model="AttributeSetupForm.rtim" :controls="false" :precision="0" :min="0" />
         </el-form-item>
       </el-form>
-      <span slot="footer"
-          class="dialog-footer">
-        <el-button @click='submitAttributeSetupFrom'>submit</el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="submitAttributeSetupFrom">submit</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog title="Data Address Setup"
-               @closed='addressClosed'
-               :visible.sync="addressVisible">
-      <el-table :data='preAndSuff'
-                class="dd-mb">
-        <el-table-column label="Index"
-                         :width="minWidth">
+    <el-dialog title="Data Address Setup" @closed="addressClosed" :visible.sync="addressVisible">
+      <el-table :data="preAndSuff" class="dd-mb">
+        <el-table-column label="Index" :width="minWidth">
           <template slot-scope="scope">
-            {{scope.row.obix+1}}
+            {{ scope.row.obix + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="pref"
-                         :width="minWidth"
-                         label="Prefix" />
-        <el-table-column label="Suffix"
-                         :width="minWidth"
-                         prop="suff" />
+        <el-table-column prop="pref" :width="minWidth" label="Prefix" />
+        <el-table-column label="Suffix" :width="minWidth" prop="suff" />
         <el-table-column label="Address">
           <template slot-scope="scope">
             <el-input v-model="scope.row.addr" size="mini"></el-input>
           </template>
         </el-table-column>
       </el-table>
-      <span slot="footer"
-          class="dialog-footer">
-        <el-button @click='addressSubmit'
-                  type="primary">submit</el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addressSubmit" type="primary">submit</el-button>
       </span>
     </el-dialog>
   </Container>
@@ -134,7 +103,7 @@ import { AttributeTypeList } from '@/config/index'
 import AttrbuteTable from './components/attrbuteTable'
 import { mapState, mapMutations } from 'vuex'
 export default {
-  data () {
+  data() {
     return {
       minWidth: 80,
       objn: '',
@@ -146,55 +115,42 @@ export default {
       AttributeSetupFormRules: {
         attn: [
           { required: true, message: 'Please input Name', trigger: 'blur' },
-          { max: 30, message: 'max 30', trigger: 'blur' }
+          { max: 30, message: 'max 30', trigger: 'blur' },
         ],
-        attt: [
-          { required: true, message: 'Please select Type', trigger: 'blur' }
-        ],
-        deci: [
-          { required: true, message: 'Please input Decimal', trigger: 'blur' }
-        ],
-        adis: [
-          { required: true, message: 'Please select Display', trigger: 'blur' }
-        ],
-        achg: [
-          { required: true, message: 'Please select Change', trigger: 'blur' }
-        ],
-        attr: [
-          { required: true, message: 'Please select Direction', trigger: 'blur' }
-        ],
-        rtim: [
-          { required: true, message: 'pleact input Time', trigger: 'blur' }
-        ]
+        attt: [{ required: true, message: 'Please select Type', trigger: 'blur' }],
+        deci: [{ required: true, message: 'Please input Decimal', trigger: 'blur' }],
+        adis: [{ required: true, message: 'Please select Display', trigger: 'blur' }],
+        achg: [{ required: true, message: 'Please select Change', trigger: 'blur' }],
+        attr: [{ required: true, message: 'Please select Direction', trigger: 'blur' }],
+        rtim: [{ required: true, message: 'pleact input Time', trigger: 'blur' }],
       },
       AttributeTypeList: AttributeTypeList,
       addressVisible: false,
       activeAttributeRow: {},
-      multipleSelection: []
+      multipleSelection: [],
     }
   },
   methods: {
-    close () {
+    close() {
       this.isEdit = false
       this.AttributeSetupForm = {}
       this.preAndSuff = []
     },
-    addressClosed () {
+    addressClosed() {
       this.preAndSuff.addr = ''
     },
-    getFullName (pref, suff) {
+    getFullName(pref, suff) {
       pref = pref ? pref + '_' : ''
       suff = suff ? '_' + suff : ''
       return pref + this.objn + suff
     },
-    validataAddr (attribute) {
-      return this.attributeList.length && this.attributeList.every(
-        attr => !attr.aadd.some(
-          ad => ad.addr === '' || ad.addr === undefined
-        )
+    validataAddr(attribute) {
+      return (
+        this.attributeList.length &&
+        this.attributeList.every((attr) => !attr.aadd.some((ad) => ad.addr === '' || ad.addr === undefined))
       )
     },
-    submitAttributeSetupFrom () {
+    submitAttributeSetupFrom() {
       this.$refs.AttributeSetupForm.validate((valid) => {
         if (valid) {
           const { attr, rtim } = this.AttributeSetupForm
@@ -202,19 +158,19 @@ export default {
             this.AttributeSetupForm.rtim = 0
           }
           if (this.isEdit) {
-            const findIndex = this.attributeList.findIndex(attr => attr.attn === this.AttributeSetupForm.attn)
+            const findIndex = this.attributeList.findIndex((attr) => attr.attn === this.AttributeSetupForm.attn)
             if (findIndex !== -1) {
               const attrData = [...this.attributeList]
               attrData[findIndex] = {
                 ...this.AttributeSetupForm,
-                aadd: clone(this.preAndSuff)
+                aadd: clone(this.preAndSuff),
               }
               this.attributeList = attrData
             }
           } else {
             this.attributeList.push({
               ...this.AttributeSetupForm,
-              aadd: clone(this.preAndSuff)
+              aadd: clone(this.preAndSuff),
             })
           }
           this.dialogTableVisible = false
@@ -226,7 +182,7 @@ export default {
         }
       })
     },
-    confirmSubmit () {
+    confirmSubmit() {
       if (!this.validataAddr()) {
         this.$openMessage.warning('Address is requried, please click the addr button to configure the address!')
       }
@@ -234,14 +190,14 @@ export default {
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
       }, 1000)
     },
-    addAddress (data) {
+    addAddress(data) {
       this.activeAttributeRow = data
       if (data.aadd.length) {
         this.preAndSuff = clone(data.aadd)
       }
       this.addressVisible = true
     },
-    editAddress (data) {
+    editAddress(data) {
       this.isEdit = true
       this.AttributeSetupForm = data
       this.dialogTableVisible = true
@@ -249,19 +205,19 @@ export default {
         this.preAndSuff = clone(data.aadd)
       }
     },
-    addressSubmit () {
+    addressSubmit() {
       this.addressVisible = false
       this.$set(this.activeAttributeRow, 'aadd', clone(this.preAndSuff))
       this.resetPreAndSuff()
       this.confirmSubmit()
     },
-    resetPreAndSuff () {
-      this.preAndSuff = this.preAndSuff.map(i => {
+    resetPreAndSuff() {
+      this.preAndSuff = this.preAndSuff.map((i) => {
         i.addr = ''
         return i
       })
     },
-    onDelete (data) {
+    onDelete(data) {
       const deleteData = []
       let confirmMsg = 'Are you sure delete these attribute?'
       if (data) {
@@ -271,36 +227,37 @@ export default {
         deleteData.push(...this.multipleSelection)
       }
       this.$confirm(confirmMsg, 'delete attribute', {
-        type: 'warning'
-      }).then(() => {
-        const deleteList = deleteData.map(i => i.attn)
-        this.attributeList = this.attributeList.filter(i => !deleteList.includes(i.attn))
-        this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
-      }).catch(() => {
+        type: 'warning',
       })
+        .then(() => {
+          const deleteList = deleteData.map((i) => i.attn)
+          this.attributeList = this.attributeList.filter((i) => !deleteList.includes(i.attn))
+          this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
+        })
+        .catch(() => {})
     },
-    onDummy (data) {
+    onDummy(data) {
       data.attr = '-'
       data.rtim = 0
-      data.aadd.forEach(item => {
+      data.aadd.forEach((item) => {
         item.addr = '-'
         return item
       })
     },
-    init () {
+    init() {
       let name = this.$route.params.data
       if (name) {
         this.objn = name
-        this.objectData.some(i => {
+        this.objectData.some((i) => {
           if (i.objn === name) {
             if (i.preAndSuff) {
               this.preAndSuff = [...i.preAndSuff]
             } else {
-              this.preAndSuff = i.oatt[0].aadd.map(i => ({
+              this.preAndSuff = i.oatt[0].aadd.map((i) => ({
                 pref: i.pref,
                 obix: i.obix,
                 suff: i.suff,
-                addr: ''
+                addr: '',
               }))
             }
             if (i.oatt) {
@@ -311,32 +268,32 @@ export default {
         })
       }
     },
-    ...mapMutations(['setObjectAttribute'])
+    ...mapMutations(['setObjectAttribute']),
   },
   computed: {
-    showDecimal () {
+    showDecimal() {
       return this.AttributeSetupForm.attt && this.AttributeSetupForm.attt.indexOf('word') !== -1
     },
-    showReadTime () {
+    showReadTime() {
       return this.AttributeSetupForm.attr && this.AttributeSetupForm.attr !== 'W'
     },
     ...mapState({
-      objectData: state => state.SetUpData.objectData
-    })
+      objectData: (state) => state.SetUpData.objectData,
+    }),
   },
   watch: {
-    'AttributeSetupForm.attt' (val) {
+    'AttributeSetupForm.attt'(val) {
       this.AttributeSetupForm.deci = 0
-    }
+    },
   },
-  created () {
+  created() {
     this.init()
   },
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     this.confirmSubmit()
     next()
   },
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     if (to.params.data) {
       next()
     } else {
@@ -344,13 +301,13 @@ export default {
     }
   },
   components: {
-    AttrbuteTable
-  }
+    AttrbuteTable,
+  },
 }
 </script>
 
-<style scoped lang='scss'>
-@import "@/assets/style/public.scss";
+<style scoped lang="scss">
+@import '@/assets/style/public.scss';
 /deep/.el-input-number {
   width: 100%;
   &.is-without-controls .el-input__inner {

@@ -1,19 +1,9 @@
 <template>
   <div>
-    <el-button type="primary"
-               v-if="active"
-               size="small"
-               @click="handleStart">Start</el-button>
-    <el-button type="danger"
-               v-else
-               size="small"
-               @click="handleStop">Stop</el-button>
-    <el-button type="primary"
-               size="small"
-               @click="handleRestart">Restart</el-button>
-    <el-button type="primary"
-               size="small"
-               @click="submit">Send</el-button>
+    <el-button type="primary" v-if="active" size="small" @click="handleStart">Start</el-button>
+    <el-button type="danger" v-else size="small" @click="handleStop">Stop</el-button>
+    <el-button type="primary" size="small" @click="handleRestart">Restart</el-button>
+    <el-button type="primary" size="small" @click="submit">Send</el-button>
   </div>
 </template>
 
@@ -25,50 +15,54 @@ export default {
   computed: {
     ...mapGetters(['res', 'deviceObj']),
     ...mapState({
-      status: state => state.Status.status
+      status: (state) => state.Status.status,
     }),
-    active () {
+    active() {
       let srt = this.status.mode || ''
       return srt.indexOf('STANDBY') !== -1
-    }
+    },
   },
   methods: {
-    handleStart () {
+    handleStart() {
       this.$ws().set().send({
         func: 71,
-        'stat': 'active'
+        stat: 'active',
       })
     },
-    handleStop () {
+    handleStop() {
       this.$ws().set().send({
         func: 71,
-        'stat': 'standby'
+        stat: 'standby',
       })
     },
-    handleRestart () {
+    handleRestart() {
       this.$confirm('Are you sure Restart Gateway', 'Restart', {
-        type: 'warning'
-      }).then(() => {
-        this.$ws().set().send({
-          func: 70,
-          'acts': 'restart'
+        type: 'warning',
+      })
+        .then(() => {
+          this.$ws().set().send({
+            func: 70,
+            acts: 'restart',
+          })
         })
-      }).catch()
+        .catch()
     },
-    submit () {
+    submit() {
       this.$confirm('Are you sure send your Configuration', 'Send', {
-        type: 'warning'
-      }).then(() => {
-        const res = clone(this.res)
-        res.objd.forEach(i => {
-          if (i.preAndSuff) delete i.preAndSuff
+        type: 'warning',
+      })
+        .then(() => {
+          const res = clone(this.res)
+          res.objd.forEach((i) => {
+            if (i.preAndSuff) delete i.preAndSuff
+          })
+          res.func = 21
+          console.log(JSON.stringify(res, null, 2))
+          this.$ws().set({ success: this.handleSuccess }).send(res)
         })
-        res.func = 21
-        console.log(JSON.stringify(res, null, 2))
-        this.$ws().set({ success: this.handleSuccess }).send(res)
-      }).catch()
+        .catch()
     },
-    handleSuccess (data) {
+    handleSuccess(data) {
       if (data.func === 21 && data.errc === 0) {
         this.$ws().remove(this.handleSuccess)
         this.$openMessage.success('Submit success!')
@@ -78,14 +72,13 @@ export default {
           this.$openMessage.info('Restarting...')
           this.$ws().set().send({
             func: 70,
-            'acts': 'restartnew'
+            acts: 'restartnew',
           })
         }, 2000)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

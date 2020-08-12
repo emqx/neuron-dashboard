@@ -7,13 +7,13 @@ const getExcelData = (file) => {
       reader.onload = (event) => {
         const data = event.target.result
         const wb = XLSX.read(data, {
-          type: 'binary'
+          type: 'binary',
         })
         const result = []
         wb.SheetNames.forEach((sheetName) => {
           result.push({
             sheetName: sheetName,
-            sheet: XLSX.utils.sheet_to_json(wb.Sheets[sheetName])
+            sheet: XLSX.utils.sheet_to_json(wb.Sheets[sheetName]),
           })
         })
         resolve(result)

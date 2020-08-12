@@ -1,18 +1,12 @@
 import Vue from 'vue'
 import BaseConfig from './config.js'
 import router from '../../router'
-import {
-  Message
-} from 'element-ui'
+import { Message } from 'element-ui'
 let dataSource
 
 class DataSource {
-  constructor (config = {}) {
-    const {
-      name,
-      pass,
-      success
-    } = config
+  constructor(config = {}) {
+    const { name, pass, success } = config
     const storage = JSON.parse(sessionStorage.getItem('user') || '{}')
     this.wsUri = BaseConfig.serverBaseUrl
     this.websocket = null
@@ -26,7 +20,7 @@ class DataSource {
     this.onclose = () => {
       Message.warning({
         message: 'socket closed',
-        duration: 6000
+        duration: 6000,
       })
       console.log('socket closed')
       const currentName = window.location.href.split('/')[4]
@@ -35,20 +29,20 @@ class DataSource {
       localStorage.removeItem('eventData')
       if (currentName !== 'login') {
         router.push({
-          name: 'login'
+          name: 'login',
         })
       }
     }
     this.onerror = (e) => {
       Message.error({
         message: 'socket error',
-        duration: 6000
+        duration: 6000,
       })
       console.log('socket error')
       throw e
     }
   }
-  connect () {
+  connect() {
     this.close()
 
     return new Promise((resolve, reject) => {
@@ -58,7 +52,7 @@ class DataSource {
           func: 10,
           name: this.name,
           pass: this.pass,
-          wtrm: this.wtrm
+          wtrm: this.wtrm,
         }
         var authText = JSON.stringify(authInfo)
         this.websocket.send(authText)
@@ -74,37 +68,35 @@ class DataSource {
             } else {
               resolve({
                 name: this.name,
-                pass: this.pass
+                pass: this.pass,
               })
             }
           }
-        }
+        },
       })
     })
   }
-  close () {
+  close() {
     if (this.websocket) {
       this.websocket.close()
       this.websocket = null
       dataSource = null
     }
   }
-  set (config = {}) {
-    const {
-      success
-    } = config
+  set(config = {}) {
+    const { success } = config
 
     success && this.onsuccess.add(success)
 
     if (this.websocket && success) {
       this.websocket.onmessage = (e) => {
         const data = e.data && JSON.parse(e.data)
-        this.onsuccess.forEach(i => {
-          if (!data.wtrm || (data.wtrm === this.wtrm)) {
+        this.onsuccess.forEach((i) => {
+          if (!data.wtrm || data.wtrm === this.wtrm) {
             if (data.errc) {
               Message.error({
                 message: data.emsg,
-                duration: 6000
+                duration: 6000,
               })
             }
             i(data)
@@ -114,10 +106,10 @@ class DataSource {
     }
     return this
   }
-  remove (func) {
+  remove(func) {
     this.onsuccess.delete(func)
   }
-  send (msg) {
+  send(msg) {
     if (msg) {
       msg.wtrm = this.wtrm
       if (typeof msg !== 'string') {
@@ -136,7 +128,7 @@ class DataSource {
       this.tmp = null
     }
   }
-  test () {
+  test() {
     if (!this.websocket) {
       this.connect()
     }
@@ -144,7 +136,7 @@ class DataSource {
   }
 }
 
-Vue.prototype.$ws = function getDataSource (config) {
+Vue.prototype.$ws = function getDataSource(config) {
   if (!dataSource) {
     dataSource = new DataSource(config)
   } else {

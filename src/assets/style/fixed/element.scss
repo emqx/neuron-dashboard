@@ -3,7 +3,7 @@
 @import '../unit/_size.scss';
 
 /* Menu */
-.el-menu--horizontal>.el-submenu.is-active .el-submenu__title:hover {
+.el-menu--horizontal > .el-submenu.is-active .el-submenu__title:hover {
   background-color: transparent;
 }
 
@@ -40,7 +40,7 @@
 .el-table::before {
   background-color: $color-table-head;
 }
-.el-table--enable-row-hover .el-table__body tr:hover>td {
+.el-table--enable-row-hover .el-table__body tr:hover > td {
   background-color: $color-table-hover;
 }
 .el-table .cell {
@@ -58,13 +58,13 @@
 }
 
 /* Menu */
-.el-menu--horizontal>.el-submenu.is-active .el-submenu__title {
+.el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
   color: $color-primary;
   &:hover {
     color: $color-primary;
   }
 }
-.el-menu--horizontal>.el-submenu .el-submenu__title {
+.el-menu--horizontal > .el-submenu .el-submenu__title {
   color: $color-text-sub;
   &:hover {
     background: transparent;
@@ -123,7 +123,7 @@
   border: 1px solid #495062;
 }
 .el-textarea__inner {
-  font-family: "Arial", "Microsoft YaHei", "\9ED1\4F53", "\5B8B\4F53", sans-serif;
+  font-family: 'Arial', 'Microsoft YaHei', '\9ED1\4F53', '\5B8B\4F53', sans-serif;
 }
 
 /* Date Picker */
@@ -134,7 +134,7 @@
 .el-picker-panel {
   .el-input__inner {
     color: #606266;
-    border: 1px solid #DCDFE6;
+    border: 1px solid #dcdfe6;
   }
 }
 
@@ -198,13 +198,13 @@
       color: #fff;
     }
   }
-  .el-breadcrumb__separator[class*=icon] {
+  .el-breadcrumb__separator[class*='icon'] {
     font-size: 20px;
   }
   .el-breadcrumb__inner.is-link,
   .el-breadcrumb__inner a {
     .dd-title:hover {
-      color: #34C388;
+      color: #34c388;
     }
   }
 }

@@ -7,21 +7,21 @@ const config = {
   // follow will be enabled when isCROS
   CROS: {
     CSRFTokenRequired: true,
-    updateCSRFTokenIn: 5 * 60 * 1000 // ms
+    updateCSRFTokenIn: 5 * 60 * 1000, // ms
   },
   clientBaseUrl: '/',
-  clientLoginUrl: null
+  clientLoginUrl: null,
 }
 switch (process.env.NODE_ENV) {
   case 'production':
     Object.assign(config, {
-      serverBaseUrl: window.serverBaseUrl || `ws://${window.location.hostname}:${window.location.port}/`
+      serverBaseUrl: window.serverBaseUrl || `ws://${window.location.hostname}:${window.location.port}/`,
     })
     break
   case 'development':
     Object.assign(config, {
       isDevelopment: true,
-      serverBaseUrl: window.serverBaseUrl || 'ws://192.168.234.176:7000/'
+      serverBaseUrl: window.serverBaseUrl || 'ws://192.168.234.176:7000/',
     })
     break
 }

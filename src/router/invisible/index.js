@@ -4,23 +4,23 @@ export default [
     // component: () => import('@/components/core/MainLayout/index'),
     meta: { requiresAuth: true },
     redirect: {
-      name: 'index'
-    }
+      name: 'index',
+    },
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/pages/core/login/index')
+    component: () => import('@/pages/core/login/index'),
   },
   {
     path: '/404',
     name: 'index-notFount',
-    component: () => import('@/pages/core/NotFount/index')
+    component: () => import('@/pages/core/NotFount/index'),
   },
   {
     path: '*',
     redirect: {
-      name: 'index-notFount'
-    }
-  }
+      name: 'index-notFount',
+    },
+  },
 ]

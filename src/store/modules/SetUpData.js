@@ -15,36 +15,33 @@ export default {
   state: {
     driverData: {
       chdv: '',
-      chnl: [{
-        'tcph': '',
-        'tcpp': 0,
-        'ttyc': '',
-        'ttyb': 0,
-        'ttyd': 0,
-        'ttys': '',
-        'ttyp': ''
-      }]
+      chnl: [
+        {
+          tcph: '',
+          tcpp: 0,
+          ttyc: '',
+          ttyb: 0,
+          ttyd: 0,
+          ttys: '',
+          ttyp: '',
+        },
+      ],
     },
     objectData: [],
-    eventData: []
+    eventData: [],
   },
   getters: {
-    res (state) {
+    res(state) {
       return {
         chdv: state.driverData.chdv,
         chnl: state.driverData.chnl,
         objd: state.objectData,
-        msgd: state.eventData
+        msgd: state.eventData,
       }
-    }
+    },
   },
   mutations: {
-    setAllData (state, {
-      chnl,
-      msgd,
-      objd,
-      chdv
-    }) {
+    setAllData(state, { chnl, msgd, objd, chdv }) {
       state.driverData.chdv = chdv || ''
       state.driverData.chnl = chnl
       const localEventData = localStorage.getItem('eventData')
@@ -58,22 +55,19 @@ export default {
       // })
       // state.objectData = [...objd, ...filterData]
     },
-    setDriverData (state, {
-      chdv,
-      chnl
-    }) {
+    setDriverData(state, { chdv, chnl }) {
       state.driverData.chdv = chdv
       state.driverData.chnl = chnl
     },
-    setObjectData (state, objectData) {
+    setObjectData(state, objectData) {
       state.objectData = [...state.objectData, ...objectData]
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
     },
-    addObjectData (state, objectData) {
+    addObjectData(state, objectData) {
       state.objectData.push(objectData)
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
     },
-    editObjectData (state, objectData) {
+    editObjectData(state, objectData) {
       const findIndex = state.objectData.findIndex((obj) => obj.objn === objectData.objn)
       if (findIndex !== -1) {
         const stateData = [...state.objectData]
@@ -82,15 +76,12 @@ export default {
       }
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
     },
-    deleteObjectData (state, objNameList) {
-      state.objectData = state.objectData.filter(i => !objNameList.includes(i.objn))
+    deleteObjectData(state, objNameList) {
+      state.objectData = state.objectData.filter((i) => !objNameList.includes(i.objn))
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
     },
-    setObjectAttribute (state, {
-      name,
-      attributeList
-    }) {
-      state.objectData = state.objectData.map(i => {
+    setObjectAttribute(state, { name, attributeList }) {
+      state.objectData = state.objectData.map((i) => {
         if (i.objn === name) {
           i.oatt = attributeList
         }
@@ -98,18 +89,18 @@ export default {
       })
       localStorage.setItem('objectData', JSON.stringify(state.objectData))
     },
-    addEventData (state, eventData) {
+    addEventData(state, eventData) {
       state.eventData.push(eventData)
       localStorage.setItem('eventData', JSON.stringify(state.eventData))
     },
-    editEventData (state, eventData) {
+    editEventData(state, eventData) {
       const { data, index } = eventData
       state.eventData.splice(index, 1, data)
       localStorage.setItem('eventData', JSON.stringify(state.eventData))
     },
-    deleteEventData (state, eventDataList) {
-      state.eventData = state.eventData.filter(i => !eventDataList.includes(i))
+    deleteEventData(state, eventDataList) {
+      state.eventData = state.eventData.filter((i) => !eventDataList.includes(i))
       localStorage.setItem('eventData', JSON.stringify(state.eventData))
-    }
-  }
+    },
+  },
 }

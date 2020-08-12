@@ -1,4 +1,4 @@
-export function once (func) {
+export function once(func) {
   let flag = true
   return function (res) {
     if (flag) {

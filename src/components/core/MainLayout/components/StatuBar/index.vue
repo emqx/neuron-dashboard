@@ -1,19 +1,17 @@
 <template>
   <div class="statu-bar">
-    <div :class="status.comm==='UP'?'green':'red'">
-      COMM&nbsp;{{status.comm||''}}
-    </div>
+    <div :class="status.comm === 'UP' ? 'green' : 'red'">COMM&nbsp;{{ status.comm || '' }}</div>
     <div class="mach">
-      {{status.mach||''}}
+      {{ status.mach || '' }}
     </div>
-    <div :class="status.mode==='ACTIVE'?'green':status.mach==='STANDBY'?'yellow':'red'">
-      {{status.mode||''}}
+    <div :class="status.mode === 'ACTIVE' ? 'green' : status.mach === 'STANDBY' ? 'yellow' : 'red'">
+      {{ status.mode || '' }}
     </div>
-    <div :class="status.mqcn==='MQDISCONNECT'?'red':'green'">
-      {{status.mqcn||'MQDISCONNECT'}}
+    <div :class="status.mqcn === 'MQDISCONNECT' ? 'red' : 'green'">
+      {{ status.mqcn || 'MQDISCONNECT' }}
     </div>
-    <div :class="galm==='NO ALARM'?'green':'red'">
-      {{galm}}
+    <div :class="galm === 'NO ALARM' ? 'green' : 'red'">
+      {{ galm }}
     </div>
   </div>
 </template>
@@ -23,12 +21,12 @@ import { mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      status: state => state.Status.status
+      status: (state) => state.Status.status,
     }),
-    commState () {
+    commState() {
       return this.status.model === 'ACTIVE' ? 'OK' : this.status.model
     },
-    galm () {
+    galm() {
       let res
       switch (this.status.galm) {
         case 'NON-EXIST':
@@ -42,13 +40,13 @@ export default {
           break
       }
       return res
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style scoped lang='scss'>
-@import "@/assets/style/public.scss";
+<style scoped lang="scss">
+@import '@/assets/style/public.scss';
 .statu-bar {
   position: absolute;
   bottom: 0;

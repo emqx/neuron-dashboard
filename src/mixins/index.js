@@ -1,7 +1,7 @@
 export default {
   computed: {
-    tableHeight () {
+    tableHeight() {
       return window.innerHeight - 60 - 50 - 40 - 50 - 20
-    }
-  }
+    },
+  },
 }

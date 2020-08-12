@@ -1,6 +1,5 @@
 <template>
-  <Container type="card-full"
-             :scorll='false'>
+  <Container type="card-full" :scorll="false">
     <div class="row flex">
       <div class="dd-title">Object Setup</div>
       <div class="driverName">{{ deviceObj.label }}</div>
@@ -24,19 +23,19 @@ export default {
   computed: {
     ...mapGetters(['deviceObj']),
     ...mapState({
-      driverData: state => state.SetUpData.driverData,
-      driverList: state => state.Device.deviceList
-    })
+      driverData: (state) => state.SetUpData.driverData,
+      driverList: (state) => state.Device.deviceList,
+    }),
   },
   components: {
     DriverSetup,
-    ObjectSetup
-  }
+    ObjectSetup,
+  },
 }
 </script>
 
-<style scoped lang='scss'>
-@import "@/assets/style/public";
+<style scoped lang="scss">
+@import '@/assets/style/public';
 /deep/.el-input-number {
   width: 100%;
   &.is-without-controls .el-input__inner {
