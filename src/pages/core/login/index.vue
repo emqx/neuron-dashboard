@@ -1,99 +1,92 @@
 <template>
   <div class="login-page">
-      <div class="form-group">
-        <el-card>
-          <el-row>
-            <el-col :span="12">
-              <img class="login-bg" src="@/assets/login-neuron.png" alt="login-neuron">
-            </el-col>
-            <el-col :span="12">
-              <el-form :model="formLogin"
-                      :rules="rules"
-                      ref="loginForm">
-                <div class="logo-group">
-                  <img class="neuron-logo" src="@/assets/neuron-logo.png" alt="neuron logo">
-                </div>
-                <el-form-item prop="username">
-                  <el-input type="text"
-                            v-model="formLogin.username"
-                            placeholder="Username">
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                  <el-input type="password"
-                            v-model="formLogin.password"
-                            placeholder="Password">
-                  </el-input>
-                </el-form-item>
-                <div class="button-login">
-                  <el-button @click="submit"
-                            type="primary">Login</el-button>
-                </div>
-              </el-form>
-            </el-col>
-          </el-row>
-        </el-card>
-      </div>
+    <div class="form-group">
+      <el-card>
+        <el-row>
+          <el-col :span="12">
+            <img class="login-bg" src="@/assets/login-neuron.png" alt="login-neuron" />
+          </el-col>
+          <el-col :span="12">
+            <el-form :model="formLogin" :rules="rules" ref="loginForm">
+              <div class="logo-group">
+                <img class="neuron-logo" src="@/assets/neuron-logo.png" alt="neuron logo" />
+              </div>
+              <el-form-item prop="username">
+                <el-input type="text" v-model="formLogin.username" placeholder="Username"> </el-input>
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input type="password" v-model="formLogin.password" placeholder="Password"> </el-input>
+              </el-form-item>
+              <div class="button-login">
+                <el-button @click="submit" type="primary">Login</el-button>
+              </div>
+            </el-form>
+          </el-col>
+        </el-row>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       formLogin: {
         username: '',
-        password: ''
+        password: '',
       },
       rules: {
         username: { required: true, trigger: 'blur' },
-        password: { required: true, trigger: 'blur' }
-      }
+        password: { required: true, trigger: 'blur' },
+      },
     }
   },
   methods: {
-    submit () {
-      this.$refs.loginForm.validate(valid => {
+    submit() {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           const { username: name, password: pass } = this.formLogin
           const loginInfo = {
             func: 10,
             name,
-            pass
+            pass,
           }
-          this.$ws(loginInfo).connect().then(userInfo => {
-            sessionStorage.setItem('user', JSON.stringify(userInfo))
-            this.$router.push({ name: 'index' })
-          })
+          this.$ws(loginInfo)
+            .connect()
+            .then((userInfo) => {
+              sessionStorage.setItem('user', JSON.stringify(userInfo))
+              this.$router.push({ name: 'index' })
+            })
         } else {
           return false
         }
       })
     },
-    init () {
+    init() {
       sessionStorage.removeItem('user')
       localStorage.removeItem('objectData')
       localStorage.removeItem('eventData')
-    }
+    },
   },
-  mounted () {
+  mounted() {
     this.init()
   },
-  created () {
+  created() {
     if (this.$env) {
       this.formLogin = {
         username: 'admin',
-        password: '1234'
+        password: '0000',
       }
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss">
-@import "@/assets/style/public.scss";
+@import '@/assets/style/public.scss';
 .login-page {
-  background-color: #272A33;
+  background-color: #272a33;
   height: 100%;
   position: relative;
   // logo
@@ -109,7 +102,7 @@ export default {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%,-50%);
+      transform: translate(-50%, -50%);
       width: 790px;
       height: 390px;
       background: #333844;

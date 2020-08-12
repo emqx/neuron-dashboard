@@ -1,49 +1,33 @@
 <template>
-  <Container type="card-full"
-             :scorll='false'>
+  <Container type="card-full" :scorll="false">
     <div class="flex dd-mb">
       <div class="dd-title">Global Valiables</div>
       <div>
-        <el-button @click='handleSubmit(null)'>submit</el-button>
+        <el-button @click="handleSubmit(null)">submit</el-button>
       </div>
     </div>
-    <el-table class="script-table"
-              :data='varData'>
-      <el-table-column label="Variable G."
-                       min-width="120">
+    <el-table class="script-table" :data="varData">
+      <el-table-column label="Variable G." min-width="120">
         <template slot-scope="scope">
-          <el-input placeholder=""
-                    @keyup.enter.native='add(scope.$index)'
-                    size="mini"
-                    v-model="scope.row.glov">
+          <el-input placeholder="" @keyup.enter.native="add(scope.$index)" size="mini" v-model="scope.row.glov">
           </el-input>
         </template>
       </el-table-column>
-      <el-table-column label="Nos"
-                       min-width="100">
+      <el-table-column label="Nos" min-width="100">
         <template slot-scope="scope">
-          <el-input placeholder=""
-                    @keyup.enter.native='add(scope.$index)'
-                    size="mini"
-                    v-model="scope.row.leng" />
+          <el-input placeholder="" @keyup.enter.native="add(scope.$index)" size="mini" v-model="scope.row.leng" />
         </template>
       </el-table-column>
-      <el-table-column label="Description"
-                       min-width="300">
+      <el-table-column label="Description" min-width="300">
         <template slot-scope="scope">
-          <el-input placeholder=""
-                    size="mini"
-                    v-model="scope.row.comt">
-          </el-input>
+          <el-input placeholder="" size="mini" v-model="scope.row.comt"> </el-input>
         </template>
       </el-table-column>
       <el-table-column min-width="60">
         <template slot-scope="scope">
-          <div class='btn'>
-            <i class="el-icon-circle-plus plus"
-               @click='add(scope.$index)'></i>&nbsp;
-            <i class="el-icon-remove remove"
-               @click='remove(scope.$index)'></i>
+          <div class="btn">
+            <i class="el-icon-circle-plus plus" @click="add(scope.$index)"></i>&nbsp;
+            <i class="el-icon-remove remove" @click="remove(scope.$index)"></i>
           </div>
         </template>
       </el-table-column>
@@ -57,21 +41,21 @@ import _ from 'lodash'
 
 export default {
   mixins: [Mixins],
-  data () {
+  data() {
     return {
       varData: [],
       oldVarData: [],
-      func: 30
+      func: 30,
     }
   },
-  beforeMount () {
+  beforeMount() {
     this.init()
   },
   methods: {
-    init () {
+    init() {
       this.$ws().set({ success: this.readGlobalVariable }).send({ func: this.func })
     },
-    readGlobalVariable (data) {
+    readGlobalVariable(data) {
       if (data.func === this.func) {
         this.$ws().remove(this.readGlobalVariable)
         this.varData = []
@@ -79,31 +63,31 @@ export default {
         let i = 5
         while (i--) {
           this.varData.push({
-            'glov': '',
-            'leng': '',
-            'comt': ''
+            glov: '',
+            leng: '',
+            comt: '',
           })
         }
         this.oldVarData = _.cloneDeep(this.varData)
       }
     },
-    setData (data) {
+    setData(data) {
       if (data.func === 31 && data.errc === 0) {
         this.$ws().remove(this.setData)
         this.oldVarData = []
         this.oldVarData = _.cloneDeep(this.varData)
       }
     },
-    handleSubmit (callback) {
+    handleSubmit(callback) {
       const sendData = () => {
-        const res = _.cloneDeep(this.varData).filter(i => {
+        const res = _.cloneDeep(this.varData).filter((i) => {
           i.leng = +i.leng
           return i.glov && i.leng
         })
         this.$ws().set({ success: this.setData }).send({
           func: 31,
           nrow: res.length,
-          rows: res
+          rows: res,
         })
       }
       if (callback) {
@@ -111,24 +95,26 @@ export default {
         callback()
       } else {
         this.$confirm('Are you sure submit these gloabl valiables', 'Submit', {
-          type: 'warning'
-        }).then(() => {
-          sendData()
-        }).catch(() => {})
+          type: 'warning',
+        })
+          .then(() => {
+            sendData()
+          })
+          .catch(() => {})
       }
     },
-    add (index) {
+    add(index) {
       this.varData.splice(index + 1, 0, {
-        'glov': '',
-        'leng': '',
-        'comt': ''
+        glov: '',
+        leng: '',
+        comt: '',
       })
     },
-    remove (index) {
+    remove(index) {
       this.varData.splice(index, 1)
-    }
+    },
   },
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     if (_.isEqual(this.oldVarData, this.varData)) {
       next()
     } else {
@@ -136,19 +122,21 @@ export default {
         type: 'warning',
         distinguishCancelAndClose: true,
         confirmButtonText: 'Submit',
-        cancelButtonText: 'Discard Changes'
-      }).then(() => {
-        this.handleSubmit(next)
-      }).catch(() => {
-        next()
+        cancelButtonText: 'Discard Changes',
       })
+        .then(() => {
+          this.handleSubmit(next)
+        })
+        .catch(() => {
+          next()
+        })
     }
-  }
+  },
 }
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/style/public";
+@import '@/assets/style/public';
 .input-number {
   /deep/input {
     text-align: left;

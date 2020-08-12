@@ -1,6 +1,5 @@
 <template>
-  <div class="layout-main"
-       :class="theme">
+  <div class="layout-main" :class="theme">
     <div class="dd-layout-header">
       <div class="logo-group">
         <p>NEURON</p>
@@ -25,18 +24,19 @@ export default {
   components: {
     HeaderMenu: () => import('./components/HeaderMenu'),
     HeaderRight: () => import('./components/HeaderRight'),
-    StatuBar: () => import('./components/StatuBar')
+    StatuBar: () => import('./components/StatuBar'),
   },
-  data () {
+  data() {
     return {
       theme: 'default',
       collapse: false,
-      loadData: false
+      loadData: false,
     }
   },
   methods: {
-    initData () {
-      this.$ws().test()
+    initData() {
+      this.$ws()
+        .test()
         .set({ success: this.receiveStatus })
         .set({ success: this.receiveAlarmList })
         .set({ success: this.setDevice })
@@ -44,62 +44,58 @@ export default {
         .set({ success: this.getWritableObj })
       setTimeout(() => {
         this.$ws().send({
-          func: 23
+          func: 23,
         })
       }, 500)
     },
-    ...mapMutations([
-      'setAllData',
-      'setAlarmStatus',
-      'setAlarmList'
-    ]),
-    setData (res) {
+    ...mapMutations(['setAllData', 'setAlarmStatus', 'setAlarmList']),
+    setData(res) {
       if (+res.func === 22) {
         this.$ws().send({
-          func: 60
+          func: 60,
         })
         this.$ws().remove(this.setData)
         this.setAllData(res)
       }
     },
-    setDevice (data) {
+    setDevice(data) {
       if (+data.func === 23) {
         this.$ws().remove(this.setDevice)
         this.$store.commit('setDeviceList', data.rows)
       }
     },
-    getWritableObj (data) {
+    getWritableObj(data) {
       if (+data.func === 60) {
         this.$ws().remove(this.getWritableObj)
         this.$store.commit('setWritableList', data.tele)
       }
     },
-    receiveStatus (data) {
+    receiveStatus(data) {
       if (!data.func && data.tstp) {
         if (data.mode !== 'INACTIVE' && !this.loadData) {
           this.loadData = true
           this.$ws().send({
-            func: 22
+            func: 22,
           })
         }
         this.setAlarmStatus(data)
       }
     },
-    receiveAlarmList (data) {
+    receiveAlarmList(data) {
       if (!data.func && data.tele) {
         this.setAlarmList(data.tele)
       }
-    }
+    },
   },
-  mounted () {
+  mounted() {
     this.initData()
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$ws().remove(this.receiveStatus)
-  }
+  },
 }
 </script>
 
 <style lang="scss">
-@import "@/assets/style/theme/default.scss";
+@import '@/assets/style/theme/default.scss';
 </style>

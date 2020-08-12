@@ -1,50 +1,26 @@
 <template>
-  <el-table :data='objectList'
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-    <el-table-column type="expand"
-                     v-if="showAttr">
+  <el-table :data="objectList" @selection-change="handleSelectionChange" style="width: 100%;">
+    <el-table-column type="expand" v-if="showAttr">
       <template slot-scope="props">
-        <AttrbuteTable :attributeList='props.row.oatt || []'
-                       :objectName='props.row.objn' />
+        <AttrbuteTable :attributeList="props.row.oatt || []" :objectName="props.row.objn" />
       </template>
     </el-table-column>
-    <el-table-column
-      v-if="showSelection"
-      type="selection"
-      width="55">
-    </el-table-column>
-    <el-table-column type='index'
-                     width="100"
-                     label="No" />
-    <el-table-column prop="objn"
-                     label="Object Name"
-                     min-width="250" />
-    <el-table-column prop="obsz"
-                     :min-width="100"
-                     label="Size" />
-    <el-table-column prop="updt"
-                     :min-width="100"
-                     label="Update Time" />
-    <el-table-column prop="logt"
-                     :min-width="100"
-                     label="Log Time" />
-    <el-table-column prop="tstd"
-                     :min-width="100"
-                     label="Timestamp">
-      <template slot-scope='scope'>
-        {{scope.row.tstd?'YES':'NO'}}
-      </template>
-    </el-table-column>
-    <el-table-column :width="200"
-                     v-if="showBtn">
+    <el-table-column v-if="showSelection" type="selection" width="55"> </el-table-column>
+    <el-table-column type="index" width="100" label="No" />
+    <el-table-column prop="objn" label="Object Name" min-width="250" />
+    <el-table-column prop="obsz" :min-width="100" label="Size" />
+    <el-table-column prop="updt" :min-width="100" label="Update Time" />
+    <el-table-column prop="logt" :min-width="100" label="Log Time" />
+    <el-table-column prop="tstd" :min-width="100" label="Timestamp">
       <template slot-scope="scope">
-        <el-button type="text"
-                   @click="handleEdit(scope.row)">Edit</el-button>
-        <el-button type="text"
-                   @click="goToAttrPage(scope.row)">Attribute</el-button>
-        <el-button type="text"
-                   @click="handleDelete(scope.row)">Delete</el-button>
+        {{ scope.row.tstd ? 'YES' : 'NO' }}
+      </template>
+    </el-table-column>
+    <el-table-column :width="200" v-if="showBtn">
+      <template slot-scope="scope">
+        <el-button type="text" @click="handleEdit(scope.row)">Edit</el-button>
+        <el-button type="text" @click="goToAttrPage(scope.row)">Attribute</el-button>
+        <el-button type="text" @click="handleDelete(scope.row)">Delete</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -60,57 +36,56 @@ export default {
   mixins: [Mixins],
   props: {
     value: {
-      type: Array
+      type: Array,
     },
     showBtn: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showAttr: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showSelection: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   computed: {
     ...mapState({
-      objectList: state => state.SetUpData.objectData
-    })
+      objectList: (state) => state.SetUpData.objectData,
+    }),
   },
-  data () {
+  data() {
     return {
       minWidth: '100px',
-      multipleSelection: []
+      multipleSelection: [],
     }
   },
   methods: {
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
       this.multipleSelection = val
       this.$emit('input', this.multipleSelection)
     },
-    goToAttrPage (row) {
+    goToAttrPage(row) {
       this.$router.push({ name: 'Configuration-attributeSetup', params: { data: row.objn } })
     },
-    handleEdit (row) {
+    handleEdit(row) {
       this.$emit('edit', clone(row))
     },
-    handleDelete (row) {
+    handleDelete(row) {
       this.$emit('delete', clone(row))
-    }
+    },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.multipleSelection = val
-    }
+    },
   },
   components: {
-    AttrbuteTable
-  }
+    AttrbuteTable,
+  },
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

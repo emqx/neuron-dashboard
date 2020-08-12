@@ -1,20 +1,18 @@
 <template>
-  <el-dialog :title='propName||objName'
-             :visible.sync="dialogVisible"
-             width="900px"
-             @closed="handleClose">
+  <el-dialog :title="propName || objName" :visible.sync="dialogVisible" width="900px" @closed="handleClose">
     <div class="select">
-      <el-date-picker v-model="time"
-                      range-separator="-"
-                      start-placeholder="start"
-                      end-placeholder="end"
-                      type="datetimerange">
+      <el-date-picker
+        v-model="time"
+        range-separator="-"
+        start-placeholder="start"
+        end-placeholder="end"
+        type="datetimerange"
+      >
       </el-date-picker>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <el-button @click="handleSubmit(-1)">submit</el-button>
     </div>
-    <div :style="chartStyle"
-         ref="chartContainer"></div>
+    <div :style="chartStyle" ref="chartContainer"></div>
   </el-dialog>
 </template>
 
@@ -25,13 +23,13 @@ export default {
   props: {
     objName: {
       type: String,
-      default: ''
+      default: '',
     },
     props: {
-      type: Array
-    }
+      type: Array,
+    },
   },
-  data () {
+  data() {
     return {
       dialogVisible: false,
       chartInstance: null,
@@ -41,71 +39,72 @@ export default {
       option: {
         backgroundColor: '#333844',
         grid: {
-          top: '20px'
+          top: '20px',
         },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
             type: 'cross',
             crossStyle: {
-              color: '#999'
-            }
-          }
+              color: '#999',
+            },
+          },
         },
         xAxis: {
           type: 'category',
-          data: []
+          data: [],
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
         },
-        series: []
-      }
+        series: [],
+      },
     }
   },
   computed: {
-    chartStyle () {
+    chartStyle() {
       return {
         width: '900px',
-        height: '700px'
+        height: '700px',
       }
     },
-    status () {
-      return this.$store.state.Status.alarmList.find(i => i.objn === this.objName)
-    }
+    status() {
+      return this.$store.state.Status.alarmList.find((i) => i.objn === this.objName)
+    },
   },
   methods: {
-    handleSubmit (tokn) {
+    handleSubmit(tokn) {
       let [start, end] = this.time
       start = moment(start)
       end = moment(end)
       this.params = {
-        'func': 82,
-        'srcn': this.objName,
-        'attn': this.propName || '',
-        'fend': 0,
-        'tokn': tokn,
-        'fryr': start.year(),
-        'frmo': start.month() + 1,
-        'frda': start.date(),
-        'frhr': start.hour(),
-        'frmi': start.minute(),
-        'toyr': end.year(),
-        'tomo': end.month() + 1,
-        'toda': end.date(),
-        'tohr': end.hour(),
-        'tomi': end.minute()
+        func: 82,
+        srcn: this.objName,
+        attn: this.propName || '',
+        fend: 0,
+        tokn: tokn,
+        fryr: start.year(),
+        frmo: start.month() + 1,
+        frda: start.date(),
+        frhr: start.hour(),
+        frmi: start.minute(),
+        toyr: end.year(),
+        tomo: end.month() + 1,
+        toda: end.date(),
+        tohr: end.hour(),
+        tomi: end.minute(),
       }
       this.$ws().set({ success: this.setData }).send(this.params)
     },
-    setData (data) {
+    setData(data) {
       if (data.func === 82) {
-        data.tele && data.tele.forEach(i => {
-          const dataList = this.option.series
-          const timeList = this.option.xAxis.data
-          dataList.forEach(j => j.data.push(i[j.name]))
-          timeList.push(moment(i.tstp * 1000).format('YYYY-MM-DD HH:mm:ss'))
-        })
+        data.tele &&
+          data.tele.forEach((i) => {
+            const dataList = this.option.series
+            const timeList = this.option.xAxis.data
+            dataList.forEach((j) => j.data.push(i[j.name]))
+            timeList.push(moment(i.tstp * 1000).format('YYYY-MM-DD HH:mm:ss'))
+          })
         if (data.tokn) {
           if (data.tokn === -1) {
             this.chartInstance.setOption(this.option)
@@ -116,7 +115,7 @@ export default {
         }
       }
     },
-    initChart () {
+    initChart() {
       if (!this.chartInstance) {
         this.chartInstance = charts.init(this.$refs.chartContainer, 'dark')
       }
@@ -124,39 +123,42 @@ export default {
         this.option.series.push({
           data: [],
           type: 'line',
-          name: this.propName
+          name: this.propName,
         })
       } else {
-        this.props.filter(i => i.check).map(i => i.prop).forEach(i => {
-          if (i !== 'tstp' && i !== 'objn') {
-            this.option.series.push({
-              data: [],
-              type: 'line',
-              name: i
-            })
-          }
-        })
+        this.props
+          .filter((i) => i.check)
+          .map((i) => i.prop)
+          .forEach((i) => {
+            if (i !== 'tstp' && i !== 'objn') {
+              this.option.series.push({
+                data: [],
+                type: 'line',
+                name: i,
+              })
+            }
+          })
       }
       this.chartInstance.setOption(this.option)
     },
-    handleClose () {
+    handleClose() {
       this.option.series = []
       this.option.xAxis.data = []
       this.propName = null
       this.params = {}
       this.chartInstance.clear()
     },
-    handleShow (row, type) {
+    handleShow(row, type) {
       this.time = [moment().subtract(1, 'hours'), moment()]
       this.propName = row ? row.prop : null
       this.dialogVisible = true
       this.$nextTick(this.initChart)
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 /deep/.el-dialog__body {
   padding: 0;
 }

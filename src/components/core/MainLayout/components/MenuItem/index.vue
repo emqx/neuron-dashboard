@@ -2,7 +2,7 @@
   <el-menu-item :index="menu.name">
     <i :class="`fa fa-${menu.icon || 'file-o'}`"></i>
     &nbsp;&nbsp;
-    {{menu.title||menu.name}}
+    {{ menu.title || menu.name }}
   </el-menu-item>
 </template>
 
@@ -13,8 +13,8 @@ export default {
     menu: {
       type: Object,
       required: false,
-      default: () => { }
-    }
-  }
+      default: () => {},
+    },
+  },
 }
 </script>

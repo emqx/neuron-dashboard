@@ -1,9 +1,7 @@
-import {
-  formatName
-} from '@/utils'
+import { formatName } from '@/utils'
 
 const meta = {
-  requiresAuth: true
+  requiresAuth: true,
 }
 
 const moduleName = 'Administration'
@@ -14,11 +12,10 @@ const maker = (path, hide) => {
     name: `${moduleName}-${path}`,
     meta: {
       ...meta,
-      hide
+      hide,
     },
     title: formatName(path),
-    component: () =>
-      import(`@/pages/menus/${moduleName}/${path}.vue`)
+    component: () => import(`@/pages/menus/${moduleName}/${path}.vue`),
   }
 }
 
@@ -29,7 +26,7 @@ export default {
   component: () => import('@/components/core/MainLayout/index.vue'),
   meta,
   redirect: {
-    name: `${moduleName}-userAdministration`
+    name: `${moduleName}-userAdministration`,
   },
   children: [
     maker('userAdministration'),
@@ -41,8 +38,8 @@ export default {
       meta,
       title: 'Logout',
       redirect: {
-        name: 'login'
-      }
-    }
-  ]
+        name: 'login',
+      },
+    },
+  ],
 }

@@ -1,66 +1,46 @@
 <template>
-  <Container type="card-full"
-             :scorll='false'>
+  <Container type="card-full" :scorll="false">
     <div class="row flex">
       <div class="dd-title">Data Monitoring</div>
       <div class="btnGroup">
         <span>Object name: </span>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <el-select v-model="objName">
-          <el-option v-for="item in objList"
-                     :key="item"
-                     :label="item"
-                     :value="item">
-          </el-option>
+          <el-option v-for="item in objList" :key="item" :label="item" :value="item"> </el-option>
         </el-select>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button @click='handleShow(null,"History")'>History</el-button>
-        <el-button @click='handleShow(null,"Current")'>Current</el-button>
+        <el-button @click="handleShow(null, 'History')">History</el-button>
+        <el-button @click="handleShow(null, 'Current')">Current</el-button>
       </div>
     </div>
-    <el-table :data="tableData.length ? data: []"
-              class="table">
+    <el-table :data="tableData.length ? data : []" class="table">
       <el-table-column width="55">
         <template slot="header">
-          <el-checkbox @change='handleCheckAll'></el-checkbox>
+          <el-checkbox @change="handleCheckAll"></el-checkbox>
         </template>
         <template slot-scope="scope">
-          <el-checkbox v-model="scope.row.checked"
-                       v-if='scope.row.prop!=="Time"'
-                       @change='handleCheck($event,scope.row)'></el-checkbox>
+          <el-checkbox
+            v-model="scope.row.checked"
+            v-if="scope.row.prop !== 'Time'"
+            @change="handleCheck($event, scope.row)"
+          ></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column prop="prop"
-                       label="Attrbute"
-                       min-width="180">
-      </el-table-column>
-      <el-table-column prop="val"
-                       label="Value"
-                       min-width="180">
-      </el-table-column>
+      <el-table-column prop="prop" label="Attrbute" min-width="180"> </el-table-column>
+      <el-table-column prop="val" label="Value" min-width="180"> </el-table-column>
       <el-table-column width="200">
         <template slot-scope="scope">
-          <div class='btn'
-               v-if="scope.row.prop!=='Time'">
-            <el-button type="text"
-                       v-if="scope.row.writable"
-                       @click='handleWrite(scope.row)'>Write</el-button>
-            <el-button type="text"
-                       @click='handleShow(scope.row,"History")'>History</el-button>
-            <el-button type="text"
-                       @click='handleShow(scope.row,"Current")'>Current</el-button>
+          <div class="btn" v-if="scope.row.prop !== 'Time'">
+            <el-button type="text" v-if="scope.row.writable" @click="handleWrite(scope.row)">Write</el-button>
+            <el-button type="text" @click="handleShow(scope.row, 'History')">History</el-button>
+            <el-button type="text" @click="handleShow(scope.row, 'Current')">Current</el-button>
           </div>
         </template>
       </el-table-column>
     </el-table>
-    <CurrentChartDialog ref='CurrentChartDialog'
-                        :props='multipleSelection'
-                        :objName='objName' />
-    <HistoryChartDialog ref='HistoryChartDialog'
-                        :props='multipleSelection'
-                        :objName='objName' />
-    <WriteDialog ref='WriteDialog'
-                 :objName='objName' />
+    <CurrentChartDialog ref="CurrentChartDialog" :props="multipleSelection" :objName="objName" />
+    <HistoryChartDialog ref="HistoryChartDialog" :props="multipleSelection" :objName="objName" />
+    <WriteDialog ref="WriteDialog" :objName="objName" />
   </Container>
 </template>
 
@@ -70,103 +50,105 @@ import { mapState } from 'vuex'
 import moment from 'moment'
 export default {
   mixins: [Mixins],
-  data () {
+  data() {
     return {
       objName: '',
       multipleSelection: [],
-      checkedAll: true
+      checkedAll: true,
     }
   },
   computed: {
     ...mapState({
-      dataList: state => state.Status.alarmList,
-      objectData: state => state.SetUpData.objectData,
-      writableList: state => state.Status.writableList
+      dataList: (state) => state.Status.alarmList,
+      objectData: (state) => state.SetUpData.objectData,
+      writableList: (state) => state.Status.writableList,
     }),
-    objList () {
-      return this.dataList.map(i => i.objn)
+    objList() {
+      return this.dataList.map((i) => i.objn)
     },
-    tableData () {
-      return this.dataList.filter(i => i.objn === this.objName).map(i => {
-        if (i && i.tstp) {
-          if (typeof i.tstp === 'number') {
-            i.tstp = this.format(i.tstp)
+    tableData() {
+      return this.dataList
+        .filter((i) => i.objn === this.objName)
+        .map((i) => {
+          if (i && i.tstp) {
+            if (typeof i.tstp === 'number') {
+              i.tstp = this.format(i.tstp)
+            }
           }
-        }
-        return i
-      })
+          return i
+        })
     },
-    tableKey () {
+    tableKey() {
       return Object.keys(this.tableData[0])
     },
-    currentWritableData () {
-      return this.writableList.find(j => j.objn === this.objName) || {}
+    currentWritableData() {
+      return this.writableList.find((j) => j.objn === this.objName) || {}
     },
-    data () {
+    data() {
       let data = []
-      this.tableKey.forEach(i => {
+      this.tableKey.forEach((i) => {
         if (i !== 'objn') {
-          const checked = this.multipleSelection.find(j => j.prop === i)
+          const checked = this.multipleSelection.find((j) => j.prop === i)
           data.push({
             prop: i === 'tstp' ? 'Time' : i,
             val: this.tableData[0][i],
             writable: !!this.currentWritableData[i],
-            checked: checked ? checked.check : false
+            checked: checked ? checked.check : false,
           })
         }
       })
       return data
-    }
+    },
   },
   watch: {
     objList: {
-      handler (val) {
+      handler(val) {
         if (val.length && this.objName === '') {
           this.objName = val[0]
         }
-      }
+      },
     },
     objName: {
-      handler () {
-        this.multipleSelection = this.tableKey.map(i => ({
+      handler() {
+        this.multipleSelection = this.tableKey.map((i) => ({
           prop: i,
-          check: false
+          check: false,
         }))
-      }
-    }
+      },
+    },
   },
   methods: {
-    handleWrite (row) {
+    handleWrite(row) {
       this.$refs.WriteDialog.handleShow(row.prop)
     },
-    handleShow (row, type) {
+    handleShow(row, type) {
       this.$refs[type + 'ChartDialog'].handleShow(row)
     },
-    handleCheck (e, row) {
-      this.multipleSelection.forEach(i => {
+    handleCheck(e, row) {
+      this.multipleSelection.forEach((i) => {
         if (i.prop === row.prop) {
           i.check = e
         }
       })
     },
-    handleCheckAll (val) {
-      this.multipleSelection.forEach(i => {
+    handleCheckAll(val) {
+      this.multipleSelection.forEach((i) => {
         i.check = val
       })
     },
-    format (time) {
+    format(time) {
       return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss')
-    }
+    },
   },
   components: {
     CurrentChartDialog: () => import('./components/CurrentChartDialog'),
     HistoryChartDialog: () => import('./components/HistoryChartDialog'),
-    WriteDialog: () => import('./components/WriteDialog')
-  }
+    WriteDialog: () => import('./components/WriteDialog'),
+  },
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .table {
   width: 100%;
   margin-top: 20px;

@@ -21,18 +21,18 @@ import '@/plugin/register'
 
 // Element
 ElementUI.Dialog.props.closeOnClickModal.default = false
-const $message = options => {
+const $message = (options) => {
   return ElementUI.Message({
     ...options,
-    duration: 6000
+    duration: 6000,
   })
 }
-['success', 'warning', 'info', 'error'].forEach(type => {
-  $message[type] = options => {
+;['success', 'warning', 'info', 'error'].forEach((type) => {
+  $message[type] = (options) => {
     if (typeof options === 'string') {
       options = {
         message: options,
-        duration: 6000
+        duration: 6000,
       }
     }
     options.type = type
@@ -50,5 +50,5 @@ Vue.prototype.$env = process.env.NODE_ENV === 'development'
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount('#app')

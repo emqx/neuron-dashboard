@@ -20,19 +20,18 @@ $prefix: dd;
   position: relative;
 }
 
-%flex-center{
+%flex-center {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
 }
 
-
 // 响应式样式
-@mixin MarginTop($list, $points:$breakpoint) {
+@mixin MarginTop($list, $points: $breakpoint) {
   @each $point, $size in $list {
-    @if map-has_key($points, $point){
-      $point: map_get($points, $point)
+    @if map-has_key($points, $point) {
+      $point: map_get($points, $point);
     }
     @media screen and (min-width: $point) {
       margin-top: $size;
@@ -40,10 +39,10 @@ $prefix: dd;
   }
 }
 
-@mixin MarginBottom($list, $points:$breakpoint) {
+@mixin MarginBottom($list, $points: $breakpoint) {
   @each $point, $size in $list {
-    @if map-has_key($points, $point){
-      $point: map_get($points, $point)
+    @if map-has_key($points, $point) {
+      $point: map_get($points, $point);
     }
     @media screen and (min-width: $point) {
       margin-bottom: $size;
@@ -51,10 +50,10 @@ $prefix: dd;
   }
 }
 
-@mixin MarginLeft($list, $points:$breakpoint) {
+@mixin MarginLeft($list, $points: $breakpoint) {
   @each $point, $size in $list {
-    @if map-has_key($points, $point){
-      $point: map_get($points, $point)
+    @if map-has_key($points, $point) {
+      $point: map_get($points, $point);
     }
     @media screen and (min-width: $point) {
       margin-left: $size;
@@ -62,10 +61,10 @@ $prefix: dd;
   }
 }
 
-@mixin MarginRight($list, $points:$breakpoint) {
+@mixin MarginRight($list, $points: $breakpoint) {
   @each $point, $size in $list {
-    @if map-has_key($points, $point){
-      $point: map_get($points, $point)
+    @if map-has_key($points, $point) {
+      $point: map_get($points, $point);
     }
     @media screen and (min-width: $point) {
       margin-right: $size;

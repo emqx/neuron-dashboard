@@ -3,9 +3,7 @@ import Status from './_Status'
 import user from './_Administration'
 
 // 菜单
-export const menu = [
-  Status, Setup, user
-]
+export const menu = [Status, Setup, user]
 
 // 路由
 export const router = [
@@ -13,11 +11,11 @@ export const router = [
     path: '/',
     name: 'index',
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
     redirect: {
-      name: 'Status-dataMonitoring'
-    }
+      name: 'Status-dataMonitoring',
+    },
   },
   Status,
   Setup,
@@ -25,7 +23,7 @@ export const router = [
   {
     path: '*',
     redirect: {
-      name: 'index'
-    }
-  }
+      name: 'index',
+    },
+  },
 ]

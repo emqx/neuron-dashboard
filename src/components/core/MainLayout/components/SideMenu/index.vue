@@ -1,27 +1,23 @@
 <template>
-  <div style='height: 100%;position: relative;'>
+  <div style="height: 100%; position: relative;">
     <div :style="{ height: `${asideHeight}px` }">
-      <el-menu :collapse="collapse"
-               :default-active='routeName'
-               @select="active">
+      <el-menu :collapse="collapse" :default-active="routeName" @select="active">
         <template v-for="(menu, index) in sideMenu">
           <!--没有子菜单-->
-          <MenuItem :key="index"
-                    v-if="menu.children === undefined && menu.name !== undefined"
-                    :menu='menu' />
+          <MenuItem :key="index" v-if="menu.children === undefined && menu.name !== undefined" :menu="menu" />
           <!--有子菜单-->
-          <el-submenu :key="index"
-                      :index="String(index)"
-                      v-if="menu.children">
+          <el-submenu :key="index" :index="String(index)" v-if="menu.children">
             <template slot="title">
-              <Icon :name='menu.icon'></Icon>
-              <span slot="title">{{menu.title}}</span>
+              <Icon :name="menu.icon"></Icon>
+              <span slot="title">{{ menu.title }}</span>
             </template>
             <template v-for="(menuItem, menuItemIndex) in menu.children">
-              <MenuItem :key="menuItemIndex"
-                        v-if="!menuItem.children && menuItem.title"
-                        :menu='menuItem'
-                        :class="{'is-active': menuItem.name === routeName}" />
+              <MenuItem
+                :key="menuItemIndex"
+                v-if="!menuItem.children && menuItem.title"
+                :menu="menuItem"
+                :class="{ 'is-active': menuItem.name === routeName }"
+              />
             </template>
           </el-submenu>
         </template>
@@ -35,66 +31,66 @@ import { mapState } from 'vuex'
 // 插件
 import BScroll from 'better-scroll'
 export default {
-  data () {
+  data() {
     return {
-      asideHeight: 300
+      asideHeight: 300,
     }
   },
   props: {
     collapse: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
-    routeName () {
+    routeName() {
       return this.$route.name
     },
     ...mapState({
-      sideMenu: state => state.menu.sideMenu
-    })
+      sideMenu: (state) => state.menu.sideMenu,
+    }),
   },
   components: {
-    MenuItem: () => import('../MenuItem')
+    MenuItem: () => import('../MenuItem'),
   },
-  mounted () {
+  mounted() {
     this.scrollInit()
     this.updateAsideHeight()
     window.onresize = () => {
       this.updateAsideHeight()
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.scrollDestroy()
-    window.onresize = () => { }
+    window.onresize = () => {}
   },
   methods: {
-    active (name) {
+    active(name) {
       this.$router.push({ name })
     },
-    updateAsideHeight () {
+    updateAsideHeight() {
       this.asideHeight = this.$el.offsetHeight
     },
-    scrollInit () {
+    scrollInit() {
       this.BS = new BScroll(this.$el.childNodes[0], {
         mouseWheel: true,
         scrollbar: {
           fade: true,
-          interactive: false
-        }
+          interactive: false,
+        },
       })
     },
-    scrollDestroy () {
+    scrollDestroy() {
       if (this.BS) {
         this.BS.destroy()
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .side-menu-wrap {
   height: 100%;
   position: relative;

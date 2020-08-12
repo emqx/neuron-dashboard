@@ -14,22 +14,22 @@ $color: $color-primary;
     .el-card {
       box-shadow: none;
       &:hover {
-        box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
+        box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6), 0 2px 4px 0 rgba(232, 237, 250, 0.5);
       }
     }
     // [布局]
     .#{$prefix}-layout-header {
       position: absolute;
-      top:0;
-      left:0;
-      right:0;
-      height:$dd-theme-header-height;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: $dd-theme-header-height;
       padding: 0px;
       .logo-group {
-        padding:0 20px;
-        margin-right:20px;
+        padding: 0 20px;
+        margin-right: 20px;
         height: 60px;
-        transition: width .3s;
+        transition: width 0.3s;
         float: left;
         text-align: center;
         color: $color-primary;
@@ -38,13 +38,13 @@ $color: $color-primary;
           font-size: 32px;
           font-weight: bolder;
           line-height: 60px;
-          margin:0;
+          margin: 0;
         }
       }
       .toggle-sidemenu-btn {
         float: left;
         height: $dd-theme-header-height;
-        margin-top:17px;
+        margin-top: 17px;
         text-align: left;
         padding: 0 $margin;
         @extend %unable-select;
@@ -53,7 +53,7 @@ $color: $color-primary;
           color: $color-text-normal;
           margin-top: 4px;
         }
-        &:hover i{
+        &:hover i {
           color: $color;
         }
       }
@@ -84,7 +84,7 @@ $color: $color-primary;
           color: $color-text-normal;
         }
         .el-dropdown {
-          @extend %unable-select
+          @extend %unable-select;
         }
         .el-button--primary {
           box-shadow: 2px 1px 6px 0px #00b1738c;
@@ -94,15 +94,15 @@ $color: $color-primary;
     // 顶栏下面
     .#{$prefix}-layout-container {
       position: absolute;
-      top:$dd-theme-header-height;
+      top: $dd-theme-header-height;
       bottom: 0;
-      left:0;
-      right:0;
+      left: 0;
+      right: 0;
       overflow: hidden;
       display: flex;
       // 侧边栏
       .#{$prefix}-layout-aside {
-        transition: width .3s;
+        transition: width 0.3s;
         overflow: inherit;
         .el-menu {
           background-color: $color-bg;
@@ -110,7 +110,7 @@ $color: $color-primary;
           &.el-menu--collapse {
             .el-submenu {
               .el-menu {
-                background-color: #FFF;
+                background-color: #fff;
               }
             }
             .el-submenu__title {
@@ -133,7 +133,7 @@ $color: $color-primary;
         }
       }
       .#{$prefix}-layout-main {
-        flex-grow:1;
+        flex-grow: 1;
         padding: 0;
         position: relative;
         overflow: hidden;

@@ -1,7 +1,5 @@
 <template>
-  <Container type="card-full"
-              class="historical-alarms"
-             :scorll='false'>
+  <Container type="card-full" class="historical-alarms" :scorll="false">
     <div class="dd-title">Historical Alarms</div>
     <el-row :gutter="20">
       <el-form>
@@ -13,64 +11,41 @@
               range-separator="-"
               start-placeholder="start"
               end-placeholder="end"
-              type="datetimerange">
+              type="datetimerange"
+            >
             </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Pattern:">
-            <el-input v-model="patn"
-                      class="input"></el-input>
+            <el-input v-model="patn" class="input"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Category:">
-            <el-select
-              v-model="cate"
-              class="input"
-              clearable>
-              <el-option
-                v-for="item in cateList"
-                :key="item"
-                :label="item"
-                :value="item">
-              </el-option>
+            <el-select v-model="cate" class="input" clearable>
+              <el-option v-for="item in cateList" :key="item" :label="item" :value="item"> </el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-button
-              class="btn filter"
-              @click='handleSubmit("")'>submit</el-button>
+            <el-button class="btn filter" @click="handleSubmit('')">submit</el-button>
           </el-form-item>
         </el-col>
       </el-form>
     </el-row>
-    <el-table :data='data'
-              style="width: 100%;margin-top:20px;">
-      <el-table-column min-width="130"
-                       prop="anum"
-                       label="Index" />
-      <el-table-column min-width="130"
-                       label="Time">
+    <el-table :data="data" style="width: 100%; margin-top: 20px;">
+      <el-table-column min-width="130" prop="anum" label="Index" />
+      <el-table-column min-width="130" label="Time">
         <template slot-scope="scope">
-          {{format(scope.row.tstp||'')}}
+          {{ format(scope.row.tstp || '') }}
         </template>
       </el-table-column>
-      <el-table-column min-width="130"
-                       prop="cate"
-                       label="Category" />
-      <el-table-column prop="stat"
-                       label="State"
-                       min-width="130" />
-      <el-table-column prop="uack"
-                       min-width="130"
-                       label="Remark">
-      </el-table-column>
-      <el-table-column prop="comt"
-                       min-width="400"
-                       label="Alarm message" />
+      <el-table-column min-width="130" prop="cate" label="Category" />
+      <el-table-column prop="stat" label="State" min-width="130" />
+      <el-table-column prop="uack" min-width="130" label="Remark"> </el-table-column>
+      <el-table-column prop="comt" min-width="400" label="Alarm message" />
     </el-table>
   </Container>
 </template>
@@ -80,7 +55,7 @@ import Mixins from '@/mixins'
 import moment from 'moment'
 export default {
   mixins: [Mixins],
-  data () {
+  data() {
     return {
       data: [],
       params: {},
@@ -88,41 +63,41 @@ export default {
       srch: 'FromFirst',
       cate: '',
       cateList: ['critical', 'alarm', 'warning', 'event', 'view'],
-      patn: ''
+      patn: '',
     }
   },
   methods: {
-    handleSubmit (tokn) {
+    handleSubmit(tokn) {
       if (tokn === '') this.data = []
       let [start, end] = this.time
       const { srch, sett, cate, patn } = this
       start = moment(start)
       end = moment(end)
       this.params = {
-        'func': 81,
+        func: 81,
         srch,
         sett,
-        'ofst': 0,
-        'tokn': tokn,
+        ofst: 0,
+        tokn: tokn,
         cate,
         patn,
-        'fryr': start.year(),
-        'frmo': start.month() + 1,
-        'frda': start.date(),
-        'frhr': start.hour(),
-        'frmi': start.minute(),
-        'toyr': end.year(),
-        'tomo': end.month() + 1,
-        'toda': end.date(),
-        'tohr': end.hour(),
-        'tomi': end.minute()
+        fryr: start.year(),
+        frmo: start.month() + 1,
+        frda: start.date(),
+        frhr: start.hour(),
+        frmi: start.minute(),
+        toyr: end.year(),
+        tomo: end.month() + 1,
+        toda: end.date(),
+        tohr: end.hour(),
+        tomi: end.minute(),
       }
       this.$ws().set({ success: this.setData }).send(this.params)
     },
-    setData (data) {
+    setData(data) {
       if (data.func === 81) {
         if (data.rows) {
-          data.rows.forEach(i => this.data.push(i))
+          data.rows.forEach((i) => this.data.push(i))
         }
         if (data.tokn) {
           if (data.tokn === '-1') {
@@ -133,14 +108,14 @@ export default {
         }
       }
     },
-    format (time) {
+    format(time) {
       return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss')
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .historical-alarms {
   .el-row {
     margin-top: 20px;

@@ -1,10 +1,6 @@
 <template>
-  <el-dialog :title='propName||objName'
-             :visible.sync="dialogVisible"
-             width="900px"
-             @closed="handleClose">
-    <div :style="chartStyle"
-         ref="chartContainer"></div>
+  <el-dialog :title="propName || objName" :visible.sync="dialogVisible" width="900px" @closed="handleClose">
+    <div :style="chartStyle" ref="chartContainer"></div>
   </el-dialog>
 </template>
 
@@ -14,13 +10,13 @@ export default {
   props: {
     objName: {
       type: String,
-      default: ''
+      default: '',
     },
     props: {
-      type: Array
-    }
+      type: Array,
+    },
   },
-  data () {
+  data() {
     return {
       dialogVisible: false,
       chartInstance: null,
@@ -28,42 +24,42 @@ export default {
       option: {
         backgroundColor: '#333844',
         grid: {
-          top: '20px'
+          top: '20px',
         },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
             type: 'cross',
             crossStyle: {
-              color: '#999'
-            }
-          }
+              color: '#999',
+            },
+          },
         },
         xAxis: {
           type: 'category',
-          data: []
+          data: [],
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
         },
-        series: []
-      }
+        series: [],
+      },
     }
   },
   computed: {
-    chartStyle () {
+    chartStyle() {
       return {
         width: '900px',
-        height: '700px'
+        height: '700px',
       }
     },
-    status () {
-      return this.$store.state.Status.alarmList.find(i => i.objn === this.objName)
-    }
+    status() {
+      return this.$store.state.Status.alarmList.find((i) => i.objn === this.objName)
+    },
   },
   watch: {
     status: {
-      handler (val) {
+      handler(val) {
         if (this.chartInstance && this.dialogVisible) {
           const dataList = this.option.series
           const timeList = this.option.xAxis.data
@@ -71,18 +67,18 @@ export default {
           //   dataList.forEach(i => i.data.shift())
           //   timeList.shift()
           // }
-          dataList.forEach(i => {
+          dataList.forEach((i) => {
             i.data.push(this.status[i.name])
           })
           timeList.push(this.status.tstp.split(' ')[1])
           this.chartInstance.setOption(this.option)
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
-    initChart () {
+    initChart() {
       if (!this.chartInstance) {
         this.chartInstance = charts.init(this.$refs.chartContainer, 'dark')
       }
@@ -91,37 +87,40 @@ export default {
           data: [],
           type: 'line',
           areaStyle: {},
-          name: this.propName
+          name: this.propName,
         })
       } else {
-        this.props.filter(i => i.check).map(i => i.prop).forEach(i => {
-          if (i !== 'tstp' && i !== 'objn') {
-            this.option.series.push({
-              data: [],
-              type: 'line',
-              name: i
-            })
-          }
-        })
+        this.props
+          .filter((i) => i.check)
+          .map((i) => i.prop)
+          .forEach((i) => {
+            if (i !== 'tstp' && i !== 'objn') {
+              this.option.series.push({
+                data: [],
+                type: 'line',
+                name: i,
+              })
+            }
+          })
       }
       this.chartInstance.setOption(this.option)
     },
-    handleClose () {
+    handleClose() {
       this.option.series = []
       this.option.xAxis.data = []
       this.propName = null
       this.chartInstance.clear()
     },
-    handleShow (row) {
+    handleShow(row) {
       this.propName = row ? row.prop : null
       this.dialogVisible = true
       this.$nextTick(this.initChart)
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 /deep/.el-dialog__body {
   padding: 0;
 }

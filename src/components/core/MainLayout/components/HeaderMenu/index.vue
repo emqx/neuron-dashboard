@@ -1,52 +1,40 @@
 <template>
-  <el-menu mode="horizontal"
-           :default-active="index">
+  <el-menu mode="horizontal" :default-active="index">
     <template v-for="item in menu">
-      <template v-if="item.children.length>1">
-        <el-submenu :key="item.name"
-                    :index="item.name"
-                    @click.native="active(item)">
-          <template slot="title">{{formatName(item.title)}}</template>
-          <template v-for="(subMenu,subIndex) in item.children">
-            <el-menu-item :index="subMenu.name"
-                          @click.native="active(subMenu)"
-                          v-show="!subMenu.meta.hide"
-                          :key='subMenu.name'>
-              {{subMenu.title}}
+      <template v-if="item.children.length > 1">
+        <el-submenu :key="item.name" :index="item.name" @click.native="active(item)">
+          <template slot="title">{{ formatName(item.title) }}</template>
+          <template v-for="(subMenu, subIndex) in item.children">
+            <el-menu-item
+              :index="subMenu.name"
+              @click.native="active(subMenu)"
+              v-show="!subMenu.meta.hide"
+              :key="subMenu.name"
+            >
+              {{ subMenu.title }}
             </el-menu-item>
-            <div v-if="item.name==='Administration' && subIndex===2" :key="subIndex">
-              <el-menu-item @click='getData(90)'>Request License</el-menu-item>
-              <el-menu-item @click='getData(91)'>Extension License</el-menu-item>
-              <el-menu-item @click='getData(74)'>About</el-menu-item>
+            <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
+              <el-menu-item @click="getData(90)">Request License</el-menu-item>
+              <el-menu-item @click="getData(91)">Extension License</el-menu-item>
+              <el-menu-item @click="getData(74)">About</el-menu-item>
             </div>
           </template>
         </el-submenu>
       </template>
       <template v-else>
-        <el-menu-item :key="item.name"
-                      :index="item.name"
-                      @click.native="active(item)">
-          {{formatName(item.title)}}
+        <el-menu-item :key="item.name" :index="item.name" @click.native="active(item)">
+          {{ formatName(item.title) }}
         </el-menu-item>
       </template>
     </template>
-    <About ref='about' />
-    <el-dialog title='Request License'
-               :visible.sync="dialogVisible"
-               width="700px">
-      <p>{{key}}</p>
+    <About ref="about" />
+    <el-dialog title="Request License" :visible.sync="dialogVisible" width="700px">
+      <p>{{ key }}</p>
     </el-dialog>
-    <el-dialog title='Extension License'
-               :visible.sync="dialogVisible1"
-               width="700px">
-      <el-input type="textarea"
-                :rows="8"
-                v-model="license">
-      </el-input>
-      <div slot="footer"
-           class="dialog-footer">
-        <el-button type="primary"
-                   @click="handleSubmit">submit</el-button>
+    <el-dialog title="Extension License" :visible.sync="dialogVisible1" width="700px">
+      <el-input type="textarea" :rows="8" v-model="license"> </el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleSubmit">submit</el-button>
       </div>
     </el-dialog>
   </el-menu>
@@ -57,21 +45,21 @@ import { formatName } from '@/utils'
 import { mapMutations } from 'vuex'
 import { menu } from '@/router/menu'
 export default {
-  data () {
+  data() {
     return {
       menu,
       curFunc: 0,
       dialogVisible: false,
       dialogVisible1: false,
       key: '',
-      license: ''
+      license: '',
     }
   },
   computed: {
-    routeName () {
+    routeName() {
       return this.$route.name
     },
-    index () {
+    index() {
       let index = ''
       let tmp = this.routeName.split('-')
       if (tmp[1] && tmp[1] === 'index') {
@@ -80,15 +68,13 @@ export default {
         index = this.routeName
       }
       return index
-    }
+    },
   },
   methods: {
-    ...mapMutations([
-      'setSideMenu'
-    ]),
+    ...mapMutations(['setSideMenu']),
     // 跳转
-    active (item) {
-      let name = item.name
+    active(item) {
+      let { name } = item
       if (this.routeName === name || (item.redirect && item.redirect.name === this.routeName)) {
         return
       }
@@ -96,31 +82,37 @@ export default {
         const currentUser = JSON.parse(sessionStorage.getItem('user'))
         const logoutInfo = {
           func: 11,
-          name: currentUser.name
+          name: currentUser.name,
         }
         this.$confirm('Are you sure logout?', 'Logout', {
-          type: 'warning'
-        }).then(() => {
-          this.$ws().set({ success: (data) => {
-            if (data.func === 11 && data.errc === 0) {
-              sessionStorage.removeItem('user')
-              localStorage.removeItem('objectData')
-              localStorage.removeItem('eventData')
-              this.$router.push({ name })
-              this.$ws().close()
-            }
-          } }).send(logoutInfo)
-        }).catch()
+          type: 'warning',
+        })
+          .then(() => {
+            this.$ws()
+              .set({
+                success: (data) => {
+                  if (data.func === 11 && data.errc === 0) {
+                    sessionStorage.removeItem('user')
+                    localStorage.removeItem('objectData')
+                    localStorage.removeItem('eventData')
+                    this.$router.push({ name })
+                    this.$ws().close()
+                  }
+                },
+              })
+              .send(logoutInfo)
+          })
+          .catch()
       } else if (name === '') {
         this.$router.push({ path: '/' })
       } else {
         this.$router.push({ name })
       }
     },
-    formatName (title) {
+    formatName(title) {
       return formatName(title)
     },
-    getData (func) {
+    getData(func) {
       this.curFunc = func
       if (func !== 91) {
         this.$ws().set({ success: this.setData }).send({ func })
@@ -128,7 +120,7 @@ export default {
         this.dialogVisible1 = true
       }
     },
-    setData (data) {
+    setData(data) {
       if (data.func === this.curFunc) {
         this.$ws().remove(this.setData)
         switch (data.func) {
@@ -144,16 +136,15 @@ export default {
         }
       }
     },
-    handleSubmit () {
+    handleSubmit() {
       this.$ws().send({ func: 91, keyv: this.license })
       this.dialogVisible1 = false
-    }
+    },
   },
   components: {
-    About: () => import('./about')
-  }
+    About: () => import('./about'),
+  },
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

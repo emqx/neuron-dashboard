@@ -976,6 +976,13 @@
     source-map "~0.6.1"
     vue-template-es2015-compiler "^1.9.0"
 
+"@vue/eslint-config-prettier@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npm.taobao.org/@vue/eslint-config-prettier/download/@vue/eslint-config-prettier-6.0.0.tgz#ad5912b308f4ae468458e02a2b05db0b9d246700"
+  integrity sha1-rVkSswj0rkaEWOAqKwXbC50kZwA=
+  dependencies:
+    eslint-config-prettier "^6.0.0"
+
 "@vue/eslint-config-standard@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/@vue/eslint-config-standard/download/@vue/eslint-config-standard-4.0.0.tgz#6be447ee674e3b0f733c584098fd9a22e6d76fcd"
@@ -1193,7 +1200,12 @@ acorn@^5.5.0:
   resolved "https://registry.npm.taobao.org/acorn/download/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
   integrity sha1-Z6ojG/iBKXS4UjWpZ3Hra9B+onk=
 
-acorn@^6.0.2, acorn@^6.0.7, acorn@^6.1.1, acorn@^6.2.1:
+acorn@^6.0.2:
+  version "6.4.1"
+  resolved "https://registry.npm.taobao.org/acorn/download/acorn-6.4.1.tgz?cache=0&sync_timestamp=1596457673631&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Facorn%2Fdownload%2Facorn-6.4.1.tgz#531e58ba3f51b9dacb9a6646ca4debf5b14ca474"
+  integrity sha1-Ux5Yuj9RudrLmmZGyk3r9bFMpHQ=
+
+acorn@^6.0.7, acorn@^6.1.1, acorn@^6.2.1:
   version "6.3.0"
   resolved "https://registry.npm.taobao.org/acorn/download/acorn-6.3.0.tgz#0087509119ffa4fc0a0041d1e93a417e68cb856e"
   integrity sha1-AIdQkRn/pPwKAEHR6TpBfmjLhW4=
@@ -3193,6 +3205,13 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   resolved "https://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
+eslint-config-prettier@^6.0.0:
+  version "6.11.0"
+  resolved "https://registry.npm.taobao.org/eslint-config-prettier/download/eslint-config-prettier-6.11.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint-config-prettier%2Fdownload%2Feslint-config-prettier-6.11.0.tgz#f6d2238c1290d01c859a8b5c1f7d352a0b0da8b1"
+  integrity sha1-9tIjjBKQ0ByFmotcH301KgsNqLE=
+  dependencies:
+    get-stdin "^6.0.0"
+
 eslint-config-standard@^12.0.0:
   version "12.0.0"
   resolved "https://registry.npm.taobao.org/eslint-config-standard/download/eslint-config-standard-12.0.0.tgz?cache=0&sync_timestamp=1566945938020&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint-config-standard%2Fdownload%2Feslint-config-standard-12.0.0.tgz#638b4c65db0bd5a41319f96bba1f15ddad2107d9"
@@ -3262,6 +3281,13 @@ eslint-plugin-node@^8.0.0:
     resolve "^1.8.1"
     semver "^5.5.0"
 
+eslint-plugin-prettier@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.npm.taobao.org/eslint-plugin-prettier/download/eslint-plugin-prettier-3.1.4.tgz#168ab43154e2ea57db992a2cd097c828171f75c2"
+  integrity sha1-Foq0MVTi6lfbmSos0JfIKBcfdcI=
+  dependencies:
+    prettier-linter-helpers "^1.0.0"
+
 eslint-plugin-promise@^4.0.1:
   version "4.2.1"
   resolved "https://registry.npm.taobao.org/eslint-plugin-promise/download/eslint-plugin-promise-4.2.1.tgz#845fd8b2260ad8f82564c1222fce44ad71d9418a"
@@ -3281,7 +3307,7 @@ eslint-plugin-vue@^4.7.1:
 
 eslint-plugin-vue@^5.0.0:
   version "5.2.3"
-  resolved "https://registry.npm.taobao.org/eslint-plugin-vue/download/eslint-plugin-vue-5.2.3.tgz#3ee7597d823b5478804b2feba9863b1b74273961"
+  resolved "https://registry.npm.taobao.org/eslint-plugin-vue/download/eslint-plugin-vue-5.2.3.tgz?cache=0&sync_timestamp=1597198086643&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint-plugin-vue%2Fdownload%2Feslint-plugin-vue-5.2.3.tgz#3ee7597d823b5478804b2feba9863b1b74273961"
   integrity sha1-PudZfYI7VHiASy/rqYY7G3QnOWE=
   dependencies:
     vue-eslint-parser "^5.0.0"
@@ -3410,7 +3436,7 @@ espree@^3.5.2, espree@^3.5.4:
 
 espree@^4.1.0:
   version "4.1.0"
-  resolved "https://registry.npm.taobao.org/espree/download/espree-4.1.0.tgz?cache=0&sync_timestamp=1566612937277&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fespree%2Fdownload%2Fespree-4.1.0.tgz#728d5451e0fd156c04384a7ad89ed51ff54eb25f"
+  resolved "https://registry.npm.taobao.org/espree/download/espree-4.1.0.tgz?cache=0&sync_timestamp=1595033652422&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fespree%2Fdownload%2Fespree-4.1.0.tgz#728d5451e0fd156c04384a7ad89ed51ff54eb25f"
   integrity sha1-co1UUeD9FWwEOEp62J7VH/VOsl8=
   dependencies:
     acorn "^6.0.2"
@@ -3656,6 +3682,11 @@ fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npm.taobao.org/fast-deep-equal/download/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
   integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
+
+fast-diff@^1.1.2:
+  version "1.2.0"
+  resolved "https://registry.npm.taobao.org/fast-diff/download/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
+  integrity sha1-c+4RmC2Gyq95WYKNUZz+kn+sXwM=
 
 fast-glob@^2.2.6:
   version "2.2.7"
@@ -4007,6 +4038,11 @@ get-stdin@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npm.taobao.org/get-stdin/download/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
   integrity sha1-uWjGsKBDhDJJAui/Gl3zJXmkUP4=
+
+get-stdin@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npm.taobao.org/get-stdin/download/get-stdin-6.0.0.tgz#9e09bf712b360ab9225e812048f71fde9c89657b"
+  integrity sha1-ngm/cSs2CrkiXoEgSPcf3pyJZXs=
 
 get-stream@^3.0.0:
   version "3.0.0"
@@ -6814,10 +6850,22 @@ prepend-http@^2.0.0:
   resolved "https://registry.npm.taobao.org/prepend-http/download/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
+prettier-linter-helpers@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/prettier-linter-helpers/download/prettier-linter-helpers-1.0.0.tgz#d23d41fe1375646de2d0104d3454a3008802cf7b"
+  integrity sha1-0j1B/hN1ZG3i0BBNNFSjAIgCz3s=
+  dependencies:
+    fast-diff "^1.1.2"
+
 prettier@1.16.3:
   version "1.16.3"
   resolved "https://registry.npm.taobao.org/prettier/download/prettier-1.16.3.tgz#8c62168453badef702f34b45b6ee899574a6a65d"
   integrity sha1-jGIWhFO63vcC80tFtu6JlXSmpl0=
+
+prettier@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npm.taobao.org/prettier/download/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha1-1tVigkVSQ/L5LMFxZpLAiqMVItQ=
 
 pretty-error@^2.0.2:
   version "2.1.1"
@@ -8647,7 +8695,7 @@ vue-eslint-parser@^2.0.3:
 
 vue-eslint-parser@^5.0.0:
   version "5.0.0"
-  resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-5.0.0.tgz#00f4e4da94ec974b821a26ff0ed0f7a78402b8a1"
+  resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-5.0.0.tgz?cache=0&sync_timestamp=1589539313907&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-eslint-parser%2Fdownload%2Fvue-eslint-parser-5.0.0.tgz#00f4e4da94ec974b821a26ff0ed0f7a78402b8a1"
   integrity sha1-APTk2pTsl0uCGib/DtD3p4QCuKE=
   dependencies:
     debug "^4.1.0"

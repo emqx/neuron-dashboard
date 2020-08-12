@@ -8,10 +8,7 @@ Vue.use(Router)
 
 let router = new Router({
   // mode: 'history',
-  routes: [
-    ...menu.router,
-    ...invisible
-  ]
+  routes: [...menu.router, ...invisible],
 })
 
 router.beforeEach((to, from, next) => {
@@ -21,7 +18,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       next({
-        name: 'login'
+        name: 'login',
       })
     }
   } else {

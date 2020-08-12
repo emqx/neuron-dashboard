@@ -1,5 +1,5 @@
 export default {
-  mounted () {
+  mounted() {
     document.title = this.$route.name.split('-')[0]
-  }
+  },
 }

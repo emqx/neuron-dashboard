@@ -1,18 +1,12 @@
 <template>
-  <div class="dd-card-full"
-       :style="cardStyle">
-    <div v-if="$slots.header"
-         class="dd-card-full__header"
-         ref="header">
+  <div class="dd-card-full" :style="cardStyle">
+    <div v-if="$slots.header" class="dd-card-full__header" ref="header">
       <slot name="header"></slot>
     </div>
-    <div class="dd-card-full__body"
-         ref="wrapper">
+    <div class="dd-card-full__body" ref="wrapper">
       <slot />
     </div>
-    <div v-if="$slots.footer"
-         class="dd-card-full__footer"
-         ref="footer">
+    <div v-if="$slots.footer" class="dd-card-full__footer" ref="footer">
       <slot name="footer"></slot>
     </div>
   </div>
@@ -25,44 +19,44 @@ export default {
     top: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     right: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     bottom: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     left: {
       type: Number,
       required: false,
-      default: 0
-    }
+      default: 0,
+    },
   },
-  data () {
+  data() {
     return {
       headerHeight: 0,
-      footerHeight: 0
+      footerHeight: 0,
     }
   },
   computed: {
-    cardStyle () {
+    cardStyle() {
       return `
       top:${this.top}px;
       right:${this.right}px;
       bottom:${this.bottom}px;
       left:${this.left}px`
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/style/public.scss";
+@import '@/assets/style/public.scss';
 .dd-card-full {
   position: absolute;
   border: 1px solid $color-bg-card;
