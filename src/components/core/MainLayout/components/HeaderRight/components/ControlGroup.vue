@@ -57,7 +57,6 @@ export default {
             if (i.preAndSuff) delete i.preAndSuff
           })
           res.func = 21
-          console.log(JSON.stringify(res, null, 2))
           this.$ws().set({ success: this.handleSuccess }).send(res)
         })
         .catch()
