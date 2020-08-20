@@ -111,11 +111,12 @@ class DataSource {
   }
   send(msg) {
     if (msg) {
-      msg.wtrm = this.wtrm
-      if (typeof msg !== 'string') {
-        msg = JSON.stringify(msg)
+      let $msg = msg
+      $msg.wtrm = this.wtrm
+      if (typeof $msg !== 'string') {
+        $msg = JSON.stringify($msg)
       }
-      this.tmp = () => this.websocket.send(msg)
+      this.tmp = () => this.websocket.send($msg)
     }
     if (this.websocket && this.websocket.readyState !== 1) {
       if (this.tmp) {

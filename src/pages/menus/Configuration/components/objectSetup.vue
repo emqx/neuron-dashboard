@@ -205,10 +205,13 @@ export default {
           const aadds = currentObjs
             .map((currentObj) => {
               if (currentObj.attn === attr.attn) {
+                let { suff, pref, addr } = currentObj
+                suff = suff ? suff.toString() : ''
+                pref = pref ? pref.toString() : ''
                 return {
-                  suff: currentObj.suff || '',
-                  pref: currentObj.pref || '',
-                  addr: currentObj.addr,
+                  suff,
+                  pref,
+                  addr,
                 }
               }
             })
