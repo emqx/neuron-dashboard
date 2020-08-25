@@ -11,24 +11,28 @@ const constructObjd = (data) => {
   return res
 }
 
+const getChnl = () => {
+  return JSON.parse(localStorage.getItem('chnl')) || []
+}
+const getChdv = () => {
+  const chnl = JSON.parse(localStorage.getItem('chnl'))
+  return chnl ? chnl[0].chdv : ''
+}
+const getObjectData = () => {
+  return JSON.parse(localStorage.getItem('objectData')) || []
+}
+const getEventData = () => {
+  return JSON.parse(localStorage.getItem('eventData')) || []
+}
+
 export default {
   state: {
     driverData: {
-      chdv: '',
-      chnl: [
-        {
-          tcph: '',
-          tcpp: 0,
-          ttyc: '',
-          ttyb: 0,
-          ttyd: 0,
-          ttys: '',
-          ttyp: '',
-        },
-      ],
+      chdv: getChdv(),
+      chnl: getChnl(),
     },
-    objectData: [],
-    eventData: [],
+    objectData: getObjectData(),
+    eventData: getEventData(),
   },
   getters: {
     res(state) {
@@ -41,11 +45,12 @@ export default {
     },
   },
   mutations: {
-    setAllData(state, { chnl, msgd, objd, chdv }) {
-      state.driverData.chdv = chdv || ''
-      state.driverData.chnl = chnl
+    setAllData(state, { chnl, msgd, objd }) {
+      const localChnl = localStorage.getItem('chnl')
       const localEventData = localStorage.getItem('eventData')
       const localObjectData = localStorage.getItem('objectData')
+      state.driverData.chdv = localChnl ? JSON.parse(localChnl)[0].chdv : chnl[0].chdv
+      state.driverData.chnl = localChnl ? JSON.parse(localChnl) : chnl
       state.objectData = localObjectData ? JSON.parse(localObjectData) : constructObjd(objd)
       state.eventData = localEventData ? JSON.parse(localEventData) : msgd
       // const filterData = localObjectData.filter((obj) => {
@@ -58,6 +63,7 @@ export default {
     setDriverData(state, { chdv, chnl }) {
       state.driverData.chdv = chdv
       state.driverData.chnl = chnl
+      localStorage.setItem('chnl', JSON.stringify(chnl))
     },
     setObjectData(state, objectData) {
       state.objectData = [...state.objectData, ...objectData]

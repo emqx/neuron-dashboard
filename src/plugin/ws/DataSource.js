@@ -25,6 +25,7 @@ class DataSource {
       console.log('socket closed')
       const currentName = window.location.href.split('/')[4]
       sessionStorage.removeItem('user')
+      localStorage.removeItem('chnl')
       localStorage.removeItem('objectData')
       localStorage.removeItem('eventData')
       if (currentName !== 'login') {
