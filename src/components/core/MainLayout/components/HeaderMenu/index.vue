@@ -93,6 +93,7 @@ export default {
                 success: (data) => {
                   if (data.func === 11 && data.errc === 0) {
                     sessionStorage.removeItem('user')
+                    localStorage.removeItem('chnl')
                     localStorage.removeItem('objectData')
                     localStorage.removeItem('eventData')
                     this.$router.push({ name })

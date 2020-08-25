@@ -53,6 +53,9 @@ export default {
       })
         .then(() => {
           const res = clone(this.res)
+          if (res.chdv) {
+            delete res.chdv
+          }
           res.objd.forEach((i) => {
             if (i.preAndSuff) delete i.preAndSuff
           })
@@ -65,6 +68,7 @@ export default {
       if (data.func === 21 && data.errc === 0) {
         this.$ws().remove(this.handleSuccess)
         this.$openMessage.success('Submit success!')
+        localStorage.removeItem('chnl')
         localStorage.removeItem('objectData')
         localStorage.removeItem('eventData')
         setTimeout(() => {
