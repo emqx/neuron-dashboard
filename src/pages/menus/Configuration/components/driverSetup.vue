@@ -11,7 +11,7 @@
             <el-option v-for="item in driverList" :key="item.val" :label="item.label" :value="item.val"> </el-option>
           </el-select>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="12">
           <div>{{ driverType }}</div>
         </el-col>
       </el-row>
@@ -62,7 +62,7 @@
         <el-col v-if="driverType === 'Serial drivers' || driverType === 'Ethernet drivers'" :span="24">
           <el-table v-if="chnl[0].parm && chnl[0].parm.length" class="script-table" :data="chnl[0].parm">
             <el-table-column label="Vars" prop="vars"> </el-table-column>
-            <el-table-column label="Pars" prop="pars">
+            <el-table-column label="Pars" prop="pars" min-width="180px">
               <template slot-scope="scope">
                 <el-input placeholder="" size="mini" v-model="scope.row.pars"> </el-input>
               </template>
@@ -74,7 +74,7 @@
         </el-col>
         <el-col :span="12">
           <el-select v-model="mqtt">
-            <el-option label="pahomq" value="pahomq"></el-option>
+            <el-option label="MQTT Client" value="pahomq"></el-option>
           </el-select>
         </el-col>
         <template v-if="mqtt">
@@ -98,7 +98,7 @@
           <el-col :span="24">
             <el-table v-if="chnl[1].parm" class="script-table" :data="chnl[1].parm">
               <el-table-column label="Vars" prop="vars"> </el-table-column>
-              <el-table-column label="Pars" prop="pars">
+              <el-table-column label="Pars" prop="pars" min-width="220px">
                 <template slot-scope="scope">
                   <el-input
                     :type="scope.row.vars === 'PASSWORD' ? 'password' : ''"
