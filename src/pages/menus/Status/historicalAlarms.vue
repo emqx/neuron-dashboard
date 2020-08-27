@@ -53,6 +53,7 @@
 <script>
 import Mixins from '@/mixins'
 import moment from 'moment'
+
 export default {
   mixins: [Mixins],
   data() {
@@ -64,6 +65,7 @@ export default {
       cate: '',
       cateList: ['critical', 'alarm', 'warning', 'event', 'view'],
       patn: '',
+      sett: '',
     }
   },
   methods: {
