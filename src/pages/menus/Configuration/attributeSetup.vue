@@ -140,7 +140,9 @@ export default {
       this.preAndSuff.addr = ''
     },
     getFullName(pref, suff) {
+      // eslint-disable-next-line no-param-reassign
       pref = pref ? pref + '_' : ''
+      // eslint-disable-next-line no-param-reassign
       suff = suff ? '_' + suff : ''
       return pref + this.objn + suff
     },

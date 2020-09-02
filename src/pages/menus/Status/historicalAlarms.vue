@@ -61,7 +61,7 @@ export default {
       data: [],
       params: {},
       time: [moment().subtract(1, 'hours'), moment()],
-      srch: 'FromFirst',
+      srch: '',
       cate: '',
       cateList: ['critical', 'alarm', 'warning', 'event', 'view'],
       patn: '',
