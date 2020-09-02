@@ -30,6 +30,7 @@ const $message = (options) => {
 ;['success', 'warning', 'info', 'error'].forEach((type) => {
   $message[type] = (options) => {
     if (typeof options === 'string') {
+      // eslint-disable-next-line no-param-reassign
       options = {
         message: options,
         duration: 6000,

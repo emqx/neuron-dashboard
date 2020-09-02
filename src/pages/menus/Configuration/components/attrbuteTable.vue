@@ -75,7 +75,9 @@ export default {
       this.$emit('input', this.multipleSelection)
     },
     getFullName(pref, suff) {
+      // eslint-disable-next-line no-param-reassign
       pref = pref ? pref + '_' : ''
+      // eslint-disable-next-line no-param-reassign
       suff = suff ? '_' + suff : ''
       return pref + this.objectName + suff
     },

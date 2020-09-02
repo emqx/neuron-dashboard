@@ -127,6 +127,7 @@ export default {
     },
     submit(name, subr, rows) {
       if (!rows) {
+        // eslint-disable-next-line no-param-reassign
         rows = []
       }
       this.$ws()
