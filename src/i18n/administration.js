@@ -43,12 +43,4 @@ export default {
     zh: '代理组',
     en: 'Agent Group',
   },
-  requestLicense: {
-    zh: '请求 License',
-    en: 'Request License',
-  },
-  extensionLicense: {
-    zh: '扩展 License',
-    en: 'Extension License',
-  },
 }

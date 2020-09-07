@@ -14,8 +14,6 @@
               {{ subMenu.title }}
             </el-menu-item>
             <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
-              <el-menu-item @click="getData(90)">{{ $t('administration.requestLicense') }}</el-menu-item>
-              <el-menu-item @click="getData(91)">{{ $t('administration.extensionLicense') }}</el-menu-item>
               <el-menu-item @click="getData(74)">{{ $t('common.about') }}</el-menu-item>
             </div>
           </template>
@@ -28,15 +26,6 @@
       </template>
     </template>
     <About ref="about" />
-    <el-dialog title="Request License" :visible.sync="dialogVisible" width="700px">
-      <p>{{ key }}</p>
-    </el-dialog>
-    <el-dialog title="Extension License" :visible.sync="dialogVisible1" width="700px">
-      <el-input type="textarea" :rows="8" v-model="license"> </el-input>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
-      </div>
-    </el-dialog>
   </el-menu>
 </template>
 
@@ -49,10 +38,7 @@ export default {
     return {
       menu,
       curFunc: 0,
-      dialogVisible: false,
-      dialogVisible1: false,
       key: '',
-      license: '',
     }
   },
   computed: {
@@ -115,31 +101,15 @@ export default {
     },
     getData(func) {
       this.curFunc = func
-      if (func !== 91) {
-        this.$ws().set({ success: this.setData }).send({ func })
-      } else {
-        this.dialogVisible1 = true
-      }
+      this.$ws().set({ success: this.setData }).send({ func })
     },
     setData(data) {
       if (data.func === this.curFunc) {
         this.$ws().remove(this.setData)
-        switch (data.func) {
-          case 74:
-            this.$refs['about'].showDialog(data)
-            break
-          case 90:
-            this.key = data.keyv
-            this.dialogVisible = true
-            break
-          case 91:
-            break
+        if (data.func === 74) {
+          this.$refs['about'].showDialog(data)
         }
       }
-    },
-    handleSubmit() {
-      this.$ws().send({ func: 91, keyv: this.license })
-      this.dialogVisible1 = false
     },
   },
   components: {
