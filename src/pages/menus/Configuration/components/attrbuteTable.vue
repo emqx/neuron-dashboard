@@ -1,8 +1,8 @@
 <template>
   <el-table :data="attributeList" @selection-change="handleSelectionChange" style="width: 100%;">
     <el-table-column type="selection" v-if="showBtn" width="55"> </el-table-column>
-    <el-table-column prop="attn" :min-width="80" label="Name" />
-    <el-table-column label="Object: Address" min-width="250">
+    <el-table-column prop="attn" :min-width="80" :label="$t('common.name')" />
+    <el-table-column :label="`Object: ${$t('configuration.address')}`" min-width="250">
       <template slot-scope="scope">
         <div>
           <div v-for="item in scope.row.aadd" class="addrs" :key="getFullName(item.pref, item.suff)">
@@ -12,7 +12,7 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column prop="attt" :width="minWidth" label="Type" />
+    <el-table-column prop="attt" :width="minWidth" :label="$t('common.type')" />
     <el-table-column prop="deci" :width="minWidth" label="Decimal" />
     <el-table-column prop="adis" :width="minWidth" label="Visible">
       <template slot-scope="scope">
@@ -28,10 +28,10 @@
     <el-table-column prop="rtim" :width="minWidth" label="Rtime" />
     <el-table-column :width="250" v-if="showBtn">
       <template slot-scope="scope">
-        <el-button type="text" @click="handleEdit(scope.row)">Edit</el-button>
-        <el-button type="text" @click="addAddress(scope.row)">Addr</el-button>
+        <el-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</el-button>
+        <el-button type="text" @click="addAddress(scope.row)">{{ $t('configuration.addr') }}</el-button>
         <el-button type="text" @click="handleDummy(scope.row)">Dummy</el-button>
-        <el-button type="text" @click="handleDelete(scope.row)">Delete</el-button>
+        <el-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
       </template>
     </el-table-column>
   </el-table>

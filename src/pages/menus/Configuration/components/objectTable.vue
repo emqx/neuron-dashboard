@@ -7,7 +7,7 @@
     </el-table-column>
     <el-table-column v-if="showSelection" type="selection" width="55"> </el-table-column>
     <el-table-column type="index" width="100" label="No" />
-    <el-table-column prop="objn" label="Object Name" min-width="250" />
+    <el-table-column prop="objn" :label="$t('status.objectName')" min-width="250" />
     <el-table-column prop="obsz" :min-width="100" label="Size" />
     <el-table-column prop="updt" :min-width="100" label="Update Time" />
     <el-table-column prop="logt" :min-width="100" label="Log Time" />
@@ -18,9 +18,9 @@
     </el-table-column>
     <el-table-column :width="200" v-if="showBtn">
       <template slot-scope="scope">
-        <el-button type="text" @click="handleEdit(scope.row)">Edit</el-button>
-        <el-button type="text" @click="goToAttrPage(scope.row)">Attribute</el-button>
-        <el-button type="text" @click="handleDelete(scope.row)">Delete</el-button>
+        <el-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</el-button>
+        <el-button type="text" @click="goToAttrPage(scope.row)">{{ $t('status.attrbute') }}</el-button>
+        <el-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
       </template>
     </el-table-column>
   </el-table>

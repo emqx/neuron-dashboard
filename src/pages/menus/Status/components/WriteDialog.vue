@@ -1,12 +1,10 @@
 <template>
   <el-dialog :title="propName" :visible.sync="dialogVisible" width="500px" @closed="handleClose">
-    <span>
-      Value:
-    </span>
+    <span> {{ $t('status.value') }}: </span>
     <el-input v-model="val" style="width: 400px;"></el-input>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">cancel</el-button>
-      <el-button type="primary" @click="handleSubmit">submit</el-button>
+      <el-button @click="dialogVisible = false">{{ $t('common.cancel') }}</el-button>
+      <el-button type="primary" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
     </span>
   </el-dialog>
 </template>

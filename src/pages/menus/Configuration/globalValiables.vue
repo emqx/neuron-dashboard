@@ -1,9 +1,9 @@
 <template>
   <Container type="card-full" :scorll="false">
     <div class="flex dd-mb">
-      <div class="dd-title">Global Valiables</div>
+      <div class="dd-title">{{ $t('configuration.gValiables') }}</div>
       <div>
-        <el-button @click="handleSubmit(null)">submit</el-button>
+        <el-button @click="handleSubmit(null)">{{ $t('common.submit') }}</el-button>
       </div>
     </div>
     <el-table class="script-table" :data="varData">
@@ -18,7 +18,7 @@
           <el-input placeholder="" @keyup.enter.native="add(scope.$index)" size="mini" v-model="scope.row.leng" />
         </template>
       </el-table-column>
-      <el-table-column label="Description" min-width="300">
+      <el-table-column :label="$t('common.description')" min-width="300">
         <template slot-scope="scope">
           <el-input placeholder="" size="mini" v-model="scope.row.comt"> </el-input>
         </template>
@@ -94,7 +94,7 @@ export default {
         sendData()
         callback()
       } else {
-        this.$confirm('Are you sure submit these gloabl valiables', 'Submit', {
+        this.$confirm(this.$t('configuration.confirmSubmitGVar'), this.$t('common.submit'), {
           type: 'warning',
         })
           .then(() => {
@@ -118,11 +118,11 @@ export default {
     if (_.isEqual(this.oldVarData, this.varData)) {
       next()
     } else {
-      this.$confirm('You have unsubmitted changes, submit and proceed? ', 'Confirm', {
+      this.$confirm('You have unsubmitted changes, submit and proceed? ', this.$t('common.confirm'), {
         type: 'warning',
         distinguishCancelAndClose: true,
-        confirmButtonText: 'Submit',
-        cancelButtonText: 'Discard Changes',
+        confirmButtonText: this.$t('common.submit'),
+        cancelButtonText: this.$t('common.discardChanges'),
       })
         .then(() => {
           this.handleSubmit(next)

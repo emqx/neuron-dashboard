@@ -1,16 +1,16 @@
 <template>
   <Container type="card-full" :scorll="false">
     <div class="row flex">
-      <div class="dd-title">Data Monitoring</div>
+      <div class="dd-title">{{ $t('status.dataMonitoring') }}</div>
       <div class="btnGroup">
-        <span>Object name: </span>
+        <span>{{ $t('status.objectName') }}: </span>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <el-select v-model="objName">
           <el-option v-for="item in objList" :key="item" :label="item" :value="item"> </el-option>
         </el-select>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button @click="handleShow(null, 'History')">History</el-button>
-        <el-button @click="handleShow(null, 'Current')">Current</el-button>
+        <el-button @click="handleShow(null, 'History')">{{ $t('status.history') }}</el-button>
+        <el-button @click="handleShow(null, 'Current')">{{ $t('status.current') }}</el-button>
       </div>
     </div>
     <el-table :data="tableData.length ? data : []" class="table">
@@ -26,14 +26,16 @@
           ></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column prop="prop" label="Attrbute" min-width="180"> </el-table-column>
-      <el-table-column prop="val" label="Value" min-width="180"> </el-table-column>
-      <el-table-column width="200">
+      <el-table-column prop="prop" :label="$t('status.attrbute')" min-width="180"> </el-table-column>
+      <el-table-column prop="val" :label="$t('status.value')" min-width="180"> </el-table-column>
+      <el-table-column width="300">
         <template slot-scope="scope">
           <div class="btn" v-if="scope.row.prop !== 'Time'">
-            <el-button type="text" v-if="scope.row.writable" @click="handleWrite(scope.row)">Write</el-button>
-            <el-button type="text" @click="handleShow(scope.row, 'History')">History</el-button>
-            <el-button type="text" @click="handleShow(scope.row, 'Current')">Current</el-button>
+            <el-button type="text" v-if="scope.row.writable" @click="handleWrite(scope.row)">{{
+              $t('status.write')
+            }}</el-button>
+            <el-button type="text" @click="handleShow(scope.row, 'History')">{{ $t('status.history') }}</el-button>
+            <el-button type="text" @click="handleShow(scope.row, 'Current')">{{ $t('status.current') }}</el-button>
           </div>
         </template>
       </el-table-column>
@@ -158,7 +160,7 @@ export default {
   margin: 50px;
 }
 .btnGroup {
-  width: 700px;
+  width: 705px;
   /deep/.el-select {
     width: 350px;
   }

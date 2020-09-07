@@ -1,6 +1,6 @@
 <template>
   <Container type="card-full" :scorll="false">
-    <div class="dd-title dd-mb">Agent Group</div>
+    <div class="dd-title dd-mb">{{ $t('administration.agentGroup') }}</div>
     <el-table :data="tableData" style="width: 100%;">
       <el-table-column
         v-for="item in map"

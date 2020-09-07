@@ -1,15 +1,15 @@
 <template>
   <Container type="card-full" :scorll="false">
     <div class="flex dd-mb">
-      <div class="dd-title">Script Programming</div>
+      <div class="dd-title">{{ $t('configuration.scriptProgramming') }}</div>
       <div class="row">
         <ScriptTypeSelect v-model="type" @delete="init" @submit="submit" />
         &nbsp;&nbsp;
-        <el-button class="dd-fr" type="primary" @click="handleSubmit">Submit</el-button>
+        <el-button class="dd-fr" type="primary" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
       </div>
     </div>
     <el-table class="script-table" :data="scriptData">
-      <el-table-column label="Comment" min-width="120">
+      <el-table-column :label="$t('status.comment')" min-width="120">
         <template slot-scope="scope">
           <el-select
             v-model="scope.row.stmt"
@@ -22,7 +22,7 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="Statement" min-width="300">
+      <el-table-column :label="$t('common.statement')" min-width="300">
         <template slot-scope="scope">
           <el-input placeholder="" type="textarea" size="mini" :rows="1" v-model="scope.row.expr"> </el-input>
         </template>
@@ -39,8 +39,8 @@
     <el-dialog :visible.sync="dialogVisible" title="POS" width="300px" @closed="handleClosed">
       <el-input-number v-model="pos" :min="1" :max="999" :controls="false" size="mini"></el-input-number>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">cancel</el-button>
-        <el-button type="primary" @click="handlePosSubmit">submit</el-button>
+        <el-button @click="dialogVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handlePosSubmit">{{ $t('common.submit') }}</el-button>
       </span>
     </el-dialog>
   </Container>
@@ -115,7 +115,7 @@ export default {
         this.$openMessage.error('select a routine')
         return
       }
-      this.$confirm('Are you sure submit these script programming', 'Submit', {
+      this.$confirm('Are you sure submit these script programming', this.$t('common.submit'), {
         type: 'warning',
       })
         .then(() => {
@@ -158,11 +158,11 @@ export default {
       this.scriptData.splice(index, 1)
     },
     promptUnsubmitted(callback) {
-      this.$confirm('You have unsubmitted changes, submit and proceed? ', 'Confirm', {
+      this.$confirm('You have unsubmitted changes, submit and proceed? ', this.$t('common.confirm'), {
         type: 'warning',
         distinguishCancelAndClose: true,
-        confirmButtonText: 'Submit',
-        cancelButtonText: 'Discard Changes',
+        confirmButtonText: this.$t('common.submit'),
+        cancelButtonText: this.$t('common.discardChanges'),
       })
         .then(() => {
           const rows = this.scriptData

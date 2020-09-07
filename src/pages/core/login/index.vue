@@ -12,13 +12,13 @@
                 <img class="neuron-logo" src="@/assets/neuron-logo.png" alt="neuron logo" />
               </div>
               <el-form-item prop="username">
-                <el-input type="text" v-model="formLogin.username" placeholder="Username"> </el-input>
+                <el-input type="text" v-model="formLogin.username" :placeholder="$t('common.username')"> </el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input type="password" v-model="formLogin.password" placeholder="Password"> </el-input>
+                <el-input type="password" v-model="formLogin.password" :placeholder="$t('common.password')"> </el-input>
               </el-form-item>
               <div class="button-login">
-                <el-button @click="submit" type="primary">Login</el-button>
+                <el-button @click="submit" type="primary">{{ $t('common.login') }}</el-button>
               </div>
             </el-form>
           </el-col>
@@ -95,7 +95,6 @@ export default {
     text-align: center;
     margin-bottom: $margin + 20px;
   }
-  // 登陆表单
   .form-group {
     width: 600px;
     // 重新设置卡片
@@ -127,7 +126,6 @@ export default {
         border-right: none;
       }
     }
-    // 登陆按钮
     .button-login {
       button {
         width: 100%;

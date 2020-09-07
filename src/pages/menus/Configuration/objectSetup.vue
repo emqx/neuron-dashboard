@@ -1,7 +1,7 @@
 <template>
   <Container type="card-full" :scorll="false">
     <div class="row flex">
-      <div class="dd-title">Object Setup</div>
+      <div class="dd-title">{{ $t('configuration.objectSetup') }}</div>
       <div class="driverName">{{ deviceObj.label }}</div>
       <div class="btnGroup">
         <DriverSetup />

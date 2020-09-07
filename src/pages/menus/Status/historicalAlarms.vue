@@ -1,10 +1,10 @@
 <template>
   <Container type="card-full" class="historical-alarms" :scorll="false">
-    <div class="dd-title">Historical Alarms</div>
+    <div class="dd-title">{{ $t('status.historicalAlarms') }}</div>
     <el-row :gutter="20">
       <el-form>
         <el-col :span="7">
-          <el-form-item label="Date:">
+          <el-form-item :label="$t('status.date')">
             <el-date-picker
               v-model="time"
               class="input"
@@ -17,12 +17,12 @@
           </el-form-item>
         </el-col>
         <el-col :span="7">
-          <el-form-item label="Pattern:">
+          <el-form-item :label="$t('status.pattern')">
             <el-input v-model="patn" class="input"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
-          <el-form-item label="Category:">
+          <el-form-item :label="$t('status.category')">
             <el-select v-model="cate" class="input" clearable>
               <el-option v-for="item in cateList" :key="item" :label="item" :value="item"> </el-option>
             </el-select>
@@ -30,22 +30,22 @@
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-button class="btn filter" @click="handleSubmit('')">submit</el-button>
+            <el-button class="btn filter" @click="handleSubmit('')">{{ $t('common.submit') }}</el-button>
           </el-form-item>
         </el-col>
       </el-form>
     </el-row>
     <el-table :data="data" style="width: 100%; margin-top: 20px;">
-      <el-table-column min-width="130" prop="anum" label="Index" />
-      <el-table-column min-width="130" label="Time">
+      <el-table-column min-width="130" prop="anum" :label="$t('status.index')" />
+      <el-table-column min-width="130" :label="$t('status.time')">
         <template slot-scope="scope">
           {{ format(scope.row.tstp || '') }}
         </template>
       </el-table-column>
-      <el-table-column min-width="130" prop="cate" label="Category" />
-      <el-table-column prop="stat" label="State" min-width="130" />
-      <el-table-column prop="uack" min-width="130" label="Remark"> </el-table-column>
-      <el-table-column prop="comt" min-width="400" label="Alarm message" />
+      <el-table-column min-width="130" prop="cate" :label="$t('status.category')" />
+      <el-table-column prop="stat" :label="$t('status.state')" min-width="130" />
+      <el-table-column prop="uack" min-width="130" :label="$t('status.remark')"> </el-table-column>
+      <el-table-column prop="comt" min-width="400" :label="$t('status.alarmMessage')" />
     </el-table>
   </Container>
 </template>
