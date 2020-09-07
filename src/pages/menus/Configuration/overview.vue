@@ -1,16 +1,16 @@
 <template>
   <Container type="card-full" :scorll="false">
     <div class="flex">
-      <div class="dd-title">Overview</div>
+      <div class="dd-title">{{ $t('configuration.overview') }}</div>
     </div>
-    <p>Driver Name: {{ deviceObj.label }} &nbsp;&nbsp;&nbsp;&nbsp; {{ deviceObj.type }}</p>
+    <p>{{ $t('configuration.driverName') }}: {{ deviceObj.label }} &nbsp;&nbsp;&nbsp;&nbsp; {{ deviceObj.type }}</p>
     <div class="dd-mb">
       <p>Object:</p>
       <ObjectTable showAttr :showSelection="false" />
     </div>
 
     <div class="dd-mb">
-      <p>Event:</p>
+      <p>{{ $t('configuration.event') }}:</p>
       <EventTable :eventList="res.msgd" />
     </div>
   </Container>

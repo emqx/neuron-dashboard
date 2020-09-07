@@ -3,16 +3,18 @@
     <div class="row flex">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/Configuration/objectSetup' }">
-          <span class="dd-title">Object Setup</span>
+          <span class="dd-title">{{ $t('configuration.objectSetup') }}</span>
         </el-breadcrumb-item>
         <el-breadcrumb-item>
-          <span class="dd-title">Attribute Setup</span>
+          <span class="dd-title">{{ $t('configuration.attributeSetup') }}</span>
         </el-breadcrumb-item>
       </el-breadcrumb>
       <div>
-        <el-button @click="$router.go(-1)">Back</el-button>
-        <el-button @click="dialogTableVisible = true" type="primary">Create</el-button>
-        <el-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">Delete</el-button>
+        <el-button @click="$router.go(-1)">{{ $t('common.back') }}</el-button>
+        <el-button @click="dialogTableVisible = true" type="primary">{{ $t('common.create') }}</el-button>
+        <el-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">{{
+          $t('common.delete')
+        }}</el-button>
       </div>
     </div>
     <div>
@@ -28,17 +30,17 @@
       />
     </div>
 
-    <el-dialog title="Data Attribute Setup" :visible.sync="dialogTableVisible" @closed="close">
+    <el-dialog :title="$t('configuration.dataAttributeSetup')" :visible.sync="dialogTableVisible" @closed="close">
       <el-form
         ref="AttributeSetupForm"
         :model="AttributeSetupForm"
         :rules="AttributeSetupFormRules"
         label-width="120px"
       >
-        <el-form-item label="Attribute name" prop="attn">
+        <el-form-item :label="$t('common.name')" prop="attn">
           <el-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></el-input>
         </el-form-item>
-        <el-form-item label="Attribute type" prop="attn">
+        <el-form-item :label="$t('common.type')" prop="attn">
           <el-select v-model="AttributeSetupForm.attt">
             <el-option v-for="item in AttributeTypeList" :key="item.val" :label="item.val" :value="item.val">
             </el-option>
@@ -71,27 +73,27 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="submitAttributeSetupFrom">submit</el-button>
+        <el-button @click="submitAttributeSetupFrom">{{ $t('common.submit') }}</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog title="Data Address Setup" @closed="addressClosed" :visible.sync="addressVisible">
+    <el-dialog :title="$t('configuration.dataAddrSetup')" @closed="addressClosed" :visible.sync="addressVisible">
       <el-table :data="preAndSuff" class="dd-mb">
-        <el-table-column label="Index" :width="minWidth">
+        <el-table-column :label="$t('status.index')" :width="minWidth">
           <template slot-scope="scope">
             {{ scope.row.obix + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="pref" :width="minWidth" label="Prefix" />
-        <el-table-column label="Suffix" :width="minWidth" prop="suff" />
-        <el-table-column label="Address">
+        <el-table-column prop="pref" :width="minWidth" :label="$t('configuration.prefix')" />
+        <el-table-column :label="$t('configuration.suffix')" :width="minWidth" prop="suff" />
+        <el-table-column :label="$t('configuration.address')">
           <template slot-scope="scope">
             <el-input v-model="scope.row.addr" size="mini"></el-input>
           </template>
         </el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addressSubmit" type="primary">submit</el-button>
+        <el-button @click="addressSubmit" type="primary">{{ $t('common.submit') }}</el-button>
       </span>
     </el-dialog>
   </Container>
@@ -186,7 +188,7 @@ export default {
     },
     confirmSubmit() {
       if (!this.validataAddr()) {
-        this.$openMessage.warning('Address is requried, please click the addr button to configure the address!')
+        this.$openMessage.warning(this.$t('configuration.addressRequired'))
       }
       setTimeout(() => {
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
@@ -221,14 +223,12 @@ export default {
     },
     onDelete(data) {
       const deleteData = []
-      let confirmMsg = 'Are you sure delete these attribute?'
       if (data) {
         deleteData.push(data)
-        confirmMsg = 'Are you sure delete this attribute?'
       } else {
         deleteData.push(...this.multipleSelection)
       }
-      this.$confirm(confirmMsg, 'delete attribute', {
+      this.$confirm(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       })
         .then(() => {

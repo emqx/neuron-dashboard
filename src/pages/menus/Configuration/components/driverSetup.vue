@@ -1,9 +1,11 @@
 <template>
   <div class="driver-setup" style="display: inline-block;">
-    <el-button @click="dialogTableVisible = true">{{ driverData.chdv === '' ? 'New' : 'Edit' }} Driver</el-button>
-    <el-dialog title="Driver Setup" @closed="close" :visible.sync="dialogTableVisible">
+    <el-button @click="dialogTableVisible = true">{{
+      driverData.chdv === '' ? $t('configuration.newDriver') : $t('configuration.editDriver')
+    }}</el-button>
+    <el-dialog :title="$t('configuration.driverSetup')" @closed="close" :visible.sync="dialogTableVisible">
       <h3 class="driver-type-title">
-        Driver type
+        {{ $t('configuration.driverType') }}
       </h3>
       <el-row class="type-row" :gutter="20" type="flex" align="middle">
         <el-col :span="12">
@@ -18,7 +20,7 @@
       <el-row class="edit-drivers-row" :gutter="20">
         <template v-if="driverType === 'Ethernet drivers'">
           <el-col :span="24">
-            <h3>Ethernet driver setup</h3>
+            <h3>Ethernet {{ $t('configuration.driverSetup') }}</h3>
           </el-col>
           <el-col :span="24">
             <el-form ref="driverSetupForm" label-width="80px" label-position="left">
@@ -37,7 +39,7 @@
         </template>
         <template v-else-if="driverType === 'Serial drivers'">
           <el-col :span="24">
-            <h3>Serial driver setup</h3>
+            <h3>Serial {{ $t('configuration.driverSetup') }}</h3>
           </el-col>
           <el-col :span="24">
             <el-form ref="driverSetupForm" label-width="100px" :model="chnl[0]">
@@ -114,7 +116,7 @@
         </template>
       </el-row>
       <span slot="footer">
-        <el-button @click="submit">submit</el-button>
+        <el-button @click="submit">{{ $t('common.submit') }}</el-button>
       </span>
     </el-dialog>
   </div>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-button type="primary" v-if="active" size="small" @click="handleStart">Start</el-button>
-    <el-button type="danger" v-else size="small" @click="handleStop">Stop</el-button>
-    <el-button type="primary" size="small" @click="handleRestart">Restart</el-button>
-    <el-button type="primary" size="small" @click="submit">Send</el-button>
+    <el-button type="primary" v-if="active" size="small" @click="handleStart">{{ $t('common.start') }}</el-button>
+    <el-button type="danger" v-else size="small" @click="handleStop">{{ $t('common.stop') }}</el-button>
+    <el-button type="primary" size="small" @click="handleRestart">{{ $t('common.restart') }}</el-button>
+    <el-button type="primary" size="small" @click="submit">{{ $t('common.send') }}</el-button>
   </div>
 </template>
 
@@ -36,7 +36,7 @@ export default {
       })
     },
     handleRestart() {
-      this.$confirm('Are you sure Restart Gateway', 'Restart', {
+      this.$confirm(this.$t('common.confirmRestart'), this.$t('common.restart'), {
         type: 'warning',
       })
         .then(() => {
@@ -48,7 +48,7 @@ export default {
         .catch()
     },
     submit() {
-      this.$confirm('Are you sure send your Configuration', 'Send', {
+      this.$confirm(this.$t('common.confirmSend'), this.$t('common.send'), {
         type: 'warning',
       })
         .then(() => {
@@ -67,12 +67,12 @@ export default {
     handleSuccess(data) {
       if (data.func === 21 && data.errc === 0) {
         this.$ws().remove(this.handleSuccess)
-        this.$openMessage.success('Submit success!')
+        this.$openMessage.success(this.$t('common.submitSuccess'))
         localStorage.removeItem('chnl')
         localStorage.removeItem('objectData')
         localStorage.removeItem('eventData')
         setTimeout(() => {
-          this.$openMessage.info('Restarting...')
+          this.$openMessage.info(this.$t('common.restarting'))
           this.$ws().set().send({
             func: 70,
             acts: 'restartnew',

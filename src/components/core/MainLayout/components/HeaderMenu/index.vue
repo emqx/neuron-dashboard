@@ -14,9 +14,9 @@
               {{ subMenu.title }}
             </el-menu-item>
             <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
-              <el-menu-item @click="getData(90)">Request License</el-menu-item>
-              <el-menu-item @click="getData(91)">Extension License</el-menu-item>
-              <el-menu-item @click="getData(74)">About</el-menu-item>
+              <el-menu-item @click="getData(90)">{{ $t('administration.requestLicense') }}</el-menu-item>
+              <el-menu-item @click="getData(91)">{{ $t('administration.extensionLicense') }}</el-menu-item>
+              <el-menu-item @click="getData(74)">{{ $t('common.about') }}</el-menu-item>
             </div>
           </template>
         </el-submenu>
@@ -34,7 +34,7 @@
     <el-dialog title="Extension License" :visible.sync="dialogVisible1" width="700px">
       <el-input type="textarea" :rows="8" v-model="license"> </el-input>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleSubmit">submit</el-button>
+        <el-button type="primary" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
       </div>
     </el-dialog>
   </el-menu>
@@ -84,7 +84,7 @@ export default {
           func: 11,
           name: currentUser.name,
         }
-        this.$confirm('Are you sure logout?', 'Logout', {
+        this.$confirm(this.$t('common.confirmLogout'), this.$t('common.logout'), {
           type: 'warning',
         })
           .then(() => {

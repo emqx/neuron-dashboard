@@ -10,7 +10,7 @@
       >
       </el-date-picker>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <el-button @click="handleSubmit(-1)">submit</el-button>
+      <el-button @click="handleSubmit(-1)">{{ $t('common.submit') }}</el-button>
     </div>
     <div :style="chartStyle" ref="chartContainer"></div>
   </el-dialog>

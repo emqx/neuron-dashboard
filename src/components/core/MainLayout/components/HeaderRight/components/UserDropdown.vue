@@ -18,7 +18,7 @@ export default {
       })
     },
     loginOut() {
-      this.$confirm('Are you sure logout', 'Logout', {
+      this.$confirm(this.$t('common.confirmLogout'), this.$t('common.logout'), {
         type: 'warning',
       })
         .then(() => {

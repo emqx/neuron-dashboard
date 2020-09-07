@@ -3,25 +3,25 @@
     <el-row>
       <el-col :span="24">
         <el-form ref="userForm" class="dd-mt" label-position="left" label-width="160px" :model="form">
-          <el-form-item label="Neuron user" required prop="name" class="form-item">
+          <el-form-item :label="$t('common.username')" required prop="name" class="form-item">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item label="Password" prop="pass" required class="form-item">
+          <el-form-item :label="$t('common.password')" prop="pass" required class="form-item">
             <el-input v-model="form.pass" type="password"></el-input>
           </el-form-item>
-          <el-form-item label="Time-out(min)" required prop="tout" class="form-item">
+          <el-form-item :label="$t('administration.timeOut')" required prop="tout" class="form-item">
             <el-input v-model="form.tout"></el-input>
           </el-form-item>
-          <el-form-item label="Default login level" prop="defl" class="form-item" required>
+          <el-form-item :label="$t('administration.defaultLoginLevel')" prop="defl" class="form-item" required>
             <el-select v-model="form.defl">
               <el-option v-for="item in options" :key="item.key" :label="item.label" :value="item.key"> </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Levels" class="form-item" required>
+          <el-form-item :label="$t('administration.levels')" class="form-item" required>
             <el-transfer
               v-model="form.alwl"
               @change="handleChange"
-              :titles="['Available levels', 'Allowed levels']"
+              :titles="[$t('administration.availableLevels'), $t('administration.allowedLevels')]"
               :data="data"
             ></el-transfer>
           </el-form-item>
@@ -30,7 +30,7 @@
       <el-col :span="12"> </el-col>
     </el-row>
     <div class="oper-col">
-      <el-button @click="handleSubmit">submit</el-button>
+      <el-button @click="handleSubmit">{{ $t('common.submit') }}</el-button>
     </div>
   </div>
 </template>
@@ -66,7 +66,7 @@ export default {
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           if (!this.form.alwl.length) {
-            this.$openMessage.error('select allowed levels')
+            this.$openMessage.error(this.$t('administration.selectAllowedLevels'))
             return
           }
           const data = {

@@ -14,19 +14,21 @@
         :on-error="handleUploadError"
       >
         <el-button slot="trigger" icon="el-icon-upload2" :loading="uploadLoading">
-          Import
+          {{ $t('common.import') }}
         </el-button>
       </el-upload>
-      <el-button type="primary" @click="dialogTableVisible = true">Create</el-button>
-      <el-button type="danger" :disabled="!multipleSelection.length" @click="onDelete(null)">Delete</el-button>
+      <el-button type="primary" @click="dialogTableVisible = true">{{ $t('common.create') }}</el-button>
+      <el-button type="danger" :disabled="!multipleSelection.length" @click="onDelete(null)">{{
+        $t('common.delete')
+      }}</el-button>
     </div>
     <div class="row">
       <ObjectTable :showBtn="true" v-model="multipleSelection" @edit="onEdit" @delete="onDelete" />
     </div>
     <el-dialog
-      @closed="onClose"
-      :title="isDetail ? 'Object setup' : 'Object index setup'"
+      :title="isDetail ? $t('configuration.objectSetup') : $t('configuration.objectIndexsetup')"
       :visible.sync="dialogTableVisible"
+      @closed="onClose"
     >
       <template v-if="isDetail">
         <div class="row">
@@ -59,23 +61,23 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="submitObjectSetupFrom">submit</el-button>
+          <el-button @click="submitObjectSetupFrom">{{ $t('common.submit') }}</el-button>
         </span>
       </template>
       <template v-if="objectIndexSetupList.length && !isDetail">
         <div class="row">
           <el-table :data="objectIndexSetupList" class="dd-mb">
-            <el-table-column label="Index">
+            <el-table-column :label="$t('status.index')">
               <template slot-scope="scope">
                 {{ scope.row.obix }}
               </template>
             </el-table-column>
-            <el-table-column label="Prefix">
+            <el-table-column :label="$t('configuration.prefix')">
               <template slot-scope="scope">
                 <el-input v-model="scope.row.pref" size="mini"></el-input>
               </template>
             </el-table-column>
-            <el-table-column label="Suffix">
+            <el-table-column :label="$t('configuration.suffix')">
               <template slot-scope="scope">
                 <el-input v-model="scope.row.suff" size="mini"></el-input>
               </template>
@@ -83,8 +85,8 @@
           </el-table>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="handleCancel">cancel</el-button>
-          <el-button type="primary" @click="submitObjectDetail">submit</el-button>
+          <el-button @click="handleCancel">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="submitObjectDetail">{{ $t('common.submit') }}</el-button>
         </span>
       </template>
     </el-dialog>
@@ -251,14 +253,12 @@ export default {
     },
     onDelete(data) {
       const deleteData = []
-      let confirmMsg = 'Are you sure delete these object?'
       if (data) {
         deleteData.push(data)
-        confirmMsg = 'Are you sure delete this object?'
       } else {
         deleteData.push(...this.multipleSelection)
       }
-      this.$confirm(confirmMsg, 'delete object', {
+      this.$confirm(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       })
         .then(() => {

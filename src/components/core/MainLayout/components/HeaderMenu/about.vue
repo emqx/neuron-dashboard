@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="About" :visible.sync="dialogVisible" width="700px">
+  <el-dialog :title="$t('common.about')" :visible.sync="dialogVisible" width="700px">
     <h3>{{ data.sysn }}</h3>
     <p>{{ data.cpyr }}</p>
     <div class="detail">
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="dialogVisible = false">submit</el-button>
+      <el-button type="primary" @click="dialogVisible = false">{{ $t('common.submit') }}</el-button>
     </div>
   </el-dialog>
 </template>

@@ -1,21 +1,21 @@
 <template>
   <Container type="card-full" :scorll="false">
     <div class="row flex">
-      <div class="dd-title">User Administration</div>
+      <div class="dd-title">{{ $t('administration.userAdmin') }}</div>
       <div class="btnGroup">
-        <el-button @click="dialogVisible = true">Add</el-button>
+        <el-button @click="dialogVisible = true">{{ $t('common.add') }}</el-button>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%;">
-      <el-table-column prop="name" label="Name" />
-      <el-table-column label="Actions" width="280px">
+      <el-table-column prop="name" :label="$t('common.username')" />
+      <el-table-column :label="$t('common.actions')" width="280px">
         <template slot-scope="scope">
           <el-button type="danger" size="mini" @click="handleRemove(scope.row)">Remove</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog
-      :title="!isEdit ? 'Add New User' : 'Edit User'"
+      :title="!isEdit ? $t('administration.addNewUser') : $t('administration.editUser')"
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
       width="700px"
@@ -51,7 +51,7 @@ export default {
       }
     },
     handleRemove({ name }) {
-      this.$confirm('Are you sure delete this user?', 'Delete', {
+      this.$confirm(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       })
         .then(() => {

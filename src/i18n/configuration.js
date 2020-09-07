@@ -1,0 +1,102 @@
+export default {
+  objectSetup: {
+    zh: 'Object 设置',
+    en: 'Object Setup',
+  },
+  objectIndexsetup: {
+    zh: 'Object 索引设置',
+    en: 'Object index setup',
+  },
+  attributeSetup: {
+    zh: '属性设置',
+    en: 'Attribute Setup',
+  },
+  dataAttributeSetup: {
+    zh: '属性数据设置',
+    en: 'Data Attribute Setup',
+  },
+  dataAddrSetup: {
+    zh: '地址数据设置',
+    en: 'Data Address Setup',
+  },
+  confirmSubmitGVar: {
+    zh: '确定提交这些全局变量吗？',
+    en: 'Are you sure submit these gloabl valiables?',
+  },
+  driverSetup: {
+    zh: '驱动设置',
+    en: 'Driver Setup',
+  },
+  driverName: {
+    zh: '驱动名称',
+    en: 'Driver Name',
+  },
+  driverType: {
+    zh: '驱动类型',
+    en: 'Driver Type',
+  },
+  newDriver: {
+    zh: '新建驱动',
+    en: 'New Driver',
+  },
+  editDriver: {
+    zh: '编辑驱动',
+    en: 'Edit Driver',
+  },
+  addr: {
+    zh: '地址',
+    en: 'Addr',
+  },
+  address: {
+    zh: '地址',
+    en: 'Address',
+  },
+  addressRequired: {
+    zh: '地址是必填项，请单击地址按钮以配置地址！',
+    en: 'Address is requried, please click the addr button to configure the address!',
+  },
+  suffix: {
+    zh: '后缀',
+    en: 'Suffix',
+  },
+  prefix: {
+    zh: '前缀',
+    en: 'Prefix',
+  },
+  event: {
+    zh: '事件',
+    en: 'Event',
+  },
+  eventSetup: {
+    zh: '事件设置',
+    en: 'Event Setup',
+  },
+  subroutine: {
+    zh: '子程序',
+    en: 'Subroutine',
+  },
+  createSubroutine: {
+    zh: '创建子程序',
+    en: 'Create Subroutine',
+  },
+  subroutineName: {
+    zh: '子程序名称',
+    en: 'Subroutine name',
+  },
+  subroutineNumber: {
+    zh: '子程序号',
+    en: 'Subroutine number',
+  },
+  overview: {
+    zh: '概览',
+    en: 'Overview',
+  },
+  gValiables: {
+    zh: '全局变量',
+    en: 'Global Valiables',
+  },
+  scriptProgramming: {
+    zh: '脚本编程',
+    en: 'Script Programming',
+  },
+}

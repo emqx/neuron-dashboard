@@ -1,14 +1,16 @@
 <template>
   <Container type="card-full" class="event-setup" :scorll="false">
     <div class="flex dd-mb">
-      <div class="dd-title">Event Setup</div>
+      <div class="dd-title">{{ $t('configuration.eventSetup') }}</div>
       <div>
-        <el-button @click="addEvent" type="primary">Create</el-button>
-        <el-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">Delete</el-button>
+        <el-button @click="addEvent" type="primary">{{ $t('common.create') }}</el-button>
+        <el-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">{{
+          $t('common.delete')
+        }}</el-button>
       </div>
     </div>
     <EventTable v-model="multipleSelection" :showBtn="true" :eventList="msgd" @delete="onDelete" @edit="onEdit" />
-    <el-dialog title="Event Setup" @closed="close" :visible.sync="dialogTableVisible">
+    <el-dialog :title="$t('configuration.eventSetup')" @closed="close" :visible.sync="dialogTableVisible">
       <el-form :model="eventForm" ref="eventForm" :rules="eventFormRules" label-width="120px">
         <el-form-item label="Object1" prop="sobj">
           <el-select v-model="eventForm.sobj">
@@ -25,7 +27,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Type" prop="msgt">
+        <el-form-item :label="$t('common.type')" prop="msgt">
           <el-select v-model="eventForm.msgt">
             <el-option v-for="item in Operator" :key="item.val" :label="item.val" :value="item.val"> </el-option>
           </el-select>
@@ -41,17 +43,17 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Category" prop="catt">
+        <el-form-item :label="$t('status.category')" prop="catt">
           <el-select v-model="eventForm.acat">
             <el-option v-for="item in EventCategory" :key="item.val" :label="item.val" :value="item.val"> </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Subroutine" prop="subr">
+        <el-form-item :label="$t('configuration.subroutine')" prop="subr">
           <el-input-number v-model="eventForm.subr" :controls="false" :precision="0" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="submitEvent">submit</el-button>
+        <el-button @click="submitEvent">{{ $t('common.submit') }}</el-button>
       </span>
     </el-dialog>
   </Container>
@@ -157,14 +159,12 @@ export default {
     },
     onDelete(data) {
       const deleteData = []
-      let confirmMsg = 'Are you sure delete these event?'
       if (data) {
         deleteData.push(data)
-        confirmMsg = 'Are you sure delete this event?'
       } else {
         deleteData.push(...this.multipleSelection)
       }
-      this.$confirm(confirmMsg, 'delete event', {
+      this.$confirm(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       })
         .then(() => {

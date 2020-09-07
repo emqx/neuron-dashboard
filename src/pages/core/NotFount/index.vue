@@ -2,7 +2,7 @@
   <!-- <Container type="card-full"> -->
   <div class="not">
     <p>404</p>
-    <p>page not found</p>
+    <p>{{ $t('common.notFound') }}</p>
     <div class="dd-mt">
       <el-button @click="$router.push({ name: 'index' })">Index</el-button>
     </div>

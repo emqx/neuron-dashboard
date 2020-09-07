@@ -6,14 +6,14 @@
       <el-option v-for="item in scriptTypeList" :key="item.subr" :label="item.name" :value="item.subr"> </el-option>
     </el-select>
     &nbsp;&nbsp;
-    <el-button @click="handleCreate" type="primary">Create</el-button>
+    <el-button @click="handleCreate" type="primary">{{ $t('common.create') }}</el-button>
     <el-button
       @click="handleDelete"
       type="danger"
       :disabled="[-10, -22, -20].includes(scriptType.subr) || !scriptType.subr"
-      >Delete</el-button
+      >{{ $t('common.delete') }}</el-button
     >
-    <el-dialog title="Create Subroutine" @closed="handleClose" :visible.sync="dialogVisible">
+    <el-dialog :title="$t('configuration.createSubroutine')" @closed="handleClose" :visible.sync="dialogVisible">
       <el-form
         :model="subroutineForm"
         :rules="subroutineFormRules"
@@ -21,16 +21,16 @@
         label-position="left"
         ref="subroutineForm"
       >
-        <el-form-item prop="name" label="Subroutine name">
+        <el-form-item prop="name" :label="$t('configuration.subroutineName')">
           <el-input v-model="subroutineForm.name"></el-input>
         </el-form-item>
-        <el-form-item prop="subr" label="Subroutine number">
+        <el-form-item prop="subr" :label="$t('configuration.subroutineNumber')">
           <el-input v-model.number="subroutineForm.subr" type="number" placeholder="1 - 999"></el-input>
         </el-form-item>
       </el-form>
       <template slot="footer">
-        <el-button @click="dialogVisible = false">cancel</el-button>
-        <el-button type="primary" @click="handleSubmit">submit</el-button>
+        <el-button @click="dialogVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
       </template>
     </el-dialog>
   </div>
@@ -100,7 +100,7 @@ export default {
       this.dialogVisible = true
     },
     handleDelete() {
-      this.$confirm('Are you sure delete this subroutine?', 'Delete', {
+      this.$confirm(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       })
         .then(() => {
