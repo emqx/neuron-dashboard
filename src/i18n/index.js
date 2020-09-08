@@ -10,7 +10,7 @@ const lang = {
   },
 }
 
-const modules = ['administration', 'common', 'configuration', 'status']
+const modules = ['administration', 'common', 'configuration', 'status', 'menu']
 modules.forEach((key) => {
   const value = require(`./${key}`).default
   Object.keys(value).forEach((k) => {

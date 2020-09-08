@@ -135,4 +135,8 @@ export default {
     zh: '语句',
     en: 'Statement',
   },
+  lang: {
+    zh: '语言',
+    en: 'Language',
+  },
 }

@@ -3,7 +3,7 @@
     <template v-for="item in menu">
       <template v-if="item.children.length > 1">
         <el-submenu :key="item.name" :index="item.name" @click.native="active(item)">
-          <template slot="title">{{ formatName(item.title) }}</template>
+          <template slot="title">{{ item.title }}</template>
           <template v-for="(subMenu, subIndex) in item.children">
             <el-menu-item
               :index="subMenu.name"
@@ -15,22 +15,23 @@
             </el-menu-item>
             <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
               <el-menu-item @click="getData(74)">{{ $t('common.about') }}</el-menu-item>
+              <el-menu-item @click="showLangDialog">{{ $t('common.lang') }}</el-menu-item>
             </div>
           </template>
         </el-submenu>
       </template>
       <template v-else>
         <el-menu-item :key="item.name" :index="item.name" @click.native="active(item)">
-          {{ formatName(item.title) }}
+          {{ item.title }}
         </el-menu-item>
       </template>
     </template>
     <About ref="about" />
+    <Lang ref="lang" />
   </el-menu>
 </template>
 
 <script>
-import { formatName } from '@/utils'
 import { mapMutations } from 'vuex'
 import { menu } from '@/router/menu'
 export default {
@@ -96,12 +97,12 @@ export default {
         this.$router.push({ name })
       }
     },
-    formatName(title) {
-      return formatName(title)
-    },
     getData(func) {
       this.curFunc = func
       this.$ws().set({ success: this.setData }).send({ func })
+    },
+    showLangDialog() {
+      this.$refs['lang'].showDialog()
     },
     setData(data) {
       if (data.func === this.curFunc) {
@@ -114,6 +115,7 @@ export default {
   },
   components: {
     About: () => import('./about'),
+    Lang: () => import('./lang'),
   },
 }
 </script>

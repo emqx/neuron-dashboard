@@ -10,6 +10,9 @@ export default {
     setLang(state, { lang }) {
       state.lang = lang
       localStorage.setItem('lang', lang)
+      setTimeout(() => {
+        window.location.reload()
+      }, 400)
     },
   },
 }
