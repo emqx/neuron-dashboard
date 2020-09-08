@@ -4,7 +4,7 @@
     <el-dropdown-menu slot="dropdown">
       <!-- <el-dropdown-item @click.native="active('demo-business-user-center-home')">
         <Icon name="user-circle-o" /> user</el-dropdown-item> -->
-      <el-dropdown-item @click.native="loginOut"> <Icon name="power-off"></Icon> logout </el-dropdown-item>
+      <el-dropdown-item @click.native="loginOut"> <Icon name="power-off"></Icon> $t('common.logout') </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>

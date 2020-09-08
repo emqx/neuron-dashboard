@@ -20,7 +20,7 @@ const maker = (path, hide) => {
 }
 
 export default {
-  title: moduleName,
+  title: formatName(moduleName),
   path: `/${moduleName}`,
   name: moduleName,
   component: () => import('@/components/core/MainLayout/index.vue'),
@@ -36,7 +36,7 @@ export default {
       path: 'logout',
       name: `${moduleName}-logout`,
       meta,
-      title: 'Logout',
+      title: formatName('logout'),
       redirect: {
         name: 'login',
       },

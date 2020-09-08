@@ -20,7 +20,7 @@ const maker = (path, hide) => {
 }
 
 export default {
-  title: moduleName,
+  title: formatName(moduleName),
   path: `/${moduleName}`,
   name: moduleName,
   component: () => import('@/components/core/MainLayout/index.vue'),
