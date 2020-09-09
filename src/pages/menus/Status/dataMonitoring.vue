@@ -14,11 +14,11 @@
       </div>
     </div>
     <el-table
-      v-if="tableMaxHeight"
+      v-if="maxTableHeight"
       ref="table"
       :data="tableData.length ? data : []"
       class="table"
-      :max-height="tableMaxHeight"
+      :max-height="maxTableHeight"
     >
       <el-table-column width="55">
         <template slot="header">
@@ -77,7 +77,6 @@ export default {
       count: 0,
       pageSize: 100,
       page: 1,
-      tableMaxHeight: 0,
     }
   },
   computed: {
@@ -141,9 +140,6 @@ export default {
         }))
       },
     },
-  },
-  mounted() {
-    this.tableMaxHeight = window.innerHeight - 280
   },
   methods: {
     handleWrite(row) {
