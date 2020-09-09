@@ -16,7 +16,7 @@ export default {
         state.alarmList.push(...data)
       } else {
         data.forEach((item) => {
-          const found = _alarmList.some((el) => el.objn === item.objn)
+          const found = _alarmList.some((alarm) => alarm.objn === item.objn)
           if (!found) {
             // 没有该数据就 push
             state.alarmList.push(item)
