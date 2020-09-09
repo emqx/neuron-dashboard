@@ -1,5 +1,5 @@
 <template>
-  <Container type="card-full" :scorll="false">
+  <Container ref="container" type="card-full" :scorll="false">
     <div class="row flex">
       <div class="dd-title">{{ $t('status.dataMonitoring') }}</div>
       <div class="btnGroup">
@@ -13,7 +13,13 @@
         <el-button @click="handleShow(null, 'Current')">{{ $t('status.current') }}</el-button>
       </div>
     </div>
-    <el-table :data="tableData.length ? data : []" class="table">
+    <el-table
+      v-if="tableMaxHeight"
+      ref="table"
+      :data="tableData.length ? data : []"
+      class="table"
+      :max-height="tableMaxHeight"
+    >
       <el-table-column width="55">
         <template slot="header">
           <el-checkbox @change="handleCheckAll"></el-checkbox>
@@ -40,6 +46,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      hide-on-single-page
+      background
+      layout="sizes, prev, pager, next"
+      :current-page.sync="page"
+      :page-size.sync="pageSize"
+      :page-sizes="[100, 300, 500]"
+      :total="count"
+    >
+    </el-pagination>
     <CurrentChartDialog ref="CurrentChartDialog" :props="multipleSelection" :objName="objName" />
     <HistoryChartDialog ref="HistoryChartDialog" :props="multipleSelection" :objName="objName" />
     <WriteDialog ref="WriteDialog" :objName="objName" />
@@ -47,6 +63,7 @@
 </template>
 
 <script>
+import paginate from '../../../utils/paginate'
 import Mixins from '@/mixins'
 import { mapState } from 'vuex'
 import moment from 'moment'
@@ -57,6 +74,10 @@ export default {
       objName: '',
       multipleSelection: [],
       checkedAll: true,
+      count: 0,
+      pageSize: 100,
+      page: 1,
+      tableMaxHeight: 0,
     }
   },
   computed: {
@@ -99,7 +120,9 @@ export default {
           })
         }
       })
-      return data
+      this.count = data.length
+      data = paginate(data, this.pageSize, this.page)
+      return Object.freeze(data)
     },
   },
   watch: {
@@ -118,6 +141,9 @@ export default {
         }))
       },
     },
+  },
+  mounted() {
+    this.tableMaxHeight = window.innerHeight - 280
   },
   methods: {
     handleWrite(row) {

@@ -208,3 +208,15 @@
     }
   }
 }
+
+/* Pagination */
+.el-pagination {
+  margin-top: 20px;
+  text-align: right;
+}
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .el-pager li {
+  background-color: #414756;
+  color: #fff;
+}
