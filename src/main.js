@@ -9,8 +9,11 @@ import ElementUI from 'element-ui'
 import ElementLocale from 'element-ui/lib/locale'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/style/theme/element-variables.scss'
+import './assets/style/theme/vxe-theme.scss'
 import './assets/style/fixed/element.scss'
 import lang from './i18n'
+import 'xe-utils'
+import VXETable from 'vxe-table'
 
 // vuex
 import store from '@/store/index.js'
@@ -55,6 +58,7 @@ Vue.prototype.$openMessage = $message
 ElementLocale.i18n((key, value) => i18n.t(key, value))
 
 Vue.use(ElementUI, { ElementLocale })
+Vue.use(VXETable)
 
 Vue.config.productionTip = false
 

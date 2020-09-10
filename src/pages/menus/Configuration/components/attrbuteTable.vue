@@ -1,15 +1,19 @@
 <template>
   <div class="attrbute-table">
-    <el-table
+    <vxe-table
       v-if="maxTableHeight"
-      :data="data"
-      @selection-change="handleSelectionChange"
-      style="width: 100%;"
+      round
+      show-overflow
+      highlight-hover-row
       :max-height="maxTableHeight"
+      :sort-config="{ trigger: 'cell' }"
+      :data="data"
+      @checkbox-all="handleSelectionChange"
+      @checkbox-change="handleSelectionChange"
     >
-      <el-table-column type="selection" v-if="showBtn" width="55"> </el-table-column>
-      <el-table-column prop="attn" :min-width="80" :label="$t('common.name')" />
-      <el-table-column :label="`Object: ${$t('configuration.address')}`" min-width="250">
+      <vxe-table-column v-if="showBtn" type="checkbox" width="55"></vxe-table-column>
+      <vxe-table-column field="attn" :min-width="80" :title="$t('common.name')" />
+      <vxe-table-column :title="`Object: ${$t('configuration.address')}`" min-width="250">
         <template slot-scope="scope">
           <div>
             <div v-for="item in scope.row.aadd" class="addrs" :key="getFullName(item.pref, item.suff)">
@@ -18,37 +22,37 @@
             </div>
           </div>
         </template>
-      </el-table-column>
-      <el-table-column prop="attt" :width="minWidth" :label="$t('common.type')" />
-      <el-table-column prop="deci" :width="minWidth" label="Decimal" />
-      <el-table-column prop="adis" :width="minWidth" label="Visible">
+      </vxe-table-column>
+      <vxe-table-column field="attt" :width="minWidth" :title="$t('common.type')" />
+      <vxe-table-column field="deci" :width="minWidth" title="Decimal" />
+      <vxe-table-column field="adis" :width="minWidth" title="Visible">
         <template slot-scope="scope">
           {{ scope.row.adis ? 'YES' : 'NO' }}
         </template>
-      </el-table-column>
-      <el-table-column prop="achg" :width="minWidth" label="Change">
+      </vxe-table-column>
+      <vxe-table-column field="achg" :width="minWidth" title="Change">
         <template slot-scope="scope">
           {{ scope.row.achg ? 'YES' : 'NO' }}
         </template>
-      </el-table-column>
-      <el-table-column prop="attr" :width="minWidth" label="RW" />
-      <el-table-column prop="rtim" :width="minWidth" label="Rtime" />
-      <el-table-column :width="250" v-if="showBtn">
+      </vxe-table-column>
+      <vxe-table-column field="attr" :width="minWidth" title="RW" />
+      <vxe-table-column field="rtim" :width="minWidth" title="Rtime" />
+      <vxe-table-column :width="250" v-if="showBtn">
         <template slot-scope="scope">
           <el-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</el-button>
           <el-button type="text" @click="addAddress(scope.row)">{{ $t('configuration.addr') }}</el-button>
           <el-button type="text" @click="handleDummy(scope.row)">Dummy</el-button>
           <el-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
         </template>
-      </el-table-column>
-    </el-table>
+      </vxe-table-column>
+    </vxe-table>
     <el-pagination
       hide-on-single-page
       background
-      layout="sizes, prev, pager, next"
+      layout="total, sizes, prev, pager, next, jumper"
       :current-page.sync="page"
       :page-size.sync="pageSize"
-      :page-sizes="[100, 300, 500]"
+      :page-sizes="[500, 800, 1000]"
       :total="count"
       @current-change="handlePageChange"
       @size-change="handleSizeChange"
@@ -88,7 +92,7 @@ export default {
       multipleSelection: [],
       data: [],
       count: 0,
-      pageSize: 100,
+      pageSize: 500,
       page: 1,
     }
   },
@@ -111,8 +115,8 @@ export default {
     addAddress(row) {
       this.$emit('add', row)
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
+    handleSelectionChange({ checked, records }) {
+      this.multipleSelection = records
       this.$emit('input', this.multipleSelection)
     },
     getFullName(pref, suff) {
@@ -130,11 +134,6 @@ export default {
     },
     handleDelete(row) {
       this.$emit('delete', clone(row))
-    },
-  },
-  watch: {
-    value(val) {
-      this.multipleSelection = val
     },
   },
 }

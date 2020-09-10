@@ -13,14 +13,16 @@
         <el-button @click="handleShow(null, 'Current')">{{ $t('status.current') }}</el-button>
       </div>
     </div>
-    <el-table
+    <vxe-table
       v-if="maxTableHeight"
-      ref="table"
-      :data="tableData.length ? data : []"
-      class="table"
+      round
+      show-overflow
+      highlight-hover-row
       :max-height="maxTableHeight"
+      :sort-config="{ trigger: 'cell' }"
+      :data="tableData.length ? data : []"
     >
-      <el-table-column width="55">
+      <vxe-table-column width="55">
         <template slot="header">
           <el-checkbox @change="handleCheckAll"></el-checkbox>
         </template>
@@ -31,10 +33,10 @@
             @change="handleCheck($event, scope.row)"
           ></el-checkbox>
         </template>
-      </el-table-column>
-      <el-table-column prop="prop" :label="$t('status.attrbute')" min-width="180"> </el-table-column>
-      <el-table-column prop="val" :label="$t('status.value')" min-width="180"> </el-table-column>
-      <el-table-column width="300">
+      </vxe-table-column>
+      <vxe-table-column field="prop" :title="$t('status.attrbute')" min-width="180"> </vxe-table-column>
+      <vxe-table-column field="val" :title="$t('status.value')" min-width="180"> </vxe-table-column>
+      <vxe-table-column width="300">
         <template slot-scope="scope">
           <div class="btn" v-if="scope.row.prop !== 'Time'">
             <el-button type="text" v-if="scope.row.writable" @click="handleWrite(scope.row)">{{
@@ -44,15 +46,15 @@
             <el-button type="text" @click="handleShow(scope.row, 'Current')">{{ $t('status.current') }}</el-button>
           </div>
         </template>
-      </el-table-column>
-    </el-table>
+      </vxe-table-column>
+    </vxe-table>
     <el-pagination
       hide-on-single-page
       background
-      layout="sizes, prev, pager, next"
+      layout="total, sizes, prev, pager, next, jumper"
       :current-page.sync="page"
       :page-size.sync="pageSize"
-      :page-sizes="[100, 300, 500]"
+      :page-sizes="[500, 800, 1000]"
       :total="count"
     >
     </el-pagination>
@@ -75,7 +77,7 @@ export default {
       multipleSelection: [],
       checkedAll: true,
       count: 0,
-      pageSize: 100,
+      pageSize: 500,
       page: 1,
     }
   },
@@ -108,7 +110,9 @@ export default {
     },
     data() {
       let data = []
-      this.tableKey.forEach((i) => {
+      this.count = this.tableKey.length
+      const currentTableKey = paginate(this.tableKey, this.pageSize, this.page)
+      currentTableKey.forEach((i) => {
         if (i !== 'objn') {
           const checked = this.multipleSelection.find((j) => j.prop === i)
           data.push({
@@ -118,10 +122,11 @@ export default {
             checked: checked ? checked.check : false,
           })
         }
+        if (i === 'objn' || i === 'tstp') {
+          this.count -= 1
+        }
       })
-      this.count = data.length
-      data = paginate(data, this.pageSize, this.page)
-      return Object.freeze(data)
+      return data
     },
   },
   watch: {

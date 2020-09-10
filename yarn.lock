@@ -8762,6 +8762,11 @@ vuex@^3.0.1:
   resolved "https://registry.npm.taobao.org/vuex/download/vuex-3.1.1.tgz#0c264bfe30cdbccf96ab9db3177d211828a5910e"
   integrity sha1-DCZL/jDNvM+Wq52zF30hGCilkQ4=
 
+vxe-table@^2.9.19:
+  version "2.9.19"
+  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.9.19.tgz?cache=0&sync_timestamp=1599450932458&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvxe-table%2Fdownload%2Fvxe-table-2.9.19.tgz#9ff2c5e871b972103875990442c903dda13bedac"
+  integrity sha1-n/LF6HG5chA4dZkEQskD3aE77aw=
+
 watchpack@^1.6.0:
   version "1.6.0"
   resolved "https://registry.npm.taobao.org/watchpack/download/watchpack-1.6.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwatchpack%2Fdownload%2Fwatchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"
@@ -9016,6 +9021,11 @@ ws@^6.0.0, ws@^6.2.1:
   integrity sha1-RC/fCkftZPWbal2P8TD0dI7VJPs=
   dependencies:
     async-limiter "~1.0.0"
+
+xe-utils@^2.7.8:
+  version "2.7.8"
+  resolved "https://registry.npm.taobao.org/xe-utils/download/xe-utils-2.7.8.tgz#c8df5ac56be3c47a76ea9e8af55b4a051d89ea5e"
+  integrity sha1-yN9axWvjxHp26p6K9VtKBR2J6l4=
 
 xlsx@^0.16.4:
   version "0.16.4"
