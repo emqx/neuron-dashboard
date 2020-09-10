@@ -19,6 +19,7 @@
     </div>
     <div>
       <AttrbuteTable
+        ref="attributeTable"
         v-model="multipleSelection"
         :attributeList="attributeList"
         :showBtn="true"
@@ -235,6 +236,9 @@ export default {
           const deleteList = deleteData.map((i) => i.attn)
           this.attributeList = this.attributeList.filter((i) => !deleteList.includes(i.attn))
           this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
+          setTimeout(() => {
+            this.$refs.attributeTable.setData()
+          }, 500)
         })
         .catch(() => {})
     },

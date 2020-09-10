@@ -1,0 +1,16 @@
+@import 'vxe-table/styles/variable.scss';
+
+// 局部修改变量
+$vxe-primary-color: #34c388;
+$vxe-table-font-color: #fff;
+$vxe-table-border-radius: 8px;
+$vxe-table-header-background-color: #414756;
+$vxe-table-row-hover-background-color: #3f4553;
+$vxe-table-border-color: #495062;
+$vxe-table-background-color: #333844;
+
+@import 'vxe-table/styles/table.scss';
+@import 'vxe-table/styles/column.scss';
+@import 'vxe-table/styles/header.scss';
+@import 'vxe-table/styles/body.scss';
+@import 'vxe-table/styles/checkbox.scss';
