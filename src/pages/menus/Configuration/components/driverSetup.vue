@@ -137,8 +137,8 @@ export default {
           tcph: '',
           tcpp: '',
           ttyc: '',
-          ttyb: 0,
-          ttyd: 0,
+          ttyb: '',
+          ttyd: '',
           ttys: '',
           ttyp: '',
           parm: [],
@@ -198,9 +198,12 @@ export default {
         'g26875',
       ]
       if (ipPortChdvTypes.indexOf(this.chdv) !== -1) {
-        chnl = this.chnl.filter((item) => item.tcph && item.tcpp)
-        chnl[0].chdv = this.chdv
+        chnl = this.chnl.filter((item) => item.tcph && (item.tcpp !== '' || item.tcpp !== undefined))
+      } else {
+        // eslint-disable-next-line prefer-destructuring
+        chnl = this.chnl
       }
+      chnl[0].chdv = this.chdv
       this.setDriverData({ chdv: this.chdv, chnl })
     },
     close() {
@@ -237,8 +240,8 @@ export default {
             tcph: '',
             tcpp: '',
             ttyc: '',
-            ttyb: 0,
-            ttyd: 0,
+            ttyb: '',
+            ttyd: '',
             ttys: '',
             ttyp: '',
             parm: [],
