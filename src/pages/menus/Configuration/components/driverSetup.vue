@@ -47,16 +47,29 @@
                 <el-input v-model="chnl[0].ttyc"></el-input>
               </el-form-item>
               <el-form-item label="Baud rate">
-                <el-input v-model="chnl[0].ttyb"></el-input>
+                <el-select v-model="chnl[0].ttyb">
+                  <el-option v-for="value in ttybList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="Data bit">
-                <el-input v-model="chnl[0].ttyd"></el-input>
+                <el-select v-model="chnl[0].ttyd">
+                  <el-option v-for="value in ttydList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="Stop bit">
-                <el-input v-model="chnl[0].ttys"></el-input>
+                <el-select v-model="chnl[0].ttys">
+                  <el-option v-for="value in ttysList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="Parity bit">
-                <el-input v-model="chnl[0].ttyp"></el-input>
+                <el-select v-model="chnl[0].ttyp">
+                  <el-option
+                    v-for="item in ttypList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
               </el-form-item>
             </el-form>
           </el-col>
@@ -131,16 +144,24 @@ export default {
       dialogTableVisible: false,
       chdv: '', // Channel driver name
       mqtt: '',
+      ttybList: [4800, 9600, 19200, 38400, 57600, 115200],
+      ttydList: [5, 6, 7, 8],
+      ttysList: ['1', '1.5', '2'],
+      ttypList: [
+        { value: 'E', label: 'Even' },
+        { value: 'O', label: 'Odd' },
+        { value: 'N', label: 'None' },
+      ],
       chnl: [
         {
           chdv: '',
           tcph: '',
           tcpp: '',
           ttyc: '',
-          ttyb: '',
-          ttyd: '',
-          ttys: '',
-          ttyp: '',
+          ttyb: 9600,
+          ttyd: 8,
+          ttys: '1',
+          ttyp: 'N',
           parm: [],
         },
         {
@@ -148,9 +169,9 @@ export default {
           tcph: 'broker.emqx.io',
           tcpp: '1883',
           ttyc: '',
-          ttyb: 0,
-          ttyd: 0,
-          ttys: '',
+          ttyb: 9600,
+          ttyd: 8,
+          ttys: '1',
           ttyp: 'N',
           parm: [
             {
@@ -240,10 +261,10 @@ export default {
             tcph: '',
             tcpp: '',
             ttyc: '',
-            ttyb: '',
-            ttyd: '',
-            ttys: '',
-            ttyp: '',
+            ttyb: 9600,
+            ttyd: 8,
+            ttys: '1',
+            ttyp: 'N',
             parm: [],
           },
           mqtt,
@@ -261,9 +282,9 @@ export default {
             tcph: 'broker.emqx.io',
             tcpp: '1883',
             ttyc: '',
-            ttyb: 0,
-            ttyd: 0,
-            ttys: '',
+            ttyb: 9600,
+            ttyd: 8,
+            ttys: '1',
             ttyp: 'N',
             parm: [
               {
