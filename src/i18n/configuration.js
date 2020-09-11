@@ -99,4 +99,8 @@ export default {
     zh: '脚本编程',
     en: 'Script Programming',
   },
+  clearConfirm: {
+    zh: '确认清空所有配置吗？',
+    en: 'Are you sure to clear all configurations?',
+  },
 }
