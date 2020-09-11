@@ -59,6 +59,10 @@ export default {
     zh: '创建',
     en: 'Create',
   },
+  clear: {
+    zh: '清空',
+    en: 'Clear',
+  },
   submit: {
     zh: '提交',
     en: 'Submit',

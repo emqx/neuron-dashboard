@@ -106,7 +106,9 @@ export default {
       return Object.keys(this.tableData[0])
     },
     currentWritableData() {
-      return this.writableList.find((j) => j.objn === this.objName) || {}
+      if (this.writableList) {
+        return this.writableList.find((j) => j.objn === this.objName) || {}
+      }
     },
     data() {
       let data = []
@@ -118,7 +120,7 @@ export default {
           data.push({
             prop: i === 'tstp' ? 'Time' : i,
             val: this.tableData[0][i],
-            writable: !!this.currentWritableData[i],
+            writable: this.currentWritableData ? !!this.currentWritableData[i] : false,
             checked: checked ? checked.check : false,
           })
         }

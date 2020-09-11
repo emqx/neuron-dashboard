@@ -60,6 +60,15 @@ export default {
       // })
       // state.objectData = [...objd, ...filterData]
     },
+    clearAllData(state) {
+      state.driverData.chdv = ''
+      state.driverData.chnl = []
+      state.objectData = []
+      state.eventData = []
+      localStorage.removeItem('chnl')
+      localStorage.removeItem('eventData')
+      localStorage.removeItem('objectData')
+    },
     setDriverData(state, { chdv, chnl }) {
       state.driverData.chdv = chdv
       state.driverData.chnl = chnl

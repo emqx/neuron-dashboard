@@ -17,6 +17,7 @@
           {{ $t('common.import') }}
         </el-button>
       </el-upload>
+      <el-button type="warning" @click="handleClearData">{{ $t('common.clear') }}</el-button>
       <el-button type="primary" @click="dialogTableVisible = true">{{ $t('common.create') }}</el-button>
       <el-button type="danger" :disabled="!multipleSelection.length" @click="onDelete(null)">{{
         $t('common.delete')
@@ -281,7 +282,16 @@ export default {
       this.objectIndexSetupList = this.objectSetupFrom.preAndSuff || []
       this.dialogTableVisible = true
     },
-    ...mapMutations(['setObjectData', 'addObjectData', 'deleteObjectData', 'editObjectData']),
+    handleClearData() {
+      this.$confirm(this.$t('configuration.clearConfirm'), this.$t('common.warning'), {
+        type: 'warning',
+      })
+        .then(() => {
+          this.clearAllData()
+        })
+        .catch(() => {})
+    },
+    ...mapMutations(['clearAllData', 'setObjectData', 'addObjectData', 'deleteObjectData', 'editObjectData']),
   },
   components: {
     ObjectTable,
