@@ -139,9 +139,20 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import '@/assets/style/public.scss';
-
+.attrbute-table .vxe-cell {
+  max-height: fit-content !important;
+}
+.attrbute-table--overview {
+  .vxe-header--column {
+    background-color: #414756;
+    padding: 0px !important;
+    .vxe-cell--title {
+      color: #fff;
+    }
+  }
+}
 .addrs {
   border-bottom: 1px solid $color-border-main;
   padding: 5px;
