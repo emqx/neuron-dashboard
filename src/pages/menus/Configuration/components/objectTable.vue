@@ -2,7 +2,11 @@
   <el-table :data="objectList" @selection-change="handleSelectionChange" style="width: 100%;">
     <el-table-column type="expand" v-if="showAttr">
       <template slot-scope="props">
-        <AttrbuteTable :attributeList="props.row.oatt || []" :objectName="props.row.objn" />
+        <AttrbuteTable
+          :class="showAttr ? 'attrbute-table--overview' : ''"
+          :attributeList="props.row.oatt || []"
+          :objectName="props.row.objn"
+        />
       </template>
     </el-table-column>
     <el-table-column v-if="showSelection" type="selection" width="55"> </el-table-column>
