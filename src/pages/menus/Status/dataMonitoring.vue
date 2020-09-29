@@ -21,6 +21,7 @@
       :max-height="maxTableHeight"
       :sort-config="{ trigger: 'cell' }"
       :data="tableData.length ? data : []"
+      :empty-text="$t('common.emptyData')"
     >
       <vxe-table-column width="55">
         <template slot="header">
