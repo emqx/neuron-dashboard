@@ -8,6 +8,7 @@
       :max-height="maxTableHeight"
       :sort-config="{ trigger: 'cell' }"
       :data="data"
+      :empty-text="$t('common.emptyData')"
       @checkbox-all="handleSelectionChange"
       @checkbox-change="handleSelectionChange"
     >

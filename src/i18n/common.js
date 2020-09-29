@@ -143,4 +143,8 @@ export default {
     zh: '语言',
     en: 'Language',
   },
+  emptyData: {
+    zh: '暂无数据',
+    en: 'No Data',
+  },
 }
