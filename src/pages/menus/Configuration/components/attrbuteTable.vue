@@ -46,6 +46,9 @@
           <el-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
         </template>
       </vxe-table-column>
+      <div slot="empty">
+        {{ $t('common.emptyData') }}
+      </div>
     </vxe-table>
     <el-pagination
       hide-on-single-page
