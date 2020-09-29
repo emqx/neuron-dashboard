@@ -48,6 +48,9 @@
           </div>
         </template>
       </vxe-table-column>
+      <div slot="empty">
+        {{ $t('common.emptyData') }}
+      </div>
     </vxe-table>
     <el-pagination
       hide-on-single-page
