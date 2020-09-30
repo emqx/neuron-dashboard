@@ -193,6 +193,7 @@ export default {
       }
       setTimeout(() => {
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
+        this.$refs.attributeTable.setData()
       }, 1000)
     },
     addAddress(data) {
@@ -213,8 +214,20 @@ export default {
     addressSubmit() {
       this.addressVisible = false
       this.$set(this.activeAttributeRow, 'aadd', clone(this.preAndSuff))
+      this.validateAddr(this.activeAttributeRow)
       this.resetPreAndSuff()
       this.confirmSubmit()
+    },
+    validateAddr(row) {
+      let hasDummyAddr = true
+      row.aadd.forEach(($) => {
+        if ($.addr !== '-') {
+          hasDummyAddr = false
+        }
+      })
+      if (!hasDummyAddr && row.attr === '-') {
+        this.$openMessage.warning(this.$t('configuration.rwRequired'))
+      }
     },
     resetPreAndSuff() {
       this.preAndSuff = this.preAndSuff.map((i) => {

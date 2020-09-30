@@ -103,4 +103,8 @@ export default {
     zh: '确认清空所有配置吗？',
     en: 'Are you sure to clear all configurations?',
   },
+  rwRequired: {
+    zh: '地址已修改，请选择 RW 的值',
+    en: 'The address has been modified, please select the value of RW',
+  },
 }
