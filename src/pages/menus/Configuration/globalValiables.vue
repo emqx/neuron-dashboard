@@ -118,7 +118,7 @@ export default {
     if (_.isEqual(this.oldVarData, this.varData)) {
       next()
     } else {
-      this.$confirm('You have unsubmitted changes, submit and proceed? ', this.$t('common.confirm'), {
+      this.$confirm(this.$t('common.unsubmitAndSave'), this.$t('common.confirm'), {
         type: 'warning',
         distinguishCancelAndClose: true,
         confirmButtonText: this.$t('common.submit'),
