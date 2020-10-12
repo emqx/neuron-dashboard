@@ -158,7 +158,7 @@ export default {
       this.scriptData.splice(index, 1)
     },
     promptUnsubmitted(callback) {
-      this.$confirm('You have unsubmitted changes, submit and proceed? ', this.$t('common.confirm'), {
+      this.$confirm(this.$t('common.unsubmitAndSave'), this.$t('common.confirm'), {
         type: 'warning',
         distinguishCancelAndClose: true,
         confirmButtonText: this.$t('common.submit'),

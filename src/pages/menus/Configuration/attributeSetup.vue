@@ -193,7 +193,9 @@ export default {
       }
       setTimeout(() => {
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
-        this.$refs.attributeTable.setData()
+        if (this.$refs.attributeTable) {
+          this.$refs.attributeTable.setData()
+        }
       }, 1000)
     },
     addAddress(data) {
@@ -250,7 +252,9 @@ export default {
           this.attributeList = this.attributeList.filter((i) => !deleteList.includes(i.attn))
           this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
           setTimeout(() => {
-            this.$refs.attributeTable.setData()
+            if (this.$refs.attributeTable) {
+              this.$refs.attributeTable.setData()
+            }
           }, 500)
         })
         .catch(() => {})
