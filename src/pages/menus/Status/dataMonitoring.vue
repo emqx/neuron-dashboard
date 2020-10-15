@@ -35,7 +35,7 @@
           ></el-checkbox>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="prop" :title="$t('status.attrbute')" min-width="180"> </vxe-table-column>
+      <vxe-table-column field="prop" :title="$t('status.attribute')" min-width="180"> </vxe-table-column>
       <vxe-table-column field="val" :title="$t('status.value')" min-width="180"> </vxe-table-column>
       <vxe-table-column width="300">
         <template slot-scope="scope">
