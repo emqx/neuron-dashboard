@@ -1,5 +1,5 @@
 <template>
-  <div class="attrbute-table">
+  <div class="attribute-table">
     <vxe-table
       v-if="maxTableHeight"
       round
@@ -71,7 +71,7 @@ import Mixins from '@/mixins'
 import { clone } from '@/utils'
 
 export default {
-  name: 'AttrbuteTable',
+  name: 'AttributeTable',
   mixins: [Mixins],
   props: {
     value: {
@@ -145,10 +145,10 @@ export default {
 
 <style lang="scss">
 @import '@/assets/style/public.scss';
-.attrbute-table .vxe-cell {
+.attribute-table .vxe-cell {
   max-height: fit-content !important;
 }
-.attrbute-table--overview {
+.attribute-table--overview {
   .vxe-header--column {
     background-color: #414756;
     padding: 0px !important;

@@ -2,8 +2,8 @@
   <el-table :data="objectList" @selection-change="handleSelectionChange" style="width: 100%;">
     <el-table-column type="expand" v-if="showAttr">
       <template slot-scope="props">
-        <AttrbuteTable
-          :class="showAttr ? 'attrbute-table--overview' : ''"
+        <AttributeTable
+          :class="showAttr ? 'attribute-table--overview' : ''"
           :attributeList="props.row.oatt || []"
           :objectName="props.row.objn"
         />
@@ -23,7 +23,7 @@
     <el-table-column :width="200" v-if="showBtn">
       <template slot-scope="scope">
         <el-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</el-button>
-        <el-button type="text" @click="goToAttrPage(scope.row)">{{ $t('status.attrbute') }}</el-button>
+        <el-button type="text" @click="goToAttrPage(scope.row)">{{ $t('status.attribute') }}</el-button>
         <el-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
       </template>
     </el-table-column>
@@ -33,7 +33,7 @@
 <script>
 import Mixins from '@/mixins'
 import { mapState } from 'vuex'
-import AttrbuteTable from './attrbuteTable'
+import AttributeTable from './attributeTable'
 import { clone } from '@/utils'
 
 export default {
@@ -87,7 +87,7 @@ export default {
     },
   },
   components: {
-    AttrbuteTable,
+    AttributeTable,
   },
 }
 </script>

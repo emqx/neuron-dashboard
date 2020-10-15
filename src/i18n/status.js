@@ -23,9 +23,9 @@ export default {
     zh: '值',
     en: 'Value',
   },
-  attrbute: {
+  attribute: {
     zh: '属性',
-    en: 'Attrbute',
+    en: 'Attribute',
   },
   currentAlarm: {
     zh: '当前告警',

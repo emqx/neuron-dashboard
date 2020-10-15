@@ -18,7 +18,7 @@
       </div>
     </div>
     <div>
-      <AttrbuteTable
+      <AttributeTable
         ref="attributeTable"
         v-model="multipleSelection"
         :attributeList="attributeList"
@@ -103,7 +103,7 @@
 <script>
 import { clone } from '@/utils/index'
 import { AttributeTypeList } from '@/config/index'
-import AttrbuteTable from './components/attrbuteTable'
+import AttributeTable from './components/attributeTable'
 import { mapState, mapMutations } from 'vuex'
 export default {
   data() {
@@ -324,7 +324,7 @@ export default {
     }
   },
   components: {
-    AttrbuteTable,
+    AttributeTable,
   },
 }
 </script>

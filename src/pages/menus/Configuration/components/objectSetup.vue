@@ -192,7 +192,7 @@ export default {
       )
       objList.forEach((obj) => {
         const currentObjs = sheets.filter((sheet) => sheet.objn === obj.objn)
-        const attrbutes = _.uniqBy(
+        const attributes = _.uniqBy(
           currentObjs.map((currentObj) => ({
             attn: currentObj.attn,
             attt: currentObj.attt,
@@ -204,7 +204,7 @@ export default {
           })),
           (currentObj) => currentObj.attn,
         )
-        attrbutes.forEach((attr) => {
+        attributes.forEach((attr) => {
           const aadds = currentObjs
             .map((currentObj) => {
               if (currentObj.attn === attr.attn) {
@@ -225,7 +225,7 @@ export default {
             })
           attr.aadd = aadds
         })
-        obj.oatt = attrbutes
+        obj.oatt = attributes
         obj.preAndSuff = obj.oatt[0].aadd.map((i) => ({
           pref: i.pref,
           obix: i.obix,
