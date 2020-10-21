@@ -99,6 +99,14 @@ export default {
     zh: '导入',
     en: 'Import',
   },
+  upload: {
+    zh: '上传',
+    en: 'Upload',
+  },
+  uploadSuccess: {
+    zh: '上传成功',
+    en: 'Upload success!',
+  },
   confirmDelete: {
     zh: '您确定要删除吗？',
     en: 'Are you sure delete?',

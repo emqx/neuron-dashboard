@@ -14,6 +14,7 @@
               {{ subMenu.title }}
             </el-menu-item>
             <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
+              <el-menu-item @click="licensedialogVisible = true">License</el-menu-item>
               <el-menu-item @click="getData(74)">{{ $t('common.about') }}</el-menu-item>
               <el-menu-item @click="showLangDialog">{{ $t('common.lang') }}</el-menu-item>
             </div>
@@ -28,6 +29,23 @@
     </template>
     <About ref="about" />
     <Lang ref="lang" />
+    <el-dialog
+      class="license-upload"
+      :title="$t('administration.uploadLicense')"
+      :visible.sync="licensedialogVisible"
+      width="500px"
+    >
+      <el-upload
+        class="upload-license"
+        name="license"
+        action="/api/v1/license"
+        :limit="1"
+        :on-success="handleUploadSuccess"
+      >
+        <el-button icon="el-icon-upload" type="primary">{{ $t('common.upload') }}</el-button>
+      </el-upload>
+      <p><i class="el-icon-warning"></i> {{ $t('administration.licenseTip') }}</p>
+    </el-dialog>
   </el-menu>
 </template>
 
@@ -39,7 +57,7 @@ export default {
     return {
       menu,
       curFunc: 0,
-      key: '',
+      licensedialogVisible: false,
     }
   },
   computed: {
@@ -112,6 +130,9 @@ export default {
         }
       }
     },
+    handleUploadSuccess() {
+      this.$message.success(this.$t('common.uploadSuccess'))
+    },
   },
   components: {
     About: () => import('./about'),
@@ -120,4 +141,26 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss">
+.license-upload {
+  .el-icon-document,
+  .el-upload-list__item-name {
+    color: #fff;
+    &:hover,
+    &:focus {
+      .el-icon-document {
+        color: #34c388;
+      }
+    }
+  }
+  i {
+    font-size: 16px;
+  }
+  .el-dialog__body {
+    .el-icon-warning {
+      color: #ffc600;
+    }
+    text-align: center;
+  }
+}
+</style>
