@@ -43,4 +43,13 @@ export default {
     zh: '代理组',
     en: 'Agent Group',
   },
+  uploadLicense: {
+    zh: '上传 License',
+    en: 'Upload License',
+  },
+  licenseTip: {
+    zh: '软件授权截止日期结束前，EMQ 会发送相关邮件到注册邮箱，敬请留意邮箱，以免错过时间对您的业务造成影响。',
+    en:
+      'Before the software authorization deadline, EMQ will send relevant emails to the registered email address. Please pay attention to this email address so as not to miss the time and affect your business.',
+  },
 }
