@@ -62,7 +62,6 @@
 </template>
 
 <script>
-import paginate from '../../../utils/paginate'
 import Mixins from '@/mixins'
 import moment from 'moment'
 
