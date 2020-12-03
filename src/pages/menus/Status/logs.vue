@@ -85,7 +85,6 @@ export default {
   methods: {
     setData(data) {
       if (data.func === 83) {
-        console.log(data)
         if (data.errc === 0) {
           this.tableData = []
           this.tableData = data.rows
