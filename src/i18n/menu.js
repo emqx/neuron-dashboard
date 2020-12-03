@@ -63,4 +63,8 @@ export default {
     zh: '退出登录',
     en: 'Logout',
   },
+  logs: {
+    zh: '日志',
+    en: 'Logs',
+  },
 }
