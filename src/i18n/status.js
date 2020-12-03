@@ -71,4 +71,20 @@ export default {
     zh: '日期',
     en: 'Date',
   },
+  logs: {
+    zh: '日志',
+    en: 'Logs',
+  },
+  logType: {
+    zh: '日志类型',
+    en: 'Log type',
+  },
+  level: {
+    zh: '等级',
+    en: 'Level',
+  },
+  content: {
+    zh: '内容',
+    en: 'Content',
+  },
 }
