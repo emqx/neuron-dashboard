@@ -20,10 +20,3 @@ export default {
   },
 }
 </script>
-
-<!--<style scoped lang="scss">-->
-<!--@import "@/assets/style/public.scss";-->
-<!--.btn-text{-->
-<!--color:$color-text-normal;-->
-<!--}-->
-<!--</style>-->

@@ -29,27 +29,20 @@
         </el-col>
       </el-form>
     </el-row>
-    <vxe-table
+    <el-table
       v-if="maxTableHeight"
-      round
-      show-overflow
-      highlight-hover-row
       :max-height="maxTableHeight - 102"
-      :sort-config="{ trigger: 'cell' }"
       :data="tableData"
       :empty-text="$t('common.emptyData')"
     >
-      <vxe-table-column field="tstp" :title="$t('status.time')" width="300">
+      <el-table-column prop="tstp" :label="$t('status.time')" width="300">
         <template slot-scope="scope">
           {{ format(scope.row.tstp) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="logl" :title="$t('status.level')" width="280"> </vxe-table-column>
-      <vxe-table-column field="data" :title="$t('status.content')"> </vxe-table-column>
-      <div slot="empty">
-        {{ $t('common.emptyData') }}
-      </div>
-    </vxe-table>
+      </el-table-column>
+      <el-table-column prop="logl" :label="$t('status.level')" width="200"> </el-table-column>
+      <el-table-column show-overflow-tooltip prop="data" :label="$t('status.content')"> </el-table-column>
+    </el-table>
     <div class="custom-pagination">
       <a :class="['prev', page === 1 ? 'disabled' : '']" href="javascript:;" @click="handlePrevClick">
         <i class="el-icon-arrow-left"></i>
