@@ -200,7 +200,7 @@ export default {
     }),
     submit() {
       this.dialogTableVisible = false
-      let chnl = []
+      let _chnl = []
       const ipPortChdvTypes = [
         'ethip',
         'mbstcp',
@@ -217,15 +217,14 @@ export default {
         'snmpd',
         'g26875',
       ]
-      if (ipPortChdvTypes.indexOf(this.chdv) !== -1) {
-        chnl = this.chnl.filter((item) => item.tcph && (item.tcpp !== '' || item.tcpp !== undefined))
+      if (ipPortChdvTypes.indexOf(this.chdv) !== -1 && ipPortChdvTypes.indexOf(this.north) !== -1) {
+        _chnl = this.chnl.filter((item) => item.tcph && (item.tcpp !== '' || item.tcpp !== undefined))
       } else {
-        // eslint-disable-next-line prefer-destructuring
-        chnl = this.chnl
+        _chnl = this.chnl
       }
-      chnl[0].chdv = this.chdv
-      chnl[1].chdv = this.north
-      this.setDriverData({ chdv: this.chdv, chnl })
+      _chnl[0].chdv = this.chdv
+      _chnl[1].chdv = this.north
+      this.setDriverData({ chdv: this.chdv, chnl: _chnl })
     },
     close() {
       this.$nextTick(this.init)
@@ -253,7 +252,7 @@ export default {
           {
             chdv: '',
             tcph: '',
-            tcpp: '',
+            tcpp: 0,
             ttyc: '',
             ttyb: 9600,
             ttyd: 8,
@@ -264,7 +263,7 @@ export default {
           {
             chdv: '',
             tcph: '',
-            tcpp: '',
+            tcpp: 0,
             ttyc: '',
             ttyb: 9600,
             ttyd: 8,
@@ -287,7 +286,7 @@ export default {
           {
             chdv: val,
             tcph: '',
-            tcpp: '',
+            tcpp: 0,
             ttyc: '',
             ttyb: 9600,
             ttyd: 8,
@@ -307,9 +306,9 @@ export default {
         this.chnl = [
           driver,
           {
-            chdv: '',
+            chdv: val,
             tcph: '',
-            tcpp: '',
+            tcpp: 0,
             ttyc: '',
             ttyb: 9600,
             ttyd: 8,
