@@ -1,24 +1,32 @@
+const setDriverList = (data) => {
+  return data.map((i) => {
+    let { type } = i
+    type = type === 'tty' ? 'Serial drivers' : type
+    type = type === 'tcp' ? 'Ethernet drivers' : type
+    return {
+      label: i.desc,
+      val: i.name,
+      type,
+    }
+  })
+}
+
 export default {
   state: {
-    deviceList: [],
+    southDriverList: [],
+    northDriverList: [],
   },
   mutations: {
-    setDeviceList(state, data) {
-      state.deviceList = data.map((i) => {
-        let { type } = i
-        type = type === 'tty' ? 'Serial drivers' : type
-        type = type === 'tcp' ? 'Ethernet drivers' : type
-        return {
-          label: i.desc,
-          val: i.name,
-          type,
-        }
-      })
+    setSouthDriverList(state, data) {
+      state.southDriverList = setDriverList(data)
+    },
+    setNorthDriverList(state, data) {
+      state.northDriverList = setDriverList(data)
     },
   },
   getters: {
     deviceObj: (state, getters) => {
-      return state.deviceList.find((i) => i.val === getters.res.chdv) || {}
+      return state.southDriverList.find((i) => i.val === getters.res.chdv) || {}
     },
   },
 }

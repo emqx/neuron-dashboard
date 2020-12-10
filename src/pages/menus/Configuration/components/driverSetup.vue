@@ -5,20 +5,21 @@
     }}</el-button>
     <el-dialog :title="$t('configuration.driverSetup')" @closed="close" :visible.sync="dialogTableVisible">
       <h3 class="driver-type-title">
-        {{ $t('configuration.driverType') }}
+        {{ $t('configuration.driverProtocolName') }}
       </h3>
       <el-row class="type-row" :gutter="20" type="flex" align="middle">
         <el-col :span="12">
           <el-select v-model="chdv">
-            <el-option v-for="item in driverList" :key="item.val" :label="item.label" :value="item.val"> </el-option>
+            <el-option v-for="item in southDriverList" :key="item.val" :label="item.label" :value="item.val">
+            </el-option>
           </el-select>
         </el-col>
         <el-col :span="12">
-          <div>{{ driverType }}</div>
+          <div>{{ southDriverType }}</div>
         </el-col>
       </el-row>
       <el-row class="edit-drivers-row" :gutter="20">
-        <template v-if="driverType === 'Ethernet drivers'">
+        <template v-if="southDriverType === 'Ethernet drivers'">
           <el-col :span="24">
             <h3>Ethernet {{ $t('configuration.driverSetup') }}</h3>
           </el-col>
@@ -37,7 +38,7 @@
             </el-form>
           </el-col>
         </template>
-        <template v-else-if="driverType === 'Serial drivers'">
+        <template v-else-if="southDriverType === 'Serial drivers'">
           <el-col :span="24">
             <h3>Serial {{ $t('configuration.driverSetup') }}</h3>
           </el-col>
@@ -74,7 +75,7 @@
             </el-form>
           </el-col>
         </template>
-        <el-col v-if="driverType === 'Serial drivers' || driverType === 'Ethernet drivers'" :span="24">
+        <el-col v-if="southDriverType === 'Serial drivers' || southDriverType === 'Ethernet drivers'" :span="24">
           <el-table v-if="chnl[0].parm && chnl[0].parm.length" class="script-table" :data="chnl[0].parm">
             <el-table-column label="Vars" prop="vars"> </el-table-column>
             <el-table-column label="Pars" prop="pars" min-width="180px">
@@ -84,49 +85,86 @@
             </el-table-column>
           </el-table>
         </el-col>
-        <el-col :span="24">
-          <h3>MQTT</h3>
-        </el-col>
+      </el-row>
+      <h3>{{ $t('configuration.northServiceProtocolName') }}</h3>
+      <el-row class="type-row" :gutter="20" type="flex" align="middle">
         <el-col :span="12">
-          <el-select v-model="mqtt">
-            <el-option label="MQTT Client" value="pahomq"></el-option>
+          <el-select v-model="north">
+            <el-option v-for="item in northDriverList" :key="item.val" :label="item.label" :value="item.val">
+            </el-option>
           </el-select>
         </el-col>
-        <template v-if="mqtt">
+        <el-col :span="12">
+          <div>{{ northDriverType }}</div>
+        </el-col>
+      </el-row>
+      <el-row class="edit-drivers-row" :gutter="20">
+        <template v-if="northDriverType === 'Ethernet drivers'">
           <el-col :span="24">
-            <h3>MQTT Setup</h3>
+            <h3>Ethernet {{ $t('configuration.driverSetup') }}</h3>
           </el-col>
           <el-col :span="24">
-            <el-form ref="driverSetupMQTTForm" label-width="80px" label-position="left">
+            <el-form ref="driverSetupForm" label-width="80px" label-position="left">
               <el-col :span="12">
                 <el-form-item label="Host name">
                   <el-input v-model="chnl[1].tcph"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="Port">
+                <el-form-item label="Port no">
                   <el-input-number v-model="chnl[1].tcpp" :controls="false" :precision="0" :min="0" />
                 </el-form-item>
               </el-col>
             </el-form>
           </el-col>
+        </template>
+        <template v-else-if="northDriverType === 'Serial drivers'">
           <el-col :span="24">
-            <el-table v-if="chnl[1].parm" class="script-table" :data="chnl[1].parm">
-              <el-table-column label="Vars" prop="vars"> </el-table-column>
-              <el-table-column label="Pars" prop="pars" min-width="220px">
-                <template slot-scope="scope">
-                  <el-input
-                    :type="scope.row.vars === 'PASSWORD' ? 'password' : ''"
-                    placeholder=""
-                    size="mini"
-                    v-model="scope.row.pars"
-                  >
-                  </el-input>
-                </template>
-              </el-table-column>
-            </el-table>
+            <h3>Serial {{ $t('configuration.driverSetup') }}</h3>
+          </el-col>
+          <el-col :span="24">
+            <el-form ref="driverSetupForm" label-width="100px" :model="chnl[1]">
+              <el-form-item label="Device name">
+                <el-input v-model="chnl[1].ttyc"></el-input>
+              </el-form-item>
+              <el-form-item label="Baud rate">
+                <el-select v-model="chnl[1].ttyb">
+                  <el-option v-for="value in ttybList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Data bit">
+                <el-select v-model="chnl[1].ttyd">
+                  <el-option v-for="value in ttydList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Stop bit">
+                <el-select v-model="chnl[1].ttys">
+                  <el-option v-for="value in ttysList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Parity bit">
+                <el-select v-model="chnl[1].ttyp">
+                  <el-option
+                    v-for="item in ttypList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
           </el-col>
         </template>
+        <el-col v-if="northDriverType === 'Serial drivers' || northDriverType === 'Ethernet drivers'" :span="24">
+          <el-table v-if="chnl[1].parm && chnl[1].parm.length" class="script-table" :data="chnl[1].parm">
+            <el-table-column label="Vars" prop="vars"> </el-table-column>
+            <el-table-column label="Pars" prop="pars" min-width="180px">
+              <template slot-scope="scope">
+                <el-input placeholder="" size="mini" v-model="scope.row.pars"> </el-input>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-col>
       </el-row>
       <span slot="footer">
         <el-button @click="submit">{{ $t('common.submit') }}</el-button>
@@ -143,7 +181,8 @@ export default {
     return {
       dialogTableVisible: false,
       chdv: '', // Channel driver name
-      mqtt: '',
+      north: '', // Channel north name
+      paramDriverType: '',
       ttybList: [4800, 9600, 19200, 38400, 57600, 115200],
       ttydList: [5, 6, 7, 8],
       ttysList: ['1', '1.5', '2'],
@@ -152,47 +191,7 @@ export default {
         { value: 'O', label: 'Odd' },
         { value: 'N', label: 'None' },
       ],
-      chnl: [
-        {
-          chdv: '',
-          tcph: '',
-          tcpp: '',
-          ttyc: '',
-          ttyb: 9600,
-          ttyd: 8,
-          ttys: '1',
-          ttyp: 'N',
-          parm: [],
-        },
-        {
-          chdv: 'pahomq',
-          tcph: 'broker.emqx.io',
-          tcpp: '1883',
-          ttyc: '',
-          ttyb: 9600,
-          ttyd: 8,
-          ttys: '1',
-          ttyp: 'N',
-          parm: [
-            {
-              vars: 'USERNAME',
-              pars: '',
-            },
-            {
-              vars: 'PASSWORD',
-              pars: '',
-            },
-            {
-              vars: 'CERTIFICATE',
-              pars: '',
-            },
-            {
-              vars: 'KEYFILE',
-              pars: '',
-            },
-          ],
-        },
-      ], // Channel Details
+      chnl: [], // Channel Details
     }
   },
   methods: {
@@ -225,6 +224,7 @@ export default {
         chnl = this.chnl
       }
       chnl[0].chdv = this.chdv
+      chnl[1].chdv = this.north
       this.setDriverData({ chdv: this.chdv, chnl })
     },
     close() {
@@ -234,17 +234,45 @@ export default {
       this.$ws().set({ success: this.setParams }).send({ func: 24, drvn })
     },
     setParams(data) {
-      this.$ws().remove(this.setParams)
       if (data.func === 24 && !data.errc) {
-        this.chnl[0].parm = data.parm
+        this.$ws().remove(this.setParams)
+        const chnlIndex = this.paramDriverType === 'south' ? 0 : 1
+        this.chnl[chnlIndex].parm = data.parm
       }
     },
     init() {
       const { chdv, chnl } = this.driverData
       this.chdv = chdv
-      this.chnl = chnl
-      if (this.chdv) {
-        this.mqtt = this.chnl[1].chdv
+      if (chnl.length) {
+        this.chnl = chnl
+        if (this.chdv) {
+          this.north = this.chnl[1].chdv
+        }
+      } else {
+        this.chnl = [
+          {
+            chdv: '',
+            tcph: '',
+            tcpp: '',
+            ttyc: '',
+            ttyb: 9600,
+            ttyd: 8,
+            ttys: '1',
+            ttyp: 'N',
+            parm: [],
+          },
+          {
+            chdv: '',
+            tcph: '',
+            tcpp: '',
+            ttyc: '',
+            ttyb: 9600,
+            ttyd: 8,
+            ttys: '1',
+            ttyp: 'N',
+            parm: [],
+          },
+        ]
       }
     },
   },
@@ -254,7 +282,7 @@ export default {
   watch: {
     chdv(val) {
       if (this.dialogTableVisible) {
-        const [driver, mqtt] = this.chnl
+        const [driver, north] = this.chnl
         this.chnl = [
           {
             chdv: val,
@@ -267,58 +295,51 @@ export default {
             ttyp: 'N',
             parm: [],
           },
-          mqtt,
+          north,
         ]
+        this.paramDriverType = 'south'
         this.getDriverParams(val)
       }
     },
-    mqtt(val) {
+    north(val) {
       if (this.dialogTableVisible) {
         const [driver] = this.chnl
         this.chnl = [
           driver,
           {
-            chdv: 'pahomq',
-            tcph: 'broker.emqx.io',
-            tcpp: '1883',
+            chdv: '',
+            tcph: '',
+            tcpp: '',
             ttyc: '',
             ttyb: 9600,
             ttyd: 8,
             ttys: '1',
             ttyp: 'N',
-            parm: [
-              {
-                vars: 'USERNAME',
-                pars: '',
-              },
-              {
-                vars: 'PASSWORD',
-                pars: '',
-              },
-              {
-                vars: 'CERTIFICATE',
-                pars: '',
-              },
-              {
-                vars: 'KEYFILE',
-                pars: '',
-              },
-            ],
+            parm: [],
           },
         ]
+        this.paramDriverType = 'north'
+        this.getDriverParams(val)
       }
     },
   },
   computed: {
-    driverType() {
-      let tmp = this.driverList.find((i) => i.val === this.chdv)
-      return tmp ? tmp.type : ''
-    },
     ...mapState({
       driverData: (state) => state.SetUpData.driverData,
     }),
-    driverList() {
-      return this.$store.state.Device.deviceList
+    southDriverType() {
+      let tmp = this.southDriverList.find((i) => i.val === this.chdv)
+      return tmp ? tmp.type : ''
+    },
+    southDriverList() {
+      return this.$store.state.Device.southDriverList
+    },
+    northDriverType() {
+      let tmp = this.northDriverList.find((i) => i.val === this.north)
+      return tmp ? tmp.type : ''
+    },
+    northDriverList() {
+      return this.$store.state.Device.northDriverList
     },
   },
 }
@@ -333,6 +354,7 @@ export default {
     width: 100%;
   }
   .edit-drivers-row {
+    margin-bottom: 28px;
     h3 {
       margin: 30px 0;
       .el-button {
