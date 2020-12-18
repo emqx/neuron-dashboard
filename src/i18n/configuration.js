@@ -115,4 +115,8 @@ export default {
     zh: '北向协议名称',
     en: 'North service protocol name',
   },
+  noPermissions: {
+    zh: '无读写权限',
+    en: 'No Read and Write permissions',
+  },
 }

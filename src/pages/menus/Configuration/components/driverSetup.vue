@@ -125,7 +125,21 @@
           <el-col :span="24">
             <el-form ref="driverSetupForm" label-width="100px" :model="chnl[1]">
               <el-form-item label="Device name">
-                <el-input v-model="chnl[1].ttyc"></el-input>
+                <el-input v-if="north !== 'rs232'" v-model="chnl[1].ttyc"></el-input>
+                <el-select
+                  :class="{ 'error-permission': fdrw === -1 }"
+                  v-else
+                  v-model="chnl[1].ttyc"
+                  @change="handleTtycChange"
+                >
+                  <el-option
+                    v-for="(item, index) in rs232Options"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.name"
+                  ></el-option>
+                </el-select>
+                <p v-if="fdrw === -1" class="permission-tip">{{ $t('configuration.noPermissions') }}</p>
               </el-form-item>
               <el-form-item label="Baud rate">
                 <el-select v-model="chnl[1].ttyb">
@@ -192,6 +206,8 @@ export default {
         { value: 'N', label: 'None' },
       ],
       chnl: [], // Channel Details
+      rs232Options: [],
+      fdrw: 0,
     }
   },
   methods: {
@@ -274,9 +290,25 @@ export default {
         ]
       }
     },
+    setDeviceList(data) {
+      if (data.func === 26) {
+        this.rs232Options = data.rows
+        this.$ws().remove(this.setDeviceList)
+      }
+    },
+    getDeviceList(north) {
+      if (north === 'rs232') {
+        this.$ws().set({ success: this.setDeviceList }).send({ func: 26 })
+      }
+    },
+    handleTtycChange(val) {
+      const { fdrw } = this.rs232Options.find((item) => item.name === val)
+      this.fdrw = fdrw
+    },
   },
   created() {
     this.init()
+    this.getDeviceList(this.north)
   },
   watch: {
     chdv(val) {
@@ -319,6 +351,7 @@ export default {
         ]
         this.paramDriverType = 'north'
         this.getDriverParams(val)
+        this.getDeviceList(val)
       }
     },
   },
@@ -344,7 +377,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .driver-setup {
   .driver-type-title {
     margin-top: 0px;
@@ -360,6 +393,14 @@ export default {
         margin-left: 20px;
       }
     }
+  }
+  .error-permission {
+    .el-input__inner {
+      color: #f56c6c;
+    }
+  }
+  .permission-tip {
+    margin: 0px;
   }
 }
 .EthernetFormItem {
