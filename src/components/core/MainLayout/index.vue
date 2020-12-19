@@ -39,14 +39,13 @@ export default {
         .test()
         .set({ success: this.receiveStatus })
         .set({ success: this.receiveAlarmList })
-        .set({ success: this.setDevice })
         .set({ success: this.setData })
         .set({ success: this.getWritableObj })
-      setTimeout(() => {
-        this.$ws().send({
-          func: 23,
-        })
-      }, 500)
+        .set({ success: this.setSouthDrivers })
+      this.$ws().send({
+        func: 23,
+        type: 1,
+      })
     },
     ...mapMutations(['setAllData', 'setAlarmStatus', 'setAlarmList']),
     setData(res) {
@@ -58,10 +57,22 @@ export default {
         this.setAllData(res)
       }
     },
-    setDevice(data) {
+    setNorthDrivers(data) {
       if (+data.func === 23) {
-        this.$ws().remove(this.setDevice)
-        this.$store.commit('setDeviceList', data.rows)
+        this.$ws().remove(this.setNorthDrivers)
+        this.$store.commit('setNorthDriverList', data.rows)
+      }
+    },
+    setSouthDrivers(data) {
+      if (+data.func === 23) {
+        this.$ws().remove(this.setSouthDrivers)
+        this.$store.commit('setSouthDriverList', data.rows)
+        setTimeout(() => {
+          this.$ws().set({ success: this.setNorthDrivers }).send({
+            func: 23,
+            type: 2,
+          })
+        }, 2000)
       }
     },
     getWritableObj(data) {

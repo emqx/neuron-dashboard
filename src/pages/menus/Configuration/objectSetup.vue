@@ -17,15 +17,11 @@
 import indexMixin from '../mixins'
 import DriverSetup from './components/driverSetup'
 import ObjectSetup from './components/objectSetup'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   mixins: [indexMixin],
   computed: {
     ...mapGetters(['deviceObj']),
-    ...mapState({
-      driverData: (state) => state.SetUpData.driverData,
-      driverList: (state) => state.Device.deviceList,
-    }),
   },
   components: {
     DriverSetup,

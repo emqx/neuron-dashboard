@@ -107,4 +107,16 @@ export default {
     zh: '地址已修改，请选择 RW 的值',
     en: 'The address has been modified, please select the value of RW',
   },
+  driverProtocolName: {
+    zh: '驱动协议名称',
+    en: 'Driver protocol name',
+  },
+  northServiceProtocolName: {
+    zh: '北向协议名称',
+    en: 'North service protocol name',
+  },
+  noPermissions: {
+    zh: '无读写权限',
+    en: 'No Read and Write permissions',
+  },
 }
