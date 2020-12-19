@@ -80,7 +80,7 @@
             <el-table-column label="Vars" prop="vars"> </el-table-column>
             <el-table-column label="Pars" prop="pars" min-width="180px">
               <template slot-scope="scope">
-                <el-input placeholder="" size="mini" v-model="scope.row.pars"> </el-input>
+                <el-input size="mini" v-model="scope.row.pars"> </el-input>
               </template>
             </el-table-column>
           </el-table>
@@ -174,7 +174,8 @@
             <el-table-column label="Vars" prop="vars"> </el-table-column>
             <el-table-column label="Pars" prop="pars" min-width="180px">
               <template slot-scope="scope">
-                <el-input placeholder="" size="mini" v-model="scope.row.pars"> </el-input>
+                <el-input :type="scope.row.vars === 'PASSWORD' ? 'password' : ''" size="mini" v-model="scope.row.pars">
+                </el-input>
               </template>
             </el-table-column>
           </el-table>
