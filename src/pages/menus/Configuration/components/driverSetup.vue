@@ -4,88 +4,6 @@
       driverData.chdv === '' ? $t('configuration.newDriver') : $t('configuration.editDriver')
     }}</el-button>
     <el-dialog :title="$t('configuration.driverSetup')" @closed="close" :visible.sync="dialogTableVisible">
-      <h3 class="driver-type-title">
-        {{ $t('configuration.driverProtocolName') }}
-      </h3>
-      <el-row class="type-row" :gutter="20" type="flex" align="middle">
-        <el-col :span="12">
-          <el-select v-model="chdv">
-            <el-option v-for="item in southDriverList" :key="item.val" :label="item.label" :value="item.val">
-            </el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="12">
-          <div>{{ southDriverType }}</div>
-        </el-col>
-      </el-row>
-      <el-row class="edit-drivers-row" :gutter="20">
-        <template v-if="southDriverType === 'Ethernet drivers'">
-          <el-col :span="24">
-            <h3>Ethernet {{ $t('configuration.driverSetup') }}</h3>
-          </el-col>
-          <el-col :span="24">
-            <el-form ref="driverSetupForm" label-width="80px" label-position="left">
-              <el-col :span="12">
-                <el-form-item label="Host name">
-                  <el-input v-model="chnl[0].tcph"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="Port no">
-                  <el-input-number v-model="chnl[0].tcpp" :controls="false" :precision="0" :min="0" />
-                </el-form-item>
-              </el-col>
-            </el-form>
-          </el-col>
-        </template>
-        <template v-else-if="southDriverType === 'Serial drivers'">
-          <el-col :span="24">
-            <h3>Serial {{ $t('configuration.driverSetup') }}</h3>
-          </el-col>
-          <el-col :span="24">
-            <el-form ref="driverSetupForm" label-width="100px" :model="chnl[0]">
-              <el-form-item label="Device name">
-                <el-input v-model="chnl[0].ttyc"></el-input>
-              </el-form-item>
-              <el-form-item label="Baud rate">
-                <el-select v-model="chnl[0].ttyb">
-                  <el-option v-for="value in ttybList" :key="value" :label="value" :value="value"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="Data bit">
-                <el-select v-model="chnl[0].ttyd">
-                  <el-option v-for="value in ttydList" :key="value" :label="value" :value="value"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="Stop bit">
-                <el-select v-model="chnl[0].ttys">
-                  <el-option v-for="value in ttysList" :key="value" :label="value" :value="value"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="Parity bit">
-                <el-select v-model="chnl[0].ttyp">
-                  <el-option
-                    v-for="item in ttypList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
-          </el-col>
-        </template>
-        <el-col v-if="southDriverType === 'Serial drivers' || southDriverType === 'Ethernet drivers'" :span="24">
-          <el-table v-if="chnl[0].parm && chnl[0].parm.length" class="script-table" :data="chnl[0].parm">
-            <el-table-column label="Vars" prop="vars"> </el-table-column>
-            <el-table-column label="Pars" prop="pars" min-width="180px">
-              <template slot-scope="scope">
-                <el-input size="mini" v-model="scope.row.pars"> </el-input>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-col>
-      </el-row>
       <h3>{{ $t('configuration.northServiceProtocolName') }}</h3>
       <el-row class="type-row" :gutter="20" type="flex" align="middle">
         <el-col :span="12">
@@ -176,6 +94,88 @@
               <template slot-scope="scope">
                 <el-input :type="scope.row.vars === 'PASSWORD' ? 'password' : ''" size="mini" v-model="scope.row.pars">
                 </el-input>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
+      <h3 class="driver-type-title">
+        {{ $t('configuration.driverProtocolName') }}
+      </h3>
+      <el-row class="type-row" :gutter="20" type="flex" align="middle">
+        <el-col :span="12">
+          <el-select v-model="chdv">
+            <el-option v-for="item in southDriverList" :key="item.val" :label="item.label" :value="item.val">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="12">
+          <div>{{ southDriverType }}</div>
+        </el-col>
+      </el-row>
+      <el-row class="edit-drivers-row" :gutter="20">
+        <template v-if="southDriverType === 'Ethernet drivers'">
+          <el-col :span="24">
+            <h3>Ethernet {{ $t('configuration.driverSetup') }}</h3>
+          </el-col>
+          <el-col :span="24">
+            <el-form ref="driverSetupForm" label-width="80px" label-position="left">
+              <el-col :span="12">
+                <el-form-item label="Host name">
+                  <el-input v-model="chnl[0].tcph"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="Port no">
+                  <el-input-number v-model="chnl[0].tcpp" :controls="false" :precision="0" :min="0" />
+                </el-form-item>
+              </el-col>
+            </el-form>
+          </el-col>
+        </template>
+        <template v-else-if="southDriverType === 'Serial drivers'">
+          <el-col :span="24">
+            <h3>Serial {{ $t('configuration.driverSetup') }}</h3>
+          </el-col>
+          <el-col :span="24">
+            <el-form ref="driverSetupForm" label-width="100px" :model="chnl[0]">
+              <el-form-item label="Device name">
+                <el-input v-model="chnl[0].ttyc"></el-input>
+              </el-form-item>
+              <el-form-item label="Baud rate">
+                <el-select v-model="chnl[0].ttyb">
+                  <el-option v-for="value in ttybList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Data bit">
+                <el-select v-model="chnl[0].ttyd">
+                  <el-option v-for="value in ttydList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Stop bit">
+                <el-select v-model="chnl[0].ttys">
+                  <el-option v-for="value in ttysList" :key="value" :label="value" :value="value"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Parity bit">
+                <el-select v-model="chnl[0].ttyp">
+                  <el-option
+                    v-for="item in ttypList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </template>
+        <el-col v-if="southDriverType === 'Serial drivers' || southDriverType === 'Ethernet drivers'" :span="24">
+          <el-table v-if="chnl[0].parm && chnl[0].parm.length" class="script-table" :data="chnl[0].parm">
+            <el-table-column label="Vars" prop="vars"> </el-table-column>
+            <el-table-column label="Pars" prop="pars" min-width="180px">
+              <template slot-scope="scope">
+                <el-input size="mini" v-model="scope.row.pars"> </el-input>
               </template>
             </el-table-column>
           </el-table>
