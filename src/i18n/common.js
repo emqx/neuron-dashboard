@@ -155,6 +155,10 @@ export default {
     zh: '暂无数据',
     en: 'No Data',
   },
+  save: {
+    zh: '保存',
+    en: 'Save',
+  },
   unsubmitAndSave: {
     zh: '您尚未提交更改，提交并继续？',
     en: 'You have unsubmitted changes, submit and proceed?',
