@@ -10,6 +10,9 @@ export default {
     setAlarmStatus(state, data) {
       state.status = data
     },
+    clearAlarmList(state) {
+      state.alarmList = []
+    },
     setAlarmList(state, data) {
       const _alarmList = clone(state.alarmList)
       if (!_alarmList.length) {

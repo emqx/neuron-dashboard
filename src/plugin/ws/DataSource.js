@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import BaseConfig from './config.js'
 import router from '../../router'
+import Store from '../../store'
 import { Message } from 'element-ui'
+
 let dataSource
 
 class DataSource {
@@ -28,6 +30,7 @@ class DataSource {
       localStorage.removeItem('chnl')
       localStorage.removeItem('objectData')
       localStorage.removeItem('eventData')
+      Store.commit('clearAlarmList')
       if (currentName !== 'login') {
         router.push({
           name: 'login',
