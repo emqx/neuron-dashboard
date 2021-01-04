@@ -3,7 +3,7 @@
     <div class="dd-title">{{ $t('status.logs') }}</div>
     <el-row :gutter="20">
       <el-form>
-        <el-col :span="8">
+        <el-col :span="6">
           <el-form-item :label="$t('status.date')">
             <el-date-picker
               v-model="date"
@@ -17,14 +17,21 @@
             </el-date-picker>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <el-form-item :label="$t('status.logType')">
             <el-select v-model="logType" class="input" clearable>
               <el-option v-for="item in logList" :key="item" :label="item" :value="item"> </el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
+          <el-form-item :label="$t('status.proc')">
+            <el-select v-model="proc" class="input" clearable>
+              <el-option v-for="item in procList" :key="item" :label="item" :value="item"> </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-button class="btn" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
         </el-col>
       </el-form>
@@ -41,6 +48,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="logl" :label="$t('status.level')" width="200"> </el-table-column>
+      <el-table-column prop="proc" :label="$t('status.proc')" width="200"> </el-table-column>
       <el-table-column show-overflow-tooltip prop="data" :label="$t('status.content')"> </el-table-column>
     </el-table>
     <div class="custom-pagination">
@@ -71,7 +79,9 @@ export default {
       hasnext: false,
       pageMap: {},
       logType: 'all',
+      proc: 'all',
       logList: ['all', 'debug', 'info', 'warning', 'err'],
+      procList: ['all', 'WEBS', 'SERV', 'DRVR', 'CORE', 'TIMR'],
     }
   },
   methods: {
@@ -101,6 +111,7 @@ export default {
         srtt,
         stpt,
         srtl,
+        proc: this.proc,
         logl: this.logType,
       })
     },
