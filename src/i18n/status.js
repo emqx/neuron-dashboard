@@ -87,4 +87,8 @@ export default {
     zh: '内容',
     en: 'Content',
   },
+  proc: {
+    zh: '进程名称',
+    en: 'Process name',
+  },
 }
