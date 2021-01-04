@@ -10,11 +10,11 @@
         </el-breadcrumb-item>
       </el-breadcrumb>
       <div>
-        <el-button @click="$router.go(-1)">{{ $t('common.back') }}</el-button>
         <el-button @click="dialogTableVisible = true" type="primary">{{ $t('common.create') }}</el-button>
         <el-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">{{
           $t('common.delete')
         }}</el-button>
+        <el-button @click="$router.go(-1)">{{ $t('common.save') }}</el-button>
       </div>
     </div>
     <div>

@@ -68,6 +68,7 @@ export default {
       localStorage.removeItem('chnl')
       localStorage.removeItem('objectData')
       localStorage.removeItem('eventData')
+      this.$store.commit('clearAlarmList')
     },
   },
   mounted() {

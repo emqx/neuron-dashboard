@@ -71,6 +71,7 @@ export default {
         localStorage.removeItem('chnl')
         localStorage.removeItem('objectData')
         localStorage.removeItem('eventData')
+        this.$store.commit('clearAlarmList')
         setTimeout(() => {
           this.$openMessage.info(this.$t('common.restarting'))
           this.$ws().set().send({

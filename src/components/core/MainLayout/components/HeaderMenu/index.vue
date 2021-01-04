@@ -101,6 +101,7 @@ export default {
                     localStorage.removeItem('chnl')
                     localStorage.removeItem('objectData')
                     localStorage.removeItem('eventData')
+                    this.$store.commit('clearAlarmList')
                     this.$router.push({ name })
                     this.$ws().close()
                   }
