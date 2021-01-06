@@ -91,4 +91,28 @@ export default {
     zh: '进程名称',
     en: 'Process name',
   },
+  log: {
+    zh: '日志',
+    en: 'Log',
+  },
+  logSwitch: {
+    zh: '日志切换',
+    en: 'Log switch',
+  },
+  serviceLog: {
+    zh: '服务端日志',
+    en: 'Service Log',
+  },
+  driverLog: {
+    zh: '驱动日志',
+    en: 'Dirver Log',
+  },
+  scriptLog: {
+    zh: '脚本日志',
+    en: 'Script Log',
+  },
+  maxLines: {
+    zh: '最大行数',
+    en: 'Max Lines',
+  },
 }

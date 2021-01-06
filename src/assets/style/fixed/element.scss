@@ -224,3 +224,13 @@
 .el-pagination__jump {
   color: #fff;
 }
+
+/* Tabs */
+.el-tabs__item {
+  font-size: 16px;
+  color: #a8acb6;
+  margin-bottom: 8px;
+}
+.el-tabs__nav-wrap::after {
+  background-color: #a8acb6;
+}
