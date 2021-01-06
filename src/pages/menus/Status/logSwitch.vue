@@ -73,7 +73,6 @@ export default {
 
 <style lang="scss">
 .log-switch {
-  position: relative;
   .dd-title {
     margin-bottom: 20px;
   }
