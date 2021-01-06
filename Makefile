@@ -8,7 +8,7 @@ build:
 
 .PHONY: by_docker
 by_docker:
-	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+	docker run --rm --privileged tonistiigi/binfmt --install all
 	docker buildx build --no-cache\
 		-t neuron-dashboard-src \
 		--platform=linux/amd64 \
