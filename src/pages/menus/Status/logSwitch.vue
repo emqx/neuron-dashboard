@@ -42,7 +42,6 @@ export default {
   watch: {
     activeName(val) {
       this.tableData = this[`${val}_Data`]
-      this.sendData()
     },
   },
   methods: {
@@ -66,7 +65,7 @@ export default {
     },
   },
   mounted() {
-    this.sendData()
+    this.$ws().set({ success: this.setData })
   },
 }
 </script>
