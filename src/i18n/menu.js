@@ -67,4 +67,8 @@ export default {
     zh: '日志',
     en: 'Logs',
   },
+  logSwitch: {
+    zh: '日志切换',
+    en: 'Log switch',
+  },
 }

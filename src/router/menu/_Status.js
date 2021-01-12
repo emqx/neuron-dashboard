@@ -28,5 +28,11 @@ export default {
   redirect: {
     name: `${moduleName}-dataMonitoring`,
   },
-  children: [maker('dataMonitoring'), maker('currentAlarmStatus'), maker('historicalAlarms'), maker('logs')],
+  children: [
+    maker('dataMonitoring'),
+    maker('currentAlarmStatus'),
+    maker('historicalAlarms'),
+    maker('logs'),
+    maker('logSwitch'),
+  ],
 }

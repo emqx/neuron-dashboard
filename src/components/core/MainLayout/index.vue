@@ -20,6 +20,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
+
 export default {
   components: {
     HeaderMenu: () => import('./components/HeaderMenu'),
