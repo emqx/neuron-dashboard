@@ -65,6 +65,7 @@
 <script>
 import Mixins from '@/mixins'
 import moment from 'moment'
+import { setOneHourTime, setTimeDate } from '@/utils/time'
 
 export default {
   name: 'Logs',
@@ -99,12 +100,11 @@ export default {
       }
     },
     sendData() {
-      const setDate = (time) => Math.floor(time / 1000)
       if (!this.date) {
         this.date = []
       }
-      const srtt = setDate(this.date[0])
-      const stpt = setDate(this.date[1])
+      const srtt = setTimeDate(this.date[0])
+      const stpt = setTimeDate(this.date[1])
       const srtl = this.pageMap[this.page - 1] || 0
       this.$ws().set({ success: this.setData }).send({
         func: 83,
@@ -135,10 +135,7 @@ export default {
     },
   },
   created() {
-    const date = new Date()
-    const now = date.getTime()
-    const hour = now - 1 * 60 * 60 * 1000
-    this.date = [hour, now]
+    this.date = setOneHourTime()
   },
   mounted() {
     this.sendData()
