@@ -12,6 +12,7 @@
               start-placeholder="start"
               end-placeholder="end"
               type="datetimerange"
+              value-format="timestamp"
             >
             </el-date-picker>
           </el-form-item>
@@ -52,7 +53,7 @@
 
 <script>
 import Mixins from '@/mixins'
-import moment from 'moment'
+import { setOneHourTime, setTimeDate } from '@/utils/time'
 
 export default {
   mixins: [Mixins],
@@ -60,39 +61,33 @@ export default {
     return {
       data: [],
       params: {},
-      time: [moment().subtract(1, 'hours'), moment()],
+      time: [],
       srch: '',
       cate: '',
       cateList: ['critical', 'alarm', 'warning', 'event', 'view'],
       patn: '',
-      sett: '',
     }
   },
   methods: {
     handleSubmit(tokn) {
-      if (tokn === '') this.data = []
-      let [start, end] = this.time
-      const { srch, sett, cate, patn } = this
-      start = moment(start)
-      end = moment(end)
+      if (tokn === '') {
+        this.data = []
+      }
+      if (!this.time) {
+        this.time = []
+      }
+      const { srch, cate, patn } = this
+      const frti = setTimeDate(this.time[0])
+      const toti = setTimeDate(this.time[1])
       this.params = {
         func: 81,
         srch,
-        sett,
+        tokn,
         ofst: 0,
-        tokn: tokn,
+        frti,
+        toti,
         cate,
         patn,
-        fryr: start.year(),
-        frmo: start.month() + 1,
-        frda: start.date(),
-        frhr: start.hour(),
-        frmi: start.minute(),
-        toyr: end.year(),
-        tomo: end.month() + 1,
-        toda: end.date(),
-        tohr: end.hour(),
-        tomi: end.minute(),
       }
       this.$ws().set({ success: this.setData }).send(this.params)
     },
@@ -113,6 +108,9 @@ export default {
     format(time) {
       return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
+  },
+  created() {
+    this.time = setOneHourTime()
   },
 }
 </script>

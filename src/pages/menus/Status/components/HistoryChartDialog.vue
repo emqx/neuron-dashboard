@@ -7,6 +7,7 @@
         start-placeholder="start"
         end-placeholder="end"
         type="datetimerange"
+        value-format="timestamp"
       >
       </el-date-picker>
       &nbsp;&nbsp;&nbsp;&nbsp;
@@ -19,6 +20,8 @@
 <script>
 import moment from 'moment'
 import charts from 'echarts'
+import { setOneHourTime, setTimeDate } from '@/utils/time'
+
 export default {
   props: {
     objName: {
@@ -35,7 +38,7 @@ export default {
       chartInstance: null,
       propName: null,
       params: {},
-      time: [new Date(), new Date()],
+      time: [],
       option: {
         backgroundColor: '#333844',
         grid: {
@@ -74,25 +77,19 @@ export default {
   },
   methods: {
     handleSubmit(tokn) {
-      let [start, end] = this.time
-      start = moment(start)
-      end = moment(end)
+      if (!this.time) {
+        this.time = []
+      }
+      const frti = setTimeDate(this.time[0])
+      const toti = setTimeDate(this.time[1])
       this.params = {
         func: 82,
         srcn: this.objName,
         attn: this.propName || '',
         fend: 0,
-        tokn: tokn,
-        fryr: start.year(),
-        frmo: start.month() + 1,
-        frda: start.date(),
-        frhr: start.hour(),
-        frmi: start.minute(),
-        toyr: end.year(),
-        tomo: end.month() + 1,
-        toda: end.date(),
-        tohr: end.hour(),
-        tomi: end.minute(),
+        tokn,
+        frti,
+        toti,
       }
       this.$ws().set({ success: this.setData }).send(this.params)
     },
@@ -154,6 +151,9 @@ export default {
       this.dialogVisible = true
       this.$nextTick(this.initChart)
     },
+  },
+  created() {
+    this.time = setOneHourTime()
   },
 }
 </script>
