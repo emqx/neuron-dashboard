@@ -9,7 +9,8 @@
     <div class="control">
       <label>{{ $t('status.maxLines') }}:</label>
       <el-input-number v-model="maxLines" :controls="false" :precision="0" :min="0" />
-      <el-button @click="submit">{{ $t('common.submit') }}</el-button>
+      <el-button type="primary" @click="submit">{{ $t('common.submit') }}</el-button>
+      <el-button type="danger" @click="stopSendData">{{ $t('common.stop') }}</el-button>
     </div>
     <el-table
       ref="logTable"
@@ -48,6 +49,7 @@ export default {
   methods: {
     sendData() {
       this.$ws().remove(this.setData)
+      this.$ws().remove(this.handleStopData)
       this.$ws().set({ success: this.setData }).send({
         func: 84,
         logn: this.activeName,
@@ -64,6 +66,20 @@ export default {
         })
         this[`${this.activeName}_Data`] = this.tableData
       }
+    },
+    handleStopData(data) {
+      if (data.func === 84) {
+        this.$message.success(this.$t('status.logStoped'))
+      }
+    },
+    stopSendData() {
+      this.$ws().remove(this.setData)
+      this.$ws().remove(this.handleStopData)
+      this.$ws().set({ success: this.handleStopData }).send({
+        func: 84,
+        logn: this.activeName,
+        vars: -1,
+      })
     },
     submit() {
       this.sendData()
