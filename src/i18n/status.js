@@ -115,4 +115,8 @@ export default {
     zh: '最大行数',
     en: 'Max Lines',
   },
+  logStoped: {
+    zh: '日志发送已停止',
+    en: 'Log sending has stopped',
+  },
 }
