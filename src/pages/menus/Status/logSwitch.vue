@@ -12,6 +12,7 @@
       <el-button @click="submit">{{ $t('common.submit') }}</el-button>
     </div>
     <el-table
+      ref="logTable"
       v-if="maxTableHeight"
       :max-height="maxTableHeight - 82"
       :data="tableData"
@@ -56,7 +57,11 @@ export default {
     setData(data) {
       if (data.logn === this.activeName) {
         const _rows = data.rows.map((row) => ({ content: row }))
-        this.tableData.unshift(..._rows)
+        this.tableData.push(..._rows)
+        this.$nextTick(() => {
+          const { scrollHeight } = this.$refs.logTable.bodyWrapper
+          this.$refs.logTable.bodyWrapper.scrollTop = scrollHeight
+        })
         this[`${this.activeName}_Data`] = this.tableData
       }
     },
