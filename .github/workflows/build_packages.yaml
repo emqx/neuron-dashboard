@@ -22,7 +22,7 @@ jobs:
         touch dist/version
         echo "github_ref: $GITHUB_REF" >> dist/version
         echo "github_sha: $GITHUB_SHA" >> dist/version
-        zip -rq dist.zip ./dist
+        zip -rq neuron-dashboard.zip ./dist
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -40,7 +40,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist.zip
-        asset_name: dist.zip 
+        asset_path: ./neuron-dashboard.zip
+        asset_name: neuron-dashboard.zip 
         asset_content_type: application/zip
         
