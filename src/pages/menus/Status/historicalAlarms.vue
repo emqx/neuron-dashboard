@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import Mixins from '@/mixins'
 import { setOneHourTime, setTimeDate } from '@/utils/time'
 
