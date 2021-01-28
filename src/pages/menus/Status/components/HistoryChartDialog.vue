@@ -77,6 +77,12 @@ export default {
   },
   methods: {
     handleSubmit(tokn) {
+      if (tokn === -1) {
+        this.option.series = []
+        this.option.xAxis.data = []
+        this.chartInstance.clear()
+        this.initChart()
+      }
       if (!this.time) {
         this.time = []
       }
@@ -95,13 +101,14 @@ export default {
     },
     setData(data) {
       if (data.func === 82) {
-        data.tele &&
+        if (data.tele) {
           data.tele.forEach((i) => {
             const dataList = this.option.series
             const timeList = this.option.xAxis.data
             dataList.forEach((j) => j.data.push(i[j.name]))
             timeList.push(moment(i.tstp * 1000).format('YYYY-MM-DD HH:mm:ss'))
           })
+        }
         if (data.tokn) {
           if (data.tokn === -1) {
             this.chartInstance.setOption(this.option)

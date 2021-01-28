@@ -50,8 +50,7 @@
   },
   "lint-staged": {
     "*.{vue,js,scss}": [
-      "prettier --write .",
-      "git add"
+      "prettier --write ."
     ]
   }
 }
