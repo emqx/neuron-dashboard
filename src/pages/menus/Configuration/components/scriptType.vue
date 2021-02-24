@@ -133,8 +133,8 @@ export default {
           const { name, subr } = this.subroutineForm
           if (!this.scriptTypeList.some((i) => i.subr === subr)) {
             this.$emit('submit', name, subr)
-            this.init()
             this.dialogVisible = false
+            this.init()
           }
         } else {
           return false

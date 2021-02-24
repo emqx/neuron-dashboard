@@ -46,7 +46,7 @@ export default {
   }
 }
 .btnGroup {
-  margin-right: 388px;
+  margin-right: 510px;
 }
 .ObjectSetup {
   margin-top: -68px;
