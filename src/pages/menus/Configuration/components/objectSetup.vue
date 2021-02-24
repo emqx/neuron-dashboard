@@ -1,6 +1,9 @@
 <template>
   <div class="object-setup">
     <div class="dd-mb dd-fr">
+      <el-button slot="trigger" icon="el-icon-download" :loading="exportLoading" @click="handleExport">
+        {{ $t('common.export') }}
+      </el-button>
       <el-upload
         ref="upload"
         class="upload-excel"
@@ -53,7 +56,7 @@
             <el-form-item label="Logging time (1s)" prop="logt">
               <el-input-number v-model="objectSetupFrom.logt" :controls="false" :precision="0" :min="0" />
             </el-form-item>
-            <el-form-item label="Timestamp display" prop="logt">
+            <el-form-item label="Timestamp display" prop="tstd">
               <el-radio-group v-model="objectSetupFrom.tstd">
                 <el-radio :label="1">Yes</el-radio>
                 <el-radio :label="0">No</el-radio>
@@ -98,8 +101,7 @@
 import ObjectTable from './objectTable'
 import { mapMutations } from 'vuex'
 import _ from 'lodash'
-import getExcelData from '@/utils/excelData'
-
+import { getExcelData, exportExcelData } from '@/utils/excelData'
 export default {
   data() {
     return {
@@ -107,6 +109,7 @@ export default {
       isDetail: true,
       isEdit: false,
       uploadLoading: false,
+      exportLoading: false,
       fileList: [],
       objectSetupFrom: {},
       objectSetupFromRules: {
@@ -148,7 +151,6 @@ export default {
         if (valid) {
           this.isDetail = false
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -234,6 +236,39 @@ export default {
       })
       return objList
     },
+    genExcelWebwork(objList) {
+      const cols = [
+        'pref',
+        'objn',
+        'suff',
+        'updt',
+        'logt',
+        'tstd',
+        'obsz',
+        'attn',
+        'attt',
+        'deci',
+        'achg',
+        'adis',
+        'attr',
+        'rtim',
+        'addr',
+      ]
+      const webwork = [cols]
+      objList.forEach((obj) => {
+        const { objn, updt, logt, tstd, obsz } = obj
+        const content = []
+        obj.oatt.forEach((attrs) => {
+          const { attn, attt, deci, achg, adis, attr, rtim, aadd } = attrs
+          aadd.forEach((item) => {
+            const { pref, suff, addr } = item
+            content.push([pref, objn, suff, updt, logt, tstd, obsz, attn, attt, deci, achg, adis, attr, rtim, addr])
+          })
+        })
+        webwork.push(...content)
+      })
+      return webwork
+    },
     handleUploadChange(file) {
       this.uploadLoading = true
       getExcelData(file)
@@ -251,6 +286,25 @@ export default {
     },
     handleUploadError(error) {
       this.$message.error(error.toString())
+    },
+    handleExport() {
+      const objList = this.$store.state.SetUpData.objectData
+      if (objList.length === 0) {
+        this.$message.warning(this.$t('common.emptyData'))
+        return
+      }
+      this.exportLoading = true
+      const data = this.genExcelWebwork(objList)
+      exportExcelData(data)
+        .then((res) => {
+          if (res) {
+            this.exportLoading = false
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.toString())
+          this.uploadLoading = false
+        })
     },
     onDelete(data) {
       const deleteData = []
@@ -308,6 +362,7 @@ export default {
   .upload-excel {
     display: inline-block;
     margin-right: 10px;
+    margin-left: 10px;
   }
 }
 </style>

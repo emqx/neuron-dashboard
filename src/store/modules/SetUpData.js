@@ -53,12 +53,6 @@ export default {
       state.driverData.chnl = localChnl ? JSON.parse(localChnl) : chnl
       state.objectData = localObjectData ? JSON.parse(localObjectData) : constructObjd(objd)
       state.eventData = localEventData ? JSON.parse(localEventData) : msgd
-      // const filterData = localObjectData.filter((obj) => {
-      //   return !objd.some((obj2) => {
-      //     return obj.objn === obj2.objn
-      //   })
-      // })
-      // state.objectData = [...objd, ...filterData]
     },
     clearAllData(state) {
       state.driverData.chdv = ''
