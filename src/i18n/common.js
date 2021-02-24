@@ -99,6 +99,10 @@ export default {
     zh: '导入',
     en: 'Import',
   },
+  export: {
+    zh: '导出',
+    en: 'Export',
+  },
   upload: {
     zh: '上传',
     en: 'Upload',
