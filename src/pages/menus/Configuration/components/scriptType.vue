@@ -144,7 +144,6 @@ export default {
     handleSelect(e) {
       if (e) {
         const res = this.scriptTypeList.filter((i) => i.subr === e)
-        // debugger
         this.scriptType = {
           name: res[0].name,
           subr: res[0].subr,

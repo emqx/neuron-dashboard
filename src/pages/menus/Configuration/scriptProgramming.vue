@@ -130,12 +130,14 @@ export default {
         // eslint-disable-next-line no-param-reassign
         rows = []
       }
+      // Remove prefix SR[1-999]
+      const _name = name.replace(/^SR([1-9][0-9]{0,2})\s-\s/g, '')
       this.$ws()
         .set({ success: this.setData })
         .send({
           func: 34,
           csub: 0,
-          name,
+          name: _name,
           subr: +subr,
           nrow: rows.length,
           rows,
@@ -144,6 +146,7 @@ export default {
     setData(data) {
       if (data.func === 34 && data.errc === 0) {
         this.$ws().remove(this.setData)
+        this.$openMessage.success(this.$t('common.submitSuccess'))
         this.oldScriptData = []
         this.oldScriptData = _.cloneDeep(this.scriptData)
       }
