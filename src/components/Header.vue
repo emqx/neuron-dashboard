@@ -13,9 +13,3 @@ export default defineComponent({
   name: 'Header',
 })
 </script>
-
-<style lang="scss">
-.header {
-  background: #092132;
-}
-</style>

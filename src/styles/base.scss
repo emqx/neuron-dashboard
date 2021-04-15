@@ -1,7 +1,9 @@
+@import '~@/styles/emqx-ui-variables.scss';
+
 #app {
+  font-family: "PingFang SC", "Source Han Sans CN";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
@@ -36,4 +38,111 @@ td {
 
 body {
   background-color: #F4F9FC;
+}
+
+.header {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #092132;
+}
+
+.side-nav {
+  padding-right: 40px;
+  border-right: none;
+  background-color: transparent;
+  .nav-item,
+  .el-submenu__title {
+    height: 48px;
+    padding: 0;
+  }
+  .el-submenu__title {
+    margin-bottom: 12px;
+    padding-left: 0 !important;
+  }
+  .nav-item {
+    min-width: auto;
+    margin-bottom: 12px;
+    &.is-active {
+      .nav-label,
+      .nav-icon {
+        color: #fff;
+      }
+    }
+  }
+  .nav-item-content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    line-height: 1;
+    text-decoration: none;
+    .nav-icon {
+      margin-right: 15px;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+    span {
+      display: inline-block;
+      vertical-align: top;
+      padding-top: (48px - 20px) / 2;
+      padding-bottom: (48px - 20px) / 2;
+      font-size: 14px;
+      color: $--regular-text;
+      font-weight: 500;
+    }
+  }
+  .el-menu {
+    background-color: transparent;
+  }
+  .emqx-menu-item.el-menu-item.is-active {
+    background: $--color-primary;
+    box-shadow: 0px 10px 18px -6px #189bfe85;
+  }
+}
+
+.body {
+  padding: 40px 0;
+  margin-top: 60px;
+  .el-main {
+    padding: 0;
+  }
+}
+
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.common-page-block {
+  .common-page-block-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1D1D1D;
+    line-height: 25px;
+    margin-bottom: 32px;
+  }
+}
+
+.normal-filter-input {
+  width: 200px;
+  &.emqx-select {
+    width: 200px;
+  }
+  &:not(:last-child) {
+    margin-right: 20px;
+  }
+}
+
+.table-with-pagination {
+  margin-bottom: 32px;
+}
+
+.pagination-container {
+  text-align: right;
 }
