@@ -6,6 +6,83 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "21016581",
+      "name": "language",
+      "font_class": "language",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
+      "icon_id": "21016582",
+      "name": "License",
+      "font_class": "License",
+      "unicode": "e6b1",
+      "unicode_decimal": 59057
+    },
+    {
+      "icon_id": "21016583",
+      "name": "logout",
+      "font_class": "logout",
+      "unicode": "e6b2",
+      "unicode_decimal": 59058
+    },
+    {
+      "icon_id": "21016584",
+      "name": "submit",
+      "font_class": "submit",
+      "unicode": "e6b3",
+      "unicode_decimal": 59059
+    },
+    {
+      "icon_id": "21016585",
+      "name": "about",
+      "font_class": "about",
+      "unicode": "e6b4",
+      "unicode_decimal": 59060
+    },
+    {
+      "icon_id": "21016586",
+      "name": "attributed",
+      "font_class": "attributed",
+      "unicode": "e6b5",
+      "unicode_decimal": 59061
+    },
+    {
+      "icon_id": "21016587",
+      "name": "user admin",
+      "font_class": "useradmin",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
+      "icon_id": "21016588",
+      "name": "create",
+      "font_class": "create",
+      "unicode": "e6b7",
+      "unicode_decimal": 59063
+    },
+    {
+      "icon_id": "21016589",
+      "name": "password",
+      "font_class": "password",
+      "unicode": "e6b8",
+      "unicode_decimal": 59064
+    },
+    {
+      "icon_id": "21016590",
+      "name": "group",
+      "font_class": "group",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
+      "icon_id": "21016591",
+      "name": "date",
+      "font_class": "date",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
       "icon_id": "20995404",
       "name": "neuron logo",
       "font_class": "neuronlogo",

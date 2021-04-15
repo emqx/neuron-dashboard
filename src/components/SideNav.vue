@@ -1,13 +1,13 @@
 <template>
   <emqx-menu class="el-menu-vertical-demo side-nav" router :default-active="actvieMenu">
     <template v-for="(nav, index) in navList">
-      <emqx-menu-item class="nav-item" v-if="!nav.subMenus" style="padding-left: 0" :key="index" :index="nav.label">
+      <emqx-menu-item class="nav-item" v-if="!nav.subMenus" style="padding-left: 0" :key="index" :index="nav.to">
         <div class="nav-item-content">
           <i class="nav-icon iconfont" :class="nav.icon"></i>
           <span class="nav-label">{{ nav.label }}</span>
         </div>
       </emqx-menu-item>
-      <emqx-submenu v-else :key="nav.to" :index="nav.label">
+      <emqx-submenu v-else :key="nav.to" :index="nav.to">
         <template #title>
           <div class="nav-item-content">
             <i class="nav-icon iconfont" :class="nav.icon"></i>
@@ -34,12 +34,30 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'SideNav',
   setup() {
+    const { t } = useI18n()
     const state = reactive({
-      navList: [],
+      navList: [
+        {
+          to: '/data',
+          label: t('data.data'),
+          icon: 'iconstatus',
+        },
+        {
+          to: '/logs',
+          label: t('logs.logs'),
+          icon: 'iconlogs',
+        },
+        {
+          to: '/script',
+          label: t('script.script'),
+          icon: 'iconscript',
+        },
+      ],
     })
     const actvieMenu = computed(() => {
       const firstLevelPath = useRoute().path.match(/^\/[^/]+/)
@@ -52,5 +70,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="scss"></style>
