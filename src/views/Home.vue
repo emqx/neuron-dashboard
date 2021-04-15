@@ -1,18 +1,34 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div class="main">
+    <Header />
+    <emqx-container normal fixed-nav class="body">
+      <template #nav>
+        <side-nav></side-nav>
+      </template>
+      <template #page-content></template>
+    </emqx-container>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
+import Header from '@/components/Header.vue'
+import SideNav from '@/components/SideNav.vue'
 
 export default defineComponent({
   name: 'Home',
   components: {
-    HelloWorld,
+    Header,
+    SideNav,
   },
 })
 </script>
+
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-width: 1000px;
+}
+</style>

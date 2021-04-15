@@ -1,0 +1,149 @@
+{
+  "id": "2487527",
+  "name": "neuron",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "20995404",
+      "name": "neuron logo",
+      "font_class": "neuronlogo",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
+      "icon_id": "20995326",
+      "name": "Administration",
+      "font_class": "Administration",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
+    },
+    {
+      "icon_id": "20995327",
+      "name": "alarm",
+      "font_class": "alarm",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "20995328",
+      "name": "alarm status",
+      "font_class": "alarmstatus",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "20995329",
+      "name": "config",
+      "font_class": "config",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "20995330",
+      "name": "logs",
+      "font_class": "logs",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    },
+    {
+      "icon_id": "20995331",
+      "name": "script",
+      "font_class": "script",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
+      "icon_id": "20995332",
+      "name": "comm-down",
+      "font_class": "comm-down1",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "20995333",
+      "name": "manu",
+      "font_class": "manu",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "20995334",
+      "name": "mqdisconnect",
+      "font_class": "mqdisconnect",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "20995335",
+      "name": "restart",
+      "font_class": "restart",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "20995336",
+      "name": "shutdown",
+      "font_class": "shutdown",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "20995337",
+      "name": "status",
+      "font_class": "status",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
+      "icon_id": "20995338",
+      "name": "stanndby",
+      "font_class": "stanndby",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
+      "icon_id": "20995339",
+      "name": "update",
+      "font_class": "update",
+      "unicode": "e6ae",
+      "unicode_decimal": 59054
+    },
+    {
+      "icon_id": "20994721",
+      "name": "comm-down",
+      "font_class": "comm-down",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "20466840",
+      "name": "display",
+      "font_class": "display",
+      "unicode": "e692",
+      "unicode_decimal": 59026
+    },
+    {
+      "icon_id": "20466843",
+      "name": "delete",
+      "font_class": "delete",
+      "unicode": "e693",
+      "unicode_decimal": 59027
+    },
+    {
+      "icon_id": "20466845",
+      "name": "Upload",
+      "font_class": "Upload",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "20466847",
+      "name": "search",
+      "font_class": "search",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    }
+  ]
+}
