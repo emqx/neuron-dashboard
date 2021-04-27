@@ -12,21 +12,32 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import useWebsocket from '@/plugins/ws/useWebsocket'
 
 export default defineComponent({
   name: 'Login',
   setup() {
+    const router = useRouter()
+    const { ws } = useWebsocket()
     const form = reactive({
       userName: '',
       password: '',
     })
     const login = () => {
-      const user = {
+      const loginInfo = {
         func: 10,
         name: form.userName,
         pass: form.password,
       }
-      sessionStorage.setItem('user', JSON.stringify(user))
+      ws(loginInfo)
+        .connect()
+        .then((userInfo) => {
+          sessionStorage.setItem('user', JSON.stringify(userInfo))
+          router.push({
+            name: 'Data',
+          })
+        })
     }
     return {
       ...toRefs(form),
