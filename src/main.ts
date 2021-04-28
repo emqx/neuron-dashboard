@@ -10,6 +10,7 @@ import '@emqx/emqx-ui/lib/styles/index.scss'
 import '@/styles/emqx-ui-variables.scss'
 import '@/styles/base.scss'
 import '@/styles/reset.scss'
+import '@/styles/colors.scss'
 import '@/assets/fonts/iconfont.css'
 
 createApp(App).use(i18n).use(websocket).use(EmqxUI).use(store).use(router).mount('#app')
