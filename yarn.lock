@@ -866,10 +866,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@emqx/emqx-ui@^1.0.24-0":
-  version "1.0.24-0"
-  resolved "https://registry.npmjs.org/@emqx/emqx-ui/-/emqx-ui-1.0.24-0.tgz#8acf3883411d05e1c02445d41bc3f3070605bc0e"
-  integrity sha512-GiuYHqweKtaJbYsj4LujIC69wL0KqHyMjaVBJJ9kJgGRJilLskOfDdKRAg164OrRcE0EDZwUpeyu0/VYcpkINg==
+"@emqx/emqx-ui@^1.0.27-0":
+  version "1.0.27-0"
+  resolved "https://registry.npmjs.org/@emqx/emqx-ui/-/emqx-ui-1.0.27-0.tgz#e01851e4e505994b9d904620eea0c1dd367e73a0"
+  integrity sha512-PauIb9LgUZwKJQWJt5RfTwJyek+GQHdZ2P5OK5MgRZeAn7h7NauegY09m/Vp2iXlzkzC1OcU5M3YqRpwrT7SMw==
   dependencies:
     core-js "^3.6.5"
     element-plus "^1.0.2-beta.35"
@@ -9688,6 +9688,11 @@ vuex@^4.0.0-0:
   resolved "https://registry.npm.taobao.org/vuex/download/vuex-4.0.0.tgz#ac877aa76a9c45368c979471e461b520d38e6cf5"
   integrity sha1-rId6p2qcRTaMl5Rx5GG1INOObPU=
 
+vxe-table@^4.0.14:
+  version "4.0.14"
+  resolved "https://registry.npmjs.org/vxe-table/-/vxe-table-4.0.14.tgz#604d0f431a5baf9597dd205fe1969a03eeb8769c"
+  integrity sha512-0fwddIk7X+NPneZuucvy6BbTmZ9oRfTxP02ZfWOu5c4KegVSFTIxMWlGkDOhtwf67HcA6gh9UwWkyoPiKhvvCQ==
+
 watchpack-chokidar2@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npm.taobao.org/watchpack-chokidar2/download/watchpack-chokidar2-2.0.1.tgz#38500072ee6ece66f3769936950ea1771be1c957"
@@ -9972,6 +9977,11 @@ ws@^6.0.0, ws@^6.2.1:
   integrity sha1-RC/fCkftZPWbal2P8TD0dI7VJPs=
   dependencies:
     async-limiter "~1.0.0"
+
+xe-utils@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.npmjs.org/xe-utils/-/xe-utils-3.2.1.tgz#c679e829519b016ef350bce9953a3943604c5bc2"
+  integrity sha512-NiupDI5mIziz4i152UCk78c/qxYH/TDexGylLj81kxPbrePEg43LQ8hITCbsqpJDTcu9dmXESUtZyQDD1oB0hw==
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"
