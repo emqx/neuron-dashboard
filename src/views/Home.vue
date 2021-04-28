@@ -17,7 +17,7 @@ import { defineComponent, ref } from 'vue'
 import Header from '@/components/Header.vue'
 import SideNav from '@/components/SideNav.vue'
 import useWebsocket from '@/plugins/ws/useWebsocket'
-import { NeuronData, Status } from '@/types/neuron'
+import { Status } from '@/types/neuron'
 import { useStore } from 'vuex'
 
 export default defineComponent({
@@ -31,13 +31,12 @@ export default defineComponent({
     const { ws } = useWebsocket()
     const store = useStore()
     let SET_STATUS = null
-    const receiveStatus = (data: Status | NeuronData) => {
-      const _data = data as Status
-      if (!_data.func && _data.tstp) {
-        if (_data.mode !== 'INACTIVE' && !loadData.value) {
+    const receiveStatus = (data: Status) => {
+      if (!data.func && data.tstp) {
+        if (data.mode !== 'INACTIVE' && !loadData.value) {
           loadData.value = true
         }
-        SET_STATUS = store.commit('SET_STATUS', _data)
+        SET_STATUS = store.commit('SET_STATUS', data)
       }
     }
     ws().test().set({

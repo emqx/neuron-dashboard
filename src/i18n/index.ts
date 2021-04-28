@@ -1,7 +1,7 @@
 import { Language } from '@/types/locale'
 import { createI18n } from 'vue-i18n'
 
-const LangModules = ['data', 'logs', 'script', 'common']
+const LangModules = ['data', 'logs', 'script', 'common', 'config']
 
 type LangModel = {
   [key in Language]: $TSFixed

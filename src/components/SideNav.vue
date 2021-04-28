@@ -53,6 +53,11 @@ export default defineComponent({
           icon: 'iconstatus',
         },
         {
+          to: '/configuration',
+          label: t('config.config'),
+          icon: 'iconconfig',
+        },
+        {
           to: '/logs',
           label: t('logs.logs'),
           icon: 'iconlogs',
