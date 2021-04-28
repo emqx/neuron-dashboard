@@ -36,6 +36,12 @@ td {
   padding: 0;
 }
 
+h3.card-title {
+  color: var(--card-title-color);
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
 body {
   background-color: #F4F9FC;
 }
