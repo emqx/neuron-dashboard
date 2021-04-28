@@ -8,6 +8,15 @@ interface Status {
   mqcn: string
   galm: string
 }
+export interface TeleData {
+  func: number
+  tele: {
+    objn: string
+    tstp: number
+    temp: number
+    energy: number
+  }
+}
 
 export interface NeuronData {
   func: number

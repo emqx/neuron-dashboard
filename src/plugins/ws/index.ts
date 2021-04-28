@@ -76,9 +76,9 @@ export class DataSource {
       this.websocket.onclose = this.onclose
       this.websocket.onerror = this.onerror
       this.set({
-        success: (data) => {
+        success: (data: NeuronData) => {
           if (data) {
-            const { func, errc } = data as NeuronData
+            const { func, errc } = data
             if (func === 10) {
               if (errc) {
                 dataSource = null
