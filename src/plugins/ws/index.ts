@@ -78,7 +78,7 @@ export class DataSource {
       this.set({
         success: (data) => {
           if (data) {
-            const { func, errc } = data
+            const { func, errc } = data as NeuronData
             if (func === 10) {
               if (errc) {
                 dataSource = null

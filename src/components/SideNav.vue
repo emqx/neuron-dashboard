@@ -29,15 +29,20 @@
       </emqx-submenu>
     </template>
   </emqx-menu>
+  <status-bar></status-bar>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import StatusBar from './StatusBar.vue'
 
 export default defineComponent({
   name: 'SideNav',
+  components: {
+    StatusBar,
+  },
   setup() {
     const { t } = useI18n()
     const state = reactive({

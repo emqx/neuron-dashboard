@@ -1,8 +1,8 @@
-import { NeuronData } from '@/types/neuron'
+import { NeuronData, Status } from '@/types/neuron'
 
 export interface DataSourceConfig {
   func?: number
   name?: string
   pass?: string
-  success?: (data: NeuronData) => void
+  success?: (data: NeuronData | Status) => void
 }
