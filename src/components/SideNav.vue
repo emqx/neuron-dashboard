@@ -67,6 +67,16 @@ export default defineComponent({
           label: t('script.script'),
           icon: 'iconscript',
         },
+        {
+          to: '/alarm',
+          label: t('alarm.alarm'),
+          icon: 'iconalarmstatus',
+        },
+        {
+          to: '/group',
+          label: t('group.group'),
+          icon: 'icongroup',
+        },
       ],
     })
     const actvieMenu = computed(() => {

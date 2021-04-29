@@ -19,7 +19,7 @@
         {{ status.mqcn || 'MQDISCONNECT' }}
       </div>
       <div :class="[galm === 'NO ALARM' ? 'green' : 'red', 'status-item']">
-        <i class="iconfont iconalarmstatus"></i>
+        <i class="iconfont iconalarm"></i>
         {{ galm }}
       </div>
     </template>
