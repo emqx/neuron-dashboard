@@ -1,4 +1,4 @@
-import { reactive, Ref, ref } from 'vue'
+import { Ref, ref } from 'vue'
 
 // interface PaginationModel {
 //   pageNum: number

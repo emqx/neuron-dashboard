@@ -46,7 +46,13 @@
         </vxe-table-column>
       </vxe-table>
       <div class="pagination-container">
-        <emqx-pagination layout="prev, pager, next" :total="total" :page-size="pageSize" v-model:current-page="pageNum">
+        <emqx-pagination
+          v-if="data.length"
+          layout="prev, pager, next"
+          :total="total"
+          :page-size="pageSize"
+          v-model:current-page="pageNum"
+        >
         </emqx-pagination>
       </div>
     </emqx-card>
