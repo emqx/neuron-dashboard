@@ -5,7 +5,6 @@ import wsConifg from './config'
 import { useRouter } from 'vue-router'
 import { NeuronData } from '@/types/neuron'
 
-const router = useRouter()
 let dataSource: DataSource | null = null
 
 export class DataSource {
@@ -33,6 +32,7 @@ export class DataSource {
       this.onsuccess.add(success)
     }
     this.onclose = () => {
+      const router = useRouter()
       EmqxMessage.warning({
         message: 'Socket closed',
         duration: 6000,
@@ -44,7 +44,7 @@ export class DataSource {
       // localStorage.removeItem('eventData')
       // Store.commit('clearAlarmList')
       if (currentName !== 'login') {
-        router.push({
+        router?.push({
           name: 'Login',
         })
       }
