@@ -46,6 +46,11 @@ body {
   background-color: #F4F9FC;
 }
 
+label {
+  color: var(--main-label-color);
+  margin-right: 10px;
+}
+
 .header {
   position: fixed;
   z-index: 2;
@@ -150,5 +155,13 @@ body {
 }
 
 .pagination-container {
+  text-align: right;
+}
+
+.card-oper {
+  margin-bottom: 24px;
+}
+
+.right {
   text-align: right;
 }

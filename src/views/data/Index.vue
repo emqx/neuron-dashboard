@@ -2,7 +2,7 @@
   <div class="data">
     <emqx-card>
       <h3 class="card-title">{{ $t('data.dataMonitoring') }}</h3>
-      <emqx-row class="obj-name-select">
+      <emqx-row class="card-oper">
         <emqx-col :span="8">
           <emqx-select v-model="objName" :placeholder="$t('data.objName')">
             <emqx-option v-for="item in objList" :key="item" :label="item" :value="item"> </emqx-option>
@@ -65,7 +65,7 @@ import useTeleData from '@/composables/useTeleData'
 import useMaxHeight from '@/composables/useMaxHeight'
 import usePagination from '@/composables/usePagination'
 import { TeleData } from '@/types/neuron'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onUnmounted, ref } from 'vue'
 
 export default defineComponent({
   name: 'Data',
@@ -84,6 +84,9 @@ export default defineComponent({
     ws().test().set({
       success: setTeleData,
     })
+    onUnmounted(() => {
+      ws().remove(setTeleData)
+    })
     const handleCheck = () => ({})
     const handleCheckAll = () => ({})
     return {
@@ -100,11 +103,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="scss">
-.data {
-  .obj-name-select {
-    margin-bottom: 24px;
-  }
-}
-</style>
