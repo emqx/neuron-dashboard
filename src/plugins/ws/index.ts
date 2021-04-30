@@ -19,6 +19,7 @@ export class DataSource {
   onerror!: (this: WebSocket, ev: Event) => Event
   onsuccess!: Set<DataSourceConfig['success']>
   constructor(config: DataSourceConfig = {}) {
+    const router = useRouter()
     const { name, pass, success } = config
     const storage = JSON.parse(sessionStorage.getItem('user') || '{}')
     this.wsUri = wsConifg.serverBaseUrl
@@ -32,7 +33,6 @@ export class DataSource {
       this.onsuccess.add(success)
     }
     this.onclose = () => {
-      const router = useRouter()
       EmqxMessage.warning({
         message: 'Socket closed',
         duration: 6000,

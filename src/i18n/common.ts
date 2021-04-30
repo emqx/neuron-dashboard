@@ -187,4 +187,8 @@ export default {
     zh: '您尚未提交更改，提交并继续？',
     en: 'You have unsubmitted changes, submit and proceed?',
   },
+  oper: {
+    zh: '操作',
+    en: 'Operate',
+  },
 }

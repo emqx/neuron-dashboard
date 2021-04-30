@@ -4,3 +4,16 @@
   font-weight: 500;
   color: #96999C;
 }
+
+/* Dropdown */
+.el-dropdown-menu__item {
+  [class^="el-icon-"], [class*=" el-icon-"] {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+}
+.danger.el-dropdown-menu__item:not(.is-disabled):hover,
+.danger.el-dropdown-menu__item:focus {
+  background-color: var(--minor-red-color);
+  color: var(--main-red-color);
+}

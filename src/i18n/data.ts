@@ -23,12 +23,12 @@ export default {
     zh: '值',
     en: 'Value',
   },
-  attribute: {
-    zh: '属性',
-    en: 'Attribute',
-  },
   objName: {
     zh: 'Object Name',
     en: 'Object 名称',
+  },
+  attribute: {
+    zh: '属性',
+    en: 'Attribute',
   },
 }
