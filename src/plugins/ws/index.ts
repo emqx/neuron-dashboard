@@ -2,8 +2,9 @@ import { App } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { DataSourceConfig } from './ws'
 import wsConifg from './config'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { NeuronData } from '@/types/neuron'
+import router from '@/router/index'
 
 let dataSource: DataSource | null = null
 
@@ -19,7 +20,6 @@ export class DataSource {
   onerror!: (this: WebSocket, ev: Event) => Event
   onsuccess!: Set<DataSourceConfig['success']>
   constructor(config: DataSourceConfig = {}) {
-    const router = useRouter()
     const { name, pass, success } = config
     const storage = JSON.parse(sessionStorage.getItem('user') || '{}')
     this.wsUri = wsConifg.serverBaseUrl
@@ -37,14 +37,14 @@ export class DataSource {
         message: 'Socket closed',
         duration: 6000,
       })
-      const currentName = window.location.href.split('/')[4]
+      const currentName = router.currentRoute.value.name
       sessionStorage.removeItem('user')
       // localStorage.removeItem('chnl')
       // localStorage.removeItem('objectData')
       // localStorage.removeItem('eventData')
       // Store.commit('clearAlarmList')
-      if (currentName !== 'login') {
-        router?.push({
+      if (currentName !== 'Login') {
+        router.push({
           name: 'Login',
         })
       }
@@ -130,9 +130,9 @@ export class DataSource {
   remove(func: DataSourceConfig['success']): void {
     this.onsuccess.delete(func)
   }
-  send(msg?: NeuronData): void {
+  send<T extends NeuronData>(msg?: T): void {
     if (msg) {
-      let $msg: NeuronData | string = msg
+      let $msg: T | string = msg
       $msg.wtrm = this.wtrm
       if (typeof $msg !== 'string') {
         $msg = JSON.stringify($msg)

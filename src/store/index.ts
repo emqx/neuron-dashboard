@@ -1,9 +1,9 @@
-import { Status, ObjdData } from '@/types/neuron'
+import { Status, ObjdModel } from '@/types/neuron'
 import { createStore } from 'vuex'
 
 interface State {
   status: Status | null
-  objd: Array<ObjdData>
+  objd: Array<ObjdModel>
 }
 
 export default createStore<State>({
@@ -17,7 +17,7 @@ export default createStore<State>({
     SET_STATUS(state: State, payload: Status) {
       state.status = payload
     },
-    SET_OBJD(state: State, payload: ObjdData[]) {
+    SET_OBJD(state: State, payload: ObjdModel[]) {
       state.objd = payload
     },
   },
