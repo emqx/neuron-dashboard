@@ -20,7 +20,37 @@ export interface TeleData {
 
 export interface NeuronData {
   func: number
-  wtrm: string
-  data?: any
+  wtrm?: string
+  data?: T
   errc?: string
+}
+
+export interface OdesModel {
+  odix: number
+  otxt: string
+}
+
+export interface AaddModel {
+  obix: number
+  desc: string
+  addr: string
+}
+
+export interface OattModel {
+  attn: string
+  attt: string
+  deci: number
+  attr: string
+  rtim: number
+  unit: string
+  aadd: Array<AaddModel>
+}
+
+export interface ObjdData extends NeuronData {
+  logt: number
+  oatt: Array<OattModel>
+  objn: string
+  obsz: number
+  odes: Array<OdesModel>
+  updt: number
 }
