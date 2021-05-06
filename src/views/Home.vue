@@ -44,7 +44,7 @@ export default defineComponent({
     }
     const getObject = (data: ObjdData) => {
       if (data.func === GET_OBJECT_FUNC) {
-        SET_OBJD = store.commit('SET_OBJD', data)
+        SET_OBJD = store.commit('SET_OBJD', data.objd)
       }
     }
     ws().test().set({

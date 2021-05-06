@@ -10,18 +10,12 @@ interface Status {
 }
 export interface TeleData {
   func: number
-  tele: {
-    objn: string
-    tstp: number
-    temp: number
-    energy: number
-  }
+  tele: T
 }
 
 export interface NeuronData {
   func: number
   wtrm?: string
-  data?: T
   errc?: string
 }
 
@@ -46,11 +40,15 @@ export interface OattModel {
   aadd: Array<AaddModel>
 }
 
-export interface ObjdData extends NeuronData {
+export interface ObjdModel extends NeuronData {
   logt: number
   oatt: Array<OattModel>
   objn: string
   obsz: number
   odes: Array<OdesModel>
   updt: number
+}
+
+export interface ObjdData extends NeuronData {
+  objd: Array<ObjdModel>
 }

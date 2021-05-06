@@ -32,7 +32,11 @@
           </template>
         </vxe-table-column>
         <vxe-table-column field="prop" :title="$t('data.attribute')" min-width="180"> </vxe-table-column>
-        <vxe-table-column field="val" :title="$t('data.value')" min-width="180"> </vxe-table-column>
+        <vxe-table-column field="val" :title="$t('data.value')" min-width="180">
+          <template #default="scope">
+            {{ scope.row.prop === 'Time' ? formatTime(scope.row.val) : scope.row.val }}
+          </template>
+        </vxe-table-column>
         <vxe-table-column width="300">
           <template #default="scope">
             <div class="btn" v-if="scope.row.prop !== 'Time'">
@@ -60,35 +64,84 @@
 </template>
 
 <script lang="ts">
+import { computed, defineComponent, onUnmounted, Ref, ref, watch } from 'vue'
+import dayjs from 'dayjs'
 import useWebsocket from '@/plugins/ws/useWebsocket'
 import useTeleData from '@/composables/useTeleData'
 import useMaxHeight from '@/composables/useMaxHeight'
 import usePagination from '@/composables/usePagination'
-import { TeleData } from '@/types/neuron'
-import { defineComponent, onUnmounted, ref } from 'vue'
+import { ObjdModel, TeleData } from '@/types/neuron'
+import { useStore } from 'vuex'
+import useFunc from '@/composables/useFunc'
+import { DataRow } from '@/composables/data/data'
 
 export default defineComponent({
   name: 'Data',
   setup() {
-    const data = ref([])
+    const data: Ref<DataRow[]> = ref([])
     const objName = ref('')
-    const objList = ref([])
+    const store = useStore()
     const { pageNum, pageSize, total } = usePagination()
     const { ws } = useWebsocket()
     const { maxTableHeight } = useMaxHeight()
-    const setTeleData = (data: TeleData) => {
-      if (!data.func && data.tele) {
-        useTeleData(data.tele)
+    const setTeleData = (res: TeleData) => {
+      if (!res.func && res.tele) {
+        const { tableData } = useTeleData(res.tele)
+        data.value = tableData.value
       }
     }
+    const objList = computed(() => {
+      const { objd }: { objd: ObjdModel[] } = store.state
+      console.log(objd)
+      if (objd.length !== 0) {
+        const names: string[] = []
+        objd.forEach((obj: ObjdModel) => {
+          if (obj.obsz > 1) {
+            for (let i = 0; i < obj.obsz; i += 1) {
+              names.push(`${obj.objn}[${i}]`)
+            }
+          } else {
+            names.push(obj.objn)
+          }
+        })
+        return names
+      }
+      return []
+    })
+    const SEARCH_OBJECT = useFunc('searchObject')
+    watch(objList, (val: Array<string>) => {
+      objName.value = val[0]
+    })
+    watch(objName, (val: string) => {
+      data.value = []
+      searchObject(val)
+    })
     ws().test().set({
       success: setTeleData,
     })
     onUnmounted(() => {
       ws().remove(setTeleData)
     })
+    const searchObject = (searchVal: string) => {
+      const objn = searchVal.split('[')[0]
+      const nameIndex = searchVal.match(/\d+/g)
+      let obix = 0
+      if (nameIndex) {
+        obix = parseInt(nameIndex[0], 10)
+      }
+      ws().set().send({
+        func: SEARCH_OBJECT,
+        objn,
+        obix,
+        frix: 0,
+        size: 10,
+      })
+    }
     const handleCheck = () => ({})
     const handleCheckAll = () => ({})
+    const formatTime = (time: number) => {
+      return dayjs(time * 1000).format('YYYY-MM-DD HH:mm:ss')
+    }
     return {
       data,
       objName,
@@ -99,6 +152,7 @@ export default defineComponent({
       handleCheck,
       handleCheckAll,
       maxTableHeight,
+      formatTime,
     }
   },
 })
