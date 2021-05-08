@@ -7,7 +7,14 @@
           <driver-setup></driver-setup>
         </emqx-col>
         <emqx-col class="right" :span="12">
-          <emqx-button icon="el-icon-download" :loading="exportLoading" plain type="primary" @click="handleExport">
+          <emqx-button
+            size="small"
+            icon="el-icon-download"
+            :loading="exportLoading"
+            plain
+            type="primary"
+            @click="handleExport"
+          >
             {{ $t('common.export') }}
           </emqx-button>
           <el-upload
@@ -22,12 +29,12 @@
             :on-change="handleUploadChange"
             :on-error="handleUploadError"
           >
-            <emqx-button icon="el-icon-upload2" plain type="primary" :loading="uploadLoading">
+            <emqx-button size="small" icon="el-icon-upload2" plain type="primary" :loading="uploadLoading">
               {{ $t('common.import') }}
             </emqx-button>
           </el-upload>
           <emqx-dropdown class="oper-dropdown" trigger="click">
-            <emqx-button type="primary" icon="el-icon-d-caret">{{ $t('common.oper') }} </emqx-button>
+            <emqx-button size="small" type="primary" icon="el-icon-d-caret">{{ $t('common.oper') }} </emqx-button>
             <template #dropdown>
               <emqx-dropdown-menu>
                 <emqx-dropdown-item><i class="el-icon-plus"></i> {{ $t('common.create') }}</emqx-dropdown-item>
@@ -40,19 +47,14 @@
           </emqx-dropdown>
         </emqx-col>
       </emqx-row>
-      <emqx-table :data="objectList" @selection-change="handleSelectionChange">
+      <emqx-table :data="tableData" @selection-change="handleSelectionChange">
         <emqx-table-column type="selection" width="55"> </emqx-table-column>
-        <emqx-table-column type="index" width="120" label="No" />
-        <emqx-table-column prop="objn" :label="$t('data.objName')" min-width="250" />
-        <emqx-table-column prop="obsz" :min-width="120" label="Size" />
-        <emqx-table-column prop="updt" :min-width="120" label="Update Time" />
-        <emqx-table-column prop="logt" :min-width="120" label="Log Time" />
-        <emqx-table-column prop="tstd" :min-width="120" label="Timestamp">
-          <template #scope>
-            {{ scope.row.tstd ? 'YES' : 'NO' }}
-          </template>
-        </emqx-table-column>
-        <emqx-table-column :width="200">
+        <emqx-table-column type="index" label="No" />
+        <emqx-table-column prop="objn" :label="$t('data.objName')" />
+        <emqx-table-column prop="obsz" label="Size" />
+        <emqx-table-column prop="updt" label="Update Time" />
+        <emqx-table-column prop="logt" label="Log Time" />
+        <emqx-table-column>
           <template #scope>
             <emqx-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</emqx-button>
             <emqx-button type="text" @click="goToAttrPage(scope.row)">{{ $t('data.attribute') }}</emqx-button>
@@ -67,6 +69,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { ElUpload } from 'element-plus'
+import useConfig from '@/composables/config/useConfig'
 import DriverSetup from './components/DriverSetup.vue'
 
 export default defineComponent({
@@ -76,7 +79,7 @@ export default defineComponent({
     ElUpload,
   },
   setup() {
-    const objectList = ref([])
+    const { tableData } = useConfig()
     const fileList = ref([])
     const exportLoading = ref(false)
     const uploadLoading = ref(false)
@@ -85,7 +88,7 @@ export default defineComponent({
     const handleUploadChange = () => ({})
     const handleUploadError = () => ({})
     return {
-      objectList,
+      tableData,
       fileList,
       exportLoading,
       uploadLoading,

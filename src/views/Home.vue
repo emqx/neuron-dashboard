@@ -42,7 +42,7 @@ export default defineComponent({
         SET_STATUS = store.commit('SET_STATUS', data)
       }
     }
-    const getObject = (data: ObjdData) => {
+    const setObjd = (data: ObjdData) => {
       if (data.func === GET_OBJECT_FUNC) {
         SET_OBJD = store.commit('SET_OBJD', data.objd)
       }
@@ -50,7 +50,7 @@ export default defineComponent({
     ws().test().set({
       success: getStatus,
     })
-    ws().set({ success: getObject }).send({ func: GET_OBJECT_FUNC })
+    ws().set({ success: setObjd }).send({ func: GET_OBJECT_FUNC })
     return {
       SET_STATUS,
       SET_OBJD,

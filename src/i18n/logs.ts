@@ -17,7 +17,7 @@ export default {
   },
   driverLog: {
     zh: '驱动日志',
-    en: 'Dirver Log',
+    en: 'Driver Log',
   },
   scriptLog: {
     zh: '脚本日志',

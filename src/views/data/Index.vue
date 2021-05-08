@@ -67,7 +67,7 @@
 import { computed, defineComponent, onUnmounted, Ref, ref, watch } from 'vue'
 import dayjs from 'dayjs'
 import useWebsocket from '@/plugins/ws/useWebsocket'
-import useTeleData from '@/composables/useTeleData'
+import useTeleData from '@/composables/data/useTeleData'
 import useMaxHeight from '@/composables/useMaxHeight'
 import usePagination from '@/composables/usePagination'
 import { ObjdModel, TeleData } from '@/types/neuron'
@@ -92,7 +92,6 @@ export default defineComponent({
     }
     const objList = computed(() => {
       const { objd }: { objd: ObjdModel[] } = store.state
-      console.log(objd)
       if (objd.length !== 0) {
         const names: string[] = []
         objd.forEach((obj: ObjdModel) => {
@@ -108,10 +107,17 @@ export default defineComponent({
       }
       return []
     })
+    if (objList.value.length !== 0) {
+      objName.value = objList.value[0]
+    }
     const SEARCH_OBJECT = useFunc('searchObject')
-    watch(objList, (val: Array<string>) => {
-      objName.value = val[0]
-    })
+    watch(
+      objList,
+      (val: Array<string>) => {
+        objName.value = val[0]
+      },
+      { deep: true },
+    )
     watch(objName, (val: string) => {
       data.value = []
       searchObject(val)

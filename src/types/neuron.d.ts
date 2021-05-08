@@ -1,4 +1,4 @@
-interface Status {
+export interface Status {
   func: number
   tstp: number
   type: string
@@ -16,7 +16,7 @@ export interface TeleData {
 export interface NeuronData {
   func: number
   wtrm?: string
-  errc?: string
+  errc?: number | string
 }
 
 export interface OdesModel {
@@ -51,4 +51,14 @@ export interface ObjdModel extends NeuronData {
 
 export interface ObjdData extends NeuronData {
   objd: Array<ObjdModel>
+}
+
+interface DriverModel {
+  name: string
+  desc: string
+  type: string
+}
+
+export interface DriverData extends NeuronData {
+  rows: Array<DriverModel>
 }
