@@ -2,7 +2,6 @@ import { App } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { DataSourceConfig } from './ws'
 import wsConifg from './config'
-import { useRoute, useRouter } from 'vue-router'
 import { NeuronData } from '@/types/neuron'
 import router from '@/router/index'
 

@@ -1,6 +1,6 @@
 import { TeleData } from '@/types/neuron'
 import { Ref, ref } from '@vue/reactivity'
-import { DataRow } from './data/data'
+import { DataRow } from './data'
 
 export default function useTeleData(
   tele: TeleData['tele'],
