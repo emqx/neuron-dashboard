@@ -1,5 +1,5 @@
 console.log(process.env.VUE_APP_HOST)
-window.serverBaseUrl = process.env.VUE_APP_HOST
+window.serverBaseUrl = process.env.VUE_APP_HOST || 'ws://127.0.0.1:7000'
 
 const config = {
   isDevelopment: false,
@@ -21,7 +21,7 @@ switch (process.env.NODE_ENV) {
   case 'development':
     Object.assign(config, {
       isDevelopment: true,
-      serverBaseUrl: window.serverBaseUrl || 'ws://192.168.234.176:7000/',
+      serverBaseUrl: window.serverBaseUrl,
     })
     break
 }

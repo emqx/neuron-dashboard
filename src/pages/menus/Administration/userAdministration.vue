@@ -44,10 +44,14 @@ export default {
   },
   methods: {
     setData(data) {
-      if (data.func === 13 && data.user) {
-        this.tableData = data.user.map((item) => ({
-          name: item,
-        }))
+      if (data.func === 13) {
+        if (data.user) {
+          this.tableData = data.user.map((item) => ({
+            name: item,
+          }))
+        } else {
+          this.tableData = []
+        }
       }
     },
     handleRemove({ name }) {
@@ -81,7 +85,7 @@ export default {
       if (data.func === 15 || data.func === 16) {
         this.$ws().remove(this.setUser)
         if (!data.errc) {
-          this.$openMessage.success('success')
+          this.$openMessage.success('Success')
         }
         this.$ws().set({ success: this.setData }).send({ func: 13 })
       }

@@ -54,9 +54,12 @@ export default {
       if (data.func === 12) {
         this.$ws().remove(this.setPassword)
         if (!data.errc) {
-          this.$openMessage.success('success')
+          this.$openMessage.success(this.$t('administration.loginAgain'))
+          this.$ws().close()
+          this.$router.push({
+            name: 'login',
+          })
         }
-        console.log(data)
       }
     },
   },
