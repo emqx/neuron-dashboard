@@ -62,3 +62,16 @@ interface DriverModel {
 export interface DriverData extends NeuronData {
   rows: Array<DriverModel>
 }
+
+export interface LogModel {
+  data: string
+  logl: string
+  proc: string
+  tstp: number
+}
+
+export interface LogData extends NeuronData {
+  last: number
+  nrow: number
+  rows: Array<LogModel>
+}

@@ -191,4 +191,12 @@ export default {
     zh: '操作',
     en: 'Operate',
   },
+  date: {
+    zh: '日期',
+    en: 'Date',
+  },
+  time: {
+    zh: '时间',
+    en: 'Time',
+  },
 }

@@ -61,6 +61,16 @@ export default defineComponent({
           to: '/logs',
           label: t('logs.logs'),
           icon: 'iconlogs',
+          subMenus: [
+            {
+              to: '/logs',
+              label: t('logs.logData'),
+            },
+            {
+              to: '/logs/switch',
+              label: t('logs.logSwitch'),
+            },
+          ],
         },
         {
           to: '/script',
