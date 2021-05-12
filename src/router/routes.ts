@@ -22,6 +22,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/logs/LogData.vue'),
       },
+      {
+        path: '/logs_switch',
+        name: 'LogsSwitch',
+        meta: { requireAuth: true },
+        component: () => import('@/views/logs/LogSwitch.vue'),
+      },
     ],
   },
   {

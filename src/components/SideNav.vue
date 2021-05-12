@@ -67,7 +67,7 @@ export default defineComponent({
               label: t('logs.logData'),
             },
             {
-              to: '/logs/switch',
+              to: '/logs_switch',
               label: t('logs.logSwitch'),
             },
           ],
