@@ -17,7 +17,7 @@
           >
             {{ $t('common.export') }}
           </emqx-button>
-          <el-upload
+          <emqx-upload
             ref="upload"
             action=""
             class="upload-excel"
@@ -32,7 +32,7 @@
             <emqx-button size="small" icon="el-icon-upload2" plain type="primary" :loading="uploadLoading">
               {{ $t('common.import') }}
             </emqx-button>
-          </el-upload>
+          </emqx-upload>
           <emqx-dropdown class="oper-dropdown" trigger="click">
             <emqx-button size="small" type="primary" icon="el-icon-d-caret">{{ $t('common.oper') }} </emqx-button>
             <template #dropdown>
@@ -68,24 +68,22 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { ElUpload } from 'element-plus'
-import useConfig from '@/composables/config/useConfig'
+import useConfig, { useUploadObject } from '@/composables/config/useConfig'
 import DriverSetup from './components/DriverSetup.vue'
+import useWebsocket from '@/plugins/ws/useWebsocket'
 
 export default defineComponent({
   name: 'Config',
   components: {
     DriverSetup,
-    ElUpload,
   },
   setup() {
     const { tableData } = useConfig()
     const fileList = ref([])
     const exportLoading = ref(false)
-    const uploadLoading = ref(false)
+    const { uploadLoading, handleUploadChange } = useUploadObject()
     const handleSelectionChange = () => ({})
     const handleExport = () => ({})
-    const handleUploadChange = () => ({})
     const handleUploadError = () => ({})
     return {
       tableData,
