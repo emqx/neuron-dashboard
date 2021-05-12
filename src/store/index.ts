@@ -1,9 +1,10 @@
-import { Status, ObjdModel } from '@/types/neuron'
+import { Status, ObjdModel, DrvdModel } from '@/types/neuron'
 import { createStore } from 'vuex'
 
 interface State {
   status: Status | null
   objd: Array<ObjdModel>
+  drvd: DrvdModel | null
 }
 
 export default createStore<State>({
@@ -11,6 +12,7 @@ export default createStore<State>({
     return {
       status: null,
       objd: [],
+      drvd: null,
     }
   },
   mutations: {
@@ -19,6 +21,9 @@ export default createStore<State>({
     },
     SET_OBJD(state: State, payload: ObjdModel[]) {
       state.objd = payload
+    },
+    SET_DRIVER_DATA(state: State, payload: DrvdModel) {
+      state.drvd = payload
     },
   },
 })
