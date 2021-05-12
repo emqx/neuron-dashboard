@@ -17,3 +17,14 @@
   background-color: var(--minor-red-color);
   color: var(--main-red-color);
 }
+
+/* Tabs */
+.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+  border-bottom-color: #189bfe;
+}
+
+/* Date */
+.el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner {
+  width: 100%;
+  border-radius: 8px;
+}

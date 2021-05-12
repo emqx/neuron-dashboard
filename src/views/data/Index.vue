@@ -65,7 +65,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, onUnmounted, Ref, ref, watch } from 'vue'
-import dayjs from 'dayjs'
 import useWebsocket from '@/plugins/ws/useWebsocket'
 import useTeleData from '@/composables/data/useTeleData'
 import useMaxHeight from '@/composables/useMaxHeight'
@@ -74,6 +73,7 @@ import { ObjdModel, TeleData } from '@/types/neuron'
 import { useStore } from 'vuex'
 import useFunc from '@/composables/useFunc'
 import { DataRow } from '@/composables/data/data'
+import { formatTime } from '@/utils/time'
 
 export default defineComponent({
   name: 'Data',
@@ -145,9 +145,6 @@ export default defineComponent({
     }
     const handleCheck = () => ({})
     const handleCheckAll = () => ({})
-    const formatTime = (time: number) => {
-      return dayjs(time * 1000).format('YYYY-MM-DD HH:mm:ss')
-    }
     return {
       data,
       objName,

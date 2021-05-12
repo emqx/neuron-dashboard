@@ -16,6 +16,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/config/Index.vue'),
       },
+      {
+        path: '/logs',
+        name: 'Logs',
+        meta: { requireAuth: true },
+        component: () => import('@/views/logs/LogData.vue'),
+      },
     ],
   },
   {
