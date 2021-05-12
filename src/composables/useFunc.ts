@@ -6,6 +6,8 @@ interface FuncModel {
   searchObject: 52
   getDrivers: 23
   readLogs: 83
+  getDeviceList: 26
+  getDriverParams: 24
 }
 
 type FuncName = keyof FuncModel
@@ -17,6 +19,8 @@ export default function useFunc(funcName: FuncName): number {
     searchObject: 52,
     getDrivers: 23,
     readLogs: 83,
+    getDeviceList: 26,
+    getDriverParams: 24,
   })
   return funcMap[funcName]
 }

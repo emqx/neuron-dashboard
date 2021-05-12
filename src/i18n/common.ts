@@ -199,4 +199,8 @@ export default {
     zh: '时间',
     en: 'Time',
   },
+  pleaseSelect: {
+    zh: '请选择',
+    en: 'please select',
+  },
 }

@@ -115,6 +115,10 @@ export default {
     zh: '驱动协议名称',
     en: 'Driver protocol name',
   },
+  serialDriverSetup: {
+    zh: '串口驱动设置',
+    en: 'Driver protocol name',
+  },
   northServiceProtocolName: {
     zh: '北向协议名称',
     en: 'North Service Protocol Name',
