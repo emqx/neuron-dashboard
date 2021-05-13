@@ -83,7 +83,7 @@ export default defineComponent({
           icon: 'iconalarmstatus',
         },
         {
-          to: '/group',
+          to: '/agent_group',
           label: t('group.group'),
           icon: 'icongroup',
         },

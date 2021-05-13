@@ -1,6 +1,6 @@
 <template>
   <emqx-card class="log-switch">
-    <h2>{{ $t('logs.logSwitch') }}</h2>
+    <h3 class="card-title">{{ $t('logs.logSwitch') }}</h3>
     <el-tabs v-model="activeName">
       <el-tab-pane :label="$t('logs.serviceLog')" name="SERVICELOG"></el-tab-pane>
       <el-tab-pane :label="$t('logs.driverLog')" name="DRIVERLOG"></el-tab-pane>
@@ -114,9 +114,6 @@ export default defineComponent({
 
 <style lang="scss">
 .log-switch {
-  h2 {
-    margin-bottom: 20px;
-  }
   .el-table.emqx-table th:last-child {
     border-radius: 8px !important;
   }
