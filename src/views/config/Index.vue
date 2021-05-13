@@ -37,7 +37,10 @@
             <emqx-button size="small" type="primary" icon="el-icon-d-caret">{{ $t('common.oper') }} </emqx-button>
             <template #dropdown>
               <emqx-dropdown-menu>
-                <emqx-dropdown-item><i class="el-icon-plus"></i> {{ $t('common.create') }}</emqx-dropdown-item>
+                <emqx-dropdown-item @click="createObject">
+                  <i class="el-icon-plus"></i>
+                  {{ $t('common.create') }}
+                </emqx-dropdown-item>
                 <emqx-dropdown-item><i class="el-icon-close"></i> {{ $t('common.clear') }}</emqx-dropdown-item>
                 <emqx-dropdown-item class="danger"
                   ><i class="el-icon-delete"></i> {{ $t('common.delete') }}</emqx-dropdown-item
@@ -71,6 +74,7 @@ import { defineComponent, ref } from 'vue'
 import useConfig, { useUploadObject } from '@/composables/config/useConfig'
 import DriverSetup from './components/DriverSetup.vue'
 import useWebsocket from '@/plugins/ws/useWebsocket'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Config',
@@ -78,6 +82,7 @@ export default defineComponent({
     DriverSetup,
   },
   setup() {
+    const router = useRouter()
     const { tableData } = useConfig()
     const fileList = ref([])
     const exportLoading = ref(false)
@@ -85,6 +90,11 @@ export default defineComponent({
     const handleSelectionChange = () => ({})
     const handleExport = () => ({})
     const handleUploadError = () => ({})
+    const createObject = () => {
+      router.push({
+        name: 'ObjectSetup',
+      })
+    }
     return {
       tableData,
       fileList,
@@ -94,6 +104,7 @@ export default defineComponent({
       handleSelectionChange,
       handleUploadChange,
       handleUploadError,
+      createObject,
     }
   },
 })
