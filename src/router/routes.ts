@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/configuration/object_setup',
         name: 'ObjectSetup',
-        // meta: { requireAuth: true },
+        meta: { requireAuth: true },
         component: () => import('@/views/config/ObjectSetup.vue'),
       },
       {
