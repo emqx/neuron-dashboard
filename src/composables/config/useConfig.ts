@@ -5,6 +5,7 @@ import { handleExcelFile } from '@/plugins/excelData'
 import { uniqBy } from 'lodash'
 import { ObjdModel, OattModel } from '@/types/neuron'
 import useAPI from '../useAPI'
+import { Merge } from 'type-fest'
 
 interface SheetItem {
   pref: string
@@ -99,6 +100,32 @@ export function useUploadObject(): {
     uploadLoading,
     handleUploadChange,
   }
+}
+
+/**
+ * Use these fields to resolve the bug of input-number component in element-plus
+ * If init obsz fields by value undefined, the form will throw error when the input-number is inputting
+ */
+type ObjectSetupFormForInput = Partial<Record<'sizeInput' | 'logTimeInput' | 'updateTimeInput', undefined | number>>
+
+type ObjectSetupForm = Merge<ParamsObj, ObjectSetupFormForInput>
+
+const createRawObject = (): ObjectSetupForm => ({
+  oatt: [],
+  objn: '',
+  obsz: 0,
+  odes: [],
+  logt: 0,
+  updt: 0,
+
+  sizeInput: undefined,
+  logTimeInput: undefined,
+  updateTimeInput: undefined,
+})
+
+export function useObjectSetup(): { objectSetupForm: Ref<ObjectSetupForm> } {
+  const objectSetupForm = ref(createRawObject())
+  return { objectSetupForm }
 }
 
 export default function useConfig(): {

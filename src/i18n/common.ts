@@ -95,6 +95,10 @@ export default {
     zh: '取消',
     en: 'Cancel',
   },
+  nextStep: {
+    zh: '下一步',
+    en: 'Next',
+  },
   edit: {
     zh: '编辑',
     en: 'Edit',
