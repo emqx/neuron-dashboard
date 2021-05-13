@@ -201,7 +201,7 @@ import useWebsocket from '@/plugins/ws/useWebsocket'
 import useFunc from '@/composables/useFunc'
 import { useStore } from 'vuex'
 
-import { DriverData, DriverModel, DeviceData, DeviceModel, ParamData, ParamModel, chanelModel } from '@/types/neuron'
+import { DriverData, DriverModel, DeviceData, DeviceModel, ParamData, ParamModel, ChanelModel } from '@/types/neuron'
 
 export default defineComponent({
   name: 'DriverSetup',
@@ -252,8 +252,8 @@ export default defineComponent({
     //   ttyp: 'N',
     //   parm: [],
     // }
-    const northDriverRecord: chanelModel = reactive({} as chanelModel)
-    const southDriverRecord: chanelModel = reactive({} as chanelModel)
+    const northDriverRecord: ChanelModel = reactive({} as ChanelModel)
+    const southDriverRecord: ChanelModel = reactive({} as ChanelModel)
 
     const setDeviceList = (data: DeviceData) => {
       if (data.func === getDeviceList) {
@@ -310,14 +310,14 @@ export default defineComponent({
 
     watch(south, (currentValue: string) => {
       if (dialogVisible.value) {
-        // Object.assign(southDriverRecord, _.cloneDeep(defaultDriverRecord) as chanelModel)
+        // Object.assign(southDriverRecord, _.cloneDeep(defaultDriverRecord) as ChanelModel)
         paramDriverType.value = 'south'
         handleGetDriverParams(currentValue)
       }
     })
     watch(north, (currentValue: string) => {
       if (dialogVisible.value) {
-        // Object.assign(northDriverRecord, _.cloneDeep(defaultDriverRecord) as chanelModel)
+        // Object.assign(northDriverRecord, _.cloneDeep(defaultDriverRecord) as ChanelModel)
         paramDriverType.value = 'north'
         handleGetDriverParams(currentValue)
       }

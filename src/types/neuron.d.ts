@@ -51,7 +51,7 @@ export interface ObjdModel extends NeuronData {
 
 export interface DrvdModel {
   chdv: string // south driver name
-  chnl: Array<chanelModel> //channel data
+  chnl: Array<ChanelModel> //channel data
 }
 export interface ObjdData extends NeuronData {
   objd: Array<ObjdModel>
@@ -98,7 +98,7 @@ export interface ParamData extends NeuronData {
   parm: Array<ParamModel>
 }
 
-export interface chanelModel {
+export interface ChanelModel {
   chdv: string
   tcph: string
   tcpp: number
@@ -110,8 +110,8 @@ export interface chanelModel {
   parm: Array<ParamModel>
 }
 
-export interface chanelData extends NeuronData {
-  chnl: Array<chanelModel>
+export interface ChanelData extends NeuronData {
+  chnl: Array<ChanelModel>
 }
 
 interface DeviceModel {
@@ -132,7 +132,7 @@ export interface ParamData extends NeuronData {
   parm: Array<ParamModel>
 }
 
-export interface chanelModel {
+export interface ChanelModel {
   chdv: string
   tcph: string
   tcpp: number
@@ -144,6 +144,15 @@ export interface chanelModel {
   parm: Array<ParamModel>
 }
 
-export interface chanelData extends NeuronData {
-  chnl: Array<chanelModel>
+export interface ChanelData extends NeuronData {
+  chnl: Array<ChanelModel>
+}
+
+export interface LogSwitchModel {
+  content: string
+}
+
+export interface LogSwitchData extends NeuronData {
+  logn: string
+  rows: Array<string>
 }
