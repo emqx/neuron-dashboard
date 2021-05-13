@@ -28,6 +28,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/logs/LogSwitch.vue'),
       },
+      {
+        path: '/agent_group',
+        name: 'AgentGroup',
+        meta: { requireAuth: true },
+        component: () => import('@/views/agentGroup/AgentGroup.vue'),
+      },
     ],
   },
   {

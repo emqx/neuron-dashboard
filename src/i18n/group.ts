@@ -1,6 +1,6 @@
 export default {
   group: {
-    zh: '分组',
-    en: 'Group',
+    zh: '代理分组',
+    en: 'Agent group',
   },
 }

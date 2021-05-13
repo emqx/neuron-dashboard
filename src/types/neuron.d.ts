@@ -156,3 +156,24 @@ export interface LogSwitchData extends NeuronData {
   logn: string
   rows: Array<string>
 }
+
+export interface InstanceInfoModel {
+  uuid: string
+  time: string
+  expd: string
+  rest: string
+  data: string
+  natt: string
+  nalr: string
+  tatt: string
+  talr: string
+  tusg: string
+  matt: string
+  malr: string
+  musg: string
+  self: string
+}
+
+export interface InstanceInfoData extends NeuronData {
+  agts: Array<InstanceInfoModel>
+}
