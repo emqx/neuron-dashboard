@@ -13,6 +13,7 @@ interface FuncModel {
   setChannel: 40
   gatewayRestartNew: 70
   showAlarms: 79
+  ReadHistoricalAlarm: 81
 }
 
 type FuncName = keyof FuncModel
@@ -31,6 +32,7 @@ export default function useFunc(funcName: FuncName): number {
     setChannel: 40,
     gatewayRestartNew: 70,
     showAlarms: 79,
+    ReadHistoricalAlarm: 81,
   })
   return funcMap[funcName]
 }
