@@ -90,7 +90,7 @@ export function useUploadObject(): {
       const { sheet } = data[0]
       const params = createObjListData(sheet as Array<SheetItem>)
       addObjectData(params)
-      uploadLoading.value = true
+      uploadLoading.value = false
     } catch (error) {
       EmqxMessage.error(error)
     }
