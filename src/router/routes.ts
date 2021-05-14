@@ -40,6 +40,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/agentGroup/AgentGroup.vue'),
       },
+      {
+        path: '/current_alarms',
+        name: 'CurrentAlarms',
+        meta: { requireAuth: true },
+        component: () => import('@/views/alarms/CurrentAlarms.vue'),
+      },
     ],
   },
   {

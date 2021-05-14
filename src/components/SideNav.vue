@@ -78,9 +78,15 @@ export default defineComponent({
           icon: 'iconscript',
         },
         {
-          to: '/alarm',
-          label: t('alarm.alarm'),
-          icon: 'iconalarmstatus',
+          to: '/current_alarms',
+          label: t('alarm.alarms'),
+          icon: 'iconlogs',
+          subMenus: [
+            {
+              to: '/current_alarms',
+              label: t('alarm.currentAlarms'),
+            },
+          ],
         },
         {
           to: '/agent_group',

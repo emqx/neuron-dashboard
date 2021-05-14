@@ -9,11 +9,11 @@ export default {
   },
   logData: {
     zh: '日志数据',
-    en: 'Log data',
+    en: 'Log Data',
   },
   logSwitch: {
     zh: '日志切换',
-    en: 'Log switch',
+    en: 'Log Switch',
   },
   serviceLog: {
     zh: '服务端日志',
