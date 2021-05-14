@@ -29,7 +29,7 @@
                 </emqx-col>
                 <emqx-col :span="12">
                   <emqx-form-item label="Port">
-                    <emqx-input max="65535" min="0" type="number" v-model="northDriverRecord.tcpp"></emqx-input>
+                    <emqx-input max="65535" min="0" type="number" v-model.number="northDriverRecord.tcpp"></emqx-input>
                   </emqx-form-item>
                 </emqx-col>
               </template>
@@ -130,7 +130,7 @@
                 </emqx-col>
                 <emqx-col :span="12">
                   <emqx-form-item label="Port">
-                    <emqx-input max="65535" min="0" type="number" v-model="southDriverRecord.tcpp"></emqx-input>
+                    <emqx-input max="65535" min="0" type="number" v-model.number="southDriverRecord.tcpp"></emqx-input>
                   </emqx-form-item>
                 </emqx-col>
               </template>
@@ -202,6 +202,7 @@ import useFunc from '@/composables/useFunc'
 import { useStore } from 'vuex'
 import useAPI from '@/composables/useAPI'
 import { DriverData, DriverModel, DeviceData, DeviceModel, ParamData, ParamModel, ChanelModel } from '@/types/neuron'
+import _ from 'lodash'
 
 export default defineComponent({
   name: 'DriverSetup',
@@ -241,19 +242,20 @@ export default defineComponent({
       south: 1,
       north: 2,
     })
-    // const defaultDriverRecord = {
-    //   chdv: '',
-    //   tcph: '',
-    //   tcpp: 0,
-    //   ttyc: '',
-    //   ttyb: 9600,
-    //   ttyd: 8,
-    //   ttys: '1',
-    //   ttyp: 'N',
-    //   parm: [],
-    // }
-    const northDriverRecord: ChanelModel = reactive({} as ChanelModel)
-    const southDriverRecord: ChanelModel = reactive({} as ChanelModel)
+    const defaultDriverRecord = {
+      chdv: '',
+      tcph: '',
+      tcpp: 0,
+      ttyc: '',
+      ttyb: 9600,
+      ttyd: 8,
+      // ttys: '1',
+      ttys: '',
+      ttyp: 'N',
+      parm: [],
+    }
+    const northDriverRecord: ChanelModel = reactive(_.cloneDeep(defaultDriverRecord) as ChanelModel)
+    const southDriverRecord: ChanelModel = reactive(_.cloneDeep(defaultDriverRecord) as ChanelModel)
 
     const setDeviceList = (data: DeviceData) => {
       if (data.func === getDeviceList) {
