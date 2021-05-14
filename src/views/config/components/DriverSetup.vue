@@ -200,7 +200,7 @@ import { ElDialog, ElDivider, ElTableColumn, ElTable } from 'element-plus'
 import useWebsocket from '@/plugins/ws/useWebsocket'
 import useFunc from '@/composables/useFunc'
 import { useStore } from 'vuex'
-
+import useAPI from '@/composables/useAPI'
 import { DriverData, DriverModel, DeviceData, DeviceModel, ParamData, ParamModel, ChanelModel } from '@/types/neuron'
 
 export default defineComponent({
@@ -340,34 +340,37 @@ export default defineComponent({
       })
     }
 
+    const { setDriverData } = useAPI()
+
     const submit = () => {
       dialogVisible.value = false
       const chnl = [southDriverRecord, northDriverRecord]
-      // let _chnl = []
-      // const ipPortChdvTypes = [
-      //   'ethip',
-      //   'mbstcp',
-      //   'mele71',
-      //   'finstc',
-      //   's7iso',
-      //   'siefw',
-      //   'tsxmbt',
-      //   'mbstcp',
-      //   'mbsrot',
-      //   'bacnip',
-      //   'opcua',
-      //   'i61850',
-      //   'snmpd',
-      //   'g26875',
-      // ]
-      // if (ipPortChdvTypes.indexOf(south.value) !== -1 && ipPortChdvTypes.indexOf(south.value) !== -1) {
-      //   _chnl = chnl.filter((item) => item.tcph && item.tcpp)
-      // } else {
-      //   _chnl = chnl
-      // }
-      // _chnl[0].chdv = south.value
-      // _chnl[1].chdv = north.value
-      SET_DRIVER_DATA = store.commit('SET_DRIVER_DATA', { chdv: south.value, chnl: chnl })
+      let _chnl = []
+      const ipPortChdvTypes = [
+        'ethip',
+        'mbstcp',
+        'mele71',
+        'finstc',
+        's7iso',
+        'siefw',
+        'tsxmbt',
+        'mbstcp',
+        'mbsrot',
+        'bacnip',
+        'opcua',
+        'i61850',
+        'snmpd',
+        'g26875',
+      ]
+      if (ipPortChdvTypes.indexOf(south.value) !== -1 && ipPortChdvTypes.indexOf(north.value) !== -1) {
+        _chnl = chnl.filter((item) => item.tcph && item.tcpp)
+      } else {
+        _chnl = chnl
+      }
+      _chnl[0].chdv = south.value
+      _chnl[1].chdv = north.value
+      SET_DRIVER_DATA = store.commit('SET_DRIVER_DATA', { _chnl })
+      setDriverData(_chnl)
     }
     ws().set({ success: setSouthDrivers }).send({
       func: getDrivers,
