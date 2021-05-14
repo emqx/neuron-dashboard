@@ -176,3 +176,21 @@ export interface InstanceInfoModel {
 export interface InstanceInfoData extends NeuronData {
   agts: Array<InstanceInfoModel>
 }
+
+export interface HistoricalAlarmModel {
+  anum: number
+  tstp: number
+  uack: string
+  cate: string
+  stat: string
+  comt: string
+}
+
+export interface HistoricalAlarmData extends NeuronData {
+  frti: number
+  toti: number
+  nalm: number
+  ordr: string
+  tokn: string
+  rows: Array<HistoricalAlarmModel>
+}

@@ -80,11 +80,15 @@ export default defineComponent({
         {
           to: '/current_alarms',
           label: t('alarm.alarms'),
-          icon: 'iconlogs',
+          icon: 'iconalarmstatus',
           subMenus: [
             {
               to: '/current_alarms',
               label: t('alarm.currentAlarms'),
+            },
+            {
+              to: '/historical_alarms',
+              label: t('alarm.historicalAlarms'),
             },
           ],
         },

@@ -46,6 +46,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/alarms/CurrentAlarms.vue'),
       },
+      {
+        path: '/historical_alarms',
+        name: 'HistoricalAlarms',
+        meta: { requireAuth: true },
+        component: () => import('@/views/alarms/HistoricalAlarms.vue'),
+      },
     ],
   },
   {
