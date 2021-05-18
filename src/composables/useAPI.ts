@@ -3,6 +3,7 @@ import { useStore } from 'vuex'
 import useFunc from '@/composables/useFunc'
 import { ObjdModel, ChnlModel, NeuronData } from '@/types/neuron'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import { useI18n } from 'vue-i18n'
 
 export default function useAPI(): {
   addObjectData: (data: Array<Omit<ObjdModel, 'func'>>) => void
@@ -11,6 +12,7 @@ export default function useAPI(): {
 } {
   const store = useStore()
   const { ws } = useWebsocket()
+  const { t } = useI18n()
 
   const addObjectData = (data: Array<Omit<ObjdModel, 'func'>>) => {
     const { objd } = store.state
@@ -23,9 +25,11 @@ export default function useAPI(): {
     ws()
       .set({ success: afterSetDriverData })
       .send({ func: useFunc('setChannel'), chnl })
+
+    EmqxMessage.success(t('config.driverSetup'))
   }
 
-  //Function 70. After set DriverData, we must to restart gateway
+  // Function 70. After set DriverData, we must to restart gateway
   const setGatewayRestartNew = () => {
     ws().send({ func: useFunc('gatewayRestartNew'), acts: 'restartnew' })
   }
@@ -38,12 +42,13 @@ export default function useAPI(): {
 }
 
 const afterSetDriverData = (data: NeuronData) => {
-  if (data.errc === 0) {
-    console.log(data)
+  if (data.errc === 0 && data.func === useFunc('setChannel')) {
+    const { ws } = useWebsocket()
     const { setGatewayRestartNew } = useAPI()
+    //FIXME: remove settimeout delay function
     setTimeout(() => {
       setGatewayRestartNew()
     }, 2000)
-    EmqxMessage.success()
+    ws().remove(afterSetDriverData)
   }
 }

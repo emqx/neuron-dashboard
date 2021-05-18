@@ -26,4 +26,13 @@ export default createStore<State>({
       state.chnl = payload
     },
   },
+  getters: {
+    deviceObj: (state) => {
+      const { chnl } = state
+      if (chnl.length && chnl[0]) {
+        return state.chnl[0].chdv
+      }
+      return ''
+    },
+  },
 })
