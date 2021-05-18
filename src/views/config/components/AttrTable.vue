@@ -39,7 +39,7 @@
     <vxe-table-column :width="250" v-if="showBtn">
       <template v-slot="scope">
         <emqx-button type="text" @click="editAttr(scope.row)">{{ $t('common.edit') }}</emqx-button>
-        <emqx-button type="text" @click="addAddress(scope.row)">{{ $t('config.addr') }}</emqx-button>
+        <emqx-button type="text" @click="editAddress(scope.row)">{{ $t('config.addr') }}</emqx-button>
         <emqx-button type="text" @click="handleDummy(scope.row)">Dummy</emqx-button>
         <emqx-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</emqx-button>
       </template>
@@ -69,7 +69,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['edit-attr'],
+  emits: ['edit-attr', 'edit-addr'],
   setup(props, ctx) {
     const { maxTableHeight } = useMaxHeight()
     const minWidth = 90
@@ -79,8 +79,8 @@ export default defineComponent({
     const editAttr = (attr: OattModel) => {
       ctx.emit('edit-attr', attr)
     }
-    const addAddress = () => {
-      //
+    const editAddress = (attr: OattModel) => {
+      ctx.emit('edit-addr', attr)
     }
     const handleDummy = () => {
       //
@@ -95,7 +95,7 @@ export default defineComponent({
 
       getFullName,
       editAttr,
-      addAddress,
+      editAddress,
       handleDummy,
       handleDelete,
     }
