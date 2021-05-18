@@ -17,7 +17,13 @@
         </div>
       </h3>
     </div>
-    <attr-table :data="tableData" show-btn @edit-attr="editAttr" @edit-addr="editAddr"></attr-table>
+    <attr-table
+      :data="tableData"
+      show-btn
+      @edit-attr="editAttr"
+      @edit-addr="editAddr"
+      @del-attr="deleteAttr"
+    ></attr-table>
     <attr-dialog
       v-model="showAttrDialog"
       :object-size="objSize"
@@ -39,6 +45,7 @@ import AttrTable from './components/AttrTable.vue'
 import AttrDialog from './components/AttrDialog.vue'
 import AddrDialog from './components/AddrDialog.vue'
 import { useAttrSetup } from '@/composables/config/useConfig'
+import useAPI from '@/composables/useAPI'
 import { AaddModel, OattModel } from '@/types/neuron'
 
 export default defineComponent({
@@ -49,6 +56,7 @@ export default defineComponent({
     const showAddrDialog = ref(false)
     const editingAttr: Ref<undefined | OattModel> = ref(undefined)
     const editingAddressArr: Ref<Array<AaddModel>> = ref([])
+    const { delAttr } = useAPI()
     const createAttr = () => {
       editingAttr.value = undefined
       showAttrDialog.value = true
@@ -62,6 +70,9 @@ export default defineComponent({
       editingAddressArr.value = attr.aadd
       showAddrDialog.value = true
     }
+    const deleteAttr = (attr: OattModel) => {
+      delAttr(attr.attn, objName.value)
+    }
     return {
       tableData,
       objSize,
@@ -74,6 +85,7 @@ export default defineComponent({
       createAttr,
       editAttr,
       editAddr,
+      deleteAttr,
     }
   },
 })

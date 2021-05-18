@@ -12,10 +12,26 @@ export default function useAPI(): {
   setGatewayRestartNew: () => void
   addAttr: (attr: OattModel, objn: string) => Error | undefined
   updateAttr: (attr: OattModel, objn: string) => Error | undefined
+  delAttr: (attrName: string, objn: string) => Error | undefined
 } {
   const store = useStore()
   const { ws } = useWebsocket()
   const { t } = useI18n()
+
+  const findObjByName = (objn: string): number => store.state.objd.findIndex((obj: ObjdModel) => obj.objn === objn)
+
+  const findObjAndAttrByName = (objn: string, attrName: string) => {
+    const ret = {
+      objIndex: -1,
+      attrIndex: -1,
+    }
+    ret.objIndex = findObjByName(objn)
+    if (ret.objIndex === -1) {
+      return ret
+    }
+    ret.attrIndex = store.state.objd[ret.objIndex].oatt.findIndex((attr: OattModel) => attr.attn === attrName)
+    return ret
+  }
 
   const addObjectData = (data: Array<Omit<ObjdModel, 'func'>>) => {
     const { objd } = store.state
@@ -23,7 +39,7 @@ export default function useAPI(): {
   }
 
   const addAttr = (attr: OattModel, objn: string) => {
-    const objIndex = store.state.objd.findIndex((obj: ObjdModel) => obj.objn === objn)
+    const objIndex = findObjByName(objn)
     let list = []
     if (objIndex > -1) {
       list = cloneDeep(store.state.objd)
@@ -35,22 +51,30 @@ export default function useAPI(): {
   }
 
   const updateAttr = (attr: OattModel, objn: string) => {
-    const objArr = store.state.objd
-
-    const objIndex = objArr.findIndex((obj: ObjdModel) => obj.objn === objn)
+    const { objIndex, attrIndex } = findObjAndAttrByName(objn, attr.attn)
     if (objIndex === -1) {
       return new Error('Can find obj!')
     }
-
-    const attrIndex = objArr[objIndex].oatt.findIndex(({ attn }: OattModel) => attn === attr.attn)
-    debugger
     if (attrIndex === -1) {
       return new Error('Can find attr')
     }
 
-    const data = cloneDeep(objArr)
+    const data = cloneDeep(store.state.objd)
     data[objIndex].oatt.splice(attrIndex, 1, attr)
-    debugger
+    ws().send({ func: useFunc('setObject'), objd: data })
+  }
+
+  const delAttr = (attrName: string, objn: string) => {
+    const { objIndex, attrIndex } = findObjAndAttrByName(objn, attrName)
+    if (objIndex === -1) {
+      return new Error('Can find obj!')
+    }
+    if (attrIndex === -1) {
+      return new Error('Can find attr')
+    }
+
+    const data: Array<ObjdModel> = cloneDeep(store.state.objd)
+    data[objIndex].oatt.splice(attrIndex, 1)
     ws().send({ func: useFunc('setObject'), objd: data })
   }
 
@@ -75,6 +99,7 @@ export default function useAPI(): {
     setGatewayRestartNew,
     addAttr,
     updateAttr,
+    delAttr,
   }
 }
 
