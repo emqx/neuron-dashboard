@@ -43,3 +43,10 @@ $vxe-table-background-color: #fff;
 .vxe-table--header {
   color: #4D4D4D;
 }
+
+.vxe-table--render-default.vxe-editable .vxe-body--column,
+.vxe-table--render-default .vxe-header--column.col--ellipsis,
+.vxe-table--render-default .vxe-body--column.col--ellipsis,
+.vxe-table--render-default .vxe-footer--column.col--ellipsis {
+  height: auto;
+}
