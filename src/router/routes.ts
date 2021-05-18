@@ -23,6 +23,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/ObjectSetup.vue'),
       },
       {
+        path: '/configuration/event_setup',
+        name: 'ConfigurationEventSetup',
+        meta: { requireAuth: true },
+        component: () => import('@/views/config/EventSetup.vue'),
+      },
+      {
         path: '/logs',
         name: 'Logs',
         meta: { requireAuth: true },

@@ -56,6 +56,20 @@ export default defineComponent({
           to: '/configuration',
           label: t('config.config'),
           icon: 'iconconfig',
+          subMenus: [
+            // {
+            //   to: '/configuration/object_setup',
+            //   label: t('config.objectSetup'),
+            // },
+            {
+              to: '/configuration',
+              label: t('config.objectSetup'),
+            },
+            {
+              to: '/configuration/event_setup',
+              label: t('config.eventSetup'),
+            },
+          ],
         },
         {
           to: '/logs',
