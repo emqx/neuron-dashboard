@@ -29,7 +29,7 @@
         <emqx-input-number v-model="attrForm.rtim" :controls="false" :precision="0" :min="0"></emqx-input-number>
       </emqx-form-item>
     </emqx-form>
-    <addr-edit-table v-model="addressArr" v-else> </addr-edit-table>
+    <addr-edit-table v-model="addressArr" ref="addressTable" v-else> </addr-edit-table>
     <template #footer>
       <emqx-button type="primary" v-if="!editingAttr && currentStep === 0" @click="nextStep">
         {{ $t('common.nextStep') }}
@@ -75,6 +75,7 @@ export default defineComponent({
   setup(props, ctx) {
     const currentStep = ref(0)
     const form = ref()
+    const addressTable = ref()
     const {
       attrForm,
       attrTypeOptArr,
@@ -106,6 +107,7 @@ export default defineComponent({
       if (!val) {
         return
       }
+      currentStep.value = 0
       if (props.editingAttr) {
         attrForm.value = cloneDeep(props.editingAttr as OattModel)
       } else {
@@ -124,16 +126,21 @@ export default defineComponent({
     const { addAttr, updateAttr } = useAPI()
     const submit = () => {
       if (!props.editingAttr) {
+        if (!addressTable.value.checkForm()) {
+          return
+        }
         attrForm.value.aadd = addressArr.value
         addAttr(attrForm.value, props.objectName)
       } else {
         updateAttr(attrForm.value, props.objectName)
       }
+      showDialog.value = false
     }
     return {
       currentStep,
       showDialog,
       form,
+      addressTable,
       attrForm,
       attrFormRules,
       showDecimal,

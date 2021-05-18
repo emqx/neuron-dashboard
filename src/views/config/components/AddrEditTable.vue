@@ -19,7 +19,10 @@
 </template>
 
 <script lang="ts">
+import { AaddModel } from '@/types/neuron'
 import { computed, defineComponent } from 'vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   props: {
@@ -30,17 +33,27 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const minWidth = 80
+    const { t } = useI18n()
     const tableData = computed({
       get: () => {
-        return props.modelValue
+        return props.modelValue as Array<AaddModel>
       },
       set: (val) => {
         ctx.emit('update:modelValue', val)
       },
     })
+    const checkForm = () => {
+      let checkResult = tableData.value.every(({ addr }: AaddModel) => !!addr)
+      if (!checkResult) {
+        EmqxMessage.warning(t('config.addressRequired'))
+      }
+      return checkResult
+    }
+
     return {
       minWidth,
       tableData,
+      checkForm,
     }
   },
 })
