@@ -10,6 +10,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
     children: [
       { path: '/data', name: 'Data', meta: { requireAuth: true }, component: () => import('@/views/data/Index.vue') },
+      /* CONFIG */
       {
         path: '/configuration',
         name: 'Configuration',
@@ -23,6 +24,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/ObjectSetup.vue'),
       },
       {
+        path: '/configuration/attr_setup',
+        name: 'AttrSetup',
+        meta: { requireAuth: true },
+        component: () => import('@/views/config/AttrSetup.vue'),
+      },
+      /* LOG */
+      {
         path: '/logs',
         name: 'Logs',
         meta: { requireAuth: true },
@@ -34,6 +42,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/logs/LogSwitch.vue'),
       },
+      /* AGENT */
       {
         path: '/agent_group',
         name: 'AgentGroup',

@@ -1,11 +1,13 @@
-import { ref, computed, Ref } from 'vue'
+import { ref, computed, Ref, onMounted, ComputedRef } from 'vue'
 import { useStore } from 'vuex'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { handleExcelFile } from '@/plugins/excelData'
 import { uniqBy } from 'lodash'
-import { ObjdModel, OattModel } from '@/types/neuron'
+import { ObjdModel, OattModel, AaddModel } from '@/types/neuron'
 import useAPI from '../useAPI'
 import { Merge } from 'type-fest'
+import { useRoute, useRouter } from 'vue-router'
+import { AttributeTypeList } from '@/config/index'
 
 interface SheetItem {
   pref: string
@@ -128,15 +130,106 @@ export function useObjectSetup(): { objectSetupForm: Ref<ObjectSetupForm> } {
   return { objectSetupForm }
 }
 
+export function useAttrSetup(): { tableData: Ref<OattModel[]>; objSize: Ref<number>; objName: Ref<string> } {
+  const route = useRoute()
+  const store = useStore()
+
+  const currentObj: Ref<ObjdModel> = ref({} as ObjdModel)
+  const tableData: Ref<Array<OattModel>> = ref([])
+  const objSize: Ref<number> = ref(0)
+  const objName: Ref<string> = ref('')
+
+  onMounted(() => {
+    currentObj.value = store.state.objd.find(({ objn }: ObjdModel) => objn === route.query.name)
+    if (currentObj.value) {
+      tableData.value = currentObj.value.oatt || []
+      objSize.value = currentObj.value.obsz
+      objName.value = currentObj.value.objn
+    }
+  })
+
+  return {
+    tableData,
+    objSize,
+    objName,
+  }
+}
+
+export function useAttrDialog(): {
+  attrForm: Ref<OattModel>
+  attrTypeOptArr: { val: string }[]
+  showDecimal: ComputedRef<boolean | ''>
+  showReadTime: ComputedRef<boolean | ''>
+  addressArr: Ref<Array<AaddModel>>
+  initForm: () => OattModel
+  createAddressArr: (num: number) => AaddModel[]
+} {
+  const initForm = (): OattModel => ({
+    attn: '',
+    attt: '',
+    attr: '',
+    deci: 0,
+    rtim: 0,
+    unit: '',
+    aadd: [],
+  })
+
+  const attrForm: Ref<OattModel> = ref(initForm())
+  const attrTypeOptArr = AttributeTypeList
+  const addressArr: Ref<Array<AaddModel>> = ref([])
+  const showDecimal = computed(() => {
+    return attrForm.value.attt && attrForm.value.attt.indexOf('word') !== -1
+  })
+  const showReadTime = computed(() => {
+    return attrForm.value.attr && attrForm.value.attr !== 'W'
+  })
+  const createAddressArr = (num: number): Array<AaddModel> => {
+    const ret = []
+    for (let i = 0; i < num; i++) {
+      ret.push({
+        obix: i,
+        desc: '',
+        addr: '',
+      })
+    }
+    return ret
+  }
+
+  return {
+    attrForm,
+    attrTypeOptArr,
+    showDecimal,
+    showReadTime,
+    addressArr,
+    initForm,
+    createAddressArr,
+  }
+}
+
 export default function useConfig(): {
   tableData: Ref<ObjdModel[]>
+  handleEdit: (obj: ObjdModel) => void
+  goToAttrPage: (obj: ObjdModel) => void
+  handleDelete: (obj: ObjdModel) => void
 } {
   const store = useStore()
+  const router = useRouter()
   const tableData = computed(() => {
     const { objd }: { objd: ObjdModel[] } = store.state
     return objd
   })
+  const handleEdit = (obj: ObjdModel) => {}
+  const goToAttrPage = (obj: ObjdModel) => {
+    router.push({
+      name: 'AttrSetup',
+      query: { name: obj.objn },
+    })
+  }
+  const handleDelete = (obj: ObjdModel) => {}
   return {
     tableData,
+    handleEdit,
+    goToAttrPage,
+    handleDelete,
   }
 }
