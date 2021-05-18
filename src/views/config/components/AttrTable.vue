@@ -41,7 +41,11 @@
         <emqx-button type="text" @click="editAttr(scope.row)">{{ $t('common.edit') }}</emqx-button>
         <emqx-button type="text" @click="editAddress(scope.row)">{{ $t('config.addr') }}</emqx-button>
         <emqx-button type="text" @click="handleDummy(scope.row)">Dummy</emqx-button>
-        <emqx-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</emqx-button>
+        <el-popconfirm :title="$t('common.confirmDelete')" @confirm="delAttr(scope.row)">
+          <template #reference>
+            <emqx-button type="text">{{ $t('common.delete') }}</emqx-button>
+          </template>
+        </el-popconfirm>
       </template>
     </vxe-table-column>
     <template #empty>
@@ -56,8 +60,12 @@
 import { defineComponent } from 'vue'
 import useMaxHeight from '@/composables/useMaxHeight'
 import { OattModel } from '@/types/neuron'
+import { ElPopconfirm } from 'element-plus'
 
 export default defineComponent({
+  components: {
+    ElPopconfirm,
+  },
   props: {
     data: {
       type: Array,
@@ -69,7 +77,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['edit-attr', 'edit-addr'],
+  emits: ['edit-attr', 'edit-addr', 'del-attr'],
   setup(props, ctx) {
     const { maxTableHeight } = useMaxHeight()
     const minWidth = 90
@@ -85,8 +93,8 @@ export default defineComponent({
     const handleDummy = () => {
       //
     }
-    const handleDelete = () => {
-      //
+    const delAttr = (attr: OattModel) => {
+      ctx.emit('del-attr', attr)
     }
 
     return {
@@ -97,7 +105,7 @@ export default defineComponent({
       editAttr,
       editAddress,
       handleDummy,
-      handleDelete,
+      delAttr,
     }
   },
 })
