@@ -127,4 +127,8 @@ export default {
     zh: '无读写权限',
     en: 'No Read and Write permissions',
   },
+  driverSetUpSuccess: {
+    zh: '驱动设置成功',
+    en: 'Driver SetUp Success',
+  },
 }

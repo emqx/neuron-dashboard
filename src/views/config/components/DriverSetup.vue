@@ -1,9 +1,9 @@
 <template>
   <div class="driver-setup">
     <label>{{ $t('config.driverName') }}:</label>
-    <span>{{ driverName }}</span>
+    <span>{{ driverName ? driverName : 'None' }}</span>
     <emqx-button class="driver-btn" type="primary" plain icon="el-icon-plus" size="small" @click="dialogVisible = true"
-      >{{ $t('config.newDriver') }}
+      >{{ driverName ? $t('config.editDriver') : $t('config.newDriver') }}
     </emqx-button>
     <el-dialog custom-class="driver-dialog" :title="$t('config.driverSetup')" v-model="dialogVisible" width="1000px">
       <emqx-row>
@@ -216,7 +216,27 @@ export default defineComponent({
     const store = useStore()
     let SET_DRIVER_DATA = null
 
-    const driverName = ref('None')
+    const { chnl: historyChnlData } = store.state
+    const defaultDriverRecord = {
+      chdv: '',
+      tcph: '',
+      tcpp: 0,
+      ttyc: '',
+      ttyb: 9600,
+      ttyd: 8,
+      // ttys: '1',
+      ttys: '',
+      ttyp: 'N',
+      parm: [],
+    }
+    // historyChnlData[0] => south , historyChnlData[1] => north
+    const northDriverRecord: ChanelModel = reactive(
+      _.cloneDeep(_.merge(defaultDriverRecord, historyChnlData[1])) as ChanelModel,
+    )
+    const southDriverRecord: ChanelModel = reactive(
+      _.cloneDeep(_.merge(defaultDriverRecord, historyChnlData[0])) as ChanelModel,
+    )
+
     const dialogVisible = ref(false)
     const paramDriverType = ref('')
     const southDriverList: Ref<DriverModel[]> = ref([])
@@ -242,21 +262,10 @@ export default defineComponent({
       south: 1,
       north: 2,
     })
-    const defaultDriverRecord = {
-      chdv: '',
-      tcph: '',
-      tcpp: 0,
-      ttyc: '',
-      ttyb: 9600,
-      ttyd: 8,
-      // ttys: '1',
-      ttys: '',
-      ttyp: 'N',
-      parm: [],
-    }
-    const northDriverRecord: ChanelModel = reactive(_.cloneDeep(defaultDriverRecord) as ChanelModel)
-    const southDriverRecord: ChanelModel = reactive(_.cloneDeep(defaultDriverRecord) as ChanelModel)
 
+    const driverName = computed(() => {
+      return store.getters.deviceObj
+    })
     const setDeviceList = (data: DeviceData) => {
       if (data.func === getDeviceList) {
         rs232Options.value = data.rows
@@ -371,7 +380,7 @@ export default defineComponent({
       }
       _chnl[0].chdv = south.value
       _chnl[1].chdv = north.value
-      SET_DRIVER_DATA = store.commit('SET_DRIVER_DATA', { _chnl })
+      SET_DRIVER_DATA = store.commit('SET_DRIVER_DATA', _chnl)
       setDriverData(_chnl)
     }
     ws().set({ success: setSouthDrivers }).send({
@@ -382,6 +391,7 @@ export default defineComponent({
     setTimeout(() => handleGetDeviceList(), 3000)
 
     return {
+      historyChnlData,
       submit,
       SET_DRIVER_DATA,
       ttybList,

@@ -4,8 +4,8 @@
       <emqx-card>
         <emqx-input v-model="userName" type="text" placeholder="Username" />
         <emqx-input v-model="password" type="password" placeholder="Password" />
+        <emqx-button type="primary" class="login" @click="login"> Login </emqx-button>
       </emqx-card>
-      <emqx-button type="primary" class="login" @click="login"> Login </emqx-button>
     </div>
   </div>
 </template>
