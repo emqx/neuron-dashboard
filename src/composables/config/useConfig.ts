@@ -2,12 +2,13 @@ import { ref, computed, Ref, onMounted, ComputedRef } from 'vue'
 import { useStore } from 'vuex'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { handleExcelFile } from '@/plugins/excelData'
-import { uniqBy } from 'lodash'
+import { uniqBy, chunk } from 'lodash'
 import { ObjdModel, OattModel, AaddModel } from '@/types/neuron'
 import useAPI from '../useAPI'
 import { Merge } from 'type-fest'
 import { useRoute, useRouter } from 'vue-router'
 import { AttributeTypeList } from '@/config/index'
+import usePagination from '../usePagination'
 
 interface SheetItem {
   pref: string
@@ -130,28 +131,52 @@ export function useObjectSetup(): { objectSetupForm: Ref<ObjectSetupForm> } {
   return { objectSetupForm }
 }
 
-export function useAttrSetup(): { tableData: Ref<OattModel[]>; objSize: Ref<number>; objName: Ref<string> } {
+export function useAttrSetup(): {
+  tableData: Ref<OattModel[]>
+  objSize: Ref<number>
+  objName: Ref<string>
+  pageNum: Ref<number>
+  pageSize: Ref<number>
+  total: Ref<number>
+  pageChanged: (no: number) => void
+} {
   const route = useRoute()
   const store = useStore()
 
   const currentObj: Ref<ObjdModel> = ref({} as ObjdModel)
+  const totalTableData: Ref<Array<OattModel>> = ref([])
+  const tableDataChunk: Ref<Array<Array<OattModel>>> = ref([])
   const tableData: Ref<Array<OattModel>> = ref([])
   const objSize: Ref<number> = ref(0)
   const objName: Ref<string> = ref('')
+  const { pageNum, pageSize, total } = usePagination()
 
   onMounted(() => {
     currentObj.value = store.state.objd.find(({ objn }: ObjdModel) => objn === route.query.name)
     if (currentObj.value) {
-      tableData.value = currentObj.value.oatt || []
+      totalTableData.value = currentObj.value.oatt || []
+      tableDataChunk.value = chunk(totalTableData.value, pageSize.value)
+      total.value = totalTableData.value.length
+      pageChanged(pageNum.value)
+
       objSize.value = currentObj.value.obsz
       objName.value = currentObj.value.objn
     }
   })
 
+  const pageChanged = (no: number) => {
+    pageNum.value = no
+    tableData.value = tableDataChunk.value[no - 1]
+  }
+
   return {
     tableData,
     objSize,
     objName,
+    pageNum,
+    pageSize,
+    total,
+    pageChanged,
   }
 }
 

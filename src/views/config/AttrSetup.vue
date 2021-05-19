@@ -21,11 +21,22 @@
       show-btn
       ref="attrTable"
       :data="tableData"
+      :object-name="objName"
       @edit-attr="editAttr"
       @edit-addr="editAddr"
       @del-attr="deleteAttr"
       @on-dummy="dummyAttr"
     ></attr-table>
+    <div class="pagination-container">
+      <emqx-pagination
+        layout="prev, pager, next"
+        v-model:currentPage="pageNum"
+        :total="total"
+        :page-size="pageSize"
+        @current-change="pageChanged"
+      >
+      </emqx-pagination>
+    </div>
 
     <attr-dialog
       v-model="showAttrDialog"
@@ -57,7 +68,7 @@ import { AaddModel, OattModel } from '@/types/neuron'
 export default defineComponent({
   components: { AttrTable, AttrDialog, AddrDialog },
   setup() {
-    const { tableData, objSize, objName } = useAttrSetup()
+    const { tableData, objSize, objName, pageNum, pageSize, total, pageChanged } = useAttrSetup()
     const showAttrDialog = ref(false)
     const showAddrDialog = ref(false)
     const editingAttr: Ref<undefined | OattModel> = ref(undefined)
@@ -107,12 +118,16 @@ export default defineComponent({
       tableData,
       objSize,
       objName,
+      pageNum,
+      pageSize,
+      total,
       showAttrDialog,
       showAddrDialog,
       editingAttr,
       editingAddressArr,
       attrTable,
 
+      pageChanged,
       createAttr,
       editAttr,
       editAddr,
@@ -137,6 +152,10 @@ export default defineComponent({
   .el-breadcrumb__item:last-child .el-breadcrumb__inner {
     color: inherit;
     font-weight: inherit;
+  }
+  .pagination-container {
+    padding: 30px 0 10px;
+    text-align: right;
   }
 }
 </style>
