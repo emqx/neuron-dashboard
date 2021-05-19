@@ -24,6 +24,7 @@
       @edit-attr="editAttr"
       @edit-addr="editAddr"
       @del-attr="deleteAttr"
+      @on-dummy="dummyAttr"
     ></attr-table>
 
     <attr-dialog
@@ -62,7 +63,7 @@ export default defineComponent({
     const editingAttr: Ref<undefined | OattModel> = ref(undefined)
     const editingAddressArr: Ref<Array<AaddModel>> = ref([])
     const attrTable = ref()
-    const { delAttr, batchDelAttr } = useAPI()
+    const { delAttr, batchDelAttr, updateAttr } = useAPI()
     const { t } = useI18n()
     const createAttr = () => {
       editingAttr.value = undefined
@@ -76,6 +77,15 @@ export default defineComponent({
       editingAttr.value = attr
       editingAddressArr.value = attr.aadd
       showAddrDialog.value = true
+    }
+    const dummyAttr = (attr: OattModel) => {
+      attr.attr = '-'
+      attr.rtim = 0
+      attr.aadd.forEach((aadd) => {
+        aadd.addr = '-'
+        aadd.desc = ''
+      })
+      updateAttr(attr, objName.value)
     }
     const deleteAttr = (attr: OattModel) => {
       delAttr(attr.attn, objName.value)
@@ -106,6 +116,7 @@ export default defineComponent({
       createAttr,
       editAttr,
       editAddr,
+      dummyAttr,
       deleteAttr,
       batchDeleteAttr,
     }

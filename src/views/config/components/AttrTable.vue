@@ -78,7 +78,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['edit-attr', 'edit-addr', 'del-attr'],
+  emits: ['edit-attr', 'edit-addr', 'del-attr', 'on-dummy'],
   setup(props, ctx) {
     const { maxTableHeight } = useMaxHeight()
     const minWidth = 90
@@ -92,8 +92,8 @@ export default defineComponent({
     const editAddress = (attr: OattModel) => {
       ctx.emit('edit-addr', attr)
     }
-    const handleDummy = () => {
-      //
+    const handleDummy = (attr: OattModel) => {
+      ctx.emit('on-dummy', attr)
     }
     const delAttr = (attr: OattModel) => {
       ctx.emit('del-attr', attr)
