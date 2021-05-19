@@ -866,13 +866,13 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@emqx/emqx-ui@^1.0.28-0":
-  version "1.0.28-0"
-  resolved "https://registry.npmjs.org/@emqx/emqx-ui/-/emqx-ui-1.0.28-0.tgz#41f4338049e567a886e6e8ad6a5bc318145ea89e"
-  integrity sha512-TXF5P7A8oQidAaDESa/eFMbh1lrz1U57Zgi0cFVxbfTSZPIgZDtSgn8DZNt7LVrhD1mWhtqvQsxcFxnZ5AP7vQ==
+"@emqx/emqx-ui@^1.0.29-0":
+  version "1.0.29-0"
+  resolved "https://registry.yarnpkg.com/@emqx/emqx-ui/-/emqx-ui-1.0.29-0.tgz#5d487cce445d30d59df807509b443f7938db8f77"
+  integrity sha512-7mQpsCzB7o5mnLlIARNeU3TGEyCgvcBFjTeYje36QSUHF5GirElSly7G2O+XxMeI5khLMTaral7i83hWSjd9+Q==
   dependencies:
     core-js "^3.6.5"
-    element-plus "^1.0.2-beta.40"
+    element-plus "^1.0.2-beta.41"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
@@ -3807,10 +3807,10 @@ elegant-spinner@^1.0.1:
   resolved "https://registry.npm.taobao.org/elegant-spinner/download/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
   integrity sha1-2wQ1IcldfjA/2PNFvtwzSc+wcp4=
 
-element-plus@^1.0.2-beta.40:
-  version "1.0.2-beta.41"
-  resolved "https://registry.npmjs.org/element-plus/-/element-plus-1.0.2-beta.41.tgz#9c234b536b3401d042505c003e579bd65081f0f0"
-  integrity sha512-GikmQdajaKB5oLxfHxhKXGXtiNoaN1wYiLr9aRx+yxwLx3nPDfoBx60+nrZoN6BOCk2M0HjBVj9TtA214WLRYw==
+element-plus@^1.0.2-beta.41:
+  version "1.0.2-beta.44"
+  resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-1.0.2-beta.44.tgz#7aff122e6181088223027adb65a4a8321e1ef4e9"
+  integrity sha512-PmGfOnV/66LPGSsSbaesiTnmrcQ5PnoZLr2eKRv2/lJ06xUc0AiSBiktGrds0mETgC1O/mRHswXk/Se6aJtpKQ==
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/lodash" "^4.14.161"
