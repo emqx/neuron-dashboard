@@ -135,6 +135,10 @@ export default {
     zh: '上传成功',
     en: 'Upload success!',
   },
+  batchDeleteError: {
+    zh: '请先选择要删除的项',
+    en: 'Please select items to delete first',
+  },
   confirmDelete: {
     zh: '您确定要删除吗？',
     en: 'Are you sure delete?',

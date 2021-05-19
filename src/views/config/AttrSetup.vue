@@ -13,17 +13,19 @@
         <div class="handlers">
           <emqx-button type="primary" @click="createAttr">{{ $t('common.create') }}</emqx-button>
           <!-- <emqx-button :disabled="!multipleSelection.length" type="danger">{{ $t('common.delete') }}</emqx-button> -->
-          <emqx-button type="danger">{{ $t('common.delete') }}</emqx-button>
+          <emqx-button type="danger" @click="batchDeleteAttr">{{ $t('common.delete') }}</emqx-button>
         </div>
       </h3>
     </div>
     <attr-table
-      :data="tableData"
       show-btn
+      ref="attrTable"
+      :data="tableData"
       @edit-attr="editAttr"
       @edit-addr="editAddr"
       @del-attr="deleteAttr"
     ></attr-table>
+
     <attr-dialog
       v-model="showAttrDialog"
       :object-size="objSize"
@@ -44,7 +46,10 @@ import { defineComponent, Ref, ref } from 'vue'
 import AttrTable from './components/AttrTable.vue'
 import AttrDialog from './components/AttrDialog.vue'
 import AddrDialog from './components/AddrDialog.vue'
+import { ElMessageBox } from 'element-plus'
+import { EmqxMessage } from '@emqx/emqx-ui'
 import { useAttrSetup } from '@/composables/config/useConfig'
+import { useI18n } from 'vue-i18n'
 import useAPI from '@/composables/useAPI'
 import { AaddModel, OattModel } from '@/types/neuron'
 
@@ -56,7 +61,9 @@ export default defineComponent({
     const showAddrDialog = ref(false)
     const editingAttr: Ref<undefined | OattModel> = ref(undefined)
     const editingAddressArr: Ref<Array<AaddModel>> = ref([])
-    const { delAttr } = useAPI()
+    const attrTable = ref()
+    const { delAttr, batchDelAttr } = useAPI()
+    const { t } = useI18n()
     const createAttr = () => {
       editingAttr.value = undefined
       showAttrDialog.value = true
@@ -73,6 +80,19 @@ export default defineComponent({
     const deleteAttr = (attr: OattModel) => {
       delAttr(attr.attn, objName.value)
     }
+    const batchDeleteAttr = async () => {
+      let checkedItems: Array<OattModel> = attrTable.value.getCheckedItems()
+      if (!checkedItems.length) {
+        EmqxMessage.warning(t('common.batchDeleteError'))
+        return
+      }
+      await ElMessageBox.confirm(t('common.confirmDelete'), t('common.delete'))
+      batchDelAttr(
+        checkedItems.map(({ attn }) => attn),
+        objName.value,
+      )
+    }
+
     return {
       tableData,
       objSize,
@@ -81,11 +101,13 @@ export default defineComponent({
       showAddrDialog,
       editingAttr,
       editingAddressArr,
+      attrTable,
 
       createAttr,
       editAttr,
       editAddr,
       deleteAttr,
+      batchDeleteAttr,
     }
   },
 })
@@ -97,8 +119,6 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  .handlers {
   }
   .emqx-breadcrumb {
     font-size: inherit;

@@ -2,6 +2,7 @@
   <vxe-table
     v-if="maxTableHeight"
     class="attr-table"
+    ref="table"
     round
     show-overflow
     highlight-hover-row
@@ -57,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import useMaxHeight from '@/composables/useMaxHeight'
 import { OattModel } from '@/types/neuron'
 import { ElPopconfirm } from 'element-plus'
@@ -81,6 +82,7 @@ export default defineComponent({
   setup(props, ctx) {
     const { maxTableHeight } = useMaxHeight()
     const minWidth = 90
+    const table = ref()
     const getFullName = () => {
       //
     }
@@ -96,16 +98,21 @@ export default defineComponent({
     const delAttr = (attr: OattModel) => {
       ctx.emit('del-attr', attr)
     }
+    const getCheckedItems = () => {
+      return table.value.getCheckboxRecords()
+    }
 
     return {
       maxTableHeight,
       minWidth,
+      table,
 
       getFullName,
       editAttr,
       editAddress,
       handleDummy,
       delAttr,
+      getCheckedItems,
     }
   },
 })

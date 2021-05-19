@@ -13,6 +13,7 @@ export default function useAPI(): {
   addAttr: (attr: OattModel, objn: string) => Error | undefined
   updateAttr: (attr: OattModel, objn: string) => Error | undefined
   delAttr: (attrName: string, objn: string) => Error | undefined
+  batchDelAttr: (attrArr: Array<string>, objn: string) => Error | undefined
 } {
   const store = useStore()
   const { ws } = useWebsocket()
@@ -78,6 +79,22 @@ export default function useAPI(): {
     ws().send({ func: useFunc('setObject'), objd: data })
   }
 
+  const batchDelAttr = (attrArr: Array<string>, objn: string) => {
+    const objIndex = findObjByName(objn)
+    if (objIndex === -1) {
+      return new Error('Can not find obj')
+    }
+    const objList = cloneDeep(store.state.objd)
+    const list = objList[objIndex].oatt
+    attrArr.forEach((attr) => {
+      const index = list.findIndex((item: OattModel) => item.attn === attr)
+      if (index > -1) {
+        list.splice(index, 1)
+      }
+    })
+    ws().send({ func: useFunc('setObject'), objd: objList })
+  }
+
   const setDriverData = (data?: Array<Omit<ChnlModel, 'func'>>) => {
     const { _chnl } = store.state
     const chnl = data ? data : _chnl
@@ -100,6 +117,7 @@ export default function useAPI(): {
     addAttr,
     updateAttr,
     delAttr,
+    batchDelAttr,
   }
 }
 
