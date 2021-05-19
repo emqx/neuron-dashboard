@@ -16,8 +16,8 @@
     <vxe-table-column :title="`Object: ${$t('config.address')}`" min-width="250">
       <template v-slot="scope">
         <div>
-          <div v-for="item in scope.row.aadd" class="addrs" :key="getFullName(item.pref, item.suff)">
-            {{ getFullName(item.pref, item.suff) }}: &nbsp;
+          <div v-for="item in scope.row.aadd" class="addrs" :key="item.addr">
+            {{ objectName }}:&nbsp;
             {{ item.addr }}
           </div>
         </div>
@@ -76,6 +76,10 @@ export default defineComponent({
     showBtn: {
       type: Boolean,
       default: false,
+    },
+    objectName: {
+      type: String,
+      default: '',
     },
   },
   emits: ['edit-attr', 'edit-addr', 'del-attr', 'on-dummy'],
