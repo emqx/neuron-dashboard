@@ -168,12 +168,5 @@ export default defineComponent({
   .el-radio-group {
     width: 100%;
   }
-  .normal-disabled {
-    .el-input__inner {
-      background-color: #fff;
-      border: 1px solid #dcdfe6;
-      color: #606266;
-    }
-  }
 }
 </style>
