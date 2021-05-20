@@ -37,7 +37,7 @@
     </vxe-table-column>
     <vxe-table-column field="attr" :width="minWidth" title="RW" />
     <vxe-table-column field="rtim" :width="minWidth" title="Rtime" />
-    <vxe-table-column :width="250" v-if="showBtn">
+    <vxe-table-column :width="250" v-if="showBtn" class-name="is-right">
       <template v-slot="scope">
         <emqx-button type="text" @click="editAttr(scope.row)">{{ $t('common.edit') }}</emqx-button>
         <emqx-button type="text" @click="editAddress(scope.row)">{{ $t('config.addr') }}</emqx-button>

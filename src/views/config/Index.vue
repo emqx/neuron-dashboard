@@ -57,7 +57,7 @@
         <emqx-table-column prop="obsz" label="Size" />
         <emqx-table-column prop="updt" label="Update Time" />
         <emqx-table-column prop="logt" label="Log Time" />
-        <emqx-table-column>
+        <emqx-table-column class-name="is-right">
           <template #default="scope">
             <emqx-button type="text" @click="editObject(scope.row)">{{ $t('common.edit') }}</emqx-button>
             <emqx-button type="text" @click="goToAttrPage(scope.row)">{{ $t('data.attribute') }}</emqx-button>
