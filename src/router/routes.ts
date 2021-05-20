@@ -24,6 +24,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/ObjectSetup.vue'),
       },
       {
+        path: 'configuration/object_setup/edit',
+        name: 'EditObjectSetup',
+        meta: { requireAuth: true },
+        component: () => import('@/views/config/ObjectSetup.vue'),
+      },
+      {
         path: '/configuration/attr_setup',
         name: 'AttrSetup',
         meta: { requireAuth: true },

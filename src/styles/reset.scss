@@ -33,3 +33,12 @@
 .el-table.emqx-table th {
   background: #F4F9FC;
 }
+
+/* Input */
+.emqx-input.normal-disabled {
+  .el-input__inner {
+    background-color: #fff;
+    border: 1px solid #dcdfe6;
+    color: #606266;
+  }
+}

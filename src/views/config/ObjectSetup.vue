@@ -18,7 +18,7 @@
           <emqx-col :span="12">
             <emqx-form :model="objectSetupForm" ref="formComponent" :rules="rules">
               <emqx-form-item label="Object name" required prop="objn">
-                <emqx-input v-model="objectSetupForm.objn" size="small" />
+                <emqx-input v-model="objectSetupForm.objn" size="small" :disabled="isEdit" class="normal-disabled" />
               </emqx-form-item>
               <emqx-form-item label="Object size" required prop="obsz">
                 <el-input-number
@@ -73,7 +73,7 @@
               </emqx-table-column>
               <emqx-table-column label="Description">
                 <template #default="scope">
-                  <emqx-input v-model="scope.index.otxt" size="small" />
+                  <emqx-input v-model="scope.row.otxt" size="small" />
                 </template>
               </emqx-table-column>
             </emqx-table>
@@ -88,12 +88,15 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, onMounted, Ref, ref } from 'vue'
 import { ElSteps, ElStep } from 'element-plus'
 import { useObjectSetup } from '@/composables/config/useConfig'
 import useAPI from '@/composables/useAPI'
 import { ElInputNumber } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { cloneDeep } from 'lodash'
+import { ObjdModel, OdesModel } from '@/types/neuron'
 
 const createInputNumberRule = (msg: string) => ({
   type: 'number',
@@ -111,6 +114,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const route = useRoute()
+    const store = useStore()
     const activeStep = ref(1)
     const formComponent = ref()
     const { objectSetupForm } = useObjectSetup()
@@ -119,22 +124,45 @@ export default defineComponent({
       logt: [createInputNumberRule('Please input the log time')],
       updt: [createInputNumberRule('Please input the update time')],
     }
-    const attrTable = ref([{}, {}])
+    const attrTable: Ref<Array<OdesModel>> = ref([])
+    const isEdit = computed(() => route.name === 'EditObjectSetup')
+    onMounted(() => {
+      if (!isEdit.value) {
+        return
+      }
+      const obj = store.state.objd.find(({ objn }: ObjdModel) => objn === route.query.obj)
+      objectSetupForm.value = cloneDeep(obj)
+      const { value } = objectSetupForm
+      value.sizeInput = value.obsz
+      value.logTimeInput = value.logt
+      value.updateTimeInput = value.updt
+      attrTable.value = objectSetupForm.value.odes
+    })
     const handleInputNumber = (model: Record<string, any>, key: string, value: number) => {
       model[key] = value
     }
-    const createObjDescTable = (num: number) => {
+    const createObjDescTable = (num: number, baseIndex = 0) => {
       let ret = []
       for (let i = 0; i < num; i++) {
         ret.push({
-          odix: i,
+          odix: i + baseIndex,
           otxt: '',
         })
       }
       return ret
     }
     const handleSizeChanged = (num: number) => {
-      objectSetupForm.value.odes = createObjDescTable(num)
+      let diff = 0
+      if (!isEdit.value) {
+        objectSetupForm.value.odes = createObjDescTable(num)
+      } else {
+        diff = num - objectSetupForm.value.odes.length
+        if (diff > 0) {
+          objectSetupForm.value.odes.push(...createObjDescTable(diff, objectSetupForm.value.odes.length))
+        } else {
+          objectSetupForm.value.odes.splice(objectSetupForm.value.odes.length + diff, -diff)
+        }
+      }
     }
     const checkForm = async () => {
       try {
@@ -151,16 +179,22 @@ export default defineComponent({
         // ignore
       }
     }
-    const { addObjectData } = useAPI()
+    const { addObjectData, updateObj } = useAPI()
     const cancel = () => {
       router.back()
     }
     const submit = () => {
       try {
         let { objn, obsz, odes, updt, logt, oatt } = objectSetupForm.value
-        let params = [{ objn, obsz, odes, updt, logt, oatt }]
+        let params
+        if (isEdit.value) {
+          params = { objn, obsz, odes, updt, logt, oatt }
+          updateObj(objn, params as ObjdModel)
+        } else {
+          params = [{ objn, obsz, odes, updt, logt, oatt }]
+          addObjectData(params)
+        }
         // TODO: NEED TEST
-        addObjectData(params)
       } catch (error) {
         //
       }
@@ -171,6 +205,8 @@ export default defineComponent({
       objectSetupForm,
       rules,
       attrTable,
+      isEdit,
+
       handleInputNumber,
       handleSizeChanged,
       nextStep,

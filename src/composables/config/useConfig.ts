@@ -237,7 +237,7 @@ export function useAttrDialog(): {
 
 export default function useConfig(): {
   tableData: Ref<ObjdModel[]>
-  handleEdit: (obj: ObjdModel) => void
+  editObject: (obj: ObjdModel) => void
   goToAttrPage: (obj: ObjdModel) => void
   delObj: (obj: ObjdModel) => Promise<void>
 } {
@@ -249,7 +249,14 @@ export default function useConfig(): {
     const { objd }: { objd: ObjdModel[] } = store.state
     return objd
   })
-  const handleEdit = (obj: ObjdModel) => { }
+  const editObject = (obj: ObjdModel) => {
+    router.push({
+      name: 'EditObjectSetup',
+      query: {
+        obj: obj.objn,
+      },
+    })
+  }
   const goToAttrPage = (obj: ObjdModel) => {
     router.push({
       name: 'AttrSetup',
@@ -262,7 +269,7 @@ export default function useConfig(): {
   }
   return {
     tableData,
-    handleEdit,
+    editObject,
     goToAttrPage,
     delObj,
   }
