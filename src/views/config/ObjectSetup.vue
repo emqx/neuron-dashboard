@@ -118,7 +118,7 @@ export default defineComponent({
     const store = useStore()
     const activeStep = ref(1)
     const formComponent = ref()
-    const { objectSetupForm } = useObjectSetup()
+    const { objectSetupForm, handleInputNumber, createObjDescTable } = useObjectSetup()
     const rules = {
       obsz: [createInputNumberRule('Please input the object size')],
       logt: [createInputNumberRule('Please input the log time')],
@@ -138,19 +138,7 @@ export default defineComponent({
       value.updateTimeInput = value.updt
       attrTable.value = objectSetupForm.value.odes
     })
-    const handleInputNumber = (model: Record<string, any>, key: string, value: number) => {
-      model[key] = value
-    }
-    const createObjDescTable = (num: number, baseIndex = 0) => {
-      let ret = []
-      for (let i = 0; i < num; i++) {
-        ret.push({
-          odix: i + baseIndex,
-          otxt: '',
-        })
-      }
-      return ret
-    }
+
     const handleSizeChanged = (num: number) => {
       let diff = 0
       if (!isEdit.value) {
@@ -194,6 +182,7 @@ export default defineComponent({
           params = [{ objn, obsz, odes, updt, logt, oatt }]
           addObjectData(params)
         }
+        router.back()
         // TODO: NEED TEST
       } catch (error) {
         //

@@ -130,9 +130,33 @@ const createRawObject = (): ObjectSetupForm => ({
   updateTimeInput: undefined,
 })
 
-export function useObjectSetup(): { objectSetupForm: Ref<ObjectSetupForm> } {
+export function useObjectSetup(): {
+  objectSetupForm: Ref<ObjectSetupForm>
+  handleInputNumber: (model: Record<string, any>, key: string, value: number) => void
+  createObjDescTable: (
+    num: number,
+    baseIndex?: number,
+  ) => {
+    odix: number
+    otxt: string
+  }[]
+} {
   const objectSetupForm = ref(createRawObject())
-  return { objectSetupForm }
+  const handleInputNumber = (model: Record<string, any>, key: string, value: number) => {
+    model[key] = value
+  }
+  const createObjDescTable = (num: number, baseIndex = 0) => {
+    const ret = []
+    for (let i = 0; i < num; i++) {
+      ret.push({
+        odix: i + baseIndex,
+        otxt: '',
+      })
+    }
+    return ret
+  }
+
+  return { objectSetupForm, handleInputNumber, createObjDescTable }
 }
 
 export function useAttrSetup(): {
