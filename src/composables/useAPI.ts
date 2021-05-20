@@ -8,6 +8,7 @@ import { cloneDeep } from 'lodash'
 
 export default function useAPI(): {
   addObjectData: (data: Omit<ObjdModel, 'func'>[]) => void
+  deleteObj: (objn: string) => Error | undefined
   setDriverData: (data?: Omit<ChnlModel, 'func'>[] | undefined) => void
   setGatewayRestartNew: () => void
   addAttr: (attr: OattModel, objn: string) => Error | undefined
@@ -37,6 +38,16 @@ export default function useAPI(): {
   const addObjectData = (data: Array<Omit<ObjdModel, 'func'>>) => {
     const { objd } = store.state
     ws().send({ func: useFunc('setObject'), objd: objd.concat(data) })
+  }
+
+  const deleteObj = (objn: string) => {
+    const objIndex = findObjByName(objn)
+    if (objIndex === -1) {
+      return new Error('Can not find obj')
+    }
+    const list = cloneDeep(store.state.objd)
+    list.splice(objIndex, 1)
+    ws().send({ func: useFunc('setObject'), objd: list })
   }
 
   const addAttr = (attr: OattModel, objn: string) => {
@@ -112,6 +123,7 @@ export default function useAPI(): {
 
   return {
     addObjectData,
+    deleteObj,
     setDriverData,
     setGatewayRestartNew,
     addAttr,

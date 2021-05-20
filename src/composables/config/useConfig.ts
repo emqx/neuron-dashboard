@@ -1,14 +1,18 @@
 import { ref, computed, Ref, onMounted, ComputedRef } from 'vue'
-import { useStore } from 'vuex'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import { handleExcelFile } from '@/plugins/excelData'
-import { uniqBy, chunk } from 'lodash'
-import { ObjdModel, OattModel, AaddModel } from '@/types/neuron'
-import useAPI from '../useAPI'
-import { Merge } from 'type-fest'
+import { ElMessageBox } from 'element-plus'
+
+import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import { AttributeTypeList } from '@/config/index'
+import { useI18n } from 'vue-i18n'
+import useAPI from '../useAPI'
 import usePagination from '../usePagination'
+
+import { AttributeTypeList } from '@/config/index'
+import { uniqBy, chunk } from 'lodash'
+import { handleExcelFile } from '@/plugins/excelData'
+import { ObjdModel, OattModel, AaddModel } from '@/types/neuron'
+import { Merge } from 'type-fest'
 
 interface SheetItem {
   pref: string
@@ -235,26 +239,31 @@ export default function useConfig(): {
   tableData: Ref<ObjdModel[]>
   handleEdit: (obj: ObjdModel) => void
   goToAttrPage: (obj: ObjdModel) => void
-  handleDelete: (obj: ObjdModel) => void
+  delObj: (obj: ObjdModel) => Promise<void>
 } {
   const store = useStore()
   const router = useRouter()
+  const { t } = useI18n()
+  const { deleteObj } = useAPI()
   const tableData = computed(() => {
     const { objd }: { objd: ObjdModel[] } = store.state
     return objd
   })
-  const handleEdit = (obj: ObjdModel) => {}
+  const handleEdit = (obj: ObjdModel) => { }
   const goToAttrPage = (obj: ObjdModel) => {
     router.push({
       name: 'AttrSetup',
       query: { name: obj.objn },
     })
   }
-  const handleDelete = (obj: ObjdModel) => {}
+  const delObj = async (obj: ObjdModel) => {
+    await ElMessageBox.confirm(t('common.confirmDelete'))
+    deleteObj(obj.objn)
+  }
   return {
     tableData,
     handleEdit,
     goToAttrPage,
-    handleDelete,
+    delObj,
   }
 }
