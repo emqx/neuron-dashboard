@@ -59,7 +59,7 @@
         <emqx-table-column prop="logt" label="Log Time" />
         <emqx-table-column>
           <template #default="scope">
-            <emqx-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</emqx-button>
+            <emqx-button type="text" @click="editObject(scope.row)">{{ $t('common.edit') }}</emqx-button>
             <emqx-button type="text" @click="goToAttrPage(scope.row)">{{ $t('data.attribute') }}</emqx-button>
             <emqx-button type="text" @click="delObj(scope.row)">{{ $t('common.delete') }}</emqx-button>
           </template>
@@ -83,7 +83,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { tableData, handleEdit, goToAttrPage, delObj } = useConfig()
+    const { tableData, editObject, goToAttrPage, delObj } = useConfig()
     const fileList = ref([])
     const exportLoading = ref(false)
     const { uploadLoading, handleUploadChange } = useUploadObject()
@@ -98,7 +98,7 @@ export default defineComponent({
 
     return {
       tableData,
-      handleEdit,
+      editObject,
       goToAttrPage,
       delObj,
       fileList,

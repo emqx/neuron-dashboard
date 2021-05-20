@@ -9,6 +9,7 @@ import { cloneDeep } from 'lodash'
 export default function useAPI(): {
   addObjectData: (data: Omit<ObjdModel, 'func'>[]) => void
   deleteObj: (objn: string) => Error | undefined
+  updateObj: (objn: string, objData: ObjdModel) => Error | undefined
   setDriverData: (data?: Omit<ChnlModel, 'func'>[] | undefined) => void
   setGatewayRestartNew: () => void
   addAttr: (attr: OattModel, objn: string) => Error | undefined
@@ -47,6 +48,16 @@ export default function useAPI(): {
     }
     const list = cloneDeep(store.state.objd)
     list.splice(objIndex, 1)
+    ws().send({ func: useFunc('setObject'), objd: list })
+  }
+
+  const updateObj = (objn: string, objData: ObjdModel) => {
+    const objIndex = findObjByName(objn)
+    if (objIndex === -1) {
+      return new Error('Can not find obj')
+    }
+    const list = cloneDeep(store.state.objd)
+    list.splice(objIndex, 1, objData)
     ws().send({ func: useFunc('setObject'), objd: list })
   }
 
@@ -128,6 +139,7 @@ export default function useAPI(): {
     setGatewayRestartNew,
     addAttr,
     updateAttr,
+    updateObj,
     delAttr,
     batchDelAttr,
   }
