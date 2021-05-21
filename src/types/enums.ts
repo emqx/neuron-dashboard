@@ -3,3 +3,8 @@ export const enum GatewayAction {
   Restartnew = 'restartnew',
   Shutdown = 'shutdown',
 }
+
+export enum SystemStatus {
+  STANDBY = 'STANDBY',
+  ACTIVE = 'ACTIVE',
+}

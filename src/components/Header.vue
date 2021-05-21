@@ -11,9 +11,9 @@
           </span>
           <template #dropdown>
             <emqx-dropdown-menu>
-              <emqx-dropdown-item @click="handleStandby">
+              <emqx-dropdown-item @click="toggleStatus">
                 <i class="iconfont iconstanndby"></i>
-                {{ $t('common.standby') }}
+                {{ status.mode === 'ACTIVE' ? $t('common.standby') : $t('common.active') }}
               </emqx-dropdown-item>
               <emqx-dropdown-item @click="handleRestart">
                 <i class="iconfont iconrestart"></i>
@@ -43,32 +43,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import useAPI from '@/composables/useAPI'
 import { ElMessageBox } from 'element-plus'
+import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { GatewayAction } from '@/types/enums'
+import { GatewayAction, SystemStatus } from '@/types/enums'
 
 export default defineComponent({
   name: 'Header',
   setup() {
-    const { standby } = useAPI()
+    const { controlStatus, controlGateway } = useAPI()
     const { t } = useI18n()
-    console.log(GatewayAction.Restart)
-    const handleStandby = () => {
-      standby()
+    const store = useStore()
+
+    const status = computed(() => {
+      return store.state.status || {}
+    })
+
+    const toggleStatus = () => {
+      let params = status.value.mode === SystemStatus.STANDBY ? SystemStatus.ACTIVE : SystemStatus.STANDBY
+      controlStatus(params)
     }
 
     const handleRestart = async () => {
       await ElMessageBox.confirm(t('common.confirmRestart'))
-      // controlGateway(GatewayAction.Restart)
+      controlGateway(GatewayAction.Restart)
     }
 
     const handleShutdown = () => {
-      // controlGateway(GatewayAction.Shutdown)
+      controlGateway(GatewayAction.Shutdown)
     }
     return {
-      handleStandby,
+      status,
+      toggleStatus,
       handleRestart,
       handleShutdown,
     }

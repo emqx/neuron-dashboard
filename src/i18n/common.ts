@@ -55,6 +55,10 @@ export default {
     zh: '待机',
     en: 'Standby',
   },
+  active: {
+    zh: '开机',
+    en: 'Active',
+  },
   shutdown: {
     zh: '关机',
     en: 'Shutdown',
