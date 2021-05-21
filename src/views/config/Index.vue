@@ -50,7 +50,7 @@
           </emqx-dropdown>
         </emqx-col>
       </emqx-row>
-      <emqx-table :data="tableData" @selection-change="handleSelectionChange">
+      <emqx-table :data="objectTableData" @selection-change="handleSelectionChange">
         <emqx-table-column type="selection" width="55"> </emqx-table-column>
         <emqx-table-column type="index" label="No" />
         <emqx-table-column prop="objn" :label="$t('data.objName')" />
@@ -83,7 +83,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { tableData, editObject, goToAttrPage, delObj } = useConfig()
+    const { objectTableData, editObject, goToAttrPage, delObj } = useConfig()
     const fileList = ref([])
     const exportLoading = ref(false)
     const { uploadLoading, handleUploadChange } = useUploadObject()
@@ -97,7 +97,7 @@ export default defineComponent({
     }
 
     return {
-      tableData,
+      objectTableData,
       editObject,
       goToAttrPage,
       delObj,

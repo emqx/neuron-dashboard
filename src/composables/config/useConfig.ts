@@ -260,7 +260,7 @@ export function useAttrDialog(): {
 }
 
 export default function useConfig(): {
-  tableData: Ref<ObjdModel[]>
+  objectTableData: Ref<ObjdModel[]>
   editObject: (obj: ObjdModel) => void
   goToAttrPage: (obj: ObjdModel) => void
   delObj: (obj: ObjdModel) => Promise<void>
@@ -269,7 +269,7 @@ export default function useConfig(): {
   const router = useRouter()
   const { t } = useI18n()
   const { deleteObj } = useAPI()
-  const tableData = computed(() => {
+  const objectTableData = computed(() => {
     const { objd }: { objd: ObjdModel[] } = store.state
     return objd
   })
@@ -292,7 +292,7 @@ export default function useConfig(): {
     deleteObj(obj.objn)
   }
   return {
-    tableData,
+    objectTableData,
     editObject,
     goToAttrPage,
     delObj,
