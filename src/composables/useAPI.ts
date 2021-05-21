@@ -35,6 +35,7 @@ export default function useAPI(): {
     ret.attrIndex = store.state.objd[ret.objIndex].oatt.findIndex((attr: OattModel) => attr.attn === attrName)
     return ret
   }
+  /* CONFIG */
 
   const addObjectData = (data: Array<Omit<ObjdModel, 'func'>>) => {
     const { objd } = store.state
@@ -129,7 +130,7 @@ export default function useAPI(): {
 
   // Function 70. After set DriverData, we must to restart gateway
   const setGatewayRestartNew = () => {
-    ws().send({ func: useFunc('gatewayRestartNew'), acts: 'restartnew' })
+    ws().send({ func: useFunc('gatewayControl'), acts: 'restartnew' })
   }
 
   return {

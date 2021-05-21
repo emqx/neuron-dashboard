@@ -11,7 +11,7 @@ interface FuncModel {
   switchLogs: 84
   instanceInformation: 73
   setChannel: 40
-  gatewayRestartNew: 70
+  gatewayControl: 70
   showAlarms: 79
   ReadHistoricalAlarm: 81
 }
@@ -30,7 +30,7 @@ export default function useFunc(funcName: FuncName): number {
     switchLogs: 84,
     instanceInformation: 73,
     setChannel: 40,
-    gatewayRestartNew: 70,
+    gatewayControl: 70,
     showAlarms: 79,
     ReadHistoricalAlarm: 81,
   })
