@@ -47,15 +47,14 @@ import { defineComponent } from 'vue'
 import useAPI from '@/composables/useAPI'
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { GatewayAction } from '@/types/neuron'
+import { GatewayAction } from '@/types/enums'
 
 export default defineComponent({
   name: 'Header',
   setup() {
     const { standby } = useAPI()
     const { t } = useI18n()
-    // console.log(GatewayAction.Restart)
-
+    console.log(GatewayAction.Restart)
     const handleStandby = () => {
       standby()
     }
