@@ -2,7 +2,7 @@ import useWebsocket from '@/plugins/ws/useWebsocket'
 import { useStore } from 'vuex'
 import useFunc from '@/composables/useFunc'
 import { ObjdModel, ChnlModel, NeuronData, OattModel } from '@/types/neuron'
-import { GatewayAction } from '@/types/enums'
+import { GatewayAction, SystemStatus } from '@/types/enums'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep } from 'lodash'
@@ -17,7 +17,7 @@ export default function useAPI(): {
   updateAttr: (attr: OattModel, objn: string) => Error | undefined
   delAttr: (attrName: string, objn: string) => Error | undefined
   batchDelAttr: (attrArr: Array<string>, objn: string) => Error | undefined
-  standby: () => void
+  controlStatus: (status: SystemStatus) => void
   controlGateway: (action: GatewayAction) => void
 } {
   const store = useStore()
@@ -132,8 +132,8 @@ export default function useAPI(): {
   }
 
   /* STATUS CONTROL */
-  const standby = () => {
-    ws().send({ func: useFunc('statusControl'), stat: 'standby' })
+  const controlStatus = (status: SystemStatus) => {
+    ws().send({ func: useFunc('statusControl'), stat: status.toLowerCase() })
   }
 
   /* GATEWAY CONTROL */
@@ -157,7 +157,7 @@ export default function useAPI(): {
     updateObj,
     delAttr,
     batchDelAttr,
-    standby,
+    controlStatus,
     controlGateway,
   }
 }
