@@ -1,3 +1,9 @@
+export enum GatewayAction {
+  Restart = 'restart',
+  Restartnew = 'restartnew',
+  Shutdown = 'shutdown',
+}
+
 export interface Status {
   func: number
   tstp: number

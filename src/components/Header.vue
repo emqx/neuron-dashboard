@@ -11,9 +11,18 @@
           </span>
           <template #dropdown>
             <emqx-dropdown-menu>
-              <emqx-dropdown-item><i class="iconfont iconstanndby"></i>{{ $t('common.standby') }}</emqx-dropdown-item>
-              <emqx-dropdown-item><i class="iconfont iconrestart"></i>{{ $t('common.restart') }}</emqx-dropdown-item>
-              <emqx-dropdown-item><i class="iconfont iconshutdown"></i>{{ $t('common.shutdown') }}</emqx-dropdown-item>
+              <emqx-dropdown-item @click="handleStandby">
+                <i class="iconfont iconstanndby"></i>
+                {{ $t('common.standby') }}
+              </emqx-dropdown-item>
+              <emqx-dropdown-item @click="handleRestart">
+                <i class="iconfont iconrestart"></i>
+                {{ $t('common.restart') }}
+              </emqx-dropdown-item>
+              <emqx-dropdown-item @click="handleShutdown">
+                <i class="iconfont iconshutdown"></i>
+                {{ $t('common.shutdown') }}
+              </emqx-dropdown-item>
             </emqx-dropdown-menu>
           </template>
         </emqx-dropdown>
@@ -35,9 +44,36 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import useAPI from '@/composables/useAPI'
+import { ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+import { GatewayAction } from '@/types/neuron'
 
 export default defineComponent({
   name: 'Header',
+  setup() {
+    const { standby } = useAPI()
+    const { t } = useI18n()
+    // console.log(GatewayAction.Restart)
+
+    const handleStandby = () => {
+      standby()
+    }
+
+    const handleRestart = async () => {
+      await ElMessageBox.confirm(t('common.confirmRestart'))
+      // controlGateway(GatewayAction.Restart)
+    }
+
+    const handleShutdown = () => {
+      // controlGateway(GatewayAction.Shutdown)
+    }
+    return {
+      handleStandby,
+      handleRestart,
+      handleShutdown,
+    }
+  },
 })
 </script>
 

@@ -12,6 +12,7 @@ interface FuncModel {
   instanceInformation: 73
   setChannel: 40
   gatewayControl: 70
+  statusControl: 71
   showAlarms: 79
   ReadHistoricalAlarm: 81
 }
@@ -31,6 +32,7 @@ export default function useFunc(funcName: FuncName): number {
     instanceInformation: 73,
     setChannel: 40,
     gatewayControl: 70,
+    statusControl: 71,
     showAlarms: 79,
     ReadHistoricalAlarm: 81,
   })
