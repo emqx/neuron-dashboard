@@ -1,7 +1,7 @@
 import useWebsocket from '@/plugins/ws/useWebsocket'
 import { useStore } from 'vuex'
 import useFunc from '@/composables/useFunc'
-import { ObjdModel, ChnlModel, NeuronData, OattModel } from '@/types/neuron'
+import { ObjdModel, ChnlModel, NeuronData, OattModel, GatewayAction } from '@/types/neuron'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep } from 'lodash'
@@ -16,6 +16,8 @@ export default function useAPI(): {
   updateAttr: (attr: OattModel, objn: string) => Error | undefined
   delAttr: (attrName: string, objn: string) => Error | undefined
   batchDelAttr: (attrArr: Array<string>, objn: string) => Error | undefined
+  standby: () => void
+  controlGateway: (action: GatewayAction) => void
 } {
   const store = useStore()
   const { ws } = useWebsocket()
@@ -128,9 +130,20 @@ export default function useAPI(): {
     EmqxMessage.success(t('config.driverSetup'))
   }
 
+  /* STATUS CONTROL */
+  const standby = () => {
+    ws().send({ func: useFunc('statusControl'), stat: 'standby' })
+  }
+
+  /* GATEWAY CONTROL */
+
   // Function 70. After set DriverData, we must to restart gateway
   const setGatewayRestartNew = () => {
     ws().send({ func: useFunc('gatewayControl'), acts: 'restartnew' })
+  }
+
+  const controlGateway = (action: GatewayAction) => {
+    ws().send({ func: useFunc('gatewayControl'), acts: action })
   }
 
   return {
@@ -143,6 +156,8 @@ export default function useAPI(): {
     updateObj,
     delAttr,
     batchDelAttr,
+    standby,
+    controlGateway,
   }
 }
 
