@@ -109,14 +109,14 @@ export class DataSource {
     if (this.websocket && success) {
       this.websocket.onmessage = (e: MessageEvent<NeuronData>) => {
         const data = e.data && JSON.parse(e.data.toString())
+        if (data.errc) {
+          EmqxMessage.error({
+            message: data.emsg,
+            duration: 6000,
+          })
+        }
         this.onsuccess.forEach((successFunc) => {
           if (!data.wtrm || data.wtrm === this.wtrm) {
-            if (data.errc) {
-              EmqxMessage.error({
-                message: data.emsg,
-                duration: 6000,
-              })
-            }
             if (successFunc) {
               successFunc(data)
             }
