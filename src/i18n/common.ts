@@ -27,6 +27,10 @@ export default {
     zh: '密 码',
     en: 'Password',
   },
+  userAdmin: {
+    zh: '用户管理',
+    en: 'User Admin',
+  },
   newPassword: {
     zh: '新密码',
     en: 'New password',
