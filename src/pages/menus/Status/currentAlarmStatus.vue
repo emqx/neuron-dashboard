@@ -35,6 +35,7 @@
 <script>
 import Mixins from '@/mixins'
 import moment from 'moment'
+
 export default {
   mixins: [Mixins],
   data() {
