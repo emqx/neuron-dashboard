@@ -111,6 +111,10 @@ export default {
     zh: '上传成功',
     en: 'Upload success!',
   },
+  uploadFailed: {
+    zh: '上传失败',
+    en: 'Upload failed!',
+  },
   confirmDelete: {
     zh: '您确定要删除吗？',
     en: 'Are you sure delete?',

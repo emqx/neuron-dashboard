@@ -5,7 +5,7 @@ module.exports = {
     port: 3003,
     proxy: {
       '/api/v1/': {
-        target: 'http://52.53.170.189:7000',
+        target: 'http://iot-platform.cloud:6700',
         changeOrigin: true,
       },
     },

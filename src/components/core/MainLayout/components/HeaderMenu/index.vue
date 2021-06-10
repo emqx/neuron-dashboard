@@ -34,15 +34,23 @@
       :title="$t('administration.uploadLicense')"
       :visible.sync="licensedialogVisible"
       width="500px"
+      @open="handleOpenDialog"
     >
       <el-upload
         class="upload-license"
         name="license"
         action="/api/v1/license"
+        :headers="{
+          Authorization: `Bearer ${uploadToken}`,
+        }"
+        :disabled="uploadToken === ''"
         :limit="1"
         :on-success="handleUploadSuccess"
+        :on-error="handleUploadError"
       >
-        <el-button icon="el-icon-upload" type="primary">{{ $t('common.upload') }}</el-button>
+        <el-button :disabled="uploadToken === ''" icon="el-icon-upload" type="primary">{{
+          $t('common.upload')
+        }}</el-button>
       </el-upload>
       <p><i class="el-icon-warning"></i> {{ $t('administration.licenseTip') }}</p>
     </el-dialog>
@@ -52,12 +60,15 @@
 <script>
 import { mapMutations } from 'vuex'
 import { menu } from '@/router/menu'
+import axios from 'axios'
+
 export default {
   data() {
     return {
       menu,
       curFunc: 0,
       licensedialogVisible: false,
+      uploadToken: '',
     }
   },
   computed: {
@@ -133,6 +144,21 @@ export default {
     },
     handleUploadSuccess() {
       this.$message.success(this.$t('common.uploadSuccess'))
+      this.uploadToken = ''
+    },
+    handleUploadError() {
+      this.$message.error(this.$t('common.uploadFailed'))
+    },
+    handleOpenDialog() {
+      const user = JSON.parse(sessionStorage.getItem('user'))
+      const body = {
+        ...user,
+        wtrm: 'neuron',
+        func: 10,
+      }
+      axios.post('/api/v1/funcno10', body).then((res) => {
+        this.uploadToken = res.headers.cookie
+      })
     },
   },
   components: {
