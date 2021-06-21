@@ -2,7 +2,7 @@
   <div class="layout-main" :class="theme">
     <div class="dd-layout-header">
       <div class="logo-group">
-        <p>NEURON</p>
+        <p>RD_EDGE</p>
       </div>
       <HeaderMenu></HeaderMenu>
       <HeaderRight></HeaderRight>

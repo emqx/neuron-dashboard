@@ -1,7 +1,6 @@
 <template>
   <el-dialog :title="$t('common.about')" :visible.sync="dialogVisible" width="700px">
     <h3>{{ data.sysn }}</h3>
-    <p>{{ data.cpyr }}</p>
     <div class="detail">
       <div>
         <span>Model no.</span>:
@@ -38,10 +37,6 @@
       <div>
         <span>Data usages</span>:
         <span>{{ data.tusg }}/{{ data.musg }}</span>
-      </div>
-      <div>
-        <span>Email Contant</span>:
-        <span>{{ data.cont }}</span>
       </div>
       <div>
         <span>UUID</span>:

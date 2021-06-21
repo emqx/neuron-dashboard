@@ -9,7 +9,7 @@
           <el-col :span="12">
             <el-form :model="formLogin" :rules="rules" ref="loginForm">
               <div class="logo-group">
-                <img class="neuron-logo" src="@/assets/neuron-logo.png" alt="neuron logo" />
+                <p>RD_EDGE</p>
               </div>
               <el-form-item prop="username">
                 <el-input type="text" v-model="formLogin.username" :placeholder="$t('common.username')"> </el-input>
@@ -93,8 +93,13 @@ export default {
   position: relative;
   // logo
   .logo-group {
+    font-size: 32px;
+    font-weight: bolder;
+    line-height: 60px;
+    margin: 0;
     text-align: center;
     margin-bottom: $margin + 20px;
+    color: #34c388;
   }
   .form-group {
     width: 600px;

@@ -52,7 +52,6 @@
           $t('common.upload')
         }}</el-button>
       </el-upload>
-      <p><i class="el-icon-warning"></i> {{ $t('administration.licenseTip') }}</p>
     </el-dialog>
   </el-menu>
 </template>
