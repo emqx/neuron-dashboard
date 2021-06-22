@@ -26,6 +26,9 @@ $color: $color-primary;
       height: $dd-theme-header-height;
       padding: 0px;
       .logo-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 0 20px;
         margin-right: 20px;
         height: 60px;

@@ -115,6 +115,14 @@ export default {
     zh: '上传失败',
     en: 'Upload failed!',
   },
+  uploadLogo: {
+    zh: '上传 Logo',
+    en: 'Upload Logo',
+  },
+  uploadLogoTip: {
+    zh: '只能上传 png 格式文件，推荐尺寸（470 x 145）',
+    en: 'Only upload files in png format, recommended size (470 x 145)',
+  },
   confirmDelete: {
     zh: '您确定要删除吗？',
     en: 'Are you sure delete?',

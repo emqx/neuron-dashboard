@@ -9,7 +9,7 @@
           <el-col :span="12">
             <el-form :model="formLogin" :rules="rules" ref="loginForm">
               <div class="logo-group">
-                <img class="neuron-logo" src="@/assets/neuron-logo.png" alt="neuron logo" />
+                <img class="neuron-logo" src="/logo/logo.png" alt="neuron logo" width="160" />
               </div>
               <el-form-item prop="username">
                 <el-input type="text" v-model="formLogin.username" :placeholder="$t('common.username')"> </el-input>
