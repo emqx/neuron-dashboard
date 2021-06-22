@@ -48,9 +48,9 @@ export default {
     en: 'Upload License',
   },
   licenseTip: {
-    zh: '软件授权截止日期结束前，EMQ 会发送相关邮件到注册邮箱，敬请留意邮箱，以免错过时间对您的业务造成影响。',
+    zh: '软件授权截止日期结束前，我们将会发送相关邮件到注册邮箱，敬请留意邮箱，以免错过时间对您的业务造成影响。',
     en:
-      'Before the software authorization deadline, EMQ will send relevant emails to the registered email address. Please pay attention to this email address so as not to miss the time and affect your business.',
+      'Before the software authorization deadline, we will send relevant emails to the registered email address. Please pay attention to this email address so as not to miss the time and affect your business.',
   },
   loginAgain: {
     zh: '修改成功，请重新登录',

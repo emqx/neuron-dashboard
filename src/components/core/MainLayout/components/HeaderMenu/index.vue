@@ -15,6 +15,7 @@
             </el-menu-item>
             <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
               <el-menu-item @click="licensedialogVisible = true">License</el-menu-item>
+              <el-menu-item @click="uploadLogoDialogVisible = true">{{ $t('common.uploadLogo') }}</el-menu-item>
               <el-menu-item @click="getData(74)">{{ $t('common.about') }}</el-menu-item>
               <el-menu-item @click="showLangDialog">{{ $t('common.lang') }}</el-menu-item>
             </div>
@@ -30,7 +31,7 @@
     <About ref="about" />
     <Lang ref="lang" />
     <el-dialog
-      class="license-upload"
+      class="upload-dialog"
       :title="$t('administration.uploadLicense')"
       :visible.sync="licensedialogVisible"
       width="500px"
@@ -54,6 +55,32 @@
       </el-upload>
       <p><i class="el-icon-warning"></i> {{ $t('administration.licenseTip') }}</p>
     </el-dialog>
+    <el-dialog
+      class="upload-dialog"
+      :title="$t('common.uploadLogo')"
+      :visible.sync="uploadLogoDialogVisible"
+      width="500px"
+      @open="handleOpenDialog"
+    >
+      <el-upload
+        class="upload-logo"
+        name="logo"
+        action="/api/v1/logo"
+        list-type="picture"
+        :headers="{
+          Authorization: `Bearer ${uploadToken}`,
+        }"
+        :disabled="uploadToken === ''"
+        :limit="1"
+        :on-success="handleUploadSuccess"
+        :on-error="handleUploadError"
+      >
+        <el-button :disabled="uploadToken === ''" icon="el-icon-upload" type="primary">{{
+          $t('common.upload')
+        }}</el-button>
+        <div slot="tip" class="el-upload__tip">{{ $t('common.uploadLogoTip') }}</div>
+      </el-upload>
+    </el-dialog>
   </el-menu>
 </template>
 
@@ -68,6 +95,7 @@ export default {
       menu,
       curFunc: 0,
       licensedialogVisible: false,
+      uploadLogoDialogVisible: false,
       uploadToken: '',
     }
   },
@@ -146,8 +174,8 @@ export default {
       this.$message.success(this.$t('common.uploadSuccess'))
       this.uploadToken = ''
     },
-    handleUploadError() {
-      this.$message.error(this.$t('common.uploadFailed'))
+    handleUploadError(err) {
+      this.$message.error(`${err.status}: ${this.$t('common.uploadFailed')}`)
     },
     handleOpenDialog() {
       const user = JSON.parse(sessionStorage.getItem('user'))
@@ -169,7 +197,7 @@ export default {
 </script>
 
 <style lang="scss">
-.license-upload {
+.upload-dialog {
   .el-icon-document,
   .el-upload-list__item-name {
     color: #fff;
@@ -188,6 +216,13 @@ export default {
       color: #ffc600;
     }
     text-align: center;
+    .el-upload__tip {
+      color: #fff;
+    }
+  }
+  .el-upload-list--picture .el-upload-list__item {
+    background: #414756;
+    border: 1px solid #414756;
   }
 }
 </style>

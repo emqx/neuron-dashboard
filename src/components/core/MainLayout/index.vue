@@ -2,7 +2,7 @@
   <div class="layout-main" :class="theme">
     <div class="dd-layout-header">
       <div class="logo-group">
-        <p>NEURON</p>
+        <img class="neuron-logo" src="/logo/logo.png" alt="neuron logo" width="138" />
       </div>
       <HeaderMenu></HeaderMenu>
       <HeaderRight></HeaderRight>
