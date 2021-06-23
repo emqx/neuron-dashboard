@@ -40,7 +40,7 @@
         <span>{{ data.tusg }}/{{ data.musg }}</span>
       </div>
       <div>
-        <span>Email Contant</span>:
+        <span>Email Contact</span>:
         <span>{{ data.cont }}</span>
       </div>
       <div>
