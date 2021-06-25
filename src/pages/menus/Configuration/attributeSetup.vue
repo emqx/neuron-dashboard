@@ -152,7 +152,7 @@ export default {
       this.$refs.AttributeSetupForm.validate((valid) => {
         if (valid) {
           const { attr, rtim } = this.AttributeSetupForm
-          if (attr === 'W' && rtim === undefined) {
+          if ((attr !== 'R' || attr !== 'RW') && rtim === undefined) {
             this.AttributeSetupForm.rtim = 0
           }
           if (this.isEdit) {
@@ -294,7 +294,9 @@ export default {
       return this.AttributeSetupForm.attt && this.AttributeSetupForm.attt.indexOf('word') !== -1
     },
     showReadTime() {
-      return this.AttributeSetupForm.attr && this.AttributeSetupForm.attr !== 'W'
+      return (
+        this.AttributeSetupForm.attr && (this.AttributeSetupForm.attr === 'R' || this.AttributeSetupForm.attr === 'RW')
+      )
     },
     ...mapState({
       objectData: (state) => state.SetUpData.objectData,
