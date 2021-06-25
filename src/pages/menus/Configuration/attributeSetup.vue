@@ -294,9 +294,7 @@ export default {
       return this.AttributeSetupForm.attt && this.AttributeSetupForm.attt.indexOf('word') !== -1
     },
     showReadTime() {
-      return (
-        this.AttributeSetupForm.attr && (this.AttributeSetupForm.attr === 'W' || this.AttributeSetupForm.attr === 'RW')
-      )
+      return this.AttributeSetupForm.attr && this.AttributeSetupForm.attr !== 'W'
     },
     ...mapState({
       objectData: (state) => state.SetUpData.objectData,
