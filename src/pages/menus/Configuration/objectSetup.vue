@@ -18,6 +18,7 @@ import indexMixin from '../mixins'
 import DriverSetup from './components/driverSetup'
 import ObjectSetup from './components/objectSetup'
 import { mapGetters } from 'vuex'
+
 export default {
   mixins: [indexMixin],
   computed: {

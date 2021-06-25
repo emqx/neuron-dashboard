@@ -1,12 +1,13 @@
 const setDriverList = (data) => {
   return data.map((i) => {
-    let { type } = i
+    let { type, attr } = i
     type = type === 'tty' ? 'Serial drivers' : type
     type = type === 'tcp' ? 'Ethernet drivers' : type
     return {
       label: i.desc,
       val: i.name,
       type,
+      attr,
     }
   })
 }

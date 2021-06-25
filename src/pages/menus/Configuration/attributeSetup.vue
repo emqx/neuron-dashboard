@@ -52,9 +52,9 @@
         </el-form-item>
         <el-form-item label="Direction" prop="attr">
           <el-radio-group v-model="AttributeSetupForm.attr">
-            <el-radio label="R">R</el-radio>
-            <el-radio label="W">W</el-radio>
-            <el-radio label="RW">RW</el-radio>
+            <el-radio v-for="item in driverAttrList" :key="item" :label="item">
+              {{ item }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="Read time" prop="rtim" v-if="showReadTime">
@@ -92,7 +92,8 @@
 import { clone } from '@/utils/index'
 import { AttributeTypeList } from '@/config/index'
 import AttributeTable from './components/attributeTable'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -293,11 +294,19 @@ export default {
       return this.AttributeSetupForm.attt && this.AttributeSetupForm.attt.indexOf('word') !== -1
     },
     showReadTime() {
-      return this.AttributeSetupForm.attr && this.AttributeSetupForm.attr !== 'W'
+      return (
+        this.AttributeSetupForm.attr && (this.AttributeSetupForm.attr === 'W' || this.AttributeSetupForm.attr === 'RW')
+      )
     },
     ...mapState({
       objectData: (state) => state.SetUpData.objectData,
     }),
+    driverAttrList() {
+      const { chdv } = this.$store.state.SetUpData.driverData
+      const { southDriverList } = this.$store.state.Device
+      const currentDriver = southDriverList.find((item) => item.val === chdv)
+      return currentDriver.attr || []
+    },
   },
   watch: {
     'AttributeSetupForm.attt'(val) {
