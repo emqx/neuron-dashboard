@@ -1,6 +1,12 @@
 console.log(process.env.VUE_APP_HOST)
-window.serverBaseUrl = process.env.VUE_APP_HOST
-
+const { VUE_APP_HOST } = process.env
+const { protocol, hostname, port } = window.location
+const wsProtocol = protocol === 'http:' ? 'ws' : 'wss'
+let serverBaseUrl = `${wsProtocol}://${hostname}:${port}/`
+if (VUE_APP_HOST) {
+  serverBaseUrl = `${wsProtocol}://${VUE_APP_HOST}`
+}
+console.log(serverBaseUrl)
 const config = {
   isDevelopment: false,
   isCROS: false,
@@ -15,13 +21,13 @@ const config = {
 switch (process.env.NODE_ENV) {
   case 'production':
     Object.assign(config, {
-      serverBaseUrl: window.serverBaseUrl || `ws://${window.location.hostname}:${window.location.port}/`,
+      serverBaseUrl,
     })
     break
   case 'development':
     Object.assign(config, {
       isDevelopment: true,
-      serverBaseUrl: window.serverBaseUrl || 'ws://127.0.0.1:7000',
+      serverBaseUrl,
     })
     break
 }
