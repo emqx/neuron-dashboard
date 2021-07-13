@@ -1,6 +1,7 @@
 // vue.config.js
 module.exports = {
-  publicPath: './',
+  publicPath: '/',
+  assetsDir: 'static',
   devServer: {
     port: 3003,
     proxy: {
