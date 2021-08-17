@@ -36,7 +36,7 @@
         ref="AttributeSetupForm"
         :model="AttributeSetupForm"
         :rules="AttributeSetupFormRules"
-        label-width="120px"
+        label-width="150px"
       >
         <el-form-item :label="$t('common.name')" prop="attn">
           <el-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></el-input>
@@ -57,7 +57,7 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Read time" prop="rtim" v-if="showReadTime">
+        <el-form-item label="Read time (100ms)" prop="rtim" v-if="showReadTime">
           <el-input-number v-model="AttributeSetupForm.rtim" :controls="false" :precision="0" :min="0" />
         </el-form-item>
       </el-form>
