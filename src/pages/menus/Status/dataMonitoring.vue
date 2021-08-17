@@ -73,6 +73,35 @@ import paginate from '../../../utils/paginate'
 import Mixins from '@/mixins'
 import { mapState } from 'vuex'
 import moment from 'moment'
+
+const paginateWithTimeStamp = (data, pageSize, pageNo) => {
+  // Array<Array<data item>>
+  let startIndex = 0
+  const createOneGroup = () => {
+    const thisPageData = []
+    let index = startIndex
+    let endIndex = startIndex + pageSize
+    for (; index < endIndex; index++) {
+      if (!data[index]) {
+        break
+      }
+      if (data[index] === 'tstp') {
+        endIndex++
+      }
+      group.push(data[index])
+    }
+    startIndex = index
+    return thisPageData
+  }
+  for (let index = 1; index < pageNo + 1; index++) {
+    if (index < pageNo) {
+      createOneGroup()
+    } else {
+      return createOneGroup()
+    }
+  }
+}
+
 export default {
   mixins: [Mixins],
   data() {
@@ -116,21 +145,18 @@ export default {
     },
     data() {
       let data = []
-      this.count = this.tableKey.length
-      const currentTableKey = paginate(this.tableKey, this.pageSize, this.page)
+      const tableKeyWithTimeStamp = this.tableKey.filter((i) => i !== 'objn')
+      const canUseTableKey = tableKeyWithTimeStamp.filter((i) => i !== 'tstp')
+      this.count = canUseTableKey.length
+      const currentTableKey = paginateWithTimeStamp(tableKeyWithTimeStamp, this.pageSize, this.page)
       currentTableKey.forEach((i) => {
-        if (i !== 'objn') {
-          const checked = this.multipleSelection.find((j) => j.prop === i)
-          data.push({
-            prop: i === 'tstp' ? 'Time' : i,
-            val: this.tableData[0][i],
-            writable: this.currentWritableData ? !!this.currentWritableData[i] : false,
-            checked: checked ? checked.check : false,
-          })
-        }
-        if (i === 'objn' || i === 'tstp') {
-          this.count -= 1
-        }
+        const checked = this.multipleSelection.find((j) => j.prop === i)
+        data.push({
+          prop: i === 'tstp' ? 'Time' : i,
+          val: this.tableData[0][i],
+          writable: this.currentWritableData ? !!this.currentWritableData[i] : false,
+          checked: checked ? checked.check : false,
+        })
       })
       return data
     },
