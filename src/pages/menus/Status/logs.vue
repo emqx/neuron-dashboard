@@ -1,10 +1,10 @@
 <template>
   <Container ref="container" class="logs" type="card-full" :scorll="false">
     <div class="dd-title">{{ $t('status.logs') }}</div>
-    <el-row :gutter="20">
-      <el-form>
-        <el-col :span="6">
-          <el-form-item :label="$t('status.date')">
+    <emqx-form>
+      <emqx-row :gutter="20">
+        <emqx-col :span="6">
+          <emqx-form-item :label="$t('status.date')">
             <el-date-picker
               v-model="date"
               class="input"
@@ -12,45 +12,44 @@
               start-placeholder="start"
               end-placeholder="end"
               type="datetimerange"
-              value-format="timestamp"
             >
             </el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item :label="$t('status.logType')">
-            <el-select v-model="logType" class="input" clearable>
-              <el-option v-for="item in logList" :key="item" :label="item" :value="item"> </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item :label="$t('status.proc')">
-            <el-select v-model="proc" class="input" clearable>
-              <el-option v-for="item in procList" :key="item" :label="item" :value="item"> </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-button class="btn" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
-        </el-col>
-      </el-form>
-    </el-row>
-    <el-table
+          </emqx-form-item>
+        </emqx-col>
+        <emqx-col :span="6">
+          <emqx-form-item :label="$t('status.logType')">
+            <emqx-select v-model="logType" class="input" clearable>
+              <emqx-option v-for="item in logList" :key="item" :label="item" :value="item"> </emqx-option>
+            </emqx-select>
+          </emqx-form-item>
+        </emqx-col>
+        <emqx-col :span="6">
+          <emqx-form-item :label="$t('status.proc')">
+            <emqx-select v-model="proc" class="input" clearable>
+              <emqx-option v-for="item in procList" :key="item" :label="item" :value="item"> </emqx-option>
+            </emqx-select>
+          </emqx-form-item>
+        </emqx-col>
+        <emqx-col :span="6">
+          <emqx-button class="btn" @click="handleSubmit">{{ $t('common.submit') }}</emqx-button>
+        </emqx-col>
+      </emqx-row>
+    </emqx-form>
+    <emqx-table
       v-if="maxTableHeight"
       :max-height="maxTableHeight - 102"
       :data="tableData"
       :empty-text="$t('common.emptyData')"
     >
-      <el-table-column prop="tstp" :label="$t('status.time')" width="300">
-        <template slot-scope="scope">
+      <emqx-table-column prop="tstp" :label="$t('status.time')" width="300">
+        <template v-slot="scope">
           {{ format(scope.row.tstp) }}
         </template>
-      </el-table-column>
-      <el-table-column prop="logl" :label="$t('status.level')" width="200"> </el-table-column>
-      <el-table-column prop="proc" :label="$t('status.proc')" width="200"> </el-table-column>
-      <el-table-column show-overflow-tooltip prop="data" :label="$t('status.content')"> </el-table-column>
-    </el-table>
+      </emqx-table-column>
+      <emqx-table-column prop="logl" :label="$t('status.level')" width="200"> </emqx-table-column>
+      <emqx-table-column prop="proc" :label="$t('status.proc')" width="200"> </emqx-table-column>
+      <emqx-table-column show-overflow-tooltip prop="data" :label="$t('status.content')"> </emqx-table-column>
+    </emqx-table>
     <div class="custom-pagination">
       <a :class="['prev', page === 1 ? 'disabled' : '']" href="javascript:;" @click="handlePrevClick">
         <i class="el-icon-arrow-left"></i>
@@ -64,11 +63,18 @@
 
 <script>
 import Mixins from '@/mixins'
+import { getData } from '@/api/data'
 import moment from 'moment'
 import { setOneHourTime, setTimeDate } from '@/utils/time'
+import { ElDatePicker } from 'element-plus'
+import Container from '@/components/core/Container/index.vue'
 
 export default {
   name: 'Logs',
+  components: {
+    ElDatePicker,
+    Container,
+  },
   mixins: [Mixins],
   data() {
     return {
@@ -84,6 +90,17 @@ export default {
       logList: ['all', 'debug', 'info', 'warning', 'err'],
       procList: ['all', 'WEBS', 'SERV', 'DRVR', 'CORE', 'TIMR'],
     }
+  },
+  computed: {
+    nodeId() {
+      return this.$route.params.serviceId
+    },
+  },
+  created() {
+    this.date = setOneHourTime()
+  },
+  mounted() {
+    this.sendData()
   },
   methods: {
     setData(data) {
@@ -106,13 +123,16 @@ export default {
       const srtt = setTimeDate(this.date[0])
       const stpt = setTimeDate(this.date[1])
       const srtl = this.pageMap[this.page - 1] || 0
-      this.$ws().set({ success: this.setData }).send({
+      getData(this.nodeId, {
         func: 83,
+        wtrm: 'neuron',
         srtt,
         stpt,
         srtl,
-        proc: this.proc,
         logl: this.logType,
+        proc: this.proc,
+      }).then(res => {
+        this.setData(res.data)
       })
     },
     format(time) {
@@ -133,12 +153,6 @@ export default {
         this.sendData()
       }
     },
-  },
-  created() {
-    this.date = setOneHourTime()
-  },
-  mounted() {
-    this.sendData()
   },
 }
 </script>
@@ -161,11 +175,11 @@ export default {
     margin-top: 10px;
     text-align: right;
     a {
-      border: 1px solid #e2e7ea;
+      border: 1px solid #495062;
       transition: all 0.3s ease;
       color: #fff;
       margin-right: 10px;
-      background: #189bfe;
+      background: #34c388;
       display: inline-block;
       border-radius: 4px;
       padding: 4px 8px;

@@ -1,22 +1,24 @@
 <template>
   <Container type="card-full" :scorll="false">
     <div class="dd-title dd-mb">{{ $t('administration.agentGroup') }}</div>
-    <el-table :data="tableData" style="width: 100%;">
-      <el-table-column
+    <emqx-table :data="tableData" style="width: 100%">
+      <emqx-table-column
         v-for="item in map"
         :key="item.val"
         :prop="item.val"
         :min-width="item.minWidth"
         :label="item.label"
       />
-    </el-table>
+    </emqx-table>
   </Container>
 </template>
 
 <script>
-import Mixins from '@/mixins'
+import { getData } from '@/api/data'
+import Container from '@/components/core/Container/index.vue'
+
 export default {
-  mixins: [Mixins],
+  components: { Container },
   data() {
     return {
       tableData: [],
@@ -97,6 +99,11 @@ export default {
       ],
     }
   },
+  computed: {
+    nodeId() {
+      return this.$route.params.serviceId
+    },
+  },
   methods: {
     setData(data) {
       if (data.func === 73) {
@@ -105,9 +112,9 @@ export default {
     },
   },
   mounted() {
-    this.$ws().set({ success: this.setData }).send({ func: 73 })
+    getData(this.nodeId, { func: 73, wtrm: 'neuron' }).then(res => {
+      this.setData(res.data)
+    })
   },
 }
 </script>
-
-<style scoped lang="scss"></style>

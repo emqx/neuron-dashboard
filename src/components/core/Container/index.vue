@@ -1,19 +1,19 @@
 <template>
-  <div class="container-component" :class="{ responsive }" v-loading="loading" ref="container">
+  <div class="container-component" :class="{ responsive }" v-emqx-loading="loading" ref="container">
     <!--卡片容器-->
-    <el-card v-if="type === 'card'" style="overflow: auto; position: relative;">
-      <slot v-if="$slots.header" slot="header" name="header"></slot>
+    <emqx-card v-if="type === 'card'" style="overflow: auto; position: relative">
+      <slot v-if="$slots.header" name="header"></slot>
       <slot />
-    </el-card>
+    </emqx-card>
     <!--隐形-->
     <div v-if="type === 'ghost'">
       <slot />
     </div>
     <!--撑满-->
-    <card-full v-if="type === 'card-full' && scorll === false" :top="top" :right="right" :bottom="bottom" :left="left">
-      <slot v-if="$slots.header" slot="header" name="header"></slot>
+    <card-full v-if="type === 'card-full' && !scorll" :top="top" :right="right" :bottom="bottom" :left="left">
+      <slot v-if="$slots.header" name="header"></slot>
       <slot></slot>
-      <slot v-if="$slots.footer" slot="footer" name="footer"></slot>
+      <slot v-if="$slots.footer" name="footer"></slot>
     </card-full>
     <!--撑满滚动-->
     <card-full-bs
@@ -23,16 +23,24 @@
       :bottom="bottom"
       :left="left"
     >
-      <slot v-if="$slots.header" slot="header" name="header"></slot>
+      <slot v-if="$slots.header" name="header"></slot>
       <slot></slot>
-      <slot v-if="$slots.footer" slot="footer" name="footer"></slot>
+      <slot v-if="$slots.footer" name="footer"></slot>
     </card-full-bs>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
+import CardFull from '../CardFull/CardFull.vue'
+import CardFullBs from '../CardFull/CardFull-bs.vue'
+
 export default {
+  name: 'Container',
+  components: {
+    CardFull,
+    CardFullBs,
+  },
   props: {
     type: {
       type: String,
@@ -47,7 +55,7 @@ export default {
     right: {
       type: Number,
       required: false,
-      default: 20,
+      default: 0,
     },
     bottom: {
       type: Number,
@@ -57,7 +65,7 @@ export default {
     left: {
       type: Number,
       required: false,
-      default: 20,
+      default: 0,
     },
     // 是否开启响应式尺寸变化
     responsive: {
@@ -81,6 +89,16 @@ export default {
       BS: null,
     }
   },
+  mounted() {
+    if (this.type !== 'card-full') {
+      this.scrollInit()
+    }
+  },
+  beforeUnmount() {
+    if (this.type !== 'card-full') {
+      this.scrollDestroy()
+    }
+  },
   methods: {
     scrollInit() {
       this.BS = new BScroll(this.$refs.container, {
@@ -96,20 +114,6 @@ export default {
         this.BS.destroy()
       }
     },
-  },
-  mounted() {
-    if (this.type !== 'card-full') {
-      this.scrollInit()
-    }
-  },
-  beforeDestroy() {
-    if (this.type !== 'card-full') {
-      this.scrollDestroy()
-    }
-  },
-  components: {
-    CardFull: () => import('../CardFull/CardFull.vue'),
-    CardFullBs: () => import('../CardFull/CardFull-bs.vue'),
   },
 }
 </script>

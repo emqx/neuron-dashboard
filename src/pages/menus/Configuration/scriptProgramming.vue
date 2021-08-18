@@ -4,56 +4,67 @@
       <div class="dd-title">{{ $t('configuration.scriptProgramming') }}</div>
       <div class="row">
         <ScriptTypeSelect v-model="type" @delete="init" @submit="submit" />
-        &nbsp;&nbsp;
-        <el-button class="dd-fr" type="primary" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
+        <emqx-button class="dd-fr" type="primary" @click="handleSubmit">{{ $t('common.submit') }}</emqx-button>
       </div>
     </div>
-    <el-table class="script-table" :data="scriptData">
-      <el-table-column :label="$t('status.comment')" min-width="120">
-        <template slot-scope="scope">
-          <el-select
+    <emqx-table class="script-table" :data="scriptData">
+      <emqx-table-column :label="$t('status.comment')" min-width="120">
+        <template v-slot="scope">
+          <emqx-select
             v-model="scope.row.stmt"
             @change="handleChange($event, scope.$index)"
             clearable
-            style="width: 100%;"
+            style="width: 100%"
             size="mini"
           >
-            <el-option v-for="item in scriptList" :key="item.val" :label="item.val" :value="item.val"> </el-option>
-          </el-select>
+            <emqx-option v-for="item in scriptList" :key="item.val" :label="item.val" :value="item.val"> </emqx-option>
+          </emqx-select>
         </template>
-      </el-table-column>
-      <el-table-column :label="$t('common.statement')" min-width="300">
-        <template slot-scope="scope">
-          <el-input placeholder="" type="textarea" size="mini" :rows="1" v-model="scope.row.expr"> </el-input>
+      </emqx-table-column>
+      <emqx-table-column :label="$t('common.statement')" min-width="300">
+        <template v-slot="scope">
+          <emqx-input placeholder="" type="textarea" size="mini" :rows="1" v-model="scope.row.expr"> </emqx-input>
         </template>
-      </el-table-column>
-      <el-table-column label=" " min-width="60">
-        <template slot-scope="scope">
+      </emqx-table-column>
+      <emqx-table-column label=" " min-width="60">
+        <template v-slot="scope">
           <div class="btn">
             <i class="el-icon-circle-plus plus" @click="add(scope.$index)"></i>&nbsp;
             <i class="el-icon-remove remove" @click="remove(scope.$index)"></i>
           </div>
         </template>
-      </el-table-column>
-    </el-table>
-    <el-dialog :visible.sync="dialogVisible" title="POS" width="300px" @closed="handleClosed">
+      </emqx-table-column>
+    </emqx-table>
+    <el-dialog v-model="dialogVisible" title="POS" width="300px" @closed="handleClosed">
       <el-input-number v-model="pos" :min="1" :max="999" :controls="false" size="mini"></el-input-number>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">{{ $t('common.cancel') }}</el-button>
-        <el-button type="primary" @click="handlePosSubmit">{{ $t('common.submit') }}</el-button>
-      </span>
+      <template #footer>
+        <span class="dialog-footer">
+          <emqx-button @click="dialogVisible = false">{{ $t('common.cancel') }}</emqx-button>
+          <emqx-button type="primary" @click="handlePosSubmit">{{ $t('common.submit') }}</emqx-button>
+        </span>
+      </template>
     </el-dialog>
   </Container>
 </template>
 
 <script>
-import indexMixin from '../mixins'
+/* eslint-disable */
 import { ScriptList } from '@/config/index'
-import ScriptTypeSelect from './components/scriptType'
 import _ from 'lodash'
+import ScriptTypeSelect from './components/scriptType'
+import { getData, postData } from '@/api/data'
+import { ElDialog, ElInputNumber } from 'element-plus'
+import Container from '@/components/core/Container/index.vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessageBox } from 'element-plus'
 
 export default {
-  mixins: [indexMixin],
+  components: {
+    ElDialog,
+    ElInputNumber,
+    ScriptTypeSelect,
+    Container,
+  },
   data() {
     return {
       scriptData: [],
@@ -68,11 +79,23 @@ export default {
       currentIndex: 0,
     }
   },
+  computed: {
+    nodeId() {
+      return this.$route.params.serviceId
+    },
+  },
+  watch: {
+    'type.subr': function (val) {
+      if (val) {
+        this.readSubroutine(val)
+      }
+    },
+  },
   methods: {
     init() {
       this.scriptData = []
       let i = 6
-      while (i--) {
+      while ((i -= 1)) {
         this.scriptData.push({
           stmt: '',
           expr: '',
@@ -81,13 +104,12 @@ export default {
       this.oldScriptData = _.cloneDeep(this.scriptData)
     },
     readSubroutine(subr) {
-      this.$ws()
-        .set({ success: this.getData })
-        .send({ func: 33, subr: +subr })
+      getData(this.nodeId, { func: 33, subr: +subr, wtrm: 'neruon' }).then((res) => {
+        this.getSubroutine(res.data)
+      })
     },
-    getData(data) {
+    getSubroutine(data) {
       if (data.func === 33) {
-        this.$ws().remove(this.getData)
         if (data.rows) {
           if (data.rows.length === 0) {
             this.init()
@@ -112,10 +134,10 @@ export default {
     },
     handleSubmit() {
       if (!this.type.subr) {
-        this.$openMessage.error('select a routine')
+        EmqxMessage.error('select a routine')
         return
       }
-      this.$confirm('Are you sure submit these script programming', this.$t('common.submit'), {
+      ElMessageBox('Are you sure submit these script programming', this.$t('common.submit'), {
         type: 'warning',
       })
         .then(() => {
@@ -127,28 +149,29 @@ export default {
     },
     submit(name, subr, rows) {
       if (!rows) {
-        // eslint-disable-next-line no-param-reassign
         rows = []
       }
       // Remove prefix SR[1-999]
       const _name = name.replace(/^SR([1-9][0-9]{0,2})\s-\s/g, '')
-      this.$ws()
-        .set({ success: this.setData })
-        .send({
-          func: 34,
-          csub: 0,
-          name: _name,
-          subr: +subr,
-          nrow: rows.length,
-          rows,
-        })
+      postData(this.nodeId, {
+        func: 34,
+        csub: 0,
+        name: _name,
+        subr: +subr,
+        nrow: rows.length,
+        rows,
+        wtrm: 'neruon',
+      }).then((res) => {
+        this.setData(res.data)
+      })
     },
     setData(data) {
       if (data.func === 34 && data.errc === 0) {
-        this.$ws().remove(this.setData)
-        this.$openMessage.success(this.$t('common.submitSuccess'))
         this.oldScriptData = []
         this.oldScriptData = _.cloneDeep(this.scriptData)
+        EmqxMessage.success(this.$t('common.addSuccess'))
+      } else {
+        EmqxMessage.error(data.emsg)
       }
     },
     handleClosed() {
@@ -161,7 +184,7 @@ export default {
       this.scriptData.splice(index, 1)
     },
     promptUnsubmitted(callback) {
-      this.$confirm(this.$t('common.unsubmitAndSave'), this.$t('common.confirm'), {
+      ElMessageBox(this.$t('common.unsubmitAndSave'), this.$t('common.confirm'), {
         type: 'warning',
         distinguishCancelAndClose: true,
         confirmButtonText: this.$t('common.submit'),
@@ -178,16 +201,6 @@ export default {
         })
     },
   },
-  watch: {
-    'type.subr'(val) {
-      if (val) {
-        this.readSubroutine(val)
-      }
-    },
-  },
-  components: {
-    ScriptTypeSelect,
-  },
   beforeRouteLeave(to, from, next) {
     if (_.isEqual(this.oldScriptData, this.scriptData)) {
       next()
@@ -201,7 +214,7 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/style/public';
 .script-table {
-  /deep/td {
+  >>> td {
     padding: 10px 0;
   }
 }
@@ -217,7 +230,7 @@ export default {
   }
 }
 
-/deep/.el-input-number {
+>>> .el-input-number {
   width: 100%;
   .el-input__inner {
     text-align: left;

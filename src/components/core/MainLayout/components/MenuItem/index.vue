@@ -1,9 +1,8 @@
 <template>
-  <el-menu-item :index="menu.name">
+  <emqx-menu-item :index="menu.name">
     <i :class="`fa fa-${menu.icon || 'file-o'}`"></i>
-    &nbsp;&nbsp;
     {{ menu.title || menu.name }}
-  </el-menu-item>
+  </emqx-menu-item>
 </template>
 
 <script>
@@ -13,7 +12,7 @@ export default {
     menu: {
       type: Object,
       required: false,
-      default: () => {},
+      default: () => ({}),
     },
   },
 }

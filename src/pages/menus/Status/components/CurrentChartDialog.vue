@@ -1,12 +1,24 @@
 <template>
-  <el-dialog :title="propName || objName" :visible.sync="dialogVisible" width="900px" @closed="handleClose">
+  <el-dialog
+    custom-class="chart-dialog"
+    :title="propName || objName"
+    v-model="dialogVisible"
+    width="900px"
+    @closed="handleClose"
+  >
     <div :style="chartStyle" ref="chartContainer"></div>
   </el-dialog>
 </template>
 
 <script>
+/* eslint-disable */
 import charts from 'echarts'
+import { ElDialog } from 'element-plus'
+
 export default {
+  components: {
+    ElDialog,
+  },
   props: {
     objName: {
       type: String,
@@ -22,6 +34,7 @@ export default {
       chartInstance: null,
       propName: null,
       option: {
+        backgroundColor: '#fff',
         grid: {
           top: '20px',
         },
@@ -29,6 +42,9 @@ export default {
           trigger: 'axis',
           axisPointer: {
             type: 'cross',
+            crossStyle: {
+              color: '#333',
+            },
           },
         },
         xAxis: {
@@ -45,7 +61,7 @@ export default {
   computed: {
     chartStyle() {
       return {
-        width: '900px',
+        width: '850px',
         height: '700px',
       }
     },
@@ -76,7 +92,7 @@ export default {
   methods: {
     initChart() {
       if (!this.chartInstance) {
-        this.chartInstance = charts.init(this.$refs.chartContainer)
+        this.chartInstance = charts.init(this.$refs.chartContainer, 'dark')
       }
       if (this.propName) {
         this.option.series.push({
@@ -117,7 +133,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/.el-dialog__body {
+>>> .el-dialog__body {
   padding: 0;
 }
 </style>

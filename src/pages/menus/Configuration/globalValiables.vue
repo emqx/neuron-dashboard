@@ -3,44 +3,48 @@
     <div class="flex dd-mb">
       <div class="dd-title">{{ $t('configuration.gValiables') }}</div>
       <div>
-        <el-button @click="handleSubmit(null)">{{ $t('common.submit') }}</el-button>
+        <emqx-button @click="handleSubmit(null)">{{ $t('common.submit') }}</emqx-button>
       </div>
     </div>
-    <el-table class="script-table" :data="varData">
-      <el-table-column label="Variable G." min-width="120">
-        <template slot-scope="scope">
-          <el-input placeholder="" @keyup.enter.native="add(scope.$index)" size="mini" v-model="scope.row.glov">
-          </el-input>
+    <emqx-table class="script-table" :data="varData">
+      <emqx-table-column label="Variable G." min-width="120">
+        <template v-slot="scope">
+          <emqx-input placeholder="" @keyup.enter="add(scope.$index)" size="mini" v-model="scope.row.glov">
+          </emqx-input>
         </template>
-      </el-table-column>
-      <el-table-column label="Nos" min-width="100">
-        <template slot-scope="scope">
-          <el-input placeholder="" @keyup.enter.native="add(scope.$index)" size="mini" v-model="scope.row.leng" />
+      </emqx-table-column>
+      <emqx-table-column label="Nos" min-width="100">
+        <template v-slot="scope">
+          <emqx-input placeholder="" @keyup.enter="add(scope.$index)" size="mini" v-model="scope.row.leng" />
         </template>
-      </el-table-column>
-      <el-table-column :label="$t('common.description')" min-width="300">
-        <template slot-scope="scope">
-          <el-input placeholder="" size="mini" v-model="scope.row.comt"> </el-input>
+      </emqx-table-column>
+      <emqx-table-column :label="$t('common.description')" min-width="300">
+        <template v-slot="scope">
+          <emqx-input placeholder="" size="mini" v-model="scope.row.comt"> </emqx-input>
         </template>
-      </el-table-column>
-      <el-table-column min-width="60">
-        <template slot-scope="scope">
+      </emqx-table-column>
+      <emqx-table-column min-width="60">
+        <template v-slot="scope">
           <div class="btn">
             <i class="el-icon-circle-plus plus" @click="add(scope.$index)"></i>&nbsp;
             <i class="el-icon-remove remove" @click="remove(scope.$index)"></i>
           </div>
         </template>
-      </el-table-column>
-    </el-table>
+      </emqx-table-column>
+    </emqx-table>
   </Container>
 </template>
 
 <script>
-import Mixins from '@/mixins'
+/* eslint-disable */
 import _ from 'lodash'
+import { getData, postData } from '@/api/data'
+import Container from '@/components/core/Container/index.vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessageBox } from 'element-plus'
 
 export default {
-  mixins: [Mixins],
+  components: { Container },
   data() {
     return {
       varData: [],
@@ -48,20 +52,26 @@ export default {
       func: 30,
     }
   },
+  computed: {
+    nodeId() {
+      return this.$route.params.serviceId
+    },
+  },
   beforeMount() {
     this.init()
   },
   methods: {
     init() {
-      this.$ws().set({ success: this.readGlobalVariable }).send({ func: this.func })
+      getData(this.nodeId, { func: this.func, wtrm: 'neruon' }).then((res) => {
+        this.readGlobalVariable(res.data)
+      })
     },
     readGlobalVariable(data) {
       if (data.func === this.func) {
-        this.$ws().remove(this.readGlobalVariable)
         this.varData = []
         this.varData = data.rows
         let i = 5
-        while (i--) {
+        while ((i -= 1)) {
           this.varData.push({
             glov: '',
             leng: '',
@@ -73,9 +83,11 @@ export default {
     },
     setData(data) {
       if (data.func === 31 && data.errc === 0) {
-        this.$ws().remove(this.setData)
         this.oldVarData = []
         this.oldVarData = _.cloneDeep(this.varData)
+        EmqxMessage.success(this.$t('common.submitSuccess'))
+      } else {
+        EmqxMessage.error(data.emsg)
       }
     },
     handleSubmit(callback) {
@@ -84,17 +96,20 @@ export default {
           i.leng = +i.leng
           return i.glov && i.leng
         })
-        this.$ws().set({ success: this.setData }).send({
+        postData(this.nodeId, {
           func: 31,
           nrow: res.length,
           rows: res,
+          wtrm: 'neruon',
+        }).then((res) => {
+          this.setData(res.data)
         })
       }
       if (callback) {
         sendData()
         callback()
       } else {
-        this.$confirm(this.$t('configuration.confirmSubmitGVar'), this.$t('common.submit'), {
+        ElMessageBox(this.$t('configuration.confirmSubmitGVar'), this.$t('common.submit'), {
           type: 'warning',
         })
           .then(() => {
@@ -118,7 +133,7 @@ export default {
     if (_.isEqual(this.oldVarData, this.varData)) {
       next()
     } else {
-      this.$confirm(this.$t('common.unsubmitAndSave'), this.$t('common.confirm'), {
+      ElMessageBox(this.$t('common.unsubmitAndSave'), this.$t('common.confirm'), {
         type: 'warning',
         distinguishCancelAndClose: true,
         confirmButtonText: this.$t('common.submit'),
@@ -138,7 +153,7 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/style/public';
 .input-number {
-  /deep/input {
+  >>> input {
     text-align: left;
   }
 }

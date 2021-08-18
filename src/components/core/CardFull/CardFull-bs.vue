@@ -17,6 +17,7 @@
 <script>
 // 插件
 import BScroll from 'better-scroll'
+
 export default {
   props: {
     top: {
@@ -47,12 +48,6 @@ export default {
       BS: null,
     }
   },
-  mounted() {
-    this.scrollInit()
-  },
-  beforeDestroy() {
-    this.scrollDestroy()
-  },
   computed: {
     cardStyle() {
       return `
@@ -61,11 +56,12 @@ export default {
       bottom:${this.bottom}px;
       left:${this.left}px`
     },
-    // bodyStyle () {
-    //   return `
-    //   top:${this.headerHeight}px;
-    //   bottom:${this.footerHeight}px`
-    // }
+  },
+  mounted() {
+    this.scrollInit()
+  },
+  beforeUnmount() {
+    this.scrollDestroy()
   },
   methods: {
     scrollInit() {

@@ -1,16 +1,45 @@
 @import 'vxe-table/styles/variable.scss';
 
 // 局部修改变量
-$vxe-primary-color: #189bfe;
-$vxe-table-font-color: #343741;
+$vxe-primary-color: #314ae5;
+$vxe-table-font-color: #4d4d4d;
 $vxe-table-border-radius: 8px;
-$vxe-table-header-background-color: #f4f9fc;
+$vxe-table-header-background-color: #f3f4f7;
 $vxe-table-row-hover-background-color: #f5f7fa;
-$vxe-table-border-color: #e2e7ea;
+$vxe-table-border-color: #EBEEF5;
 $vxe-table-background-color: #fff;
 
 @import 'vxe-table/styles/table.scss';
 @import 'vxe-table/styles/column.scss';
 @import 'vxe-table/styles/header.scss';
-@import 'vxe-table/styles/body.scss';
 @import 'vxe-table/styles/checkbox.scss';
+
+.vxe-table--render-default.border--default .vxe-header--column {
+  background-image: none;
+}
+
+.vxe-table .vxe-table--header-wrapper .vxe-table--header-border-line {
+  border-bottom: none;
+}
+
+.vxe-table--render-default.is--round.is--header .vxe-table--header-wrapper.body--wrapper,
+.vxe-table--render-default.is--round.is--footer:not(.is--header) .vxe-table--body-wrapper.body--wrapper {
+  border-radius: 8px;
+}
+
+.vxe-table--render-default .vxe-table--border-line {
+  border: none;
+}
+
+.vxe-table--render-default.is--round.is--header:not(.is--footer) .vxe-table--body-wrapper.body--wrapper,
+.vxe-table--render-default.is--round.is--footer .vxe-table--footer-wrapper.body--wrapper {
+  border-radius: 0;
+}
+
+.vxe-table .is-right {
+  text-align: right;
+}
+
+.vxe-table--header {
+  color: #96999c;
+}

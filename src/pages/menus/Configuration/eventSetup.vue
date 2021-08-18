@@ -3,70 +3,84 @@
     <div class="flex dd-mb">
       <div class="dd-title">{{ $t('configuration.eventSetup') }}</div>
       <div>
-        <el-button @click="addEvent" type="primary">{{ $t('common.create') }}</el-button>
-        <el-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">{{
+        <emqx-button @click="addEvent" type="primary">{{ $t('common.create') }}</emqx-button>
+        <emqx-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">{{
           $t('common.delete')
-        }}</el-button>
+        }}</emqx-button>
       </div>
     </div>
     <EventTable v-model="multipleSelection" :showBtn="true" :eventList="msgd" @delete="onDelete" @edit="onEdit" />
-    <el-dialog :title="$t('configuration.eventSetup')" @closed="close" :visible.sync="dialogTableVisible">
-      <el-form :model="eventForm" ref="eventForm" :rules="eventFormRules" label-width="120px">
-        <el-form-item label="Object1" prop="sobj">
-          <el-select v-model="eventForm.sobj">
-            <el-option v-for="item in objectList" :key="item.name" :label="item.name" :value="item.name"> </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Attribute1" prop="satt">
-          <el-select v-model="eventForm.satt">
-            <el-option
+    <el-dialog :title="$t('configuration.eventSetup')" @closed="close" v-model="dialogTableVisible">
+      <emqx-form :model="eventForm" ref="eventForm" :rules="eventFormRules" label-width="120px">
+        <emqx-form-item label="Object1" prop="sobj">
+          <emqx-select v-model="eventForm.sobj">
+            <emqx-option v-for="item in objectList" :key="item.name" :label="item.name" :value="item.name">
+            </emqx-option>
+          </emqx-select>
+        </emqx-form-item>
+        <emqx-form-item label="Attribute1" prop="satt">
+          <emqx-select v-model="eventForm.satt">
+            <emqx-option
               v-for="item in filterAttrList(eventForm.sobj)"
               :key="item + 'satt'"
               :label="item"
               :value="item"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('common.type')" prop="msgt">
-          <el-select v-model="eventForm.msgt">
-            <el-option v-for="item in Operator" :key="item.val" :label="item.val" :value="item.val"> </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Object2" prop="cobj">
-          <el-select v-model="eventForm.cobj">
-            <el-option v-for="item in objectList" :key="item.name" :label="item.name" :value="item.name"> </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Attribute2" prop="catt">
-          <el-select v-model="eventForm.catt">
-            <el-option v-for="item in filterAttrList(eventForm.cobj)" :key="item + 'catt'" :label="item" :value="item">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('status.category')" prop="catt">
-          <el-select v-model="eventForm.acat">
-            <el-option v-for="item in EventCategory" :key="item.val" :label="item.val" :value="item.val"> </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('configuration.subroutine')" prop="subr">
+          </emqx-select>
+        </emqx-form-item>
+        <emqx-form-item :label="$t('common.type')" prop="msgt">
+          <emqx-select v-model="eventForm.msgt">
+            <emqx-option v-for="item in Operator" :key="item.val" :label="item.val" :value="item.val"> </emqx-option>
+          </emqx-select>
+        </emqx-form-item>
+        <emqx-form-item label="Object2" prop="cobj">
+          <emqx-select v-model="eventForm.cobj">
+            <emqx-option v-for="item in objectList" :key="item.name" :label="item.name" :value="item.name">
+            </emqx-option>
+          </emqx-select>
+        </emqx-form-item>
+        <emqx-form-item label="Attribute2" prop="catt">
+          <emqx-select v-model="eventForm.catt">
+            <emqx-option
+              v-for="item in filterAttrList(eventForm.cobj)"
+              :key="item + 'catt'"
+              :label="item"
+              :value="item"
+            >
+            </emqx-option>
+          </emqx-select>
+        </emqx-form-item>
+        <emqx-form-item :label="$t('status.category')" prop="catt">
+          <emqx-select v-model="eventForm.acat">
+            <emqx-option v-for="item in EventCategory" :key="item.val" :label="item.val" :value="item.val">
+            </emqx-option>
+          </emqx-select>
+        </emqx-form-item>
+        <emqx-form-item :label="$t('configuration.subroutine')" prop="subr">
           <el-input-number v-model="eventForm.subr" :controls="false" :precision="0" />
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="submitEvent">{{ $t('common.submit') }}</el-button>
-      </span>
+        </emqx-form-item>
+      </emqx-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <emqx-button @click="submitEvent">{{ $t('common.submit') }}</emqx-button>
+        </span>
+      </template>
     </el-dialog>
   </Container>
 </template>
 
 <script>
-import indexMixin from '../mixins'
+/* eslint-disable */
 import { Operator, EventCategory } from '@/config/index'
 import { clone } from '@/utils/index'
 import { mapState, mapMutations } from 'vuex'
 import EventTable from './components/eventTable'
+import { ElDialog, ElInputNumber } from 'element-plus'
+import Container from '@/components/core/Container/index.vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessageBox } from 'element-plus'
+
 export default {
-  mixins: [indexMixin],
   data() {
     return {
       isEdit: false,
@@ -82,7 +96,7 @@ export default {
   },
   created() {
     if (!this.objectData.length) {
-      this.$openMessage.error('please setup object!')
+      EmqxMessage.error('please setup object!')
       this.$router.push({ name: 'Configuration-objectSetup' })
     }
     this.init()
@@ -101,7 +115,7 @@ export default {
       this.dialogTableVisible = true
     },
     submitEvent() {
-      this.$refs.eventForm.validate((valid) => {
+      this.$refs.eventForm.$refs.form.validate((valid) => {
         if (valid) {
           if (this.isEdit) {
             this.editEventData({
@@ -122,21 +136,21 @@ export default {
       this.isEdit = false
       this.editIndex = null
       this.eventForm = {}
-      this.$refs.eventForm && this.$refs.eventForm.clearValidate()
+      this.$refs.eventForm.$refs.form && this.$refs.eventForm.$refs.form.clearValidate()
     },
     buildObjectList() {
-      let list = []
+      const list = []
 
-      for (let j = 0, jlen = this.objectData ? this.objectData.length : 0; j < jlen; j++) {
+      for (let j = 0, jlen = this.objectData ? this.objectData.length : 0; j < jlen; j += 1) {
         const data = this.objectData[j]
         const { objn, preAndSuff, oatt } = data
         if (oatt) {
           const attr = oatt.map((i) => i.attn)
           if (preAndSuff) {
-            for (let i = 0, psLen = preAndSuff.length; i < psLen; i++) {
+            for (let i = 0, psLen = preAndSuff.length; i < psLen; i += 1) {
               let { pref, suff } = preAndSuff[i]
-              pref = pref ? pref + '_' : ''
-              suff = suff ? '_' + suff : ''
+              pref = pref ? `${pref}_` : ''
+              suff = suff ? `_${suff}` : ''
               list.push({
                 name: pref + objn + suff,
                 attr,
@@ -149,10 +163,10 @@ export default {
     },
     filterAttrList(val) {
       if (!val) return []
-      for (let i = 0, len = this.objectList.length; i < len; i++) {
+      for (let i = 0, len = this.objectList.length; i < len; i += 1) {
         const item = this.objectList[i]
         if (item.name === val) {
-          return item['attr']
+          return item.attr
         }
       }
       return []
@@ -164,7 +178,7 @@ export default {
       } else {
         deleteData.push(...this.multipleSelection)
       }
-      this.$confirm(this.$t('common.confirmDelete'), this.$t('common.delete'), {
+      ElMessageBox(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       })
         .then(() => {
@@ -181,7 +195,10 @@ export default {
     ...mapMutations(['addEventData', 'deleteEventData', 'editEventData']),
   },
   components: {
+    ElDialog,
+    ElInputNumber,
     EventTable,
+    Container,
   },
 }
 </script>
@@ -192,7 +209,7 @@ export default {
     width: 100%;
   }
 }
-/deep/.el-input-number {
+>>> .el-input-number {
   width: 100%;
   &.is-without-controls .el-input__inner {
     text-align: left;

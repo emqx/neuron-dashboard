@@ -2,6 +2,7 @@
 
 // 补丁 base
 @import './fixed/base.scss';
+@import './fixed/element.scss';
 
 // 动画
 @import './animate/vue-transition.scss';
@@ -18,7 +19,7 @@
   text-align: center;
 }
 .#{$prefix}-title {
-  font-size: $font-size-title;
+  font-size: 16px;
   font-weight: bold;
 }
 

@@ -1,16 +1,26 @@
 <template>
-  <el-dialog :title="propName" :visible.sync="dialogVisible" width="500px" @closed="handleClose">
+  <el-dialog :title="propName" v-model="dialogVisible" width="500px" @closed="handleClose">
     <span> {{ $t('status.value') }}: </span>
-    <el-input v-model="val" style="width: 400px;"></el-input>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">{{ $t('common.cancel') }}</el-button>
-      <el-button type="primary" @click="handleSubmit">{{ $t('common.submit') }}</el-button>
-    </span>
+    <emqx-input v-model="val" style="width: 400px"></emqx-input>
+    <template #footer>
+      <span class="dialog-footer">
+        <emqx-button @click="dialogVisible = false">{{ $t('common.cancel') }}</emqx-button>
+        <emqx-button type="primary" @click="handleSubmit">{{ $t('common.submit') }}</emqx-button>
+      </span>
+    </template>
   </el-dialog>
 </template>
 
 <script>
+/* eslint-disable */
+import { postData } from '@/api/data'
+import { ElDialog } from 'element-plus'
+import { EmqxMessage } from '@emqx/emqx-ui'
+
 export default {
+  components: {
+    ElDialog,
+  },
   props: {
     objName: {
       type: String,
@@ -23,9 +33,13 @@ export default {
       val: '',
     }
   },
+  computed: {
+    nodeId() {
+      return this.$route.params.serviceId
+    },
+  },
   methods: {
     handleShow(propName) {
-      console.log(propName, this.objName)
       this.propName = propName
       this.dialogVisible = true
     },
@@ -36,8 +50,11 @@ export default {
           srcn: this.objName,
           attn: this.propName,
           valn: isNaN(+this.val) ? this.val : +this.val,
+          wtrm: 'neruon',
         }
-        this.$ws().send(params)
+        postData(this.nodeId, params).then(() => {
+          EmqxMessage.success(this.$t('common.submitSuccess'))
+        })
       }
       this.dialogVisible = false
     },
@@ -45,7 +62,6 @@ export default {
       this.val = ''
     },
   },
-  mounted() {},
 }
 </script>
 

@@ -1,30 +1,33 @@
 <template>
-  <el-table :data="eventList" @selection-change="handleSelectionChange" style="width: 100%;">
-    <el-table-column type="selection" v-if="showBtn" width="55" />
-    <el-table-column :min-width="minWidth" prop="sobj" label="Object1" />
-    <el-table-column prop="satt" label="Attribute1" :min-width="minWidth" />
-    <el-table-column prop="msgt" :min-width="minWidth" :label="$t('common.type')" />
-    <el-table-column prop="cobj" :min-width="minWidth" label="Object2" />
-    <el-table-column prop="catt" :min-width="minWidth" label="Attribute2" />
-    <el-table-column prop="acat" :min-width="minWidth" :label="$t('status.category')" />
-    <el-table-column prop="subr" :min-width="minWidth" :label="$t('configuration.subroutine')" />
-    <el-table-column :width="160" v-if="showBtn">
-      <template slot-scope="scope">
-        <el-button type="text" @click="handleEdit(scope.row, scope.$index)">{{ $t('common.edit') }}</el-button>
-        <el-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
+  <emqx-table :data="eventList" @selection-change="handleSelectionChange" style="width: 100%">
+    <emqx-table-column type="selection" v-if="showBtn" width="55" />
+    <emqx-table-column :min-width="minWidth" prop="sobj" label="Object1" />
+    <emqx-table-column prop="satt" label="Attribute1" :min-width="minWidth" />
+    <emqx-table-column prop="msgt" :min-width="minWidth" :label="$t('common.type')" />
+    <emqx-table-column prop="cobj" :min-width="minWidth" label="Object2" />
+    <emqx-table-column prop="catt" :min-width="minWidth" label="Attribute2" />
+    <emqx-table-column prop="acat" :min-width="minWidth" :label="$t('status.category')" />
+    <emqx-table-column
+      prop="subr"
+      :min-width="minWidth"
+      :label="$t('configuration.subroutine')"
+      :align="showBtn ? 'left' : 'right'"
+    />
+    <emqx-table-column :width="160" v-if="showBtn" align="right">
+      <template v-slot="scope">
+        <emqx-button type="text" @click="handleEdit(scope.row, scope.$index)">{{ $t('common.edit') }}</emqx-button>
+        <emqx-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</emqx-button>
       </template>
-    </el-table-column>
-  </el-table>
+    </emqx-table-column>
+  </emqx-table>
 </template>
 
 <script>
-import Mixins from '@/mixins'
 import { clone } from '@/utils/index'
 
 export default {
-  mixins: [Mixins],
   props: {
-    value: {
+    modelValue: {
       type: Array,
     },
     showBtn: {
@@ -55,7 +58,7 @@ export default {
     },
   },
   watch: {
-    value(val) {
+    modelValue(val) {
       this.multipleSelection = val
     },
   },

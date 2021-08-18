@@ -1,20 +1,20 @@
 <template>
-  <Container type="card-full" :scorll="false">
+  <Container class="attribute-setup" type="card-full" :scorll="false">
     <div class="row flex">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/Configuration/objectSetup' }">
-          <span class="dd-title">{{ $t('configuration.objectSetup') }}</span>
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>
-          <span class="dd-title">{{ $t('configuration.attributeSetup') }}</span>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
+      <emqx-breadcrumb separator-class="el-icon-arrow-right">
+        <emqx-breadcrumb-item :to="{ name: 'Configuration-objectSetup' }">
+          <span>{{ $t('configuration.objectSetup') }}</span>
+        </emqx-breadcrumb-item>
+        <emqx-breadcrumb-item>
+          <span>{{ $t('configuration.attributeSetup') }}</span>
+        </emqx-breadcrumb-item>
+      </emqx-breadcrumb>
       <div>
-        <el-button @click="dialogTableVisible = true" type="primary">{{ $t('common.create') }}</el-button>
-        <el-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">{{
+        <emqx-button @click="dialogTableVisible = true" type="primary">{{ $t('common.create') }}</emqx-button>
+        <emqx-button @click="onDelete(null)" :disabled="!multipleSelection.length" type="danger">{{
           $t('common.delete')
-        }}</el-button>
-        <el-button @click="$router.go(-1)">{{ $t('common.save') }}</el-button>
+        }}</emqx-button>
+        <emqx-button @click="$router.go(-1)">{{ $t('common.save') }}</emqx-button>
       </div>
     </div>
     <div>
@@ -31,59 +31,74 @@
       />
     </div>
 
-    <el-dialog :title="$t('configuration.dataAttributeSetup')" :visible.sync="dialogTableVisible" @closed="close">
-      <el-form
+    <el-dialog :title="$t('configuration.dataAttributeSetup')" v-model="dialogTableVisible" @closed="close">
+      <emqx-form
         ref="AttributeSetupForm"
         :model="AttributeSetupForm"
         :rules="AttributeSetupFormRules"
-        label-width="150px"
+        label-width="120px"
       >
-        <el-form-item :label="$t('common.name')" prop="attn">
-          <el-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('common.type')" prop="attn">
-          <el-select v-model="AttributeSetupForm.attt">
-            <el-option v-for="item in AttributeTypeList" :key="item.val" :label="item.val" :value="item.val">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Decimal" v-if="showDecimal" prop="deci">
+        <emqx-form-item :label="$t('common.name')" prop="attn">
+          <emqx-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></emqx-input>
+        </emqx-form-item>
+        <emqx-form-item :label="$t('common.type')" prop="attn">
+          <emqx-select v-model="AttributeSetupForm.attt">
+            <emqx-option v-for="item in AttributeTypeList" :key="item.val" :label="item.val" :value="item.val">
+            </emqx-option>
+          </emqx-select>
+        </emqx-form-item>
+        <emqx-form-item label="Decimal" v-if="showDecimal" prop="deci">
           <el-input-number v-model="AttributeSetupForm.deci" :controls="false" :precision="0" :min="0" />
-        </el-form-item>
-        <el-form-item label="Direction" prop="attr">
-          <el-radio-group v-model="AttributeSetupForm.attr">
-            <el-radio v-for="item in driverAttrList" :key="item" :label="item">
-              {{ item }}
-            </el-radio>
+        </emqx-form-item>
+        <emqx-form-item label="Visible" prop="adis">
+          <el-radio-group v-model="AttributeSetupForm.adis">
+            <el-radio :label="1">Yes</el-radio>
+            <el-radio :label="0">No</el-radio>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="Read time (100ms)" prop="rtim" v-if="showReadTime">
+        </emqx-form-item>
+        <emqx-form-item label="Change" prop="achg">
+          <el-radio-group v-model="AttributeSetupForm.achg">
+            <el-radio :label="1">Yes</el-radio>
+            <el-radio :label="0">No</el-radio>
+          </el-radio-group>
+        </emqx-form-item>
+        <emqx-form-item label="Direction" prop="attr">
+          <el-radio-group v-model="AttributeSetupForm.attr">
+            <el-radio label="R">R</el-radio>
+            <el-radio label="W">W</el-radio>
+            <el-radio label="RW">RW</el-radio>
+          </el-radio-group>
+        </emqx-form-item>
+        <emqx-form-item label="Read time" prop="rtim" v-if="showReadTime">
           <el-input-number v-model="AttributeSetupForm.rtim" :controls="false" :precision="0" :min="0" />
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="submitAttributeSetupFrom">{{ $t('common.submit') }}</el-button>
-      </span>
+        </emqx-form-item>
+      </emqx-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <emqx-button @click="submitAttributeSetupFrom">{{ $t('common.submit') }}</emqx-button>
+        </span>
+      </template>
     </el-dialog>
-
-    <el-dialog :title="$t('configuration.dataAddrSetup')" @closed="addressClosed" :visible.sync="addressVisible">
-      <el-table :data="preAndSuff" class="dd-mb">
-        <el-table-column :label="$t('status.index')" :width="minWidth">
-          <template slot-scope="scope">
+    <el-dialog :title="$t('configuration.dataAddrSetup')" @closed="addressClosed" v-model="addressVisible">
+      <emqx-table :data="preAndSuff" class="dd-mb">
+        <emqx-table-column :label="$t('status.index')" :width="minWidth">
+          <template v-slot="scope">
             {{ scope.row.obix + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column prop="pref" :width="minWidth" :label="$t('configuration.prefix')" />
-        <el-table-column :label="$t('configuration.suffix')" :width="minWidth" prop="suff" />
-        <el-table-column :label="$t('configuration.address')">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.addr" size="mini"></el-input>
+        </emqx-table-column>
+        <emqx-table-column prop="pref" :width="minWidth" :label="$t('configuration.prefix')" />
+        <emqx-table-column :label="$t('configuration.suffix')" :width="minWidth" prop="suff" />
+        <emqx-table-column :label="$t('configuration.address')">
+          <template v-slot="scope">
+            <emqx-input v-model="scope.row.addr" size="mini"></emqx-input>
           </template>
-        </el-table-column>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addressSubmit" type="primary">{{ $t('common.submit') }}</el-button>
-      </span>
+        </emqx-table-column>
+      </emqx-table>
+      <template #footer>
+        <span class="dialog-footer">
+          <emqx-button @click="addressSubmit" type="primary">{{ $t('common.submit') }}</emqx-button>
+        </span>
+      </template>
     </el-dialog>
   </Container>
 </template>
@@ -91,10 +106,23 @@
 <script>
 import { clone } from '@/utils/index'
 import { AttributeTypeList } from '@/config/index'
+import { mapState, mapMutations } from 'vuex'
 import AttributeTable from './components/attributeTable'
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { ElDialog, ElRadio, ElInputNumber, ElRadioGroup } from 'element-plus'
+import Container from '@/components/core/Container/index.vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessageBox } from 'element-plus'
 
 export default {
+  name: 'AttributeSetup',
+  components: {
+    ElDialog,
+    ElRadio,
+    ElInputNumber,
+    ElRadioGroup,
+    AttributeTable,
+    Container,
+  },
   data() {
     return {
       minWidth: 80,
@@ -103,10 +131,7 @@ export default {
       dialogTableVisible: false,
       isEdit: false,
       attributeList: [],
-      AttributeSetupForm: {
-        adis: 1,
-        achg: 1,
-      },
+      AttributeSetupForm: {},
       AttributeSetupFormRules: {
         attn: [
           { required: true, message: 'Please input Name', trigger: 'blur' },
@@ -114,85 +139,104 @@ export default {
         ],
         attt: [{ required: true, message: 'Please select Type', trigger: 'blur' }],
         deci: [{ required: true, message: 'Please input Decimal', trigger: 'blur' }],
+        adis: [{ required: true, message: 'Please select Display', trigger: 'blur' }],
+        achg: [{ required: true, message: 'Please select Change', trigger: 'blur' }],
         attr: [{ required: true, message: 'Please select Direction', trigger: 'blur' }],
         rtim: [{ required: true, message: 'pleact input Time', trigger: 'blur' }],
       },
-      AttributeTypeList: AttributeTypeList,
+      AttributeTypeList,
       addressVisible: false,
       activeAttributeRow: {},
       multipleSelection: [],
     }
   },
+  computed: {
+    showDecimal() {
+      return this.AttributeSetupForm.attt && this.AttributeSetupForm.attt.indexOf('word') !== -1
+    },
+    showReadTime() {
+      return this.AttributeSetupForm.attr && this.AttributeSetupForm.attr !== 'W'
+    },
+    ...mapState({
+      objectData: state => state.SetUpData.objectData,
+    }),
+  },
+  watch: {
+    // eslint-disable-next-line
+    'AttributeSetupForm.attt': function () {
+      this.AttributeSetupForm.deci = 0
+    },
+  },
+  created() {
+    this.init()
+  },
   methods: {
     close() {
       this.isEdit = false
-      this.AttributeSetupForm = {
-        adis: 1,
-        achg: 1,
-      }
-      this.resetPreAndSuff()
+      this.AttributeSetupForm = {}
+      this.preAndSuff = []
     },
     addressClosed() {
       this.preAndSuff.addr = ''
     },
     getFullName(pref, suff) {
       // eslint-disable-next-line no-param-reassign
-      pref = pref ? pref + '_' : ''
+      pref = pref ? `${pref}_` : ''
       // eslint-disable-next-line no-param-reassign
-      suff = suff ? '_' + suff : ''
+      suff = suff ? `_${suff}` : ''
       return pref + this.objn + suff
     },
-    validataAddr(attribute) {
+    validataAddr() {
       return (
         this.attributeList.length &&
-        this.attributeList.every((attr) => !attr.aadd.some((ad) => ad.addr === '' || ad.addr === undefined))
+        this.attributeList.every(attr => !attr.aadd.some(ad => ad.addr === '' || ad.addr === undefined))
       )
     },
     submitAttributeSetupFrom() {
-      this.$refs.AttributeSetupForm.validate((valid) => {
-        if (valid) {
-          const { attr, rtim } = this.AttributeSetupForm
-          if ((attr !== 'R' || attr !== 'RW') && rtim === undefined) {
-            this.AttributeSetupForm.rtim = 0
-          }
-          if (this.isEdit) {
-            const findIndex = this.attributeList.findIndex((attr) => attr.attn === this.AttributeSetupForm.attn)
-            if (findIndex !== -1) {
-              const attrData = [...this.attributeList]
-              attrData[findIndex] = {
-                ...this.AttributeSetupForm,
-                aadd: clone(this.preAndSuff),
-              }
-              this.attributeList = attrData
-            }
-          } else {
-            this.attributeList.push({
+      this.$refs.AttributeSetupForm.$refs.form.validate(valid => {
+        if (!valid) {
+          return
+        }
+        const { attr, rtim } = this.AttributeSetupForm
+        if (attr === 'W' && rtim === undefined) {
+          this.AttributeSetupForm.rtim = 0
+        }
+        if (this.isEdit) {
+          const findIndex = this.attributeList.findIndex(_attr => _attr.attn === this.AttributeSetupForm.attn)
+          if (findIndex !== -1) {
+            const attrData = [...this.attributeList]
+            attrData[findIndex] = {
               ...this.AttributeSetupForm,
               aadd: clone(this.preAndSuff),
-            })
+            }
+            this.attributeList = attrData
           }
-          this.dialogTableVisible = false
-          this.AttributeSetupForm = {
-            adis: 1,
-            achg: 1,
-          }
-          this.confirmSubmit()
         } else {
-          console.log('error submit!!')
-          return false
+          this.attributeList.push({
+            ...this.AttributeSetupForm,
+            aadd: clone(this.preAndSuff),
+          })
         }
+        this.dialogTableVisible = false
+        this.AttributeSetupForm = {}
+        this.confirmSubmit()
       })
     },
-    confirmSubmit() {
+    async confirmSubmit(immediately = false) {
       if (!this.validataAddr()) {
-        this.$openMessage.warning(this.$t('configuration.addressRequired'))
+        EmqxMessage.warning(this.$t('configuration.addressRequired'))
       }
-      setTimeout(() => {
-        this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
-        if (this.$refs.attributeTable) {
-          this.$refs.attributeTable.setData()
-        }
-      }, 1000)
+      this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
+      if (!immediately) {
+        await new Promise(resolve => {
+          setTimeout(() => {
+            resolve()
+          }, 1000)
+        })
+      }
+      if (this.$refs.attributeTable.$refs.form) {
+        this.$refs.attributeTable.$refs.form.setData()
+      }
     },
     addAddress(data) {
       this.activeAttributeRow = data
@@ -218,17 +262,17 @@ export default {
     },
     validateAddr(row) {
       let hasDummyAddr = true
-      row.aadd.forEach(($) => {
+      row.aadd.forEach($ => {
         if ($.addr !== '-') {
           hasDummyAddr = false
         }
       })
       if (!hasDummyAddr && row.attr === '-') {
-        this.$openMessage.warning(this.$t('configuration.rwRequired'))
+        EmqxMessage.warning(this.$t('configuration.rwRequired'))
       }
     },
     resetPreAndSuff() {
-      this.preAndSuff = this.preAndSuff.map((i) => {
+      this.preAndSuff = this.preAndSuff.map(i => {
         i.addr = ''
         return i
       })
@@ -240,42 +284,40 @@ export default {
       } else {
         deleteData.push(...this.multipleSelection)
       }
-      this.$confirm(this.$t('common.confirmDelete'), this.$t('common.delete'), {
+      ElMessageBox(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
+      }).then(() => {
+        const deleteList = deleteData.map(i => i.attn)
+        this.attributeList = this.attributeList.filter(i => !deleteList.includes(i.attn))
+        this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
+        setTimeout(() => {
+          if (this.$refs.attributeTable.$refs.form) {
+            this.$refs.attributeTable.$refs.form.setData()
+          }
+        }, 1000)
       })
-        .then(() => {
-          const deleteList = deleteData.map((i) => i.attn)
-          this.attributeList = this.attributeList.filter((i) => !deleteList.includes(i.attn))
-          this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
-          setTimeout(() => {
-            if (this.$refs.attributeTable) {
-              this.$refs.attributeTable.setData()
-            }
-          }, 500)
-        })
-        .catch(() => {})
     },
     onDummy(data) {
       data.attr = '-'
       data.rtim = 0
-      data.aadd.forEach((item) => {
+      data.aadd.forEach(item => {
         item.addr = '-'
         return item
       })
     },
     init() {
-      let name = this.$route.params.data
+      const name = this.$route.params.data
       if (name) {
         this.objn = name
-        this.objectData.some((i) => {
+        this.objectData.forEach(i => {
           if (i.objn === name) {
             if (i.preAndSuff) {
               this.preAndSuff = [...i.preAndSuff]
             } else {
-              this.preAndSuff = i.oatt[0].aadd.map((i) => ({
-                pref: i.pref,
-                obix: i.obix,
-                suff: i.suff,
+              this.preAndSuff = i.oatt[0].aadd.map(j => ({
+                pref: j.pref,
+                obix: j.obix,
+                suff: j.suff,
                 addr: '',
               }))
             }
@@ -284,40 +326,14 @@ export default {
             }
             return false
           }
+          return true
         })
       }
     },
     ...mapMutations(['setObjectAttribute']),
   },
-  computed: {
-    showDecimal() {
-      return this.AttributeSetupForm.attt && this.AttributeSetupForm.attt.indexOf('word') !== -1
-    },
-    showReadTime() {
-      return (
-        this.AttributeSetupForm.attr && (this.AttributeSetupForm.attr === 'R' || this.AttributeSetupForm.attr === 'RW')
-      )
-    },
-    ...mapState({
-      objectData: (state) => state.SetUpData.objectData,
-    }),
-    driverAttrList() {
-      const { chdv } = this.$store.state.SetUpData.driverData
-      const { southDriverList } = this.$store.state.Device
-      const currentDriver = southDriverList.find((item) => item.val === chdv)
-      return currentDriver.attr || []
-    },
-  },
-  watch: {
-    'AttributeSetupForm.attt'(val) {
-      this.AttributeSetupForm.deci = 0
-    },
-  },
-  created() {
-    this.init()
-  },
   beforeRouteLeave(to, from, next) {
-    this.confirmSubmit()
+    this.confirmSubmit(true)
     next()
   },
   beforeRouteEnter(to, from, next) {
@@ -327,15 +343,12 @@ export default {
       next({ name: 'Configuration-objectSetup' })
     }
   },
-  components: {
-    AttributeTable,
-  },
 }
 </script>
 
 <style scoped lang="scss">
 @import '@/assets/style/public.scss';
-/deep/.el-input-number {
+>>> .el-input-number {
   width: 100%;
   &.is-without-controls .el-input__inner {
     text-align: left;
@@ -350,5 +363,10 @@ export default {
 }
 .el-select {
   width: 100%;
+}
+.attribute-setup {
+  .emqx-breadcrumb {
+    margin-bottom: 0;
+  }
 }
 </style>

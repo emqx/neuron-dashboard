@@ -1,28 +1,30 @@
 <template>
-  <el-submenu :index="menu.name">
-    <template slot="title">
+  <emqx-submenu :index="menu.name">
+    <template v-slot:title>
       <i :class="`fa fa-${menu.icon || 'folder-o'}`"></i>
-      <span slot="title">{{ menu.title }}</span>
+      <span>{{ menu.title }}</span>
     </template>
     <template v-for="(child, childIndex) in menu.children">
-      <MenuItem v-if="child.children === undefined" :key="childIndex" :menu="child" />
-      <MenuSub v-else :menu="child" :key="childIndex" />
+      <menu-item v-if="child.children === undefined" :key="childIndex" :menu="child" />
+      <emqx-menu-sub v-else :menu="child" :key="childIndex" />
     </template>
-  </el-submenu>
+  </emqx-submenu>
 </template>
 
 <script>
+import MenuItem from '../MenuItem'
+
 export default {
   name: 'MenuSub',
   props: {
     menu: {
       type: Object,
       required: false,
-      default: () => {},
+      default: () => ({}),
     },
   },
   components: {
-    MenuItem: () => import('../MenuItem'),
+    MenuItem,
   },
 }
 </script>

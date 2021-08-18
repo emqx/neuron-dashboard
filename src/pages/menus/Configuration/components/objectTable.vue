@@ -1,45 +1,43 @@
 <template>
-  <el-table :data="objectList" @selection-change="handleSelectionChange" style="width: 100%;">
-    <el-table-column type="expand" v-if="showAttr">
-      <template slot-scope="props">
+  <emqx-table :data="objectList" @selection-change="handleSelectionChange" style="width: 100%">
+    <emqx-table-column type="expand" v-if="showAttr">
+      <template v-slot="props">
         <AttributeTable
           :class="showAttr ? 'attribute-table--overview' : ''"
           :attributeList="props.row.oatt || []"
-          :objectName="props.row.objn"
+          :objectName="props.row.objn || ''"
         />
       </template>
-    </el-table-column>
-    <el-table-column v-if="showSelection" type="selection" width="55"> </el-table-column>
-    <el-table-column type="index" width="100" label="No" />
-    <el-table-column prop="objn" :label="$t('status.objectName')" min-width="250" />
-    <el-table-column prop="obsz" :min-width="100" label="Size" />
-    <el-table-column prop="updt" :min-width="100" label="Update Time" />
-    <el-table-column prop="logt" :min-width="100" label="Log Time" />
-    <el-table-column prop="tstd" :min-width="100" label="Timestamp">
-      <template slot-scope="scope">
+    </emqx-table-column>
+    <emqx-table-column v-if="showSelection" type="selection" width="55"> </emqx-table-column>
+    <emqx-table-column type="index" width="100" label="No" />
+    <emqx-table-column prop="objn" :label="$t('status.objectName')" min-width="230" />
+    <emqx-table-column prop="obsz" :min-width="100" label="Size" />
+    <emqx-table-column prop="updt" :min-width="110" label="Update Time" />
+    <emqx-table-column prop="logt" :min-width="110" label="Log Time" />
+    <emqx-table-column prop="tstd" :min-width="100" label="Timestamp" :align="showBtn ? 'left' : 'right'">
+      <template v-slot="scope">
         {{ scope.row.tstd ? 'YES' : 'NO' }}
       </template>
-    </el-table-column>
-    <el-table-column :width="200" v-if="showBtn">
-      <template slot-scope="scope">
-        <el-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</el-button>
-        <el-button type="text" @click="goToAttrPage(scope.row)">{{ $t('status.attribute') }}</el-button>
-        <el-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
+    </emqx-table-column>
+    <emqx-table-column :width="200" v-if="showBtn" align="right">
+      <template v-slot="scope">
+        <emqx-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</emqx-button>
+        <emqx-button type="text" @click="goToAttrPage(scope.row)">{{ $t('status.attribute') }}</emqx-button>
+        <emqx-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</emqx-button>
       </template>
-    </el-table-column>
-  </el-table>
+    </emqx-table-column>
+  </emqx-table>
 </template>
 
 <script>
-import Mixins from '@/mixins'
 import { mapState } from 'vuex'
-import AttributeTable from './attributeTable'
 import { clone } from '@/utils'
+import AttributeTable from './attributeTable'
 
 export default {
-  mixins: [Mixins],
   props: {
-    value: {
+    modelValue: {
       type: Array,
     },
     showBtn: {
@@ -57,7 +55,7 @@ export default {
   },
   computed: {
     ...mapState({
-      objectList: (state) => state.SetUpData.objectData,
+      objectList: state => state.SetUpData.objectData,
     }),
   },
   data() {
@@ -82,7 +80,7 @@ export default {
     },
   },
   watch: {
-    value(val) {
+    modelValue(val) {
       this.multipleSelection = val
     },
   },

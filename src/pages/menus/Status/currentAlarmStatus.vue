@@ -2,42 +2,43 @@
   <Container type="card-full" :scorll="false">
     <div class="dd-mb">
       <span class="dd-title">{{ $t('status.currentAlarm') }}</span>
-      <el-select v-model="action" @change="handleChange" class="dd-ml">
-        <el-option v-for="item in options" :key="item.val" :label="item.label" :value="item.val"> </el-option>
-      </el-select>
+      <emqx-select v-model="action" @change="handleChange" class="dd-ml">
+        <emqx-option v-for="item in options" :key="item.val" :label="item.label" :value="item.val"> </emqx-option>
+      </emqx-select>
     </div>
-    <el-table :data="grow" style="width: 100%;">
-      <el-table-column min-width="130" prop="atim" :label="$t('status.time')">
-        <template slot-scope="scope">
+    <emqx-table :data="grow" style="width: 100%">
+      <emqx-table-column min-width="130" prop="atim" :label="$t('status.time')">
+        <template v-slot="scope">
           {{ format(scope.row.atim || '') }}
         </template>
-      </el-table-column>
-      <el-table-column min-width="60" prop="acat" :label="$t('status.category')" />
-      <el-table-column prop="astt" :label="$t('status.state')" min-width="50" />
-      <el-table-column prop="amod" :label="$t('status.remark')" min-width="50" />
-      <el-table-column min-width="100" prop="comt" :label="$t('status.comment')"> </el-table-column>
-      <el-table-column min-width="100" label="">
-        <template slot-scope="scope">
-          <el-button v-if="actn !== 'acknowledge'" type="text" @click="handleClick(scope.row)">
+      </emqx-table-column>
+      <emqx-table-column min-width="60" prop="acat" :label="$t('status.category')" />
+      <emqx-table-column prop="astt" :label="$t('status.state')" min-width="50" />
+      <emqx-table-column prop="amod" :label="$t('status.remark')" min-width="50" />
+      <emqx-table-column min-width="100" prop="comt" :label="$t('status.comment')"> </emqx-table-column>
+      <emqx-table-column min-width="100" label="" align="right">
+        <template v-slot="scope">
+          <emqx-button v-if="actn !== 'acknowledge'" type="text" @click="handleClick(scope.row)">
             <!-- acknowledge or enable or disable -->
             {{ actn }}
-          </el-button>
-          <el-button v-else-if="scope.row.amod === 'UNACKALARM'" type="text" @click="handleClick(scope.row)">
+          </emqx-button>
+          <emqx-button v-else-if="scope.row.amod === 'UNACKALARM'" type="text" @click="handleClick(scope.row)">
             <!-- acknowledge or enable or disable -->
             {{ actn }}
-          </el-button>
+          </emqx-button>
         </template>
-      </el-table-column>
-    </el-table>
+      </emqx-table-column>
+    </emqx-table>
   </Container>
 </template>
 
 <script>
-import Mixins from '@/mixins'
 import moment from 'moment'
+import { getData, postData } from '@/api/data'
+import Container from '@/components/core/Container/index.vue'
 
 export default {
-  mixins: [Mixins],
+  components: { Container },
   data() {
     return {
       minWidth: 100,
@@ -80,6 +81,9 @@ export default {
       res = this.action === 'all_dis' ? 'enable' : res
       return res
     },
+    nodeId() {
+      return this.$route.params.serviceId
+    },
   },
   created() {
     this.action = 'act_en'
@@ -88,16 +92,22 @@ export default {
   methods: {
     handleClick(row) {
       if (this.action === 'all_alm') return
-      this.$ws().send({
+      postData(this.nodeId, {
         func: 80,
         alid: row.alid,
         actn: this.actn,
+        wtrm: 'neruon',
+      }).then(() => {
+        // TODO:
       })
     },
     handleChange() {
-      this.$ws().send({
+      getData(this.nodeId, {
         func: 79,
         actn: this.action,
+        wtrm: 'neruon',
+      }).then(() => {
+        // TODO:
       })
     },
     format(time) {
@@ -107,4 +117,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.el-select.emqx-select.dd-ml {
+  width: auto;
+}
+</style>

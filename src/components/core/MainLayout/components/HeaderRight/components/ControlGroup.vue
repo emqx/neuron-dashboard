@@ -1,88 +1,168 @@
 <template>
-  <div>
-    <el-button type="primary" v-if="active" size="small" @click="handleStart">{{ $t('common.start') }}</el-button>
-    <el-button type="danger" v-else size="small" @click="handleStop">{{ $t('common.stop') }}</el-button>
-    <el-button type="primary" size="small" @click="handleRestart">{{ $t('common.restart') }}</el-button>
-    <el-button type="primary" size="small" @click="submit">{{ $t('common.send') }}</el-button>
+  <div class="control-group">
+    <emqx-button type="primary" v-if="active" size="small" :loading="starting" @click="handleStart">{{
+      $t('common.start')
+    }}</emqx-button>
+    <emqx-button type="danger" v-else size="small" :loading="stoping" @click="handleStop">{{
+      $t('common.stop')
+    }}</emqx-button>
+    <emqx-button type="primary" size="small" :loading="restarting" @click="handleRestart">{{
+      $t('common.restart')
+    }}</emqx-button>
+    <emqx-button type="primary" size="small" :loading="sending" @click="submit">{{ $t('common.send') }}</emqx-button>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex'
 import { clone } from '@/utils'
+import { postData } from '@/api/data.js'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessageBox } from 'element-plus'
 
 export default {
+  name: 'ControlGroup',
+  data() {
+    return {
+      sending: false,
+      restarting: false,
+      stoping: false,
+      starting: false,
+    }
+  },
   computed: {
     ...mapGetters(['res', 'deviceObj']),
     ...mapState({
-      status: (state) => state.Status.status,
+      // FIXME: add to state
+      status: state => state?.Status?.status,
     }),
     active() {
-      let srt = this.status.mode || ''
+      const srt = this.status?.mode || ''
       return srt.indexOf('STANDBY') !== -1
+    },
+    nodeId() {
+      return this.$route.params.serviceId
     },
   },
   methods: {
     handleStart() {
-      this.$ws().set().send({
+      this.starting = true
+      postData(this.nodeId, {
         func: 71,
         stat: 'active',
+        wtrm: 'neruon',
       })
+        .then(res => {
+          this.starting = false
+          if (res.data.errc !== 0) {
+            EmqxMessage.error(res.data.emsg)
+          } else {
+            EmqxMessage.success(this.$t('common.started'))
+            setTimeout(() => {
+              window.location.reload()
+            }, 2000)
+          }
+        })
+        .catch(() => {
+          this.starting = false
+        })
     },
     handleStop() {
-      this.$ws().set().send({
+      this.stoping = true
+      postData(this.nodeId, {
         func: 71,
         stat: 'standby',
+        wtrm: 'neruon',
       })
+        .then(res => {
+          this.stoping = false
+          if (res.data.errc !== 0) {
+            EmqxMessage.error(res.data.emsg)
+          } else {
+            EmqxMessage.success(this.$t('common.stoped'))
+            setTimeout(() => {
+              window.location.reload()
+            }, 2000)
+          }
+        })
+        .catch(() => {
+          this.stoping = false
+        })
     },
     handleRestart() {
-      this.$confirm(this.$t('common.confirmRestart'), this.$t('common.restart'), {
+      ElMessageBox(this.$t('common.confirmRestart'), this.$t('common.restart'), {
         type: 'warning',
       })
         .then(() => {
-          this.$ws().set().send({
+          this.restarting = true
+          postData(this.nodeId, {
             func: 70,
             acts: 'restart',
+            wtrm: 'neruon',
           })
+            .then(() => {
+              this.restarting = false
+              EmqxMessage.info(this.$t('common.restarting'))
+            })
+            .catch(() => {
+              this.restarting = false
+            })
         })
         .catch()
     },
     submit() {
-      this.$confirm(this.$t('common.confirmSend'), this.$t('common.send'), {
+      ElMessageBox(this.$t('common.confirmSend'), this.$t('common.send'), {
         type: 'warning',
       })
         .then(() => {
-          const res = clone(this.res)
-          if (res.chdv) {
-            delete res.chdv
+          this.sending = true
+          const data = clone(this.res)
+          if (data.chdv) {
+            delete data.chdv
           }
-          res.objd.forEach((i) => {
+          data.objd.forEach(i => {
             if (i.preAndSuff) delete i.preAndSuff
           })
-          res.func = 21
-          this.$ws().set({ success: this.handleSuccess }).send(res)
+          data.wtrm = 'neuron'
+          data.func = 21
+          postData(this.nodeId, data)
+            .then(res => {
+              this.handleSuccess(res.data)
+            })
+            .catch(() => {
+              this.sending = false
+            })
         })
         .catch()
     },
     handleSuccess(data) {
+      this.sending = false
       if (data.func === 21 && data.errc === 0) {
-        this.$ws().remove(this.handleSuccess)
-        this.$openMessage.success(this.$t('common.submitSuccess'))
+        EmqxMessage.success(this.$t('common.submitSuccess'))
         localStorage.removeItem('chnl')
         localStorage.removeItem('objectData')
         localStorage.removeItem('eventData')
         this.$store.commit('clearAlarmList')
         setTimeout(() => {
-          this.$openMessage.info(this.$t('common.restarting'))
-          this.$ws().set().send({
+          postData(this.nodeId, {
             func: 70,
             acts: 'restartnew',
+            wtrm: 'neruon',
+          }).then(() => {
+            EmqxMessage({
+              type: 'info',
+              message: this.$t('common.restarting'),
+              duration: 8000,
+            })
+            setTimeout(() => {
+              window.location.reload()
+            }, 8000)
           })
-        }, 2000)
+        }, 3000)
+      } else {
+        EmqxMessage.error(data.emsg)
       }
     },
   },
 }
 </script>
-
-<style scoped lang="scss"></style>

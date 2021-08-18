@@ -1,0 +1,5 @@
+$img_base_url:'~@/assets/images/';
+
+@mixin bg($url) {
+  background-image: url($img_base_url + $url)
+}

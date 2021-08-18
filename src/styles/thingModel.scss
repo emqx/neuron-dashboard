@@ -1,0 +1,125 @@
+.thing-model-card {
+  .edit-tip {
+    padding: 8px 16px;
+    border-left: 8px solid #c8d4fa;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    background-color: #f4f5fc;
+    border-radius: 8px;
+
+    .icon {
+      margin-right: 8px;
+      font-size: 14px;
+      color: #4c64eee7;
+      vertical-align: baseline;
+    }
+
+    button {
+      margin-left: 12px;
+    }
+  }
+
+  .tools-bar {
+    margin-bottom: 20px;
+  }
+
+  .module-list-wrap {
+    flex-basis: 188px;
+    width: 188px;
+    flex-grow: 0;
+    border-right: 1px solid #e2e2e2;
+  }
+
+  .module-search-container {
+    padding-right: 8px;
+    margin-bottom: 8px;
+  }
+
+  .module-list {
+    margin-bottom: 8px;
+  }
+
+  .module-item {
+    position: relative;
+    padding: 12px 8px;
+    line-height: 1;
+
+    &:hover {
+      background-color: #bbbdc210;
+
+      .module-item-ft {
+        visibility: visible;
+      }
+    }
+
+    &.is-active {
+      border-right: 4px solid #4c64eee7;
+      background-color: #f4f5fb;
+    }
+
+    .module-item-hd {
+      padding-right: 50px;
+      word-wrap: break-word;
+    }
+
+    .module-item-id {
+      color: #919398;
+      font-size: 12px;
+    }
+
+    .module-item-ft {
+      visibility: hidden;
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 100%;
+      width: 50px;
+
+      i {
+        cursor: pointer;
+      }
+
+      .icon-edit {
+        color: #4c64eee7;
+      }
+
+      .icon-del {
+        color: #e47470;
+      }
+    }
+
+  }
+
+  .thing-model-card-content {
+    display: flex;
+  }
+
+  .active-module-content {
+    flex-grow: 1;
+    padding: 4px 12px;
+
+    .active-module-title {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.version-list-empty {
+  padding: 0 20px;
+  text-align: center;
+  color: #bbb;
+}
+
+.parameter-dialog {
+  .el-form-item__label {
+    text-align: left;
+    width: 100%;
+  }
+}

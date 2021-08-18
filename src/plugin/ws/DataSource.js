@@ -1,8 +1,7 @@
-import Vue from 'vue'
 import BaseConfig from './config.js'
-import router from '../../router'
 import Store from '../../store'
-import { Message } from 'element-ui'
+import { Message } from 'element-plus'
+import router from '@/router/index.js'
 
 let dataSource
 
@@ -31,13 +30,13 @@ class DataSource {
       localStorage.removeItem('objectData')
       localStorage.removeItem('eventData')
       Store.commit('clearAlarmList')
-      if (currentName !== 'login') {
-        router.push({
-          name: 'login',
-        })
-      }
+      // if (currentName !== 'login') {
+      //   router.push({
+      //     name: 'login',
+      //   })
+      // }
     }
-    this.onerror = (e) => {
+    this.onerror = e => {
       Message.error({
         message: 'socket error',
         duration: 6000,
@@ -52,19 +51,19 @@ class DataSource {
     return new Promise((resolve, reject) => {
       this.websocket = new WebSocket(this.wsUri, this.type)
       this.websocket.addEventListener('open', () => {
-        var authInfo = {
+        const authInfo = {
           func: 10,
           name: this.name,
           pass: this.pass,
           wtrm: this.wtrm,
         }
-        var authText = JSON.stringify(authInfo)
+        const authText = JSON.stringify(authInfo)
         this.websocket.send(authText)
       })
       this.websocket.onclose = this.onclose
       this.websocket.onerror = this.onerror
       this.set({
-        success: (data) => {
+        success: data => {
           if (data.func === 10) {
             if (data.errc) {
               dataSource = null
@@ -93,9 +92,9 @@ class DataSource {
     success && this.onsuccess.add(success)
 
     if (this.websocket && success) {
-      this.websocket.onmessage = (e) => {
+      this.websocket.onmessage = e => {
         const data = e.data && JSON.parse(e.data)
-        this.onsuccess.forEach((i) => {
+        this.onsuccess.forEach(i => {
           if (!data.wtrm || data.wtrm === this.wtrm) {
             if (data.errc) {
               Message.error({
@@ -141,7 +140,7 @@ class DataSource {
   }
 }
 
-Vue.prototype.$ws = function getDataSource(config) {
+export const ws = config => {
   if (!dataSource) {
     dataSource = new DataSource(config)
   } else {
@@ -155,5 +154,3 @@ Vue.prototype.$ws = function getDataSource(config) {
   }
   return dataSource
 }
-
-Vue.prototype.$dataSource = dataSource

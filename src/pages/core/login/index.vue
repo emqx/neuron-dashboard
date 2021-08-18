@@ -1,36 +1,37 @@
 <template>
   <div class="login-page">
     <div class="form-group">
-      <el-card>
-        <el-row>
-          <el-col :span="12">
+      <emqx-card>
+        <emqx-row>
+          <emqx-col :span="12">
             <div class="login-bg-container">
               <img class="login-bg" src="@/assets/login-neuron.png" alt="login-neuron" />
             </div>
-          </el-col>
-          <el-col :span="12">
-            <el-form :model="formLogin" :rules="rules" ref="loginForm">
+          </emqx-col>
+          <emqx-col :span="12">
+            <emqx-form :model="formLogin" :rules="rules" ref="loginForm">
               <div class="logo-group">
                 <img class="neuron-logo" src="@/assets/neuron-logo-white.png" alt="neuron logo" width="160" />
               </div>
-              <el-form-item prop="username">
-                <el-input type="text" v-model="formLogin.username" :placeholder="$t('common.username')"> </el-input>
-              </el-form-item>
-              <el-form-item prop="password">
-                <el-input type="password" v-model="formLogin.password" :placeholder="$t('common.password')"> </el-input>
-              </el-form-item>
+              <emqx-form-item prop="username">
+                <emqx-input type="text" v-model="formLogin.username" :placeholder="$t('common.username')"> </emqx-input>
+              </emqx-form-item>
+              <emqx-form-item prop="password">
+                <emqx-input type="password" v-model="formLogin.password" :placeholder="$t('common.password')"> </emqx-input>
+              </emqx-form-item>
               <div class="button-login">
-                <el-button @click="submit" type="primary">{{ $t('common.login') }}</el-button>
+                <emqx-button @click="submit" type="primary">{{ $t('common.login') }}</emqx-button>
               </div>
-            </el-form>
-          </el-col>
-        </el-row>
-      </el-card>
+            </emqx-form>
+          </emqx-col>
+        </emqx-row>
+      </emqx-card>
     </div>
   </div>
 </template>
 
 <script>
+import { ws } from '@/plugin/ws/DataSource.js'
 export default {
   data() {
     return {
@@ -54,7 +55,7 @@ export default {
             name,
             pass,
           }
-          this.$ws(loginInfo)
+          ws(loginInfo)
             .connect()
             .then((userInfo) => {
               sessionStorage.setItem('user', JSON.stringify(userInfo))
@@ -77,7 +78,7 @@ export default {
     this.init()
   },
   created() {
-    if (this.$env) {
+    if (process.env.NODE_ENV === 'development') {
       this.formLogin = {
         username: 'admin',
         password: '0000',
@@ -98,7 +99,6 @@ export default {
     text-align: center;
     margin-bottom: $margin + 20px;
   }
-
   .el-card__body {
     padding: 0;
   }

@@ -1,33 +1,41 @@
-# neuron-dashboard
+# emqx-fabric-ui
+
+## Clone
+
+```shell
+git clone --recurse-submodules https://github.com/emqx/emqx-fabric-ui.git
+```
+
+OR
+
+```shell
+git clone https://github.com/emqx/emqx-fabric-ui.git
+git submodule init
+git submodule update
+```
 
 ## Project setup
 
-```
+```shell
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development API on test server
 
-```
-yarn run serve
+```shell
+yarn dev
 ```
 
 ### Compiles and minifies for production
 
-```
-yarn run build
-```
-
-### Run your tests
-
-```
-yarn run test
+```shell
+yarn build
 ```
 
 ### Lints and fixes files
 
-```
-yarn run lint
+```shell
+yarn lint
 ```
 
 ### Customize configuration

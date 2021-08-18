@@ -21,7 +21,7 @@ const maker = (path, hide) => {
 
 export default {
   title: formatName(moduleName),
-  path: `/${moduleName}`,
+  path: `/:serviceId/${moduleName}`,
   name: moduleName,
   component: () => import('@/components/core/MainLayout/index.vue'),
   meta,

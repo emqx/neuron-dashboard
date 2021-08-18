@@ -20,10 +20,4 @@ export const router = [
   Status,
   Setup,
   user,
-  {
-    path: '*',
-    redirect: {
-      name: 'index',
-    },
-  },
 ]
