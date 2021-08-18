@@ -1,13 +1,13 @@
 <template>
   <div class="object-setup">
     <div class="dd-mb dd-fr">
-      <el-button slot="trigger" icon="el-icon-download" :loading="exportLoading" @click="handleExport">
+      <emqx-button icon="el-icon-download" :loading="exportLoading" @click="handleExport">
         {{ $t('common.export') }}
-      </el-button>
+      </emqx-button>
       <el-upload
         ref="upload"
         class="upload-excel"
-        action=""
+        action="XXX"
         accept=".xlsx"
         :show-file-list="false"
         :limit="1"
@@ -16,93 +16,108 @@
         :on-change="handleUploadChange"
         :on-error="handleUploadError"
       >
-        <el-button slot="trigger" icon="el-icon-upload2" :loading="uploadLoading">
+        <emqx-button icon="el-icon-upload2" :loading="uploadLoading">
           {{ $t('common.import') }}
-        </el-button>
+        </emqx-button>
       </el-upload>
-      <el-button type="warning" @click="handleClearData">{{ $t('common.clear') }}</el-button>
-      <el-button type="primary" @click="dialogTableVisible = true">{{ $t('common.create') }}</el-button>
-      <el-button type="danger" :disabled="!multipleSelection.length" @click="onDelete(null)">{{
+      <emqx-button type="warning" @click="handleClearData">{{ $t('common.clear') }}</emqx-button>
+      <emqx-button type="primary" @click="dialogTableVisible = true">{{ $t('common.create') }}</emqx-button>
+      <emqx-button type="danger" :disabled="!multipleSelection.length" @click="onDelete(null)">{{
         $t('common.delete')
-      }}</el-button>
+      }}</emqx-button>
     </div>
     <div class="row">
       <ObjectTable :showBtn="true" v-model="multipleSelection" @edit="onEdit" @delete="onDelete" />
     </div>
     <el-dialog
       :title="isDetail ? $t('configuration.objectSetup') : $t('configuration.objectIndexsetup')"
-      :visible.sync="dialogTableVisible"
+      v-model="dialogTableVisible"
       @closed="onClose"
     >
-      <template v-if="isDetail">
-        <div class="row">
-          <el-form
-            ref="objectSetupFrom"
-            :rules="objectSetupFromRules"
-            :model="objectSetupFrom"
-            class="dd-mb"
-            label-position="left"
-            label-width="160px"
-          >
-            <el-form-item label="Object name" prop="objn">
-              <el-input v-model="objectSetupFrom.objn" :disabled="isEdit"></el-input>
-            </el-form-item>
-            <el-form-item label="Object size" prop="obsz">
-              <el-input-number v-model="objectSetupFrom.obsz" :controls="false" :precision="0" :min="1" :max="9" />
-            </el-form-item>
-            <el-form-item label="Update time (100ms)" prop="updt">
-              <el-input-number v-model="objectSetupFrom.updt" :controls="false" :precision="0" :min="0" />
-            </el-form-item>
-            <el-form-item label="Logging time (1s)" prop="logt">
-              <el-input-number v-model="objectSetupFrom.logt" :controls="false" :precision="0" :min="0" />
-            </el-form-item>
-            <el-form-item label="Timestamp display" prop="tstd">
-              <el-radio-group v-model="objectSetupFrom.tstd">
-                <el-radio :label="1">Yes</el-radio>
-                <el-radio :label="0">No</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-form>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="submitObjectSetupFrom">{{ $t('common.submit') }}</el-button>
-        </span>
-      </template>
-      <template v-if="objectIndexSetupList.length && !isDetail">
-        <div class="row">
-          <el-table :data="objectIndexSetupList" class="dd-mb">
-            <el-table-column :label="$t('status.index')">
-              <template slot-scope="scope">
-                {{ scope.row.obix }}
-              </template>
-            </el-table-column>
-            <el-table-column :label="$t('configuration.prefix')">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.pref" size="mini"></el-input>
-              </template>
-            </el-table-column>
-            <el-table-column :label="$t('configuration.suffix')">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.suff" size="mini"></el-input>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="handleCancel">{{ $t('common.cancel') }}</el-button>
-          <el-button type="primary" @click="submitObjectDetail">{{ $t('common.submit') }}</el-button>
-        </span>
+      <div class="row" v-if="isDetail">
+        <emqx-form
+          ref="objectSetupFrom"
+          :rules="objectSetupFromRules"
+          :model="objectSetupFrom"
+          class="dd-mb"
+          label-position="left"
+          label-width="160px"
+        >
+          <emqx-form-item label="Object name" prop="objn">
+            <emqx-input v-model="objectSetupFrom.objn" :disabled="isEdit"></emqx-input>
+          </emqx-form-item>
+          <emqx-form-item label="Object size" prop="obsz">
+            <el-input-number v-model="objectSetupFrom.obsz" :controls="false" :precision="0" :min="1" :max="9" />
+          </emqx-form-item>
+          <emqx-form-item label="Update time" prop="updt">
+            <el-input-number v-model="objectSetupFrom.updt" :controls="false" :precision="0" :min="0" />
+          </emqx-form-item>
+          <emqx-form-item label="Logging time" prop="logt">
+            <el-input-number v-model="objectSetupFrom.logt" :controls="false" :precision="0" :min="0" />
+          </emqx-form-item>
+          <emqx-form-item label="Timestamp display" prop="tstd">
+            <el-radio-group v-model="objectSetupFrom.tstd">
+              <el-radio :label="1">Yes</el-radio>
+              <el-radio :label="0">No</el-radio>
+            </el-radio-group>
+          </emqx-form-item>
+        </emqx-form>
+      </div>
+      <div v-if="objectIndexSetupList.length && !isDetail" class="row">
+        <emqx-table :data="objectIndexSetupList" class="dd-mb">
+          <emqx-table-column :label="$t('status.index')">
+            <template v-slot="scope">
+              {{ scope.row.obix }}
+            </template>
+          </emqx-table-column>
+          <emqx-table-column :label="$t('configuration.prefix')">
+            <template v-slot="scope">
+              <emqx-input v-model="scope.row.pref" size="mini"></emqx-input>
+            </template>
+          </emqx-table-column>
+          <emqx-table-column :label="$t('configuration.suffix')">
+            <template v-slot="scope">
+              <emqx-input v-model="scope.row.suff" size="mini"></emqx-input>
+            </template>
+          </emqx-table-column>
+        </emqx-table>
+      </div>
+      <template #footer>
+        <template v-if="isDetail">
+          <span class="dialog-footer">
+            <emqx-button @click="submitObjectSetupFrom">{{ $t('common.submit') }}</emqx-button>
+          </span>
+        </template>
+        <template v-if="objectIndexSetupList.length && !isDetail">
+          <span class="dialog-footer">
+            <emqx-button @click="handleCancel">{{ $t('common.cancel') }}</emqx-button>
+            <emqx-button type="primary" @click="submitObjectDetail">{{ $t('common.submit') }}</emqx-button>
+          </span>
+        </template>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import ObjectTable from './objectTable'
+/* eslint-disable */
 import { mapMutations } from 'vuex'
 import _ from 'lodash'
 import { getExcelData, exportExcelData } from '@/utils/excelData'
+import ObjectTable from './objectTable'
+import { ElUpload, ElDialog, ElRadio, ElInputNumber, ElRadioGroup } from 'element-plus'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessageBox } from 'element-plus'
+
 export default {
+  components: {
+    ElUpload,
+    ElDialog,
+    ElRadio,
+    ElInputNumber,
+    ElRadioGroup,
+    ObjectTable,
+  },
   data() {
     return {
       dialogTableVisible: false,
@@ -126,10 +141,10 @@ export default {
     }
   },
   watch: {
-    'objectSetupFrom.obsz'(val, oldVal) {
+    'objectSetupFrom.obsz': function (val, oldVal) {
       const initData = () => {
         const res = []
-        for (let i = 0; i < val; i++) {
+        for (let i = 0; i < val; i += 1) {
           res.push({
             obix: i,
             pref: '',
@@ -147,7 +162,7 @@ export default {
   },
   methods: {
     submitObjectSetupFrom() {
-      this.$refs.objectSetupFrom.validate((valid) => {
+      this.$refs.objectSetupFrom.$refs.form.validate((valid) => {
         if (valid) {
           this.isDetail = false
         } else {
@@ -156,9 +171,9 @@ export default {
       })
     },
     submitObjectDetail() {
-      let list = this.objectIndexSetupList.map((i) => i.pref + i.suff)
-      let { length } = list
-      let newLength = [...new Set(list)].length
+      const list = this.objectIndexSetupList.map((i) => i.pref + i.suff)
+      const { length } = list
+      const newLength = [...new Set(list)].length
       if (length && length === newLength) {
         this.objectSetupFrom.preAndSuff = this.objectIndexSetupList
         if (this.isEdit) {
@@ -168,7 +183,7 @@ export default {
         }
         this.dialogTableVisible = false
       } else {
-        this.$openMessage.error("Don't repeat")
+        EmqxMessage.error("Don't repeat")
       }
     },
     handleCancel() {
@@ -280,17 +295,17 @@ export default {
           this.uploadLoading = false
         })
         .catch((error) => {
-          this.$message.error(error.toString())
+          EmqxMessage.error(error.toString())
           this.uploadLoading = false
         })
     },
     handleUploadError(error) {
-      this.$message.error(error.toString())
+      EmqxMessage.error(error.toString())
     },
     handleExport() {
       const objList = this.$store.state.SetUpData.objectData
       if (objList.length === 0) {
-        this.$message.warning(this.$t('common.emptyData'))
+        EmqxMessage.warning(this.$t('common.emptyData'))
         return
       }
       this.exportLoading = true
@@ -302,7 +317,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.$message.error(error.toString())
+          EmqxMessage.error(error.toString())
           this.uploadLoading = false
         })
     },
@@ -313,7 +328,7 @@ export default {
       } else {
         deleteData.push(...this.multipleSelection)
       }
-      this.$confirm(this.$t('common.confirmDelete'), this.$t('common.delete'), {
+      ElMessageBox(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       })
         .then(() => {
@@ -328,7 +343,7 @@ export default {
         oatt: [],
       }
       this.objectIndexSetupList = []
-      this.$refs.objectSetupFrom && this.$refs.objectSetupFrom.clearValidate()
+      this.$refs.objectSetupFrom.$refs.form && this.$refs.objectSetupFrom.$refs.form.clearValidate()
     },
     onEdit(data) {
       this.isEdit = true
@@ -337,7 +352,7 @@ export default {
       this.dialogTableVisible = true
     },
     handleClearData() {
-      this.$confirm(this.$t('configuration.clearConfirm'), this.$t('common.warning'), {
+      ElMessageBox(this.$t('configuration.clearConfirm'), this.$t('common.warning'), {
         type: 'warning',
       })
         .then(() => {
@@ -346,9 +361,6 @@ export default {
         .catch(() => {})
     },
     ...mapMutations(['clearAllData', 'setObjectData', 'addObjectData', 'deleteObjectData', 'editObjectData']),
-  },
-  components: {
-    ObjectTable,
   },
 }
 </script>

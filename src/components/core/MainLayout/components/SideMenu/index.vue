@@ -1,27 +1,28 @@
 <template>
-  <div style="height: 100%; position: relative;">
+  <div style="height: 100%; position: relative">
     <div :style="{ height: `${asideHeight}px` }">
-      <el-menu :collapse="collapse" :default-active="routeName" @select="active">
+      <emqx-menu :collapse="collapse" :default-active="routeName" @select="active">
         <template v-for="(menu, index) in sideMenu">
           <!--没有子菜单-->
-          <MenuItem :key="index" v-if="menu.children === undefined && menu.name !== undefined" :menu="menu" />
+          <menu-item :key="index" v-if="menu.children === undefined && menu.name !== undefined" :menu="menu" />
           <!--有子菜单-->
-          <el-submenu :key="index" :index="String(index)" v-if="menu.children">
-            <template slot="title">
+          <emqx-submenu :key="index" :index="String(index)" v-if="menu.children">
+            <template v-slot:title>
+              <!-- FIXME:ICON -->
               <Icon :name="menu.icon"></Icon>
-              <span slot="title">{{ menu.title }}</span>
+              <span>{{ menu.title }}</span>
             </template>
             <template v-for="(menuItem, menuItemIndex) in menu.children">
-              <MenuItem
+              <menu-item
                 :key="menuItemIndex"
                 v-if="!menuItem.children && menuItem.title"
                 :menu="menuItem"
                 :class="{ 'is-active': menuItem.name === routeName }"
               />
             </template>
-          </el-submenu>
+          </emqx-submenu>
         </template>
-      </el-menu>
+      </emqx-menu>
     </div>
   </div>
 </template>
@@ -30,6 +31,8 @@
 import { mapState } from 'vuex'
 // 插件
 import BScroll from 'better-scroll'
+import MenuItem from '../MenuItem'
+
 export default {
   data() {
     return {
@@ -48,11 +51,11 @@ export default {
       return this.$route.name
     },
     ...mapState({
-      sideMenu: (state) => state.menu.sideMenu,
+      sideMenu: state => state.menu.sideMenu,
     }),
   },
   components: {
-    MenuItem: () => import('../MenuItem'),
+    MenuItem,
   },
   mounted() {
     this.scrollInit()
@@ -61,9 +64,9 @@ export default {
       this.updateAsideHeight()
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.scrollDestroy()
-    window.onresize = () => {}
+    window.onresize = null
   },
   methods: {
     active(name) {

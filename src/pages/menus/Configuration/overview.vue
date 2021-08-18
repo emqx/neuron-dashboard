@@ -3,14 +3,18 @@
     <div class="flex">
       <div class="dd-title">{{ $t('configuration.overview') }}</div>
     </div>
-    <p>{{ $t('configuration.driverName') }}: {{ deviceObj.label }} &nbsp;&nbsp;&nbsp;&nbsp; {{ deviceObj.type }}</p>
+    <br />
+    <p>{{ $t('configuration.driverName') }}: {{ deviceObj.label }} {{ deviceObj.type }}</p>
+    <br />
     <div class="dd-mb">
       <p>Object:</p>
+      <br />
       <ObjectTable showAttr :showSelection="false" />
     </div>
 
     <div class="dd-mb">
       <p>{{ $t('configuration.event') }}:</p>
+      <br />
       <EventTable :eventList="res.msgd" />
     </div>
   </Container>
@@ -20,6 +24,7 @@
 import { mapGetters } from 'vuex'
 import EventTable from './components/eventTable'
 import ObjectTable from './components/objectTable'
+import Container from '@/components/core/Container/index.vue'
 
 export default {
   data() {
@@ -33,6 +38,7 @@ export default {
   components: {
     EventTable,
     ObjectTable,
+    Container,
   },
 }
 </script>

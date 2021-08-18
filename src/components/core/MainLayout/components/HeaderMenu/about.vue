@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="$t('common.about')" :visible.sync="dialogVisible" width="700px">
+  <el-dialog :title="$t('common.about')" v-model="dialogVisible" width="700px">
     <h3>{{ data.sysn }}</h3>
     <p>{{ data.cpyr }}</p>
     <div class="detail">
@@ -40,7 +40,7 @@
         <span>{{ data.tusg }}/{{ data.musg }}</span>
       </div>
       <div>
-        <span>Email Contact</span>:
+        <span>Email Contant</span>:
         <span>{{ data.cont }}</span>
       </div>
       <div>
@@ -48,14 +48,21 @@
         <span>{{ data.uuid }}</span>
       </div>
     </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="dialogVisible = false">{{ $t('common.submit') }}</el-button>
-    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <emqx-button type="primary" @click="dialogVisible = false">{{ $t('common.submit') }}</emqx-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 
 <script>
+import { ElDialog } from 'element-plus'
+
 export default {
+  components: {
+    ElDialog,
+  },
   data() {
     return {
       dialogVisible: false,

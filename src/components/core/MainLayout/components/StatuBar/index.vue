@@ -1,10 +1,11 @@
 <template>
   <div class="statu-bar">
-    <div :class="status.comm === 'UP' ? 'green' : 'red'">COMM&nbsp;{{ status.comm || '' }}</div>
+    <!-- FIXME: -->
+    <div :class="status?.comm === 'UP' ? 'green' : 'red'">COMM&nbsp;{{ status?.comm || '' }}</div>
     <div class="mach">
-      {{ status.mach || '' }}
+      {{ status?.mach || '' }}
     </div>
-    <div :class="status.mode === 'ACTIVE' ? 'green' : status.mach === 'STANDBY' ? 'yellow' : 'red'">
+    <div :class="status.mode === 'ACTIVE' ? 'green' : status?.mach === 'STANDBY' ? 'yellow' : 'red'">
       {{ status.mode || '' }}
     </div>
     <div :class="status.mqcn === 'MQDISCONNECT' ? 'red' : 'green'">
@@ -18,10 +19,12 @@
 
 <script>
 import { mapState } from 'vuex'
+
 export default {
   computed: {
     ...mapState({
-      status: (state) => state.Status.status,
+      // FIXME:
+      status: state => state?.Status?.status,
     }),
     commState() {
       return this.status.model === 'ACTIVE' ? 'OK' : this.status.model
@@ -37,6 +40,8 @@ export default {
           break
         case 'EXIST':
           res = 'ALARM'
+          break
+        default:
           break
       }
       return res
@@ -62,7 +67,7 @@ export default {
     font-weight: normal;
   }
   .mach {
-    color: $color-text-main;
+    color: #4d4d4d;
   }
   .red {
     color: $color-danger;

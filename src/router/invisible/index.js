@@ -17,10 +17,4 @@ export default [
     name: 'index-notFount',
     component: () => import('@/pages/core/NotFount/index'),
   },
-  {
-    path: '*',
-    redirect: {
-      name: 'index-notFount',
-    },
-  },
 ]

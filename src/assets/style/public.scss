@@ -27,6 +27,15 @@ $prefix: dd;
   align-items: center;
 }
 
+.chart-dialog {
+  .el-date-editor {
+    margin-right: 20px;
+  }
+  .el-dialog__headerbtn {
+    top: 10px;
+  }
+}
+
 // 响应式样式
 @mixin MarginTop($list, $points: $breakpoint) {
   @each $point, $size in $list {

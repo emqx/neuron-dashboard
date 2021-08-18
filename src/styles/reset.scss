@@ -1,0 +1,150 @@
+/* Button */
+.emqx-button.el-button {
+  font-size: 14px;
+  &.el-button--small {
+    line-height: 12px;
+    i,
+    span {
+      display: inline-block;
+      vertical-align: top;
+      height: 12px;
+      line-height: 12px;
+    }
+  }
+}
+
+/* Breadcrumb */
+.emqx-breadcrumb {
+  margin-bottom: 20px;
+}
+
+/* Form */
+.el-form-item.emqx-form-item {
+  margin-bottom: 10px; 
+}
+
+.el-form--label-top .el-form-item__label {
+  padding: 0px;
+}
+
+.emqx-form-item .el-form-item__label {
+  width: 100%;
+  text-align: left;
+}
+
+.el-input-group__append{
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Upload */
+.el-upload__tip {
+  margin-top: 0px;
+  line-height: 20px;
+}
+
+/* Dialog */
+.common-dialog {
+  border-radius: 8px;
+  .el-dialog__header {
+    padding: 20px 34px;
+    border-bottom: 1px solid #d7dae1;
+  }
+
+  .el-dialog__body {
+    padding: 30px;
+  }
+
+  .el-dialog__footer {
+    padding-top: 0;
+    text-align: center;
+
+    .el-button {
+      width: 80px;
+    }
+  }
+}
+
+.dialog-fade-leave-active {
+  animation: none;
+}
+
+/* Table */
+.emqx-table {
+  i {
+    font-size: 20px;
+    cursor: pointer;
+    color: #4d4d4d;
+    &:hover {
+      color: #4c63ee;
+    }
+  }
+  &.el-table th{
+    background-color: #f4f5fd;
+  }
+  .is-right {
+    .el-button--mini {
+      vertical-align: top;
+      min-height: 21px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+
+    i {
+      vertical-align: top;
+      line-height: 21px;
+    }
+    button+i {
+      margin-left: 10px;
+    }
+  }
+}
+
+/* Popconfirm */
+.el-popconfirm__main {
+  margin-top: 0.7em;
+  margin-bottom: 0.8em;
+}
+
+/* Card */
+.el-card {
+  color: #4d4d4d;
+}
+
+/* Drawer */
+.el-drawer {
+  .el-drawer__header {
+    padding: 16px;
+    padding-bottom: 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #ebeef5;
+  }
+
+  .el-drawer__body {
+    padding: 0 20px 20px 20px;
+    overflow: scroll;
+  }
+}
+
+/* Descriptions */
+.el-descriptions {
+  font-size: 14px;
+  .el-descriptions__label {
+    color: #96999c;
+  }
+
+  .el-descriptions__content {
+    color: #4d4d4d;
+  }
+}
+
+/* Badge */
+.el-badge{
+  padding-left: 16px;
+  .el-badge__content.is-dot{
+    right: auto;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

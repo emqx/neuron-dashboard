@@ -4,7 +4,7 @@
       <slot name="header"></slot>
     </div>
     <div class="dd-card-full__body" ref="wrapper">
-      <slot />
+      <slot></slot>
     </div>
     <div v-if="$slots.footer" class="dd-card-full__footer" ref="footer">
       <slot name="footer"></slot>

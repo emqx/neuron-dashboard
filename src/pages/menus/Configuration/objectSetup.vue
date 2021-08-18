@@ -1,39 +1,48 @@
 <template>
   <Container type="card-full" :scorll="false">
-    <div class="row flex">
-      <div class="dd-title">{{ $t('configuration.objectSetup') }}</div>
-      <div class="driverName">{{ deviceObj.label }}</div>
-      <div class="btnGroup">
-        <DriverSetup />
+    <template v-slot:default>
+      <div class="row flex">
+        <div class="dd-title">{{ $t('configuration.objectSetup') }}</div>
+        <div class="driverName">{{ deviceObj.label }}</div>
+        <div class="btnGroup">
+          <DriverSetup />
+        </div>
       </div>
-    </div>
-    <div class="ObjectSetup">
-      <ObjectSetup />
-    </div>
+      <div class="ObjectSetup">
+        <ObjectSetupComponent />
+      </div>
+    </template>
   </Container>
 </template>
 
 <script>
-import indexMixin from '../mixins'
+import { mapState, mapGetters } from 'vuex'
 import DriverSetup from './components/driverSetup'
 import ObjectSetup from './components/objectSetup'
-import { mapGetters } from 'vuex'
+import Container from '@/components/core/Container/index.vue'
 
 export default {
-  mixins: [indexMixin],
   computed: {
     ...mapGetters(['deviceObj']),
+    ...mapState({
+      driverData: state => state.SetUpData.driverData,
+      driverList: state => state.Device.deviceList,
+    }),
   },
   components: {
     DriverSetup,
-    ObjectSetup,
+    // the component name is same as this page,
+    // if don't rename it
+    // will cause endless loop that throw 'Maximum call stack size exceeded' error
+    ObjectSetupComponent: ObjectSetup,
+    Container,
   },
 }
 </script>
 
 <style scoped lang="scss">
 @import '@/assets/style/public';
-/deep/.el-input-number {
+>>> .el-input-number {
   width: 100%;
   &.is-without-controls .el-input__inner {
     text-align: left;

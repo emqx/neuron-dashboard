@@ -1,5 +1,5 @@
-import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
-import enLocale from 'element-ui/lib/locale/lang/en'
+import zhLocale from 'element-plus/lib/locale/lang/zh-cn'
+import enLocale from 'element-plus/lib/locale/lang/en'
 
 const lang = {
   en: {

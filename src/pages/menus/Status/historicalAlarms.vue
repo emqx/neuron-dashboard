@@ -1,10 +1,10 @@
 <template>
   <Container type="card-full" class="historical-alarms" :scorll="false">
     <div class="dd-title">{{ $t('status.historicalAlarms') }}</div>
-    <el-row :gutter="20">
-      <el-form>
-        <el-col :span="7">
-          <el-form-item :label="$t('status.date')">
+    <emqx-form>
+      <emqx-row :gutter="20">
+        <emqx-col :span="7">
+          <emqx-form-item :label="$t('status.date')">
             <el-date-picker
               v-model="time"
               class="input"
@@ -12,52 +12,57 @@
               start-placeholder="start"
               end-placeholder="end"
               type="datetimerange"
-              value-format="timestamp"
             >
             </el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col :span="7">
-          <el-form-item :label="$t('status.pattern')">
-            <el-input v-model="patn" class="input"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="7">
-          <el-form-item :label="$t('status.category')">
-            <el-select v-model="cate" class="input" clearable>
-              <el-option v-for="item in cateList" :key="item" :label="item" :value="item"> </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="3">
-          <el-form-item>
-            <el-button class="btn filter" @click="handleSubmit('')">{{ $t('common.submit') }}</el-button>
-          </el-form-item>
-        </el-col>
-      </el-form>
-    </el-row>
-    <el-table :data="data" style="width: 100%; margin-top: 20px;">
-      <el-table-column min-width="130" prop="anum" :label="$t('status.index')" />
-      <el-table-column min-width="130" :label="$t('status.time')">
-        <template slot-scope="scope">
+          </emqx-form-item>
+        </emqx-col>
+        <emqx-col :span="7">
+          <emqx-form-item :label="$t('status.pattern')">
+            <emqx-input v-model="patn" class="input"></emqx-input>
+          </emqx-form-item>
+        </emqx-col>
+        <emqx-col :span="7">
+          <emqx-form-item :label="$t('status.category')">
+            <emqx-select v-model="cate" class="input" clearable>
+              <emqx-option v-for="item in cateList" :key="item" :label="item" :value="item"> </emqx-option>
+            </emqx-select>
+          </emqx-form-item>
+        </emqx-col>
+        <emqx-col :span="3">
+          <emqx-form-item>
+            <emqx-button class="btn filter" @click="handleSubmit('')">{{ $t('common.submit') }}</emqx-button>
+          </emqx-form-item>
+        </emqx-col>
+      </emqx-row>
+    </emqx-form>
+    <emqx-table :data="data" style="width: 100%; margin-top: 20px">
+      <emqx-table-column min-width="130" prop="anum" :label="$t('status.index')" />
+      <emqx-table-column min-width="130" :label="$t('status.time')">
+        <template v-slot="scope">
           {{ format(scope.row.tstp || '') }}
         </template>
-      </el-table-column>
-      <el-table-column min-width="130" prop="cate" :label="$t('status.category')" />
-      <el-table-column prop="stat" :label="$t('status.state')" min-width="130" />
-      <el-table-column prop="uack" min-width="130" :label="$t('status.remark')"> </el-table-column>
-      <el-table-column prop="comt" min-width="400" :label="$t('status.alarmMessage')" />
-    </el-table>
+      </emqx-table-column>
+      <emqx-table-column min-width="130" prop="cate" :label="$t('status.category')" />
+      <emqx-table-column prop="stat" :label="$t('status.state')" min-width="130" />
+      <emqx-table-column prop="uack" min-width="130" :label="$t('status.remark')"> </emqx-table-column>
+      <emqx-table-column prop="comt" min-width="380" :label="$t('status.alarmMessage')" align="right" />
+    </emqx-table>
   </Container>
 </template>
 
 <script>
 import moment from 'moment'
-import Mixins from '@/mixins'
+import { getData } from '@/api/data'
 import { setOneHourTime, setTimeDate } from '@/utils/time'
+import { ElDatePicker } from 'element-plus'
+import Container from '@/components/core/Container/index.vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
 
 export default {
-  mixins: [Mixins],
+  components: {
+    ElDatePicker,
+    Container,
+  },
   data() {
     return {
       data: [],
@@ -67,7 +72,16 @@ export default {
       cate: '',
       cateList: ['critical', 'alarm', 'warning', 'event', 'view'],
       patn: '',
+      sett: '',
     }
+  },
+  computed: {
+    nodeId() {
+      return this.$route.params.serviceId
+    },
+  },
+  created() {
+    this.time = setOneHourTime()
   },
   methods: {
     handleSubmit(tokn) {
@@ -89,19 +103,24 @@ export default {
         toti,
         cate,
         patn,
+        wtrm: 'neuron',
       }
-      this.$ws().set({ success: this.setData }).send(this.params)
+      getData(this.nodeId, this.params).then(res => {
+        this.setData(res.data)
+      })
     },
     setData(data) {
       if (data.func === 81) {
-        if (data.rows) {
-          data.rows.forEach((i) => this.data.push(i))
-        }
-        if (data.tokn) {
-          if (data.tokn === '-1') {
-            this.$ws().remove(this.setData)
-          } else {
-            this.handleSubmit(data.tokn)
+        if (data.errc !== 0) {
+          EmqxMessage.error(data.emsg)
+        } else {
+          if (data.rows) {
+            data.rows.forEach(i => this.data.push(i))
+          }
+          if (data.tokn) {
+            if (data.tokn !== '-1') {
+              this.handleSubmit(data.tokn)
+            }
           }
         }
       }
@@ -110,13 +129,10 @@ export default {
       return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
   },
-  created() {
-    this.time = setOneHourTime()
-  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .historical-alarms {
   .el-row {
     margin-top: 20px;
@@ -128,6 +144,10 @@ export default {
   }
   .el-select,
   .el-range-editor.el-input__inner {
+    width: 100%;
+  }
+  .el-date-editor--datetimerange.el-input,
+  .el-date-editor--datetimerange.el-input__inner {
     width: 100%;
   }
 }
