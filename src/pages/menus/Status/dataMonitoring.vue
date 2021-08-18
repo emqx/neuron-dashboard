@@ -88,7 +88,7 @@ const paginateWithTimeStamp = (data, pageSize, pageNo) => {
       if (data[index] === 'tstp') {
         endIndex++
       }
-      group.push(data[index])
+      thisPageData.push(data[index])
     }
     startIndex = index
     return thisPageData
