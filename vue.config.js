@@ -9,7 +9,7 @@ module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
   outputDir: 'neuron-UI-1.2',
-  publicPath: '/neuron/v1.2',
+  publicPath: '/neuron/v1.2/',
   pages: {
     index: {
       entry: 'src/main.js',
