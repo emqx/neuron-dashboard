@@ -8,7 +8,8 @@ const renderer = new marked.Renderer()
 module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
-  outputDir: 'fabric-ui',
+  outputDir: 'neuron-UI-1.2',
+  publicPath: '/neuron/v1.2',
   pages: {
     index: {
       entry: 'src/main.js',
