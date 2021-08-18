@@ -25,6 +25,7 @@ $color: $color-primary;
       right: 0;
       height: $dd-theme-header-height;
       padding: 0px;
+      background-color: $color-header;
       .logo-group {
         display: flex;
         align-items: center;
@@ -88,9 +89,6 @@ $color: $color-primary;
         }
         .el-dropdown {
           @extend %unable-select;
-        }
-        .el-button--primary {
-          box-shadow: 2px 1px 6px 0px #00b1738c;
         }
       }
     }

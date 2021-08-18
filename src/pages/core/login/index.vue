@@ -4,12 +4,14 @@
       <el-card>
         <el-row>
           <el-col :span="12">
-            <img class="login-bg" src="@/assets/login-neuron.png" alt="login-neuron" />
+            <div class="login-bg-container">
+              <img class="login-bg" src="@/assets/login-neuron.png" alt="login-neuron" />
+            </div>
           </el-col>
           <el-col :span="12">
             <el-form :model="formLogin" :rules="rules" ref="loginForm">
               <div class="logo-group">
-                <img class="neuron-logo" src="/logo/logo.png" alt="neuron logo" width="160" />
+                <img class="neuron-logo" src="@/assets/neuron-logo-white.png" alt="neuron logo" width="160" />
               </div>
               <el-form-item prop="username">
                 <el-input type="text" v-model="formLogin.username" :placeholder="$t('common.username')"> </el-input>
@@ -88,13 +90,17 @@ export default {
 <style lang="scss">
 @import '@/assets/style/public.scss';
 .login-page {
-  background-color: #272a33;
+  background-color: #f4f9fc;
   height: 100%;
   position: relative;
   // logo
   .logo-group {
     text-align: center;
     margin-bottom: $margin + 20px;
+  }
+
+  .el-card__body {
+    padding: 0;
   }
   .form-group {
     width: 600px;
@@ -106,19 +112,20 @@ export default {
       transform: translate(-50%, -50%);
       width: 790px;
       height: 390px;
-      background: #333844;
+      background: #fff;
       border-radius: 8px;
       border: none;
-      .login-bg {
-        width: 500px;
-        position: relative;
-        top: -49px;
-        left: -19px;
+      .login-bg-container {
+        overflow: hidden;
+        width: 360px;
+        background-color: #0c283e;
       }
-      box-shadow: 0 0 8px 0 #2f2f2f, 0 2px 4px 0 #191919;
-      padding: 2 * $margin 0;
+      .login-bg {
+        width: 360px;
+      }
+      box-shadow: 0px 2px 4px 0px rgba(12, 40, 62, 0.09);
       .el-form {
-        padding: 0 20px;
+        padding: 2 * $margin 20px;
       }
       .el-input__inner {
         border-radius: 0px;
@@ -130,7 +137,7 @@ export default {
     .button-login {
       button {
         width: 100%;
-        box-shadow: 3px 3px 6px 0px #00b1738c;
+        box-shadow: 0px 10px 18px -6px #189bfe;
       }
       margin-top: $margin + 20px;
       text-align: center;

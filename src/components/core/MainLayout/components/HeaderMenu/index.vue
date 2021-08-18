@@ -197,14 +197,15 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/assets/style/public.scss';
 .upload-dialog {
   .el-icon-document,
   .el-upload-list__item-name {
-    color: #fff;
+    color: $color-text-main;
     &:hover,
     &:focus {
       .el-icon-document {
-        color: #34c388;
+        color: #189bfe;
       }
     }
   }
@@ -217,12 +218,11 @@ export default {
     }
     text-align: center;
     .el-upload__tip {
-      color: #fff;
+      color: $color-text-main;
     }
   }
   .el-upload-list--picture .el-upload-list__item {
-    background: #414756;
-    border: 1px solid #414756;
+    background: $color-bg;
   }
 }
 </style>

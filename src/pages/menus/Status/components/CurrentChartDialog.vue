@@ -22,7 +22,6 @@ export default {
       chartInstance: null,
       propName: null,
       option: {
-        backgroundColor: '#333844',
         grid: {
           top: '20px',
         },
@@ -30,9 +29,6 @@ export default {
           trigger: 'axis',
           axisPointer: {
             type: 'cross',
-            crossStyle: {
-              color: '#999',
-            },
           },
         },
         xAxis: {
@@ -80,7 +76,7 @@ export default {
   methods: {
     initChart() {
       if (!this.chartInstance) {
-        this.chartInstance = charts.init(this.$refs.chartContainer, 'dark')
+        this.chartInstance = charts.init(this.$refs.chartContainer)
       }
       if (this.propName) {
         this.option.series.push({

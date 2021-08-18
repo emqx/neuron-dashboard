@@ -140,10 +140,9 @@ export default {
 }
 .attribute-table--overview {
   .vxe-header--column {
-    background-color: #414756;
     padding: 0px !important;
     .vxe-cell--title {
-      color: #fff;
+      color: $color-text-main;
     }
   }
 }

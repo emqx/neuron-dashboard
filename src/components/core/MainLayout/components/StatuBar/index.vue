@@ -62,7 +62,7 @@ export default {
     font-weight: normal;
   }
   .mach {
-    color: #fff;
+    color: $color-text-main;
   }
   .red {
     color: $color-danger;
