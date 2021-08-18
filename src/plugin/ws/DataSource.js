@@ -1,6 +1,6 @@
 import BaseConfig from './config.js'
 import Store from '../../store'
-import { Message } from 'element-plus'
+import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/index.js'
 
 let dataSource
@@ -19,7 +19,7 @@ class DataSource {
     this.tmp = null
     success && this.onsuccess.add(success)
     this.onclose = () => {
-      Message.warning({
+      EmqxMessage.warning({
         message: 'socket closed',
         duration: 6000,
       })
@@ -37,7 +37,7 @@ class DataSource {
       // }
     }
     this.onerror = e => {
-      Message.error({
+      EmqxMessage.error({
         message: 'socket error',
         duration: 6000,
       })
@@ -97,7 +97,7 @@ class DataSource {
         this.onsuccess.forEach(i => {
           if (!data.wtrm || data.wtrm === this.wtrm) {
             if (data.errc) {
-              Message.error({
+              EmqxMessage.error({
                 message: data.emsg,
                 duration: 6000,
               })
