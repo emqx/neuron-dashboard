@@ -11,8 +11,8 @@
 </template>
 
 <style scoped lang="scss">
+@import '@/assets/style/public.scss';
 .not {
-  background-color: #555;
   display: flex;
   height: 100%;
   flex-flow: column nowrap;
@@ -20,7 +20,7 @@
   align-items: center;
   p {
     font-size: 24px;
-    color: #fff;
+    color: $color-text-main;
     margin: 20px;
   }
 }

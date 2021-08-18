@@ -10,8 +10,8 @@
 /* Table */
 .el-table {
   border-radius: $border-radius-button;
-  color: #fff;
-  border: 1px solid $color-border-main;
+  color: $color-text-main;
+  border: 1px solid transparent;
 }
 .el-table td,
 .el-table th {
@@ -56,6 +56,10 @@
 .el-table .el-button.el-button--text {
   padding: 3px 0px;
 }
+.el-table td,
+.el-table th.is-leaf {
+  border-bottom: 1px solid #e2e7ea;
+}
 
 /* Menu */
 .el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
@@ -65,11 +69,14 @@
   }
 }
 .el-menu--horizontal > .el-submenu .el-submenu__title {
-  color: $color-text-sub;
+  color: #fff;
   &:hover {
     background: transparent;
     color: $color-text-main;
   }
+}
+.el-menu--horizontal > .el-submenu:hover .el-submenu__title {
+  color: #a8acb6;
 }
 
 /* Button */
@@ -118,9 +125,9 @@
   }
 }
 .el-input.is-disabled .el-input__inner {
-  color: #ffffff;
+  color: $color-text-main;
   background-color: transparent;
-  border: 1px solid #495062;
+  border: 1px solid #e2e7ea;
 }
 .el-textarea__inner {
   font-family: 'Arial', 'Microsoft YaHei', '\9ED1\4F53', '\5B8B\4F53', sans-serif;
@@ -195,7 +202,7 @@
 .el-breadcrumb {
   .el-breadcrumb__inner {
     .dd-title {
-      color: #fff;
+      color: $color-text-main;
     }
   }
   .el-breadcrumb__separator[class*='icon'] {
@@ -204,7 +211,7 @@
   .el-breadcrumb__inner.is-link,
   .el-breadcrumb__inner a {
     .dd-title:hover {
-      color: #34c388;
+      color: #189bfe;
     }
   }
 }
@@ -217,12 +224,11 @@
 .el-pagination.is-background .btn-prev,
 .el-pagination.is-background .btn-next,
 .el-pagination.is-background .el-pager li {
-  background-color: #414756;
-  color: #fff;
+  color: $color-text-normal;
 }
 .el-pagination__total,
 .el-pagination__jump {
-  color: #fff;
+  color: $color-text-main;
 }
 
 /* Tabs */

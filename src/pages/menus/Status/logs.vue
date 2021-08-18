@@ -161,11 +161,11 @@ export default {
     margin-top: 10px;
     text-align: right;
     a {
-      border: 1px solid #495062;
+      border: 1px solid #e2e7ea;
       transition: all 0.3s ease;
       color: #fff;
       margin-right: 10px;
-      background: #34c388;
+      background: #189bfe;
       display: inline-block;
       border-radius: 4px;
       padding: 4px 8px;
