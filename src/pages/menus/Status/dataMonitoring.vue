@@ -69,7 +69,6 @@
 </template>
 
 <script>
-import paginate from '../../../utils/paginate'
 import Mixins from '@/mixins'
 import { mapState } from 'vuex'
 import moment from 'moment'
