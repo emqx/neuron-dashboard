@@ -48,7 +48,13 @@
           </emqx-select>
         </emqx-form-item>
         <emqx-form-item label="Decimal" v-if="showDecimal" prop="deci">
-          <el-input-number v-model="AttributeSetupForm.deci" :controls="false" :precision="0" :min="0" />
+          <el-input-number
+            class="emqx-input-number"
+            v-model="AttributeSetupForm.deci"
+            :controls="false"
+            :precision="0"
+            :min="0"
+          />
         </emqx-form-item>
         <emqx-form-item label="Visible" prop="adis">
           <el-radio-group v-model="AttributeSetupForm.adis">
@@ -70,7 +76,13 @@
           </el-radio-group>
         </emqx-form-item>
         <emqx-form-item label="Read time" prop="rtim" v-if="showReadTime">
-          <el-input-number v-model="AttributeSetupForm.rtim" :controls="false" :precision="0" :min="0" />
+          <el-input-number
+            class="emqx-input-number"
+            v-model="AttributeSetupForm.rtim"
+            :controls="false"
+            :precision="0"
+            :min="0"
+          />
         </emqx-form-item>
       </emqx-form>
       <template #footer>
