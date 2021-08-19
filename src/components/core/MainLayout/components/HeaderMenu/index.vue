@@ -12,7 +12,9 @@
         <emqx-menu-item :index="subMenu.name" @click="active(subMenu)" v-show="!subMenu.meta.hide">
           {{ subMenu.title }}
         </emqx-menu-item>
-        <div v-if="item.name === 'Administration' && subIndex === 0" :key="subIndex">
+        <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
+          <emqx-menu-item @click="licensedialogVisible = true">License</emqx-menu-item>
+          <emqx-menu-item @click="uploadLogoDialogVisible = true">{{ $t('common.uploadLogo') }}</emqx-menu-item>
           <emqx-menu-item @click="loadData(74)">{{ $t('common.about') }}</emqx-menu-item>
           <emqx-menu-item @click="showLangDialog = true">{{ $t('common.lang') }}</emqx-menu-item>
         </div>
@@ -20,6 +22,7 @@
     </emqx-submenu>
     <About ref="about" />
   </emqx-menu>
+  <license-dialog v-model="licensedialogVisible" />
   <lang-dialog v-model="showLangDialog" />
 </template>
 
@@ -29,11 +32,13 @@ import { menu } from '@/router/menu'
 import { getData } from '@/api/data.js'
 import About from './about'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import LicenseDialog from '@/pages/menus/Administration/components/LicenseDialog.vue'
 import LangDialog from '@/pages/menus/Administration/components/LangDialog.vue'
 
 export default {
   components: {
     About,
+    LicenseDialog,
     LangDialog,
   },
   data() {
@@ -41,6 +46,7 @@ export default {
       menu,
       curFunc: 0,
       key: '',
+      licensedialogVisible: false,
       showLangDialog: false,
     }
   },
