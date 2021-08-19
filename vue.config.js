@@ -8,7 +8,7 @@ const renderer = new marked.Renderer()
 module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
-  publicPath: '/neuron/v1.2/',
+  publicPath: '/neuron/v1.3/',
   pages: {
     index: {
       entry: 'src/main.js',
