@@ -28,18 +28,5 @@ export default {
   redirect: {
     name: `${moduleName}-userAdministration`,
   },
-  children: [
-    maker('userAdministration'),
-    maker('agentGroup'),
-    maker('newPassword'),
-    {
-      path: 'logout',
-      name: `${moduleName}-logout`,
-      meta,
-      title: formatName('logout'),
-      redirect: {
-        name: 'login',
-      },
-    },
-  ],
+  children: [maker('userAdministration'), maker('agentGroup'), maker('newPassword')],
 }

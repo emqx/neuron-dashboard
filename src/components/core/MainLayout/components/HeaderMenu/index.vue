@@ -14,7 +14,6 @@
         </emqx-menu-item>
         <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
           <emqx-menu-item @click="licensedialogVisible = true">License</emqx-menu-item>
-          <emqx-menu-item @click="uploadLogoDialogVisible = true">{{ $t('common.uploadLogo') }}</emqx-menu-item>
           <emqx-menu-item @click="loadData(74)">{{ $t('common.about') }}</emqx-menu-item>
           <emqx-menu-item @click="showLangDialog = true">{{ $t('common.lang') }}</emqx-menu-item>
         </div>
