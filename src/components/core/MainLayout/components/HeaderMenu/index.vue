@@ -14,6 +14,7 @@
         </emqx-menu-item>
         <div v-if="item.name === 'Administration' && subIndex === 2" :key="subIndex">
           <emqx-menu-item @click="licensedialogVisible = true">License</emqx-menu-item>
+          <emqx-menu-item @click="uploadLogoDialogVisible = true">{{ $t('common.uploadLogo') }}</emqx-menu-item>
           <emqx-menu-item @click="loadData(74)">{{ $t('common.about') }}</emqx-menu-item>
           <emqx-menu-item @click="showLangDialog = true">{{ $t('common.lang') }}</emqx-menu-item>
         </div>
@@ -23,6 +24,7 @@
   </emqx-menu>
   <license-dialog v-model="licensedialogVisible" />
   <lang-dialog v-model="showLangDialog" />
+  <upload-logo-dialog v-model="uploadLogoDialogVisible"></upload-logo-dialog>
 </template>
 
 <script>
@@ -33,12 +35,14 @@ import About from './about'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import LicenseDialog from '@/pages/menus/Administration/components/LicenseDialog.vue'
 import LangDialog from '@/pages/menus/Administration/components/LangDialog.vue'
+import UploadLogoDialog from '@/pages/menus/Administration/components/UploadLogoDialog.vue'
 
 export default {
   components: {
     About,
     LicenseDialog,
     LangDialog,
+    UploadLogoDialog,
   },
   data() {
     return {
@@ -47,6 +51,7 @@ export default {
       key: '',
       licensedialogVisible: false,
       showLangDialog: false,
+      uploadLogoDialogVisible: false,
     }
   },
   computed: {
