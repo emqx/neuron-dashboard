@@ -83,6 +83,7 @@ $color: $color-primary;
         float: right;
         height: $dd-theme-header-height;
         display: flex;
+        padding-right: 16px;
         align-items: center;
         .btn-text {
           color: $color-text-normal;
