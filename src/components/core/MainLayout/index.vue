@@ -3,7 +3,7 @@
     <div class="dd-layout-header">
       <div class="header-content">
         <div class="logo-group">
-          <img class="neuron-logo" src="/logo/logo.png" alt="neuron logo" width="138" />
+          <img class="neuron-logo" :src="`${baseUrl}logo/logo.png`" alt="neuron logo" width="138" />
         </div>
         <HeaderMenu></HeaderMenu>
         <HeaderRight></HeaderRight>
@@ -48,6 +48,9 @@ export default {
   computed: {
     nodeId() {
       return this.$route.params.serviceId
+    },
+    baseUrl() {
+      return process.env.BASE_URL
     },
   },
   mounted() {
