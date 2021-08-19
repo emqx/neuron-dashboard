@@ -32,6 +32,7 @@
 <script>
 import { ElDialog } from 'element-plus'
 import http from '@/utils/http.js'
+import { EmqxMessage } from '@emqx/emqx-ui'
 
 export default {
   components: { ElDialog },
@@ -60,11 +61,11 @@ export default {
   },
   methods: {
     handleUploadSuccess() {
-      this.$message.success(this.$t('common.uploadSuccess'))
+      EmqxMessage.success(this.$t('common.uploadSuccess'))
       this.uploadToken = ''
     },
     handleUploadError(err) {
-      this.$message.error(`${err.status}: ${this.$t('common.uploadFailed')}`)
+      EmqxMessage.error(`${err.status}: ${this.$t('common.uploadFailed')}`)
     },
     handleOpenDialog() {
       const user = JSON.parse(sessionStorage.getItem('user'))
