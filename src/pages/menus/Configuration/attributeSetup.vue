@@ -64,9 +64,9 @@
         </emqx-form-item>
         <emqx-form-item label="Direction" prop="attr">
           <el-radio-group v-model="AttributeSetupForm.attr">
-            <el-radio label="R">R</el-radio>
-            <el-radio label="W">W</el-radio>
-            <el-radio label="RW">RW</el-radio>
+            <el-radio v-for="item in driverAttrList" :key="item" :label="item">
+              {{ item }}
+            </el-radio>
           </el-radio-group>
         </emqx-form-item>
         <emqx-form-item label="Read time" prop="rtim" v-if="showReadTime">
@@ -106,7 +106,7 @@
 <script>
 import { clone } from '@/utils/index'
 import { AttributeTypeList } from '@/config/index'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 import AttributeTable from './components/attributeTable'
 import { ElDialog, ElRadio, ElInputNumber, ElRadioGroup } from 'element-plus'
 import Container from '@/components/core/Container/index.vue'
@@ -155,11 +155,19 @@ export default {
       return this.AttributeSetupForm.attt && this.AttributeSetupForm.attt.indexOf('word') !== -1
     },
     showReadTime() {
-      return this.AttributeSetupForm.attr && this.AttributeSetupForm.attr !== 'W'
+      return (
+        this.AttributeSetupForm.attr && (this.AttributeSetupForm.attr === 'R' || this.AttributeSetupForm.attr === 'RW')
+      )
     },
     ...mapState({
-      objectData: state => state.SetUpData.objectData,
+      objectData: (state) => state.SetUpData.objectData,
     }),
+    driverAttrList() {
+      const { chdv } = this.$store.state.SetUpData.driverData
+      const { southDriverList } = this.$store.state.Device
+      const currentDriver = southDriverList.find((item) => item.val === chdv)
+      return currentDriver.attr || []
+    },
   },
   watch: {
     // eslint-disable-next-line
@@ -189,20 +197,20 @@ export default {
     validataAddr() {
       return (
         this.attributeList.length &&
-        this.attributeList.every(attr => !attr.aadd.some(ad => ad.addr === '' || ad.addr === undefined))
+        this.attributeList.every((attr) => !attr.aadd.some((ad) => ad.addr === '' || ad.addr === undefined))
       )
     },
     submitAttributeSetupFrom() {
-      this.$refs.AttributeSetupForm.$refs.form.validate(valid => {
+      this.$refs.AttributeSetupForm.$refs.form.validate((valid) => {
         if (!valid) {
           return
         }
         const { attr, rtim } = this.AttributeSetupForm
-        if (attr === 'W' && rtim === undefined) {
+        if ((attr !== 'R' || attr !== 'RW') && rtim === undefined) {
           this.AttributeSetupForm.rtim = 0
         }
         if (this.isEdit) {
-          const findIndex = this.attributeList.findIndex(_attr => _attr.attn === this.AttributeSetupForm.attn)
+          const findIndex = this.attributeList.findIndex((_attr) => _attr.attn === this.AttributeSetupForm.attn)
           if (findIndex !== -1) {
             const attrData = [...this.attributeList]
             attrData[findIndex] = {
@@ -228,7 +236,7 @@ export default {
       }
       this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
       if (!immediately) {
-        await new Promise(resolve => {
+        await new Promise((resolve) => {
           setTimeout(() => {
             resolve()
           }, 1000)
@@ -262,7 +270,7 @@ export default {
     },
     validateAddr(row) {
       let hasDummyAddr = true
-      row.aadd.forEach($ => {
+      row.aadd.forEach(($) => {
         if ($.addr !== '-') {
           hasDummyAddr = false
         }
@@ -272,7 +280,7 @@ export default {
       }
     },
     resetPreAndSuff() {
-      this.preAndSuff = this.preAndSuff.map(i => {
+      this.preAndSuff = this.preAndSuff.map((i) => {
         i.addr = ''
         return i
       })
@@ -287,8 +295,8 @@ export default {
       ElMessageBox(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       }).then(() => {
-        const deleteList = deleteData.map(i => i.attn)
-        this.attributeList = this.attributeList.filter(i => !deleteList.includes(i.attn))
+        const deleteList = deleteData.map((i) => i.attn)
+        this.attributeList = this.attributeList.filter((i) => !deleteList.includes(i.attn))
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
         setTimeout(() => {
           if (this.$refs.attributeTable.$refs.form) {
@@ -300,7 +308,7 @@ export default {
     onDummy(data) {
       data.attr = '-'
       data.rtim = 0
-      data.aadd.forEach(item => {
+      data.aadd.forEach((item) => {
         item.addr = '-'
         return item
       })
@@ -309,12 +317,12 @@ export default {
       const name = this.$route.params.data
       if (name) {
         this.objn = name
-        this.objectData.forEach(i => {
+        this.objectData.forEach((i) => {
           if (i.objn === name) {
             if (i.preAndSuff) {
               this.preAndSuff = [...i.preAndSuff]
             } else {
-              this.preAndSuff = i.oatt[0].aadd.map(j => ({
+              this.preAndSuff = i.oatt[0].aadd.map((j) => ({
                 pref: j.pref,
                 obix: j.obix,
                 suff: j.suff,
