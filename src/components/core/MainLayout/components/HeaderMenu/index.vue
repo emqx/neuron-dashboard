@@ -14,11 +14,13 @@
         </emqx-menu-item>
         <div v-if="item.name === 'Administration' && subIndex === 0" :key="subIndex">
           <emqx-menu-item @click="loadData(74)">{{ $t('common.about') }}</emqx-menu-item>
+          <emqx-menu-item @click="showLangDialog = true">{{ $t('common.lang') }}</emqx-menu-item>
         </div>
       </template>
     </emqx-submenu>
     <About ref="about" />
   </emqx-menu>
+  <lang-dialog v-model="showLangDialog" />
 </template>
 
 <script>
@@ -27,16 +29,19 @@ import { menu } from '@/router/menu'
 import { getData } from '@/api/data.js'
 import About from './about'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import LangDialog from '@/pages/menus/Administration/components/LangDialog.vue'
 
 export default {
   components: {
     About,
+    LangDialog,
   },
   data() {
     return {
       menu,
       curFunc: 0,
       key: '',
+      showLangDialog: false,
     }
   },
   computed: {
@@ -73,7 +78,7 @@ export default {
     },
     loadData(func) {
       this.curFunc = func
-      getData(this.nodeId, { func, wtrm: 'neruon' }).then(res => {
+      getData(this.nodeId, { func, wtrm: 'neruon' }).then((res) => {
         this.setData(res.data)
       })
     },
@@ -92,7 +97,7 @@ export default {
 
 <style lang="scss">
 .neuron-menu {
-  .emqx-menu-item.el-menu-item.is-active {
+  .emqx-menu-item.emqx-menu-item.is-active {
     background: #fff;
     box-shadow: none;
   }
