@@ -24,7 +24,7 @@
   </emqx-menu>
   <license-dialog v-model="licensedialogVisible" />
   <lang-dialog v-model="showLangDialog" />
-  <upload-logo-dialog v-model="uploadLogoDialogVisible"></upload-logo-dialog>
+  <upload-logo-dialog v-model="uploadLogoDialogVisible" />
 </template>
 
 <script>
