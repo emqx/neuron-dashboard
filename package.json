@@ -1,5 +1,5 @@
 {
-  "name": "emqx-fabric-ui",
+  "name": "neuron-dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
