@@ -47,13 +47,13 @@
             <emqx-input v-model="objectSetupFrom.objn" :disabled="isEdit"></emqx-input>
           </emqx-form-item>
           <emqx-form-item label="Object size" prop="obsz">
-            <el-input-number v-model="objectSetupFrom.obsz" :controls="false" :precision="0" :min="1" :max="9" />
+            <el-input-number class="emqx-input-number" v-model="objectSetupFrom.obsz" :controls="false" :precision="0" :min="1" :max="9" />
           </emqx-form-item>
           <emqx-form-item label="Update time" prop="updt">
-            <el-input-number v-model="objectSetupFrom.updt" :controls="false" :precision="0" :min="0" />
+            <el-input-number class="emqx-input-number" v-model="objectSetupFrom.updt" :controls="false" :precision="0" :min="0" />
           </emqx-form-item>
           <emqx-form-item label="Logging time" prop="logt">
-            <el-input-number v-model="objectSetupFrom.logt" :controls="false" :precision="0" :min="0" />
+            <el-input-number class="emqx-input-number" v-model="objectSetupFrom.logt" :controls="false" :precision="0" :min="0" />
           </emqx-form-item>
           <emqx-form-item label="Timestamp display" prop="tstd">
             <el-radio-group v-model="objectSetupFrom.tstd">

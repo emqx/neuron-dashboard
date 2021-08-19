@@ -57,7 +57,7 @@
           </emqx-select>
         </emqx-form-item>
         <emqx-form-item :label="$t('configuration.subroutine')" prop="subr">
-          <el-input-number v-model="eventForm.subr" :controls="false" :precision="0" />
+          <el-input-number class="emqx-input-number" v-model="eventForm.subr" :controls="false" :precision="0" />
         </emqx-form-item>
       </emqx-form>
       <template #footer>

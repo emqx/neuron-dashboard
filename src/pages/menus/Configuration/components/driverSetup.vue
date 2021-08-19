@@ -30,7 +30,13 @@
               </emqx-col>
               <emqx-col :span="12">
                 <emqx-form-item label="Port no">
-                  <el-input-number v-model="chnl[1].tcpp" :controls="false" :precision="0" :min="0" />
+                  <el-input-number
+                    class="emqx-input-number"
+                    v-model="chnl[1].tcpp"
+                    :controls="false"
+                    :precision="0"
+                    :min="0"
+                  />
                 </emqx-form-item>
               </emqx-col>
             </emqx-form>
@@ -131,7 +137,13 @@
               </emqx-col>
               <emqx-col :span="12">
                 <emqx-form-item label="Port no">
-                  <el-input-number v-model="chnl[0].tcpp" :controls="false" :precision="0" :min="0" />
+                  <el-input-number
+                    class="emqx-input-number"
+                    v-model="chnl[0].tcpp"
+                    :controls="false"
+                    :precision="0"
+                    :min="0"
+                  />
                 </emqx-form-item>
               </emqx-col>
             </emqx-form>
@@ -225,17 +237,17 @@ export default {
   },
   computed: {
     ...mapState({
-      driverData: state => state.SetUpData.driverData,
+      driverData: (state) => state.SetUpData.driverData,
     }),
     southDriverType() {
-      const tmp = this.southDriverList.find(i => i.val === this.chdv)
+      const tmp = this.southDriverList.find((i) => i.val === this.chdv)
       return tmp ? tmp.type : ''
     },
     southDriverList() {
       return this.$store.state.Device.southDriverList
     },
     northDriverType() {
-      const tmp = this.northDriverList.find(i => i.val === this.north)
+      const tmp = this.northDriverList.find((i) => i.val === this.north)
       return tmp ? tmp.type : ''
     },
     northDriverList() {
@@ -324,7 +336,7 @@ export default {
         'g26875',
       ]
       if (ipPortChdvTypes.indexOf(this.chdv) !== -1 && ipPortChdvTypes.indexOf(this.north) !== -1) {
-        _chnl = this.chnl.filter(item => item.tcph && (item.tcpp !== '' || item.tcpp !== undefined))
+        _chnl = this.chnl.filter((item) => item.tcph && (item.tcpp !== '' || item.tcpp !== undefined))
       } else {
         _chnl = this.chnl
       }
@@ -336,7 +348,7 @@ export default {
       this.$nextTick(this.init)
     },
     getDriverParams(drvn) {
-      getData(this.nodeId, { func: 24, drvn, wtrm: 'neruon' }).then(res => {
+      getData(this.nodeId, { func: 24, drvn, wtrm: 'neruon' }).then((res) => {
         this.setParams(res.data)
       })
     },
@@ -391,13 +403,13 @@ export default {
         getData(this.nodeId, {
           func: 26,
           wtrm: 'neuron',
-        }).then(res => {
+        }).then((res) => {
           this.setDeviceList(res.data)
         })
       }
     },
     handleTtycChange(val) {
-      const { fdrw } = this.rs232Options.find(item => item.name === val)
+      const { fdrw } = this.rs232Options.find((item) => item.name === val)
       this.fdrw = fdrw
     },
   },
