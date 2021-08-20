@@ -27,10 +27,11 @@ const handleError = async error => {
 }
 
 const handleCustomError = data => {
-  // if (data.code === 16001) {
-  //   router.push({ name: 'login' })
-  //   return
-  // }
+  if (data.code === 16001) {
+    const reg = /\/neuron\/([^\/]+)\//
+    const version = process.env.BASE_URL.match(reg) ? process.env.BASE_URL.match(reg)[1] : ''
+    window.location = `${window.location.protocol}//${window.location.host}/login?from=neuron`
+  }
   EmqxMessage.error(`${data.message}`)
 }
 
