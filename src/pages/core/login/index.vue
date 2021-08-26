@@ -11,7 +11,7 @@
           <el-col :span="12">
             <el-form :model="formLogin" :rules="rules" ref="loginForm">
               <div class="logo-group">
-                <img class="neuron-logo" src="@/assets/neuron-logo-white.png" alt="neuron logo" width="160" />
+                <img class="neuron-logo" src="/logo/logo.png" alt="neuron logo" width="160" />
               </div>
               <el-form-item prop="username">
                 <el-input type="text" v-model="formLogin.username" :placeholder="$t('common.username')"> </el-input>
@@ -101,6 +101,7 @@ export default {
 
   .el-card__body {
     padding: 0;
+    background: #0c283e;
   }
   .form-group {
     width: 600px;
@@ -129,9 +130,11 @@ export default {
       }
       .el-input__inner {
         border-radius: 0px;
+        border: 1px solid #394f60;
         border-top: none;
         border-left: none;
         border-right: none;
+        color: #fff;
       }
     }
     .button-login {
