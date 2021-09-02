@@ -48,7 +48,7 @@
               <el-input v-model="objectSetupFrom.objn" :disabled="isEdit"></el-input>
             </el-form-item>
             <el-form-item label="Object size" prop="obsz">
-              <el-input-number v-model="objectSetupFrom.obsz" :controls="false" :precision="0" :min="1" :max="9" />
+              <el-input-number v-model="objectSetupFrom.obsz" :controls="false" :precision="0" />
             </el-form-item>
             <el-form-item label="Update time (100ms)" prop="updt">
               <el-input-number v-model="objectSetupFrom.updt" :controls="false" :precision="0" :min="0" />
