@@ -9,7 +9,6 @@
           <el-option v-for="item in objList" :key="item" :label="item" :value="item"> </el-option>
         </el-select>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button @click="handleShow(null, 'History')">{{ $t('status.history') }}</el-button>
         <el-button @click="handleShow(null, 'Current')">{{ $t('status.current') }}</el-button>
       </div>
     </div>
@@ -218,7 +217,6 @@ export default {
   margin: 50px;
 }
 .btnGroup {
-  width: 705px;
   /deep/.el-select {
     width: 350px;
   }
