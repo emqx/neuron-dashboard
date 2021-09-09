@@ -35,7 +35,7 @@
         </template>
       </emqx-table-column>
     </emqx-table>
-    <el-dialog v-model="dialogVisible" title="POS" width="300px" @closed="handleClosed">
+    <el-dialog :z-index="2000" v-model="dialogVisible" title="POS" width="300px" @closed="handleClosed">
       <el-input-number
         class="emqx-input-number"
         v-model="pos"

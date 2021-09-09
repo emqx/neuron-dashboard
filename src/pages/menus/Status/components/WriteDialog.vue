@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="propName" v-model="dialogVisible" width="500px" @closed="handleClose">
+  <el-dialog :z-index="2000" :title="propName" v-model="dialogVisible" width="500px" @closed="handleClose">
     <span> {{ $t('status.value') }}: </span>
     <emqx-input v-model="val" style="width: 400px"></emqx-input>
     <template #footer>

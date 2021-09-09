@@ -1,6 +1,7 @@
 <template>
-  <el-dialog
+  <el-dialog 
     custom-class="upload-dialog"
+    :z-index="2000"
     :title="$t('administration.uploadLicense')"
     v-model="showDialog"
     width="500px"

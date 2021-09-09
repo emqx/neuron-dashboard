@@ -10,7 +10,7 @@
       </div>
     </div>
     <EventTable v-model="multipleSelection" :showBtn="true" :eventList="msgd" @delete="onDelete" @edit="onEdit" />
-    <el-dialog :title="$t('configuration.eventSetup')" @closed="close" v-model="dialogTableVisible">
+    <el-dialog :z-index="2000" :title="$t('configuration.eventSetup')" @closed="close" v-model="dialogTableVisible">
       <emqx-form :model="eventForm" ref="eventForm" :rules="eventFormRules" label-width="120px">
         <emqx-form-item label="Object1" prop="sobj">
           <emqx-select v-model="eventForm.sobj">
