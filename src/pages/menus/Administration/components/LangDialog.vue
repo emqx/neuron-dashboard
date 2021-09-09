@@ -1,5 +1,5 @@
 <template>
-  <el-dialog custom-class="lang" :title="$t('common.lang')" v-model="dialogVisible" width="700px">
+  <el-dialog :z-index="2000" custom-class="lang" :title="$t('common.lang')" v-model="dialogVisible" width="700px">
     <emqx-radio-group v-model="lang">
       <emqx-radio label="en">English</emqx-radio>
       <emqx-radio label="zh">简体中文</emqx-radio>

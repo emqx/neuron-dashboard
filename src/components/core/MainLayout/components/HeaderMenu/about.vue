@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="$t('common.about')" v-model="dialogVisible" width="700px">
+  <el-dialog :z-index="2000" :title="$t('common.about')" v-model="dialogVisible" width="700px">
     <h3>{{ data.sysn }}</h3>
     <p>{{ data.cpyr }}</p>
     <div class="detail">

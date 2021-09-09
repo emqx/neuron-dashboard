@@ -29,7 +29,8 @@
     <div class="row">
       <ObjectTable :showBtn="true" v-model="multipleSelection" @edit="onEdit" @delete="onDelete" />
     </div>
-    <el-dialog
+    <el-dialog 
+      :z-index="2000"
       :title="isDetail ? $t('configuration.objectSetup') : $t('configuration.objectIndexsetup')"
       v-model="dialogTableVisible"
       @closed="onClose"
