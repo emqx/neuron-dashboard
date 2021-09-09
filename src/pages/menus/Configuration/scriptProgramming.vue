@@ -35,8 +35,15 @@
         </template>
       </emqx-table-column>
     </emqx-table>
-    <el-dialog v-model="dialogVisible" title="POS" width="300px" @closed="handleClosed">
-      <el-input-number v-model="pos" :min="1" :max="999" :controls="false" size="mini"></el-input-number>
+    <el-dialog :z-index="2000" v-model="dialogVisible" title="POS" width="300px" @closed="handleClosed">
+      <el-input-number
+        class="emqx-input-number"
+        v-model="pos"
+        :min="1"
+        :max="999"
+        :controls="false"
+        size="mini"
+      ></el-input-number>
       <template #footer>
         <span class="dialog-footer">
           <emqx-button @click="dialogVisible = false">{{ $t('common.cancel') }}</emqx-button>
