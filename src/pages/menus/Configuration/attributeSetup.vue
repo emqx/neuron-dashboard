@@ -186,7 +186,7 @@ export default {
         adis: 1,
         achg: 1,
       }
-      this.preAndSuff = []
+      this.resetPreAndSuff()
     },
     addressClosed() {
       this.preAndSuff.addr = ''
