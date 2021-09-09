@@ -36,7 +36,7 @@
         ref="AttributeSetupForm"
         :model="AttributeSetupForm"
         :rules="AttributeSetupFormRules"
-        label-width="120px"
+        label-width="150px"
       >
         <emqx-form-item :label="$t('common.name')" prop="attn">
           <emqx-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></emqx-input>
@@ -63,7 +63,7 @@
             </el-radio>
           </el-radio-group>
         </emqx-form-item>
-        <emqx-form-item label="Read time" prop="rtim" v-if="showReadTime">
+        <emqx-form-item label="Read time (100ms)" prop="rtim" v-if="showReadTime">
           <el-input-number
             class="emqx-input-number"
             v-model="AttributeSetupForm.rtim"
