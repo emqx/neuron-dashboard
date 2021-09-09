@@ -26,16 +26,6 @@
       </vxe-table-column>
       <vxe-table-column field="attt" :width="minWidth" :title="$t('common.type')" />
       <vxe-table-column field="deci" :width="minWidth" title="Decimal" />
-      <vxe-table-column field="adis" :width="minWidth" title="Visible">
-        <template v-slot="scope">
-          {{ scope.row.adis ? 'YES' : 'NO' }}
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="achg" :width="minWidth" title="Change">
-        <template v-slot="scope">
-          {{ scope.row.achg ? 'YES' : 'NO' }}
-        </template>
-      </vxe-table-column>
       <vxe-table-column field="attr" :width="minWidth" title="RW" />
       <vxe-table-column field="rtim" :width="minWidth" title="Rtime" />
       <vxe-table-column :width="250" v-if="showBtn">
