@@ -1,6 +1,7 @@
 <template>
-  <el-dialog
+  <el-dialog 
     custom-class="chart-dialog"
+    :z-index="2000"
     :title="propName || objName"
     v-model="dialogVisible"
     width="900px"

@@ -13,7 +13,7 @@
         >{{ $t('common.delete') }}</emqx-button
       >
     </span>
-    <el-dialog :title="$t('configuration.createSubroutine')" @closed="handleClose" v-model="dialogVisible">
+    <el-dialog :z-index="2000" :title="$t('configuration.createSubroutine')" @closed="handleClose" v-model="dialogVisible">
       <emqx-form
         :model="subroutineForm"
         :rules="subroutineFormRules"
