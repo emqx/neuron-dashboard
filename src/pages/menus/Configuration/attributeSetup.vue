@@ -50,18 +50,6 @@
         <emqx-form-item label="Decimal" v-if="showDecimal" prop="deci">
           <el-input-number v-model="AttributeSetupForm.deci" :controls="false" :precision="0" :min="0" />
         </emqx-form-item>
-        <emqx-form-item label="Visible" prop="adis">
-          <el-radio-group v-model="AttributeSetupForm.adis">
-            <el-radio :label="1">Yes</el-radio>
-            <el-radio :label="0">No</el-radio>
-          </el-radio-group>
-        </emqx-form-item>
-        <emqx-form-item label="Change" prop="achg">
-          <el-radio-group v-model="AttributeSetupForm.achg">
-            <el-radio :label="1">Yes</el-radio>
-            <el-radio :label="0">No</el-radio>
-          </el-radio-group>
-        </emqx-form-item>
         <emqx-form-item label="Direction" prop="attr">
           <el-radio-group v-model="AttributeSetupForm.attr">
             <el-radio label="R">R</el-radio>
@@ -131,7 +119,10 @@ export default {
       dialogTableVisible: false,
       isEdit: false,
       attributeList: [],
-      AttributeSetupForm: {},
+      AttributeSetupForm: {
+        adis: 1,
+        achg: 1,
+      },
       AttributeSetupFormRules: {
         attn: [
           { required: true, message: 'Please input Name', trigger: 'blur' },
@@ -139,8 +130,6 @@ export default {
         ],
         attt: [{ required: true, message: 'Please select Type', trigger: 'blur' }],
         deci: [{ required: true, message: 'Please input Decimal', trigger: 'blur' }],
-        adis: [{ required: true, message: 'Please select Display', trigger: 'blur' }],
-        achg: [{ required: true, message: 'Please select Change', trigger: 'blur' }],
         attr: [{ required: true, message: 'Please select Direction', trigger: 'blur' }],
         rtim: [{ required: true, message: 'pleact input Time', trigger: 'blur' }],
       },
@@ -173,7 +162,10 @@ export default {
   methods: {
     close() {
       this.isEdit = false
-      this.AttributeSetupForm = {}
+      this.AttributeSetupForm = {
+        adis: 1,
+        achg: 1,
+      }
       this.preAndSuff = []
     },
     addressClosed() {
@@ -218,7 +210,10 @@ export default {
           })
         }
         this.dialogTableVisible = false
-        this.AttributeSetupForm = {}
+        this.AttributeSetupForm = {
+          adis: 1,
+          achg: 1,
+        }
         this.confirmSubmit()
       })
     },
