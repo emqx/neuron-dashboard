@@ -28,5 +28,5 @@ export default {
   redirect: {
     name: `${moduleName}-userAdministration`,
   },
-  children: [maker('userAdministration'), maker('agentGroup'), maker('newPassword')],
+  children: [maker('agentGroup'), maker('newPassword')],
 }
