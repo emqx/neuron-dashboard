@@ -139,9 +139,6 @@ export default {
       this.sending = false
       if (data.func === 21 && data.errc === 0) {
         EmqxMessage.success(this.$t('common.submitSuccess'))
-        localStorage.removeItem('chnl')
-        localStorage.removeItem('objectData')
-        localStorage.removeItem('eventData')
         this.$store.commit('clearAlarmList')
         setTimeout(() => {
           postData(this.nodeId, {
