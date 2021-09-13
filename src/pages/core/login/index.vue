@@ -68,9 +68,6 @@ export default {
     },
     init() {
       sessionStorage.removeItem('user')
-      localStorage.removeItem('chnl')
-      localStorage.removeItem('objectData')
-      localStorage.removeItem('eventData')
       this.$store.commit('clearAlarmList')
     },
   },
