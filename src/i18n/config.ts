@@ -3,6 +3,14 @@ export default {
     zh: '配置',
     en: 'Configuration',
   },
+  northAppSetup: {
+    zh: '北向应用设置',
+    en: 'North Application Setup',
+  },
+  south: {
+    zh: '南向',
+    en: 'South',
+  },
   objectSetup: {
     zh: 'Object 设置',
     en: 'Object Setup',

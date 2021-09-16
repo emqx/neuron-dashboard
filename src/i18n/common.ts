@@ -219,4 +219,8 @@ export default {
     zh: '请选择',
     en: 'please select',
   },
+  home: {
+    zh: '首页',
+    en: 'Home',
+  },
 }

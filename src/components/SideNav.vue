@@ -1,7 +1,13 @@
 <template>
   <emqx-menu class="el-menu-vertical-demo side-nav" router :default-active="actvieMenu">
     <template v-for="(nav, index) in navList">
-      <emqx-menu-item class="nav-item" v-if="!nav.subMenus" style="padding-left: 0" :key="index" :index="nav.to">
+      <emqx-menu-item
+        class="nav-item"
+        v-if="!nav.subMenus"
+        style="padding-left: 0"
+        :key="index"
+        :index="nav.to"
+      >
         <div class="nav-item-content">
           <i class="nav-icon iconfont" :class="nav.icon"></i>
           <span class="nav-label">{{ nav.label }}</span>
@@ -48,54 +54,34 @@ export default defineComponent({
     const state = reactive({
       navList: [
         {
+          to: '/home',
+          label: t('common.home'),
+          icon: 'iconattributed',
+        },
+        {
           to: '/data',
-          label: t('data.data'),
+          label: t('data.dataMonitoring'),
           icon: 'iconstatus',
         },
         {
           to: '/configuration',
           label: t('config.config'),
           icon: 'iconconfig',
-        },
-        {
-          to: '/logs',
-          label: t('logs.logs'),
-          icon: 'iconlogs',
           subMenus: [
             {
-              to: '/logs',
-              label: t('logs.logData'),
+              to: '/configuration/north-driver',
+              label: t('config.northAppSetup'),
             },
             {
-              to: '/logs_switch',
-              label: t('logs.logSwitch'),
+              to: '/configuration/south-driver',
+              label: t('config.south') + t('config.driverSetup'),
             },
           ],
         },
         {
-          to: '/script',
-          label: t('script.script'),
-          icon: 'iconscript',
-        },
-        {
-          to: '/current_alarms',
-          label: t('alarm.alarms'),
-          icon: 'iconalarmstatus',
-          subMenus: [
-            {
-              to: '/current_alarms',
-              label: t('alarm.currentAlarms'),
-            },
-            {
-              to: '/historical_alarms',
-              label: t('alarm.historicalAlarms'),
-            },
-          ],
-        },
-        {
-          to: '/agent_group',
-          label: t('group.group'),
-          icon: 'icongroup',
+          to: '/admin',
+          label: t('admin.admin'),
+          icon: 'iconAdministration',
         },
       ],
     })
