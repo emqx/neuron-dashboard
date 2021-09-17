@@ -90,6 +90,14 @@ export default {
   created() {
     this.setData()
   },
+  watch: {
+    attributeList: {
+      deep: true,
+      handler() {
+        this.setData()
+      },
+    },
+  },
   methods: {
     setData() {
       this.count = this.attributeList.length
