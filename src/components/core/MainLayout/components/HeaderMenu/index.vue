@@ -12,7 +12,7 @@
         <emqx-menu-item :index="subMenu.name" @click="active(subMenu)" v-show="!subMenu.meta.hide">
           {{ subMenu.title }}
         </emqx-menu-item>
-        <div v-if="item.name === 'Administration' && subIndex === 1" :key="subIndex">
+        <div v-if="item.name === 'Administration' && subIndex === 0" :key="subIndex">
           <emqx-menu-item @click="licensedialogVisible = true">License</emqx-menu-item>
           <emqx-menu-item @click="uploadLogoDialogVisible = true">{{ $t('common.uploadLogo') }}</emqx-menu-item>
           <emqx-menu-item @click="loadData(74)">{{ $t('common.about') }}</emqx-menu-item>
