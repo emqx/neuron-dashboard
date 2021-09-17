@@ -31,7 +31,12 @@
       />
     </div>
 
-    <el-dialog :z-index="2000" :title="$t('configuration.dataAttributeSetup')" v-model="dialogTableVisible" @closed="close">
+    <el-dialog
+      :z-index="2000"
+      :title="$t('configuration.dataAttributeSetup')"
+      v-model="dialogTableVisible"
+      @closed="close"
+    >
       <emqx-form
         ref="AttributeSetupForm"
         :model="AttributeSetupForm"
@@ -67,7 +72,12 @@
         </span>
       </template>
     </el-dialog>
-    <el-dialog :z-index="2000" :title="$t('configuration.dataAddrSetup')" @closed="addressClosed" v-model="addressVisible">
+    <el-dialog
+      :z-index="2000"
+      :title="$t('configuration.dataAddrSetup')"
+      @closed="addressClosed"
+      v-model="addressVisible"
+    >
       <emqx-table :data="preAndSuff" class="dd-mb">
         <emqx-table-column :label="$t('status.index')" :width="minWidth">
           <template v-slot="scope">
@@ -149,7 +159,7 @@ export default {
       )
     },
     ...mapState({
-      objectData: state => state.SetUpData.objectData,
+      objectData: (state) => state.SetUpData.objectData,
     }),
   },
   watch: {
@@ -183,11 +193,11 @@ export default {
     validataAddr() {
       return (
         this.attributeList.length &&
-        this.attributeList.every(attr => !attr.aadd.some(ad => ad.addr === '' || ad.addr === undefined))
+        this.attributeList.every((attr) => !attr.aadd.some((ad) => ad.addr === '' || ad.addr === undefined))
       )
     },
     submitAttributeSetupFrom() {
-      this.$refs.AttributeSetupForm.$refs.form.validate(valid => {
+      this.$refs.AttributeSetupForm.$refs.form.validate((valid) => {
         if (!valid) {
           return
         }
@@ -196,7 +206,7 @@ export default {
           this.AttributeSetupForm.rtim = 0
         }
         if (this.isEdit) {
-          const findIndex = this.attributeList.findIndex(_attr => _attr.attn === this.AttributeSetupForm.attn)
+          const findIndex = this.attributeList.findIndex((_attr) => _attr.attn === this.AttributeSetupForm.attn)
           if (findIndex !== -1) {
             const attrData = [...this.attributeList]
             attrData[findIndex] = {
@@ -225,7 +235,7 @@ export default {
       }
       this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
       if (!immediately) {
-        await new Promise(resolve => {
+        await new Promise((resolve) => {
           setTimeout(() => {
             resolve()
           }, 1000)
@@ -252,14 +262,14 @@ export default {
     },
     addressSubmit() {
       this.addressVisible = false
-      this.$set(this.activeAttributeRow, 'aadd', clone(this.preAndSuff))
+      this.activeAttributeRow.aadd = clone(this.preAndSuff)
       this.validateAddr(this.activeAttributeRow)
       this.resetPreAndSuff()
       this.confirmSubmit()
     },
     validateAddr(row) {
       let hasDummyAddr = true
-      row.aadd.forEach($ => {
+      row.aadd.forEach(($) => {
         if ($.addr !== '-') {
           hasDummyAddr = false
         }
@@ -269,7 +279,7 @@ export default {
       }
     },
     resetPreAndSuff() {
-      this.preAndSuff = this.preAndSuff.map(i => {
+      this.preAndSuff = this.preAndSuff.map((i) => {
         i.addr = ''
         return i
       })
@@ -284,8 +294,8 @@ export default {
       ElMessageBox(this.$t('common.confirmDelete'), this.$t('common.delete'), {
         type: 'warning',
       }).then(() => {
-        const deleteList = deleteData.map(i => i.attn)
-        this.attributeList = this.attributeList.filter(i => !deleteList.includes(i.attn))
+        const deleteList = deleteData.map((i) => i.attn)
+        this.attributeList = this.attributeList.filter((i) => !deleteList.includes(i.attn))
         this.setObjectAttribute({ name: this.objn, attributeList: this.attributeList })
         setTimeout(() => {
           if (this.$refs.attributeTable.$refs.form) {
@@ -297,7 +307,7 @@ export default {
     onDummy(data) {
       data.attr = '-'
       data.rtim = 0
-      data.aadd.forEach(item => {
+      data.aadd.forEach((item) => {
         item.addr = '-'
         return item
       })
@@ -306,12 +316,12 @@ export default {
       const name = this.$route.params.data
       if (name) {
         this.objn = name
-        this.objectData.forEach(i => {
+        this.objectData.forEach((i) => {
           if (i.objn === name) {
             if (i.preAndSuff) {
               this.preAndSuff = [...i.preAndSuff]
             } else {
-              this.preAndSuff = i.oatt[0].aadd.map(j => ({
+              this.preAndSuff = i.oatt[0].aadd.map((j) => ({
                 pref: j.pref,
                 obix: j.obix,
                 suff: j.suff,
