@@ -31,7 +31,12 @@
       />
     </div>
 
-    <el-dialog :z-index="2000" :title="$t('configuration.dataAttributeSetup')" v-model="dialogTableVisible" @closed="close">
+    <el-dialog
+      :z-index="2000"
+      :title="$t('configuration.dataAttributeSetup')"
+      v-model="dialogTableVisible"
+      @closed="close"
+    >
       <emqx-form
         ref="AttributeSetupForm"
         :model="AttributeSetupForm"
@@ -79,7 +84,12 @@
         </span>
       </template>
     </el-dialog>
-    <el-dialog :z-index="2000" :title="$t('configuration.dataAddrSetup')" @closed="addressClosed" v-model="addressVisible">
+    <el-dialog
+      :z-index="2000"
+      :title="$t('configuration.dataAddrSetup')"
+      @closed="addressClosed"
+      v-model="addressVisible"
+    >
       <emqx-table :data="preAndSuff" class="dd-mb">
         <emqx-table-column :label="$t('status.index')" :width="minWidth">
           <template v-slot="scope">
@@ -270,7 +280,7 @@ export default {
     },
     addressSubmit() {
       this.addressVisible = false
-      this.$set(this.activeAttributeRow, 'aadd', clone(this.preAndSuff))
+      this.activeAttributeRow.aadd = clone(this.preAndSuff)
       this.validateAddr(this.activeAttributeRow)
       this.resetPreAndSuff()
       this.confirmSubmit()
