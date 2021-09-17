@@ -111,6 +111,7 @@ export default {
       count: 0,
       pageSize: 500,
       page: 1,
+      pollingTimer: null,
     }
   },
   computed: {
@@ -133,6 +134,14 @@ export default {
   },
   mounted() {
     this.getObjTele()
+    this.pollingTimer = window.setInterval(() => {
+      this.getObjTele()
+    }, 2000);
+  },
+  beforeUnmount() {
+    if (this.pollingTimer) {
+      window.clearInterval(this.pollingTimer)
+    }
   },
   methods: {
     getObjRegister() {
