@@ -135,7 +135,7 @@ export default {
   mounted() {
     this.getObjTele()
     this.pollingTimer = window.setInterval(() => {
-      this.getObjTele()
+      this.getObjRegister()
     }, 2000);
   },
   beforeUnmount() {
