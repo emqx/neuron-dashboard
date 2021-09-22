@@ -8,3 +8,8 @@ export enum SystemStatus {
   STANDBY = 'STANDBY',
   ACTIVE = 'ACTIVE',
 }
+
+export enum DriverDirection {
+  North = 5,
+  South = 1,
+}

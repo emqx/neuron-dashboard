@@ -8,7 +8,7 @@ const option = {
     'Cache-Control': 'no-cache',
     Accept: 'application/json',
   },
-  baseURL: '',
+  baseURL: '/api/v2',
   timeout: 10000,
 }
 

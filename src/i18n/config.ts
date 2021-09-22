@@ -7,6 +7,14 @@ export default {
     zh: '北向应用设置',
     en: 'North Application Setup',
   },
+  addConfig: {
+    zh: '添加配置',
+    en: 'Add Config',
+  },
+  workStatus: {
+    zh: '工作状态',
+    en: 'Status',
+  },
   south: {
     zh: '南向',
     en: 'South',

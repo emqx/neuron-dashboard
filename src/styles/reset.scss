@@ -1,13 +1,14 @@
 /* Divider */
 .el-divider__text {
-  background-color: #F4F9FC;
+  background-color: #f4f9fc;
   font-weight: 500;
-  color: #96999C;
+  color: #96999c;
 }
 
 /* Dropdown */
 .el-dropdown-menu__item {
-  [class^="el-icon-"], [class*=" el-icon-"] {
+  [class^='el-icon-'],
+  [class*=' el-icon-'] {
     font-size: 16px;
     margin-right: 8px;
   }
@@ -24,14 +25,15 @@
 }
 
 /* Date */
-.el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner {
+.el-date-editor--datetimerange.el-input,
+.el-date-editor--datetimerange.el-input__inner {
   width: 100%;
   border-radius: 8px;
 }
 
 /* Table */
 .el-table.emqx-table th {
-  background: #F4F9FC;
+  background: #f4f9fc;
 }
 
 /* Input */
@@ -40,5 +42,22 @@
     background-color: #fff;
     border: 1px solid #dcdfe6;
     color: #606266;
+  }
+}
+
+/* Button */
+.emqx-button {
+  line-height: 1;
+  .iconfont {
+    margin-right: 4px;
+    font-size: 14px;
+    vertical-align: top;
+  }
+  .iconfont + span {
+    display: inline-block;
+    height: 14px;
+    font-size: 14px;
+    vertical-align: top;
+    line-height: 1;
   }
 }
