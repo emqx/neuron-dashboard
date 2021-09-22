@@ -1,10 +1,11 @@
-@import '~@/styles/emqx-ui-variables.scss';
+@import './emqx-ui-variables.scss';
 
 #app {
-  font-family: "PingFang SC", "Source Han Sans CN";
+  font-family: 'PingFang SC', 'Source Han Sans CN';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  min-width: 1250px;
 }
 
 body,
@@ -42,8 +43,18 @@ h3.card-title {
   margin-bottom: 24px;
 }
 
+.card-hd-with-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  h3.card-title {
+    margin-bottom: 0;
+  }
+}
+
 body {
-  background-color: #F4F9FC;
+  background-color: #f4f9fc;
 }
 
 label {
@@ -57,7 +68,7 @@ label {
   top: 0;
   left: 0;
   width: 100%;
-  background: #0C283E;
+  background: #0c283e;
 }
 
 .side-nav {
@@ -125,7 +136,7 @@ label {
 }
 
 .clearfix::after {
-  content: "";
+  content: '';
   display: block;
   clear: both;
 }
@@ -134,19 +145,9 @@ label {
   .common-page-block-title {
     font-size: 20px;
     font-weight: bold;
-    color: #1D1D1D;
+    color: #1d1d1d;
     line-height: 25px;
     margin-bottom: 32px;
-  }
-}
-
-.normal-filter-input {
-  width: 200px;
-  &.emqx-select {
-    width: 200px;
-  }
-  &:not(:last-child) {
-    margin-right: 20px;
   }
 }
 

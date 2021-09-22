@@ -12,6 +12,7 @@ import '@/styles/emqx-ui-variables.scss'
 import '@/styles/base.scss'
 import '@/styles/reset.scss'
 import '@/styles/colors.scss'
+import '@/styles/common.scss'
 import '@/assets/fonts/iconfont.css'
 import '@/styles/vxe-theme.scss'
 
