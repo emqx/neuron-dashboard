@@ -19,11 +19,18 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/configuration/north-driver',
+        name: 'NorthDriver',
         component: () => import('@/views/config/northDriver/Index.vue'),
       },
       {
         path: '/configuration/south-driver',
+        name: 'SouthDriver',
         component: () => import('@/views/config/southDriver/Index.vue'),
+      },
+      {
+        path: '/configuration/south-driver/:nodeID',
+        name: 'SouthDriverGroup',
+        component: () => import('@/views/config/southDriver/Group.vue'),
       },
       {
         path: '/configuration/object_setup',
@@ -38,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/ObjectSetup.vue'),
       },
       {
-        path: '/configuration/attr_setup',
+        path: '/configuration/attr_se1tup',
         name: 'AttrSetup',
         meta: { requireAuth: true },
         component: () => import('@/views/config/AttrSetup.vue'),

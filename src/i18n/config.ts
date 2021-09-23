@@ -19,6 +19,14 @@ export default {
     zh: '南向',
     en: 'South',
   },
+  groupList: {
+    zh: 'Group 列表',
+    en: 'Group List',
+  },
+  groupName: {
+    zh: 'Group 名称',
+    en: 'Group Name',
+  },
   objectSetup: {
     zh: 'Object 设置',
     en: 'Object Setup',

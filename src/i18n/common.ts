@@ -99,6 +99,14 @@ export default {
     zh: '提交成功',
     en: 'Submit success!',
   },
+  operateConfirm: {
+    zh: '操作确认',
+    en: 'Operation Confirmation',
+  },
+  operateSuccessfully: {
+    zh: '操作成功',
+    en: 'Operate successfully',
+  },
   cancel: {
     zh: '取消',
     en: 'Cancel',

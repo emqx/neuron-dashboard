@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import { DriverDirection } from '@/types/enums'
 import http from '@/utils/http'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-import { DriverItem, ResponseDriverListData } from '@/types/config'
+import { DriverItem, GroupData, ResponseDriverListData } from '@/types/config'
 
 type DriverData = Record<string, string | number>
 
@@ -44,4 +44,20 @@ export const addNorthDriver = (driverData: DriverData) => {
 
 export const addSouthDriver = (driverData: DriverData) => {
   return addDriver(driverData, DriverDirection.South)
+}
+
+export const queryGroupList = async (nodeID: number): Promise<Array<GroupData>> => {
+  const { data }: AxiosResponse<{ function: number; error: number; group_configs: Array<GroupData> }> = await http.get(
+    '/gconfig',
+    {
+      params: { node_id: nodeID },
+    },
+  )
+  return Promise.resolve(data?.group_configs || [])
+}
+
+export const deleteGroup = async (nodeID: number, groupName: string): Promise<AxiosResponse> => {
+  return http.delete('/gconfig', {
+    data: { function: 92, uuid: UUID, node_id: nodeID, group_config: groupName },
+  })
 }
