@@ -24,8 +24,9 @@ export const queryNorthDriverList = async (): Promise<Array<DriverItem>> => {
   }
 }
 
-export const querySouthDriverList = (): Promise<AxiosResponse<ResponseDriverListData>> => {
-  return queryDriverList(DriverDirection.South as number)
+export const querySouthDriverList = async (): Promise<Array<DriverItem>> => {
+  const ret = await queryDriverList(DriverDirection.South as number)
+  return getDataFromResponse(ret)
 }
 
 const addDriver = (driverData: DriverData, direction: DriverDirection) => {
