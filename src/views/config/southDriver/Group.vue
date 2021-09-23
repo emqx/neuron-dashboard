@@ -54,8 +54,8 @@
 </template>
 
 <script lang="ts" setup>
-import useGroup from '@/composables/config/useGroup'
-const { groupList, isListLoading, allChecked, delGroup } = useGroup()
+import useGroupList from '@/composables/config/useGroupList'
+const { groupList, isListLoading, allChecked, delGroup } = useGroupList()
 </script>
 
 <style lang="scss">
