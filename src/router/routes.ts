@@ -23,6 +23,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/northDriver/Index.vue'),
       },
       {
+        path: '/configuration/north-driver/:nodeID',
+        name: 'NorthDriverGroup',
+        component: () => import('@/views/config/northDriver/Group.vue'),
+      },
+      {
         path: '/configuration/south-driver',
         name: 'SouthDriver',
         component: () => import('@/views/config/southDriver/Index.vue'),

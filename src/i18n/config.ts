@@ -7,6 +7,10 @@ export default {
     zh: '北向应用设置',
     en: 'North Application Setup',
   },
+  appName: {
+    zh: '应用名称',
+    en: 'Name of Application ',
+  },
   addConfig: {
     zh: '添加配置',
     en: 'Add Config',
