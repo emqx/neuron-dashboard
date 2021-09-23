@@ -36,6 +36,18 @@
   background: #f4f9fc;
 }
 
+.el-table .is-right .iconfont {
+  cursor: pointer;
+  font-size: 24px;
+  color: #0d446e;
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+  &:hover {
+    color: #062a63;
+  }
+}
+
 /* Input */
 .emqx-input.normal-disabled {
   .el-input__inner {
@@ -60,4 +72,12 @@
     vertical-align: top;
     line-height: 1;
   }
+}
+
+.emqx-button.el-button {
+  border-radius: 4px;
+}
+
+.el-button--small {
+  font-size: 14px;
 }

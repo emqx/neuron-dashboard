@@ -3,7 +3,7 @@
     <div class="south-drive-item-card-hd common-flex">
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <i class="iconfont iconattributed"></i>
+        <i class="iconfont iconattributed" @click="goGroupPage"></i>
         <i class="iconfont icondelete"></i>
       </div>
     </div>
@@ -31,8 +31,7 @@
 </template>
 
 <script lang="ts">
-import { DriverItem } from '@/types/config'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SouthDriveItemCard',
@@ -40,9 +39,25 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
+import { PropType } from 'vue'
+import { DriverItem } from '@/types/config'
+import { useRouter } from 'vue-router'
+
 const props = defineProps({
-  data: Object as PropType<DriverItem>,
+  data: {
+    type: Object as PropType<DriverItem>,
+    required: true,
+  },
 })
+const router = useRouter()
+const goGroupPage = () => {
+  router.push({
+    name: 'SouthDriverGroup',
+    params: {
+      nodeID: props.data.id,
+    },
+  })
+}
 </script>
 
 <style lang="scss">

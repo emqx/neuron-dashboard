@@ -31,3 +31,10 @@ export interface ResponseDriverListData {
   function: number
   nodes: Array<DriverItem>
 }
+
+export interface GroupData {
+  name: string
+  read_interval: number
+  pipe_count: number
+  tag_count: number
+}
