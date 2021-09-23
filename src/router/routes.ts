@@ -22,6 +22,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/northDriver/Index.vue'),
       },
       {
+        path: '/configuration/south-driver',
+        component: () => import('@/views/config/southDriver/Index.vue'),
+      },
+      {
         path: '/configuration/object_setup',
         name: 'ObjectSetup',
         meta: { requireAuth: true },
