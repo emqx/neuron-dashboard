@@ -1,26 +1,55 @@
+import { Merge } from 'type-fest'
+
+/**
+ * Params get from API
+ */
+type Parm = Array<{ vars: 'TOPICHEADER'; pars: string }>
+
 export interface SerialNorthDriversFormData {
-  chdv: string
-  tcph: string
-  tcpp: number
+  /**
+   * Device name
+   */
   ttyc: string
+  /**
+   * Baud rate
+   */
   ttyb: number
+  /**
+   * Data bit
+   */
   ttyd: number
+  /**
+   * Stop bit
+   */
   ttys: string
+  /**
+   * Parity bit
+   */
   ttyp: string
+  parm: Parm
 }
 
-export type EthernetNorthDriversFormData = [
-  { vars: 'TCPSERVER'; pars: string },
-  { vars: 'BYTEORDER'; pars: string },
-  { vars: 'DLYCRESOCKAFTCLOSE'; pars: string },
-  { vars: 'TORECEIVETCP'; pars: string },
-  { vars: 'NAPTIMEREAD'; pars: string },
-  { vars: 'NAPTIMEWRITE'; pars: string },
-]
-
-export interface NorthDriverFormData extends SerialNorthDriversFormData {
-  parm: EthernetNorthDriversFormData
+export type EthernetNorthDriversFormData = {
+  /**
+   * Host name
+   */
+  tcph: string
+  /**
+   * Port no
+   */
+  tcpp: number
+  parm: Parm
 }
+
+export type NorthDriverFormData = Merge<
+  {
+    /**
+     * north driver type
+     */
+    chdv: string
+  },
+  Merge<SerialNorthDriversFormData, EthernetNorthDriversFormData>
+>
 
 export interface DriverItem {
   name: string
