@@ -159,6 +159,10 @@ export default {
     zh: '您确定要删除吗？',
     en: 'Are you sure delete?',
   },
+  confirmClear: {
+    zh: '操作不可撤回，是否确定要清空数据？',
+    en: 'The operation is irreversible. Are you sure you want to clear the data?',
+  },
   confirmLogout: {
     zh: '确认退出登录？',
     en: 'Are you sure logout?',

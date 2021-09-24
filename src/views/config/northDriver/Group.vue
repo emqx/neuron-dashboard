@@ -22,7 +22,7 @@
         </div>
         <div class="btn-group">
           <emqx-button size="small" type="primary" @click="addGroup">{{ $t('common.create') }}</emqx-button>
-          <emqx-button size="small" type="warning">{{ $t('common.clear') }}</emqx-button>
+          <emqx-button size="small" type="warning" @click="clearGroup">{{ $t('common.clear') }}</emqx-button>
           <emqx-button size="small" type="danger">{{ $t('common.delete') }}</emqx-button>
         </div>
       </div>
@@ -58,7 +58,7 @@ import { ref } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from './components/GroupDialog.vue'
 
-const { nodeID, groupList, isListLoading, allChecked, getGroupList, delGroup } = useGroupList()
+const { nodeID, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup } = useGroupList()
 const showGroupDialog = ref(false)
 
 const addGroup = () => {
