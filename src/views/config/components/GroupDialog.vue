@@ -7,7 +7,6 @@
     :z-index="2000"
   >
     <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
-      {{ groupForm.group_config }}
       <emqx-form-item prop="group_config" :label="$t('config.groupName')" required>
         <emqx-input v-model="groupForm.group_config" />
       </emqx-form-item>
