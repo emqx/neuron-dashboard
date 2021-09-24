@@ -44,11 +44,20 @@ export default () => {
     getGroupList()
   }
 
-  const clearGroup = async () => {
-    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmClear') })
-    await Promise.all(groupList.value.map(({ name }) => deleteGroup(nodeID.value, name)))
+  const delGroupList = async (list: Array<GroupDataInTable>) => {
+    await Promise.all(list.map(({ name }) => deleteGroup(nodeID.value, name)))
     EmqxMessage.success(t('common.operateSuccessfully'))
     getGroupList()
+  }
+
+  const clearGroup = async () => {
+    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmClear') })
+    delGroupList(groupList.value)
+  }
+
+  const batchDeleteGroup = async () => {
+    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete') })
+    delGroupList(groupList.value.filter(({ checked }) => checked))
   }
 
   getGroupList()
@@ -59,6 +68,7 @@ export default () => {
     isListLoading,
     allChecked,
     clearGroup,
+    batchDeleteGroup,
     getGroupList,
     delGroup,
   }
