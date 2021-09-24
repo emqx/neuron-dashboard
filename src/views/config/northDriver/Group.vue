@@ -43,20 +43,21 @@
       <emqx-table-column label="Update Time"></emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
-          <i class="iconfont icondisplay"></i>
+          <i class="el-icon-edit-outline" @click="editGroup(row)"></i>
           <i class="iconfont iconalarm"></i>
           <i class="iconfont icondelete" @click="delGroup(row)"></i>
         </template>
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
-  <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" />
+  <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" :group="currentGroup" />
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, Ref } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from '@/views/config/components/GroupDialog.vue'
+import { GroupData, GroupForm } from '@/types/config'
 
 const {
   nodeID,
@@ -69,8 +70,19 @@ const {
   batchDeleteGroup,
 } = useGroupList()
 const showGroupDialog = ref(false)
+const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 
 const addGroup = () => {
+  currentGroup.value = undefined
+  showGroupDialog.value = true
+}
+
+const editGroup = ({ name, read_interval }: GroupData) => {
+  currentGroup.value = {
+    read_interval,
+    group_config: name,
+    src_node_id: nodeID.value,
+  }
   showGroupDialog.value = true
 }
 </script>

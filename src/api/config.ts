@@ -63,8 +63,23 @@ export const deleteGroup = async (nodeID: number, groupName: string): Promise<Ax
 }
 
 export const addGroup = async (data: GroupForm): Promise<AxiosResponse> => {
+  const { group_config, read_interval, src_node_id } = data
   return http.post('/gconfig', {
-    ...data,
+    group_config,
+    src_node_id,
+    read_interval: Number(read_interval),
+    function: 90,
+    uuid: UUID,
+    dst_node_id: 1,
+  })
+}
+
+export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
+  const { group_config, read_interval, src_node_id } = data
+  return http.put('/gconfig', {
+    group_config,
+    src_node_id,
+    read_interval: Number(read_interval),
     function: 90,
     uuid: UUID,
     dst_node_id: 1,
