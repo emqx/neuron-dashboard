@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { GroupForm } from '@/types/config'
 import useNodeList from './useNodeList'
-import { addGroup } from '@/api/config'
+import { addGroup, updateGroup } from '@/api/config'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 
@@ -48,12 +48,21 @@ export default () => {
     ],
   }
 
-  const submitForm = async () => {
-    await formCom.value.validate()
-    isSubmitting.value = true
-    await addGroup(groupForm.value)
-    isSubmitting.value = false
-    EmqxMessage.success(t('common.submitSuccess'))
+  const submitForm = async (propsGroup?: GroupForm) => {
+    try {
+      await formCom.value.validate()
+      isSubmitting.value = true
+      if (!propsGroup) {
+        await addGroup(groupForm.value)
+      } else {
+        await updateGroup(groupForm.value)
+      }
+      EmqxMessage.success(t('common.submitSuccess'))
+    } catch (error) {
+      return Promise.reject()
+    } finally {
+      isSubmitting.value = false
+    }
   }
 
   const initForm = () => {
