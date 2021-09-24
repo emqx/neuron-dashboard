@@ -47,9 +47,11 @@ export default () => {
   getGroupList()
 
   return {
+    nodeID,
     groupList,
     isListLoading,
     allChecked,
+    getGroupList,
     delGroup,
   }
 }
