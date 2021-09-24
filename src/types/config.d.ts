@@ -67,3 +67,12 @@ export interface GroupData {
   pipe_count: number
   tag_count: number
 }
+
+export interface GroupForm {
+  /**
+   * Name
+   */
+  group_config: string
+  read_interval: number | null
+  src_node_id: number | null
+}

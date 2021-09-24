@@ -21,7 +21,7 @@
           </emqx-button>
         </div>
         <div class="btn-group">
-          <emqx-button size="small" type="primary">{{ $t('common.create') }}</emqx-button>
+          <emqx-button size="small" type="primary" @click="addGroup">{{ $t('common.create') }}</emqx-button>
           <emqx-button size="small" type="warning">{{ $t('common.clear') }}</emqx-button>
           <emqx-button size="small" type="danger">{{ $t('common.delete') }}</emqx-button>
         </div>
@@ -37,12 +37,10 @@
         </template>
       </emqx-table-column>
       <emqx-table-column label="No" :width="60">
-        <template #default="{ index }">
-          {{ index + 1 }}
-        </template>
+        <template #default="{ index }">{{ index + 1 }}</template>
       </emqx-table-column>
       <emqx-table-column :label="$t('config.groupName')" prop="name"></emqx-table-column>
-      <emqx-table-column label="Update Time"> </emqx-table-column>
+      <emqx-table-column label="Update Time"></emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
           <i class="iconfont icondisplay"></i>
@@ -52,11 +50,20 @@
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
+  <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" />
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
-const { groupList, isListLoading, allChecked, delGroup } = useGroupList()
+import GroupDialog from './components/GroupDialog.vue'
+
+const { nodeID, groupList, isListLoading, allChecked, getGroupList, delGroup } = useGroupList()
+const showGroupDialog = ref(false)
+
+const addGroup = () => {
+  showGroupDialog.value = true
+}
 </script>
 
 <style lang="scss">

@@ -31,6 +31,10 @@ export default {
     zh: 'Group 名称',
     en: 'Group Name',
   },
+  createGroup: {
+    zh: '创建 Group',
+    en: 'Create Group',
+  },
   objectSetup: {
     zh: 'Object 设置',
     en: 'Object Setup',
@@ -158,5 +162,22 @@ export default {
   driverSetUpSuccess: {
     zh: '驱动设置成功',
     en: 'Driver SetUp Success',
+  },
+  /* FOR FORM */
+  groupNameRequired: {
+    zh: '请填写 Group 名称',
+    en: 'Please enter the group name',
+  },
+  nodeRequired: {
+    zh: '请选择 Node',
+    en: 'Please select the node',
+  },
+  readIntervalRequired: {
+    zh: '请填写 Read interval',
+    en: 'Please enter the read interval',
+  },
+  readIntervalError: {
+    zh: '请填写有效数字',
+    en: 'Please fill in a valid number',
   },
 }

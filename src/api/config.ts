@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import { DriverDirection } from '@/types/enums'
 import http from '@/utils/http'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-import { DriverItem, GroupData, ResponseDriverListData } from '@/types/config'
+import { DriverItem, GroupData, GroupForm, ResponseDriverListData } from '@/types/config'
 
 type DriverData = Record<string, string | number>
 
@@ -59,5 +59,14 @@ export const queryGroupList = async (nodeID: number): Promise<Array<GroupData>> 
 export const deleteGroup = async (nodeID: number, groupName: string): Promise<AxiosResponse> => {
   return http.delete('/gconfig', {
     data: { function: 92, uuid: UUID, node_id: nodeID, group_config: groupName },
+  })
+}
+
+export const addGroup = async (data: GroupForm): Promise<AxiosResponse> => {
+  return http.post('/gconfig', {
+    ...data,
+    function: 90,
+    uuid: UUID,
+    dst_node_id: 1,
   })
 }
