@@ -13,9 +13,14 @@ export default () => {
     nodeList.value = ret.reduce((pre, curr) => pre.concat(curr), [])
   }
 
+  const getNodeNameById = (nodeID: number) => {
+    return nodeList.value.find(({ id }) => id === nodeID)?.name || ''
+  }
+
   getNodeList()
 
   return {
     nodeList,
+    getNodeNameById,
   }
 }

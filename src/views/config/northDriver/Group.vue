@@ -5,7 +5,7 @@
       <div class="bar-left common-flex">
         <p class="driver-name">
           <label>{{ $t('config.appName') }}</label>
-          <span>XXXXX</span>
+          <span>{{ getNodeNameById(nodeID) }}</span>
         </p>
         <emqx-button size="small">{{ $t('config.editDriver') }}</emqx-button>
       </div>
@@ -57,6 +57,7 @@
 import { ref, Ref } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from '@/views/config/components/GroupDialog.vue'
+import useNodeList from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'
 
 const {
@@ -69,6 +70,7 @@ const {
   delGroup,
   batchDeleteGroup,
 } = useGroupList()
+const { getNodeNameById } = useNodeList()
 const showGroupDialog = ref(false)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 
