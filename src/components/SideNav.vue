@@ -1,13 +1,7 @@
 <template>
   <emqx-menu class="el-menu-vertical-demo side-nav" router :default-active="actvieMenu">
     <template v-for="(nav, index) in navList">
-      <emqx-menu-item
-        class="nav-item"
-        v-if="!nav.subMenus"
-        style="padding-left: 0"
-        :key="index"
-        :index="nav.to"
-      >
+      <emqx-menu-item class="nav-item" v-if="!nav.subMenus" style="padding-left: 0" :key="index" :index="nav.to">
         <div class="nav-item-content">
           <i class="nav-icon iconfont" :class="nav.icon"></i>
           <span class="nav-label">{{ nav.label }}</span>
@@ -85,10 +79,36 @@ export default defineComponent({
         },
       ],
     })
+
+    const firstLevelRoutePathArr: Array<string> = []
+    const secondLevelRoutePathArr: Array<string> = []
+
     const actvieMenu = computed(() => {
-      const firstLevelPath = useRoute().path.match(/^\/[^/]+/)
-      return firstLevelPath ? firstLevelPath[0] : ''
+      const currentPath = useRoute().path
+      let ret = secondLevelRoutePathArr.find((item) => currentPath.match(item))
+      if (ret) {
+        return ret
+      }
+      ret = firstLevelRoutePathArr.find((item) => currentPath.match(item))
+      return ret ? ret : ''
     })
+
+    const countRoutePath = () => {
+      state.navList.forEach((menu) => {
+        if (menu.subMenus) {
+          menu.subMenus.forEach((item) => {
+            item.to.match(/^\/[^/]+\/[^/]+/)
+              ? secondLevelRoutePathArr.push(item.to)
+              : firstLevelRoutePathArr.push(item.to)
+          })
+        } else {
+          firstLevelRoutePathArr.push(menu.to)
+        }
+      })
+    }
+
+    countRoutePath()
+
     return {
       ...toRefs(state),
       actvieMenu,
