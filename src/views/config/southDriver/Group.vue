@@ -45,7 +45,7 @@
       <emqx-table-column align="right">
         <template #default="{ row }">
           <i class="el-icon-edit-outline" @click="editGroup(row)" />
-          <i class="iconfont iconalarm" />
+          <i class="iconfont iconalarm" @click="goTagPage(row)" />
           <i class="iconfont icondelete" @click="delGroup(row)" />
         </template>
       </emqx-table-column>
@@ -60,7 +60,9 @@ import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from '@/views/config/components/GroupDialog.vue'
 import useNodeList from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const {
   nodeID,
   groupList,
@@ -87,6 +89,13 @@ const editGroup = ({ name, read_interval }: GroupData) => {
     src_node_id: nodeID.value,
   }
   showGroupDialog.value = true
+}
+
+const goTagPage = ({ name }: GroupData) => {
+  router.push({
+    name: 'SouthDriverGroupTag',
+    params: { group: name },
+  })
 }
 </script>
 

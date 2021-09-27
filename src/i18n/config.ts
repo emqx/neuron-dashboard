@@ -27,6 +27,22 @@ export default {
     zh: 'Group 列表',
     en: 'Group List',
   },
+  tagList: {
+    zh: 'Tag 列表',
+    en: 'Tag List',
+  },
+  addTags: {
+    zh: '添加 Tags',
+    en: 'Add Tags',
+  },
+  tagNum: {
+    zh: 'Tag 数目',
+    en: 'Number of tags',
+  },
+  tagName: {
+    zh: 'Tag 名称',
+    en: 'Tag name',
+  },
   groupName: {
     zh: 'Group 名称',
     en: 'Group Name',
@@ -179,5 +195,21 @@ export default {
   readIntervalError: {
     zh: '请填写有效数字',
     en: 'Please fill in a valid number',
+  },
+  tagNameRequired: {
+    zh: '请填写 Tag 名称',
+    en: 'Please enter the tag name',
+  },
+  tagAddressRequired: {
+    zh: '请填写 Tag 地址',
+    en: 'Please enter the tag address',
+  },
+  tagAttributeRequired: {
+    zh: '请选择 Tag 属性',
+    en: 'Please select tag attribute',
+  },
+  tagTypeRequired: {
+    zh: '请选择 Tag 类型',
+    en: 'Please select tag type',
   },
 }
