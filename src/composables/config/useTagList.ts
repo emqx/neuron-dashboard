@@ -1,5 +1,5 @@
 import { deleteTag, queryTagList } from '@/api/config'
-import { TagData } from '@/types/config'
+import { TagData, TagForm } from '@/types/config'
 import { Ref, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -32,6 +32,9 @@ export default () => {
     },
   })
 
+  const currentTag: Ref<TagForm> = ref({} as TagForm)
+  const showEditDialog = ref(false)
+
   const getTagList = async () => {
     isListLoading.value = true
     const data = await queryTagList(nodeID.value, groupName.value)
@@ -54,12 +57,34 @@ export default () => {
     deleteTagList([item])
   }
 
+  const editTag = (tag: TagForm) => {
+    currentTag.value = tag
+    showEditDialog.value = true
+  }
+
   const batchDeleteTag = async () => {
     await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'))
     deleteTagList(tagList.value.filter(({ checked }) => checked))
   }
 
+  const clearTag = async () => {
+    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmClear') })
+    deleteTagList(tagList.value)
+  }
+
   getTagList()
 
-  return { tagList, isListLoading, allChecked, delTag, batchDeleteTag }
+  return {
+    nodeID,
+    tagList,
+    isListLoading,
+    allChecked,
+    currentTag,
+    showEditDialog,
+    getTagList,
+    editTag,
+    delTag,
+    clearTag,
+    batchDeleteTag,
+  }
 }

@@ -109,3 +109,12 @@ export const deleteTag = (data: {
 }): Promise<AxiosResponse> => {
   return http.delete('/tags', { data: { ...data, function: 33, uuid: UUID } })
 }
+
+export const updateTag = (nodeID: number, tag: TagForm) => {
+  return http.put('/tags', {
+    function: 34,
+    uuid: UUID,
+    node_id: nodeID,
+    tags: [tag],
+  })
+}

@@ -35,6 +35,10 @@ export default {
     zh: '添加 Tags',
     en: 'Add Tags',
   },
+  editTag: {
+    zh: '编辑 Tag',
+    en: 'Edit Tag',
+  },
   tagNum: {
     zh: 'Tag 数目',
     en: 'Number of tags',
