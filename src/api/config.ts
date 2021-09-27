@@ -16,9 +16,8 @@ const getDataFromResponse = (res: AxiosResponse<ResponseDriverListData>): Array<
 
 export const queryNorthDriverList = async (): Promise<Array<DriverItem>> => {
   try {
-    const request = await Promise.all(NORTH_DRIVER_NODE_TYPE.map((type) => queryDriverList(type)))
-    const ret = request.reduce((pre, curr) => pre.concat(getDataFromResponse(curr)), [] as Array<DriverItem>)
-    return Promise.resolve(ret)
+    const request = await queryDriverList(DriverDirection.South)
+    return Promise.resolve(getDataFromResponse(request))
   } catch (error) {
     return Promise.reject(error)
   }
