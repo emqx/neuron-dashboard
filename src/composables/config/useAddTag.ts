@@ -1,7 +1,7 @@
 import { addTag } from '@/api/config'
 import { TagForm } from '@/types/config'
 import { TagAttrbuteType, TagType } from '@/types/enums'
-import { ref, Ref, DefineComponent } from 'vue'
+import { ref, Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
@@ -49,7 +49,7 @@ export default () => {
   const tagNum: Ref<number> = ref(0)
   const isSubmitting = ref(false)
 
-  const tagNumForInput: Ref<number | undefined> = ref(0)
+  const tagNumForInput: Ref<number | null> = ref(null)
 
   const setFormRef = (com: typeof TagFormCom) => {
     if (com) {
@@ -66,10 +66,13 @@ export default () => {
 
   const tagNumChanged = () => {
     if (Number.isNaN(Number(tagNumForInput.value)) && tagNumForInput.value !== undefined) {
-      // TODO:
       return
     }
-    const diff = tagNumForInput.value === undefined ? -tagNum.value : tagNumForInput.value - tagNum.value
+    if (Number(tagNumForInput.value) > 100) {
+      EmqxMessage.warning(t('config.tagNumExceedsTheMaximumError'))
+      return
+    }
+    const diff = tagNumForInput.value === null ? -tagNum.value : tagNumForInput.value - tagNum.value
     if (diff === 0) {
       return
     }
@@ -80,7 +83,7 @@ export default () => {
     } else {
       tagList.value.splice(tagList.value.length + diff, -diff)
     }
-    tagNum.value = tagNumForInput.value === undefined ? 0 : tagNumForInput.value
+    tagNum.value = tagNumForInput.value === null ? 0 : tagNumForInput.value
   }
 
   const submit = async () => {

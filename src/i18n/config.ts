@@ -200,6 +200,10 @@ export default {
     zh: '请填写有效数字',
     en: 'Please fill in a valid number',
   },
+  tagNumExceedsTheMaximumError: {
+    zh: '一次最多能添加 100 条 Tag 数据，请重新输入 Tag 数目。',
+    en: 'A maximum of 100 tags can be added at a time. Please re-enter the number of tags.',
+  },
   tagNameRequired: {
     zh: '请填写 Tag 名称',
     en: 'Please enter the tag name',
