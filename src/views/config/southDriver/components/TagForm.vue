@@ -74,7 +74,12 @@ const validate = () => {
   return formCom.value.validate()
 }
 
+const resetFields = () => {
+  return formCom.value.resetField()
+}
+
 defineExpose({
   validate,
+  resetFields,
 })
 </script>
