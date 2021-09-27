@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import { DriverDirection } from '@/types/enums'
 import http from '@/utils/http'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-import { DriverItem, GroupData, GroupForm, ResponseDriverListData } from '@/types/config'
+import { DriverItem, GroupData, GroupForm, ResponseDriverListData, TagData, TagForm } from '@/types/config'
 
 type DriverData = Record<string, string | number>
 
@@ -84,4 +84,28 @@ export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
     uuid: UUID,
     dst_node_id: 1,
   })
+}
+
+export const queryTagList = async (nodeID: number, groupName: string): Promise<Array<TagData>> => {
+  const { data } = await http.get('/tags', { params: { node_id: nodeID } })
+  const tags: Array<TagData> = (data.tags || []).filter(
+    ({ group_config_name }: TagData) => group_config_name === groupName,
+  )
+  return Promise.resolve(tags)
+}
+
+export const addTag = (data: { node_id: number; group_config_name: string; tags: Array<TagForm> }) => {
+  return http.post('/tags', {
+    ...data,
+    function: 31,
+    uuid: UUID,
+  })
+}
+
+export const deleteTag = (data: {
+  node_id: number
+  group_config_name: string
+  tag_ids: Array<number>
+}): Promise<AxiosResponse> => {
+  return http.delete('/tags', { data: { ...data, function: 33, uuid: UUID } })
 }

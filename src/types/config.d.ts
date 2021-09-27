@@ -3,7 +3,7 @@ import { Merge } from 'type-fest'
 /**
  * Params get from API
  */
-type Parm = Array<{ vars: 'TOPICHEADER'; pars: string }>
+type Parm = Array<{ vars: string; pars: string }>
 
 export interface SerialNorthDriversFormData {
   /**
@@ -75,4 +75,16 @@ export interface GroupForm {
   group_config: string
   read_interval: number | null
   src_node_id: number | null
+}
+
+export interface TagForm {
+  name: string
+  address: string
+  attribute: number | null
+  type: number | null
+}
+
+export interface TagData extends TagForm {
+  group_config_name: string
+  tag_id: number
 }

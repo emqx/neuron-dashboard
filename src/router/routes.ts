@@ -38,6 +38,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/southDriver/Group.vue'),
       },
       {
+        path: '/configuration/south-driver/:nodeID/:group',
+        name: 'SouthDriverGroupTag',
+        component: () => import('@/views/config/southDriver/Tag.vue'),
+      },
+      {
+        path: '/configuration/south-driver/:nodeID/:group/add',
+        name: 'SouthDriverGroupAddTag',
+        component: () => import('@/views/config/southDriver/AddTag.vue'),
+      },
+      {
         path: '/configuration/object_setup',
         name: 'ObjectSetup',
         meta: { requireAuth: true },
