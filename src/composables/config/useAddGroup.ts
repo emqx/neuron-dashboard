@@ -7,9 +7,9 @@ import { useI18n } from 'vue-i18n'
 
 export default () => {
   const createRawForm = (): GroupForm => ({
-    group_config: '',
-    src_node_id: null,
-    read_interval: null,
+    name: '',
+    node_id: null,
+    interval: null,
   })
 
   const { t } = useI18n()
@@ -19,19 +19,19 @@ export default () => {
   const isSubmitting = ref(false)
 
   const groupFormRules = {
-    group_config: [
+    name: [
       {
         required: true,
         message: t('config.groupNameRequired'),
       },
     ],
-    src_node_id: [
+    node_id: [
       {
         required: true,
         message: t('config.nodeRequired'),
       },
     ],
-    read_interval: [
+    interval: [
       {
         required: true,
         message: t('config.readIntervalRequired'),

@@ -61,20 +61,18 @@ export interface ResponseDriverListData {
   nodes: Array<DriverItem>
 }
 
-export interface GroupData {
-  name: string
-  read_interval: number
-  pipe_count: number
-  tag_count: number
-}
-
 export interface GroupForm {
   /**
    * Name
    */
-  group_config: string
-  read_interval: number | null
-  src_node_id: number | null
+  name: string
+  interval: number | null
+  node_id: number | null
+}
+
+export interface GroupData extends Omit<GroupForm, 'node_id'> {
+  pipe_count: number
+  tag_count: number
 }
 
 export interface TagForm {

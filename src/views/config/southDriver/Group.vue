@@ -82,11 +82,11 @@ const addGroup = () => {
   showGroupDialog.value = true
 }
 
-const editGroup = ({ name, read_interval }: GroupData) => {
+const editGroup = ({ name, interval }: GroupData) => {
   currentGroup.value = {
-    read_interval,
-    group_config: name,
-    src_node_id: nodeID.value,
+    interval,
+    name,
+    node_id: nodeID.value,
   }
   showGroupDialog.value = true
 }
