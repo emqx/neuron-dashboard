@@ -6,10 +6,8 @@ import { DriverItem, GroupData, GroupForm, ResponseDriverListData, TagData, TagF
 
 type DriverData = Record<string, string | number>
 
-const UUID = 'whatever'
-
 const queryDriverList = (nodeType: number): Promise<AxiosResponse<ResponseDriverListData>> => {
-  return http.get('/node', { params: { node_type: nodeType } })
+  return http.get('/node', { params: { type: nodeType } })
 }
 
 const getDataFromResponse = (res: AxiosResponse<ResponseDriverListData>): Array<DriverItem> => res?.data?.nodes || []
@@ -31,8 +29,6 @@ export const querySouthDriverList = async (): Promise<Array<DriverItem>> => {
 const addDriver = (driverData: DriverData, direction: DriverDirection) => {
   return http.post('/node', {
     ...driverData,
-    function: 35,
-    uuid: UUID,
     node_type: direction,
   })
 }
@@ -46,41 +42,34 @@ export const addSouthDriver = (driverData: DriverData) => {
 }
 
 export const queryGroupList = async (nodeID: number): Promise<Array<GroupData>> => {
-  const { data }: AxiosResponse<{ function: number; error: number; group_configs: Array<GroupData> }> = await http.get(
-    '/gconfig',
-    {
-      params: { node_id: nodeID },
-    },
-  )
+  const { data }: AxiosResponse<{ error: number; group_configs: Array<GroupData> }> = await http.get('/gconfig', {
+    params: { node_id: nodeID },
+  })
   return Promise.resolve(data?.group_configs || [])
 }
 
 export const deleteGroup = async (nodeID: number, groupName: string): Promise<AxiosResponse> => {
   return http.delete('/gconfig', {
-    data: { function: 92, uuid: UUID, node_id: nodeID, group_config: groupName },
+    data: { node_id: nodeID, name: groupName },
   })
 }
 
 export const addGroup = async (data: GroupForm): Promise<AxiosResponse> => {
-  const { group_config, read_interval, src_node_id } = data
+  const { name, interval, node_id } = data
   return http.post('/gconfig', {
-    group_config,
-    src_node_id,
-    read_interval: Number(read_interval),
-    function: 90,
-    uuid: UUID,
+    name,
+    node_id,
+    interval: Number(interval),
     dst_node_id: 1,
   })
 }
 
 export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
-  const { group_config, read_interval, src_node_id } = data
+  const { name, interval, node_id } = data
   return http.put('/gconfig', {
-    group_config,
-    src_node_id,
-    read_interval: Number(read_interval),
-    function: 90,
-    uuid: UUID,
+    name,
+    node_id,
+    interval: Number(interval),
     dst_node_id: 1,
   })
 }
@@ -94,11 +83,7 @@ export const queryTagList = async (nodeID: number, groupName: string): Promise<A
 }
 
 export const addTag = (data: { node_id: number; group_config_name: string; tags: Array<TagForm> }) => {
-  return http.post('/tags', {
-    ...data,
-    function: 31,
-    uuid: UUID,
-  })
+  return http.post('/tags', data)
 }
 
 export const deleteTag = (data: {
@@ -106,13 +91,11 @@ export const deleteTag = (data: {
   group_config_name: string
   tag_ids: Array<number>
 }): Promise<AxiosResponse> => {
-  return http.delete('/tags', { data: { ...data, function: 33, uuid: UUID } })
+  return http.delete('/tags', { data })
 }
 
 export const updateTag = (nodeID: number, tag: TagForm) => {
   return http.put('/tags', {
-    function: 34,
-    uuid: UUID,
     node_id: nodeID,
     tags: [tag],
   })

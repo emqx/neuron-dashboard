@@ -7,16 +7,16 @@
     :z-index="2000"
   >
     <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
-      <emqx-form-item prop="group_config" :label="$t('config.groupName')" required>
-        <emqx-input v-model="groupForm.group_config" :disabled="group" />
+      <emqx-form-item prop="name" :label="$t('config.groupName')" required>
+        <emqx-input v-model="groupForm.name" :disabled="group" />
       </emqx-form-item>
-      <emqx-form-item prop="src_node_id" label="Node" required>
-        <emqx-select v-model="groupForm.src_node_id" :disabled="group">
+      <emqx-form-item prop="node_id" label="Node" required>
+        <emqx-select v-model="groupForm.node_id" :disabled="group">
           <emqx-option v-for="item in nodeList" :key="item.id" :value="item.id" :label="item.name" />
         </emqx-select>
       </emqx-form-item>
-      <emqx-form-item prop="read_interval" label="Read interval" required>
-        <emqx-input v-model="groupForm.read_interval" />
+      <emqx-form-item prop="interval" label="Interval" required>
+        <emqx-input v-model="groupForm.interval" />
       </emqx-form-item>
     </emqx-form>
     <template #footer>
@@ -67,7 +67,7 @@ watch(showDialog, async (val) => {
     if (props.group) {
       groupForm.value = props.group
     } else if (props.currentNode) {
-      groupForm.value.src_node_id = props.currentNode
+      groupForm.value.node_id = props.currentNode
     }
   }
 })
