@@ -183,6 +183,34 @@ export default {
     zh: '驱动设置成功',
     en: 'Driver SetUp Success',
   },
+  deviceConnectNum: {
+    zh: '设备连接数',
+    en: 'Number of device connections',
+  },
+  runningTime: {
+    zh: '运行时长',
+    en: 'Running time',
+  },
+  versionNAuthInfo: {
+    zh: '版本和授权信息',
+    en: 'Version and authorization information',
+  },
+  moreApp: {
+    zh: '更多应用',
+    en: 'More applications',
+  },
+  northApp: {
+    zh: '北向应用',
+    en: 'North application',
+  },
+  moreDriver: {
+    zh: '更多驱动',
+    en: 'More drivers',
+  },
+  southDriver: {
+    zh: '南向驱动',
+    en: 'South driver',
+  },
   /* FOR FORM */
   groupNameRequired: {
     zh: '请填写 Group 名称',

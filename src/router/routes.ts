@@ -9,6 +9,12 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/data',
     component: Home,
     children: [
+      {
+        path: '/overview',
+        name: 'Overview',
+        meta: { requireAuth: true },
+        component: () => import('@/views/overview/Index.vue'),
+      },
       { path: '/data', name: 'Data', meta: { requireAuth: true }, component: () => import('@/views/data/Index.vue') },
       /* CONFIG */
       {
