@@ -2,7 +2,7 @@ import { querySouthDriverList } from '@/api/config'
 import { DriverItem } from '@/types/config'
 import { ref, Ref } from 'vue'
 
-export default () => {
+export default (autoLoad = true) => {
   const southDriverList: Ref<Array<DriverItem>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
   const getSouthDriverList = async () => {
@@ -11,9 +11,13 @@ export default () => {
     isListLoading.value = false
   }
 
-  getSouthDriverList()
+  if (autoLoad) {
+    getSouthDriverList()
+  }
+
   return {
     southDriverList,
     isListLoading,
+    getSouthDriverList,
   }
 }
