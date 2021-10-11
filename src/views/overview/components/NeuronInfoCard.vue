@@ -8,7 +8,9 @@
       <emqx-row>
         <emqx-col :span="12">
           <label>{{ $t('config.workStatus') }}:</label>
-          <i class="iconfont iconlanguage"></i>
+          <svg class="iconfont icon-svg" aria-hidden="true">
+            <use :xlink:href="`#iconstop`" />
+          </svg>
           <span>{{ info.status }}</span>
         </emqx-col>
         <emqx-col :span="12">
@@ -23,10 +25,10 @@
         </emqx-col>
         <emqx-col :span="12">
           <label>{{ $t('config.versionNAuthInfo') }}:</label>
-          <span
-            >Version {{ info.version }}
-            {{ info.isAuthorize ? $t('common.authorized') : $t('common.unauthorized') }}</span
-          >
+          <span>
+            Version {{ info.version }}
+            {{ info.isAuthorize ? $t('common.authorized') : $t('common.unauthorized') }}
+          </span>
         </emqx-col>
       </emqx-row>
     </div>
@@ -63,6 +65,9 @@ const { timeFormat } = useTimeFormat()
     p {
       margin-right: 16px;
     }
+  }
+  .iconfont {
+    margin-right: 6px;
   }
   .emqx-row {
     &:not(:last-child) {

@@ -37,6 +37,14 @@ td {
   padding: 0;
 }
 
+.icon-svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
 .emqx-breadcrumb {
   padding-top: 12px;
   padding-bottom: 12px;

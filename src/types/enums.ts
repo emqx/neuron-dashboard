@@ -41,3 +41,9 @@ export enum PluginKind {
   System,
   Custom,
 }
+
+export enum DriverStatus {
+  Stop,
+  Standby,
+  Activate,
+}
