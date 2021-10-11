@@ -7,27 +7,6 @@
       <div>
         <emqx-dropdown>
           <span class="el-dropdown-link">
-            {{ $t('common.system') }}<i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <template #dropdown>
-            <emqx-dropdown-menu>
-              <emqx-dropdown-item @click="toggleStatus">
-                <i class="iconfont iconstanndby"></i>
-                {{ status.mode === 'ACTIVE' ? $t('common.standby') : $t('common.active') }}
-              </emqx-dropdown-item>
-              <emqx-dropdown-item @click="handleRestart">
-                <i class="iconfont iconrestart"></i>
-                {{ $t('common.restart') }}
-              </emqx-dropdown-item>
-              <emqx-dropdown-item @click="handleShutdown">
-                <i class="iconfont iconshutdown"></i>
-                {{ $t('common.shutdown') }}
-              </emqx-dropdown-item>
-            </emqx-dropdown-menu>
-          </template>
-        </emqx-dropdown>
-        <emqx-dropdown>
-          <span class="el-dropdown-link">
             <span class="user-bg">
               <i class="iconfont iconAdministration"></i>
             </span>
@@ -71,42 +50,20 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import useAPI from '@/composables/useAPI'
-import { ElMessageBox } from 'element-plus'
 import { useStore } from 'vuex'
-import { useI18n } from 'vue-i18n'
-import { GatewayAction, SystemStatus } from '@/types/enums'
 
 export default defineComponent({
   name: 'Header',
   setup() {
-    const { controlStatus, controlGateway } = useAPI()
-    const { t } = useI18n()
     const store = useStore()
 
     const status = computed(() => store.state.status || {})
 
     const user = computed(() => store.state.status || {})
 
-    const toggleStatus = () => {
-      let params = status.value.mode === SystemStatus.STANDBY ? SystemStatus.ACTIVE : SystemStatus.STANDBY
-      controlStatus(params)
-    }
-
-    const handleRestart = async () => {
-      await ElMessageBox.confirm(t('common.confirmRestart'))
-      controlGateway(GatewayAction.Restart)
-    }
-
-    const handleShutdown = () => {
-      controlGateway(GatewayAction.Shutdown)
-    }
     return {
       status,
       user,
-      toggleStatus,
-      handleRestart,
-      handleShutdown,
     }
   },
 })

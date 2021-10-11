@@ -4,7 +4,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
-import websocket from './plugins/ws/index'
 import VXETable from './plugins/vxeTable'
 
 import '@emqx/emqx-ui/lib/styles/index.scss'
@@ -16,4 +15,4 @@ import '@/styles/common.scss'
 import '@/assets/fonts/iconfont.css'
 import '@/styles/vxe-theme.scss'
 
-createApp(App).use(i18n).use(websocket).use(EmqxUI).use(store).use(router).use(VXETable).mount('#app')
+createApp(App).use(i18n).use(EmqxUI).use(store).use(router).use(VXETable).mount('#app')
