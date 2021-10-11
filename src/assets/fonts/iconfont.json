@@ -6,6 +6,69 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "24850069",
+      "name": "setting",
+      "font_class": "setting",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    },
+    {
+      "icon_id": "24848258",
+      "name": "stop",
+      "font_class": "stop",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "24848346",
+      "name": "activation",
+      "font_class": "activation",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
+      "icon_id": "24848347",
+      "name": "Standby",
+      "font_class": "Standby",
+      "unicode": "e700",
+      "unicode_decimal": 59136
+    },
+    {
+      "icon_id": "24397773",
+      "name": "config",
+      "font_class": "config",
+      "unicode": "e6f5",
+      "unicode_decimal": 59125
+    },
+    {
+      "icon_id": "24397774",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e6f6",
+      "unicode_decimal": 59126
+    },
+    {
+      "icon_id": "24397775",
+      "name": "status",
+      "font_class": "status",
+      "unicode": "e6f7",
+      "unicode_decimal": 59127
+    },
+    {
+      "icon_id": "24397776",
+      "name": "Administration",
+      "font_class": "Administration1",
+      "unicode": "e6f8",
+      "unicode_decimal": 59128
+    },
+    {
+      "icon_id": "21260637",
+      "name": "download",
+      "font_class": "download",
+      "unicode": "e6bb",
+      "unicode_decimal": 59067
+    },
+    {
       "icon_id": "21016581",
       "name": "language",
       "font_class": "language",
@@ -69,13 +132,6 @@
       "unicode_decimal": 59064
     },
     {
-      "icon_id": "21016590",
-      "name": "group",
-      "font_class": "group",
-      "unicode": "e6b9",
-      "unicode_decimal": 59065
-    },
-    {
       "icon_id": "21016591",
       "name": "date",
       "font_class": "date",
@@ -90,53 +146,11 @@
       "unicode_decimal": 59055
     },
     {
-      "icon_id": "20995326",
-      "name": "Administration",
-      "font_class": "Administration",
-      "unicode": "e6a1",
-      "unicode_decimal": 59041
-    },
-    {
       "icon_id": "20995327",
       "name": "alarm",
       "font_class": "alarm",
       "unicode": "e6a2",
       "unicode_decimal": 59042
-    },
-    {
-      "icon_id": "20995328",
-      "name": "alarm status",
-      "font_class": "alarmstatus",
-      "unicode": "e6a3",
-      "unicode_decimal": 59043
-    },
-    {
-      "icon_id": "20995329",
-      "name": "config",
-      "font_class": "config",
-      "unicode": "e6a4",
-      "unicode_decimal": 59044
-    },
-    {
-      "icon_id": "20995330",
-      "name": "logs",
-      "font_class": "logs",
-      "unicode": "e6a5",
-      "unicode_decimal": 59045
-    },
-    {
-      "icon_id": "20995331",
-      "name": "script",
-      "font_class": "script",
-      "unicode": "e6a6",
-      "unicode_decimal": 59046
-    },
-    {
-      "icon_id": "20995332",
-      "name": "comm-down",
-      "font_class": "comm-down1",
-      "unicode": "e6a7",
-      "unicode_decimal": 59047
     },
     {
       "icon_id": "20995333",
@@ -165,13 +179,6 @@
       "font_class": "shutdown",
       "unicode": "e6ab",
       "unicode_decimal": 59051
-    },
-    {
-      "icon_id": "20995337",
-      "name": "status",
-      "font_class": "status",
-      "unicode": "e6ac",
-      "unicode_decimal": 59052
     },
     {
       "icon_id": "20995338",
@@ -207,13 +214,6 @@
       "font_class": "delete",
       "unicode": "e693",
       "unicode_decimal": 59027
-    },
-    {
-      "icon_id": "20466845",
-      "name": "Upload",
-      "font_class": "Upload",
-      "unicode": "e694",
-      "unicode_decimal": 59028
     },
     {
       "icon_id": "20466847",

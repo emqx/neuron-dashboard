@@ -3,7 +3,7 @@
     <div class="south-drive-item-card-hd common-flex">
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <i class="iconfont iconattributed" @click="goGroupPage"></i>
+        <i class="iconfont iconsetting" @click="goGroupPage"></i>
         <i class="iconfont icondelete" @click="deleteDriver"></i>
       </div>
     </div>
@@ -14,7 +14,9 @@
           <emqx-switch></emqx-switch>
         </div>
         <div class="common-flex">
-          <i class="iconfont iconlanguage"></i>
+          <svg class="iconfont icon-svg" aria-hidden="true">
+            <use :xlink:href="`#${statusIconClassMap[Math.floor(Math.random() * 3)]}`" />
+          </svg>
           <span>XXXX</span>
         </div>
       </div>
@@ -43,6 +45,7 @@ import { PropType, defineEmits } from 'vue'
 import { DriverItem } from '@/types/config'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
+import { useDriverStatus } from '@/composables/config/useDriver'
 
 const props = defineProps({
   data: {
@@ -52,6 +55,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['deleted'])
 const router = useRouter()
+const { statusIconClassMap } = useDriverStatus()
 
 const goGroupPage = () => {
   router.push({
