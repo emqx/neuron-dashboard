@@ -29,7 +29,7 @@
       </emqx-submenu>
     </template>
   </emqx-menu>
-  <status-bar></status-bar>
+  <!-- <status-bar></status-bar> -->
 </template>
 
 <script lang="ts">
@@ -41,21 +41,16 @@ import StatusBar from './StatusBar.vue'
 export default defineComponent({
   name: 'SideNav',
   components: {
-    StatusBar,
+    // StatusBar,
   },
   setup() {
     const { t } = useI18n()
     const state = reactive({
       navList: [
         {
-          to: '/home',
+          to: '/overview',
           label: t('common.home'),
           icon: 'iconattributed',
-        },
-        {
-          to: '/data',
-          label: t('data.dataMonitoring'),
-          icon: 'iconstatus',
         },
         {
           to: '/configuration',

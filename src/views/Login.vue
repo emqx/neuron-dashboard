@@ -4,7 +4,7 @@
       <emqx-card>
         <emqx-input v-model="userName" type="text" placeholder="Username" />
         <emqx-input v-model="password" type="password" placeholder="Password" />
-        <emqx-button type="primary" class="login" @click="login"> Login </emqx-button>
+        <emqx-button type="primary" class="login" @click="login">Login</emqx-button>
       </emqx-card>
     </div>
   </div>
@@ -12,32 +12,30 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
-import { useRouter } from 'vue-router'
-import useWebsocket from '@/plugins/ws/useWebsocket'
+// import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Login',
   setup() {
-    const router = useRouter()
-    const { ws } = useWebsocket()
+    // const router = useRouter()
     const form = reactive({
       userName: '',
       password: '',
     })
     const login = () => {
-      const loginInfo = {
-        func: 10,
-        name: form.userName,
-        pass: form.password,
-      }
-      ws(loginInfo)
-        .connect()
-        .then((userInfo) => {
-          sessionStorage.setItem('user', JSON.stringify(userInfo))
-          router.push({
-            name: 'Data',
-          })
-        })
+      // const loginInfo = {
+      //   func: 10,
+      //   name: form.userName,
+      //   pass: form.password,
+      // }
+      // ws(loginInfo)
+      //   .connect()
+      //   .then((userInfo) => {
+      //     sessionStorage.setItem('user', JSON.stringify(userInfo))
+      //     router.push({
+      //       name: 'Data',
+      //     })
+      //   })
     }
     return {
       ...toRefs(form),
