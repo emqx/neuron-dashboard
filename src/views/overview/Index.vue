@@ -4,7 +4,7 @@
     <div class="overview-body">
       <div class="row up">
         <SetupItemCard class="row-block" v-for="item in showList(northDriverList)" :data="item" :key="item.id" />
-        <router-link class="row-link" :to="{ name: 'NorthDriver' }">{{ northDriverLinkText }}</router-link>
+        <router-link class="row-link north" :to="{ name: 'NorthDriver' }">{{ northDriverLinkText }}</router-link>
       </div>
       <div class="canvas-container">
         <div class="edge-canvas up" ref="upEdgeContentEl"></div>
@@ -17,7 +17,7 @@
       </div>
       <div class="row down">
         <SouthDriveItemCard class="row-block" v-for="item in showList(southDriverList)" :data="item" :key="item.id" />
-        <router-link class="row-link" :to="{ name: 'SouthDriver' }">{{ southDriverLinkText }}</router-link>
+        <router-link class="row-link south" :to="{ name: 'SouthDriver' }">{{ southDriverLinkText }}</router-link>
       </div>
     </div>
   </emqx-card>
@@ -111,7 +111,12 @@ onMounted(async () => {
     text-align: center;
     text-decoration: none;
     color: #189bfe;
-    background-color: #f6fcff;
+    &.north {
+      background-color: #f6fcff;
+    }
+    &.south {
+      background-color: #f3f3ff;
+    }
   }
   .x6-edge > * {
     cursor: inherit !important;

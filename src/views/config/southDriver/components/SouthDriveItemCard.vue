@@ -64,7 +64,7 @@ const goGroupPage = () => {
 .south-drive-item-card {
   padding: 24px;
   border-radius: 4px;
-  background-color: #f4f9fc;
+  background-color: #f3f3ff;
   .south-drive-item-card-hd {
     margin-bottom: 28px;
   }
