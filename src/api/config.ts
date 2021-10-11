@@ -13,7 +13,7 @@ import {
   TagForm,
 } from '@/types/config'
 
-type DriverData = Record<string, string | number>
+/* NODE(DRIVER & APP) */
 
 const queryDriverList = (nodeType: number): Promise<AxiosResponse<ResponseDriverListData>> => {
   return http.get('/node', { params: { type: nodeType } })
@@ -41,6 +41,12 @@ export const addDriver = (driverData: NodeForm, direction: DriverDirection) => {
     node_type: direction,
   })
 }
+
+export const deleteDriver = (id: number) => {
+  return http.delete('/node', { data: { id } })
+}
+
+/* GROUP */
 
 export const queryGroupList = async (nodeID: number): Promise<Array<GroupData>> => {
   const { data }: AxiosResponse<{ error: number; group_configs: Array<GroupData> }> = await http.get('/gconfig', {
@@ -75,6 +81,8 @@ export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
   })
 }
 
+/* TAG */
+
 export const queryTagList = async (nodeID: number, groupName: string): Promise<Array<TagData>> => {
   const { data } = await http.get('/tags', { params: { node_id: nodeID } })
   const tags: Array<TagData> = (data.tags || []).filter(
@@ -101,6 +109,8 @@ export const updateTag = (nodeID: number, tag: TagForm) => {
     tags: [tag],
   })
 }
+
+/* PLUGIN */
 
 export const queryPluginList = (): Promise<AxiosResponse<{ plugin_libs: Array<CreatedPlugin> }>> => {
   return http.get('/plugin')

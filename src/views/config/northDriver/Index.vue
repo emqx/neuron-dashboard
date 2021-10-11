@@ -2,14 +2,14 @@
   <emqx-card v-emqx-loading="isListLoading">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('config.northAppSetup') }}</h3>
-      <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addConfig">{{
-        $t('config.addConfig')
-      }}</emqx-button>
+      <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addConfig">
+        {{ $t('config.addConfig') }}
+      </emqx-button>
     </div>
     <ul class="setup-list">
       <emqx-row :gutter="24">
         <emqx-col :span="8" v-for="item in northDriverList" :key="item.id" tag="li" class="setup-item">
-          <SetupItemCard :data="item"></SetupItemCard>
+          <SetupItemCard :data="item" @deleted="getNorthDriverList" />
         </emqx-col>
       </emqx-row>
     </ul>
