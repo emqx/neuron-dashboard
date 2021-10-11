@@ -1,4 +1,4 @@
-import { ref, onMounted, nextTick, Ref } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { Graph } from '@antv/x6'
 import { DriverData } from '@/types/neuron'
 
@@ -13,6 +13,12 @@ export default () => {
   const upEdgeContentEl = ref()
   const downEdgeContentEl = ref()
 
+  /**
+   * the autoResize config of antv has problem
+   * so set svg width manually
+   */
+  const edgeCanvasWrapEl = ref()
+
   let upGraph: any = null
   let downGraph: any = null
 
@@ -21,6 +27,8 @@ export default () => {
   let cardItemWidth = 0
   let northListLength = 0
   let southListLength = 0
+
+  let resizeTimer: undefined | number = undefined
 
   const countXCoordinateArr = (total: number) => {
     const ret = []
@@ -111,21 +119,47 @@ export default () => {
     drawDownEdge()
   }
 
+  const resizeWatcher = async () => {
+    if (resizeTimer) {
+      return
+    }
+    resizeTimer = window.setTimeout(async () => {
+      resizeTimer = undefined
+    }, 300)
+
+    const currentWidth = edgeCanvasWrapEl.value.offsetWidth
+    upGraph.resize(currentWidth)
+    downGraph.resize(currentWidth)
+
+    upGraph.clearCells()
+    downGraph.clearCells()
+
+    draw(northListLength, southListLength)
+  }
+
   onMounted(() => {
     upGraph = new Graph({
       container: upEdgeContentEl.value,
+      interacting: { edgeMovable: false },
     })
     downGraph = new Graph({
       container: downEdgeContentEl.value,
+      interacting: { edgeMovable: false },
     })
     downGraph.on('drag', (event: any) => {
       event.preventEvent()
     })
+    window.addEventListener('resize', resizeWatcher)
+  })
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', resizeWatcher)
   })
 
   return {
     upEdgeContentEl,
     downEdgeContentEl,
+    edgeCanvasWrapEl,
     draw,
   }
 }

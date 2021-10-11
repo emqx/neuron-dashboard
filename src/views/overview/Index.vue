@@ -7,13 +7,17 @@
         <router-link class="row-link north" :to="{ name: 'NorthDriver' }">{{ northDriverLinkText }}</router-link>
       </div>
       <div class="canvas-container">
-        <div class="edge-canvas up" ref="upEdgeContentEl"></div>
+        <div class="edge-canvas-wrap" ref="edgeCanvasWrapEl">
+          <div class="edge-canvas up" ref="upEdgeContentEl"></div>
+        </div>
       </div>
       <div class="row center">
         <NeuronInfoCard />
       </div>
       <div class="canvas-container">
-        <div class="edge-canvas down" ref="downEdgeContentEl"></div>
+        <div class="edge-canvas-wrap">
+          <div class="edge-canvas down" ref="downEdgeContentEl"></div>
+        </div>
       </div>
       <div class="row down">
         <SouthDriveItemCard class="row-block" v-for="item in showList(southDriverList)" :data="item" :key="item.id" />
@@ -41,7 +45,7 @@ const { t } = useI18n()
 const { northDriverList, getNorthDriverList } = useNorthDriver(false)
 const { southDriverList, getSouthDriverList } = useSouthDriver(false)
 
-const { upEdgeContentEl, downEdgeContentEl, draw } = useDrawEdge()
+const { upEdgeContentEl, downEdgeContentEl, edgeCanvasWrapEl, draw } = useDrawEdge()
 
 const northDriverLinkText = computed(() =>
   northDriverList.value.length > 3 ? t('config.moreApp') : t('config.northApp'),
@@ -67,6 +71,9 @@ onMounted(async () => {
   .row,
   .canvas-container {
     padding-right: $btn-more-width + $block-distance;
+  }
+  .edge-canvas-wrap {
+    height: 100%;
   }
   .edge-canvas {
     position: relative;
