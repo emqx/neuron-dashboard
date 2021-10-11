@@ -35,3 +35,9 @@ export enum TagAttrbuteType {
   Write = 2,
   Subscribe = 4,
 }
+
+export enum PluginKind {
+  Static,
+  System,
+  Custom,
+}

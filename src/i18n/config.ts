@@ -15,6 +15,10 @@ export default {
     zh: '添加配置',
     en: 'Add Config',
   },
+  addApp: {
+    zh: '添加应用',
+    en: 'Add App',
+  },
   workStatus: {
     zh: '工作状态',
     en: 'Status',
@@ -247,5 +251,13 @@ export default {
   tagTypeRequired: {
     zh: '请选择 Tag 类型',
     en: 'Please select tag type',
+  },
+  nameRequired: {
+    zh: '请填写名称',
+    en: 'Please enter the name',
+  },
+  pluginRequired: {
+    zh: '请选择 Plugin',
+    en: 'Please select the plugin',
   },
 }
