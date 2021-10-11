@@ -113,5 +113,8 @@ onMounted(async () => {
     color: #189bfe;
     background-color: #f6fcff;
   }
+  .x6-edge > * {
+    cursor: inherit !important;
+  }
 }
 </style>
