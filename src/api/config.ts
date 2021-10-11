@@ -2,7 +2,16 @@ import { AxiosResponse } from 'axios'
 import { DriverDirection } from '@/types/enums'
 import http from '@/utils/http'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-import { DriverItem, GroupData, GroupForm, ResponseDriverListData, TagData, TagForm } from '@/types/config'
+import {
+  CreatedPlugin,
+  DriverItem,
+  GroupData,
+  GroupForm,
+  NodeForm,
+  ResponseDriverListData,
+  TagData,
+  TagForm,
+} from '@/types/config'
 
 type DriverData = Record<string, string | number>
 
@@ -26,19 +35,11 @@ export const querySouthDriverList = async (): Promise<Array<DriverItem>> => {
   return getDataFromResponse(ret)
 }
 
-const addDriver = (driverData: DriverData, direction: DriverDirection) => {
+export const addDriver = (driverData: NodeForm, direction: DriverDirection) => {
   return http.post('/node', {
     ...driverData,
     node_type: direction,
   })
-}
-
-export const addNorthDriver = (driverData: DriverData) => {
-  return addDriver(driverData, DriverDirection.North)
-}
-
-export const addSouthDriver = (driverData: DriverData) => {
-  return addDriver(driverData, DriverDirection.South)
 }
 
 export const queryGroupList = async (nodeID: number): Promise<Array<GroupData>> => {
@@ -99,4 +100,8 @@ export const updateTag = (nodeID: number, tag: TagForm) => {
     node_id: nodeID,
     tags: [tag],
   })
+}
+
+export const queryPluginList = (): Promise<AxiosResponse<{ plugin_libs: Array<CreatedPlugin> }>> => {
+  return http.get('/plugin')
 }

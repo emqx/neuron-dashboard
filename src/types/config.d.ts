@@ -1,10 +1,27 @@
 import { Merge } from 'type-fest'
+import { DriverDirection, PluginKind } from './enums'
 
 /**
  * Params get from API
  */
 type Parm = Array<{ vars: string; pars: string }>
 
+export interface PluginForm {
+  kind: PluginKind
+  node_type: DriverDirection
+  name: string
+  lib_name: string
+}
+
+export interface CreatedPlugin extends PluginForm {
+  id: number
+}
+
+export interface NodeForm {
+  type: DriverDirection
+  name: string
+  plugin_name: string
+}
 export interface SerialNorthDriversFormData {
   /**
    * Device name
