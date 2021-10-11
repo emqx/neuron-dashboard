@@ -4,7 +4,7 @@
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <i class="iconfont iconattributed" @click="goGroupPage"></i>
-        <i class="iconfont icondelete"></i>
+        <i class="iconfont icondelete" @click="deleteDriver"></i>
       </div>
     </div>
     <div class="setup-item-info common-flex">
@@ -30,9 +30,11 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import { DriverItem } from '@/types/config'
-import { PropType } from 'vue'
+import { PropType, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
+import useDeleteDriver from '@/composables/config/useDeleteDriver'
 
+const emit = defineEmits(['deleted'])
 const router = useRouter()
 
 const props = defineProps({
@@ -46,6 +48,12 @@ const goGroupPage = () => {
       nodeID: props.data?.id,
     },
   })
+}
+
+const { delDriver } = useDeleteDriver()
+const deleteDriver = async () => {
+  await delDriver(props.data)
+  emit('deleted')
 }
 </script>
 

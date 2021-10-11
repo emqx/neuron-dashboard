@@ -4,7 +4,7 @@
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <i class="iconfont iconattributed" @click="goGroupPage"></i>
-        <i class="iconfont icondelete"></i>
+        <i class="iconfont icondelete" @click="deleteDriver"></i>
       </div>
     </div>
     <div class="south-drive-item-info">
@@ -39,9 +39,10 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
+import { PropType, defineEmits } from 'vue'
 import { DriverItem } from '@/types/config'
 import { useRouter } from 'vue-router'
+import useDeleteDriver from '@/composables/config/useDeleteDriver'
 
 const props = defineProps({
   data: {
@@ -49,7 +50,9 @@ const props = defineProps({
     required: true,
   },
 })
+const emit = defineEmits(['deleted'])
 const router = useRouter()
+
 const goGroupPage = () => {
   router.push({
     name: 'SouthDriverGroup',
@@ -57,6 +60,12 @@ const goGroupPage = () => {
       nodeID: props.data.id,
     },
   })
+}
+
+const { delDriver } = useDeleteDriver()
+const deleteDriver = async () => {
+  await delDriver(props.data)
+  emit('deleted')
 }
 </script>
 
