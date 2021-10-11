@@ -9,28 +9,43 @@
         <emqx-col :span="12">
           <label>{{ $t('config.workStatus') }}:</label>
           <i class="iconfont iconlanguage"></i>
-          <span>停止</span>
+          <span>{{ info.status }}</span>
         </emqx-col>
         <emqx-col :span="12">
           <label>{{ $t('config.deviceConnectNum') }}:</label>
-          <span>36</span>
+          <span>{{ info.deviceNum }}</span>
         </emqx-col>
       </emqx-row>
       <emqx-row>
         <emqx-col :span="12">
           <label>{{ $t('config.runningTime') }}:</label>
-          <span>3 小时 27 分钟</span>
+          <span>{{ timeFormat(info.runningTime) }}</span>
         </emqx-col>
         <emqx-col :span="12">
           <label>{{ $t('config.versionNAuthInfo') }}:</label>
-          <span>Version 2.1 已授权</span>
+          <span
+            >Version {{ info.version }}
+            {{ info.isAuthorize ? $t('common.authorized') : $t('common.unauthorized') }}</span
+          >
         </emqx-col>
       </emqx-row>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref } from 'vue'
+import useTimeFormat from '@/composables/useTimeFormat'
+
+const info = {
+  runningTime: 30000,
+  version: '2.3',
+  isAuthorize: true,
+  deviceNum: 36,
+  status: '停止',
+}
+const { timeFormat } = useTimeFormat()
+</script>
 
 <style lang="scss">
 .neuron-info-card {
