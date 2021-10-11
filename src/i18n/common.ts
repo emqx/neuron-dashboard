@@ -239,4 +239,20 @@ export default {
     zh: '首页',
     en: 'Home',
   },
+  minute: {
+    zh: '分钟',
+    en: 'minute | minute | minutes',
+  },
+  hour: {
+    zh: '小时',
+    en: 'hour | hour | hours',
+  },
+  authorized: {
+    zh: '已授权',
+    en: 'Authorized',
+  },
+  unauthorized: {
+    zh: '未授权',
+    en: 'Unauthorized',
+  },
 }
