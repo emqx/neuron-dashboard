@@ -223,6 +223,10 @@ export default {
     zh: '驱动库名称',
     en: 'Lib name',
   },
+  useFor: {
+    zh: '使用对象',
+    en: 'Use for',
+  },
   /* FOR FORM */
   groupNameRequired: {
     zh: '请填写 Group 名称',

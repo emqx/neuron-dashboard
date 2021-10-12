@@ -8,6 +8,7 @@ import {
   GroupData,
   GroupForm,
   NodeForm,
+  PluginForm,
   ResponseDriverListData,
   TagData,
   TagForm,
@@ -114,4 +115,16 @@ export const updateTag = (nodeID: number, tag: TagForm) => {
 
 export const queryPluginList = (): Promise<AxiosResponse<{ plugin_libs: Array<CreatedPlugin> }>> => {
   return http.get('/plugin')
+}
+
+export const addPlugin = (data: PluginForm) => {
+  return http.post('/plugin', data)
+}
+
+export const updatePlugin = (data: PluginForm) => {
+  return http.put('/plugin', data)
+}
+
+export const deletePlugin = (id: number) => {
+  return http.delete('/plugin', { data: { id } })
 }
