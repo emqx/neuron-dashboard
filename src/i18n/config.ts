@@ -215,6 +215,14 @@ export default {
     zh: '南向驱动',
     en: 'South driver',
   },
+  pluginManagement: {
+    zh: 'Plugin 管理',
+    en: 'Plugin Management',
+  },
+  libName: {
+    zh: '驱动库名称',
+    en: 'Lib name',
+  },
   /* FOR FORM */
   groupNameRequired: {
     zh: '请填写 Group 名称',

@@ -65,12 +65,22 @@ export default defineComponent({
               to: '/configuration/south-driver',
               label: t('config.south') + t('config.driverSetup'),
             },
+            {
+              to: '/configuration/plugin',
+              label: 'Plugin',
+            },
           ],
         },
         {
           to: '/admin',
           label: t('admin.admin'),
           icon: 'iconAdministration1',
+          subMenus: [
+            {
+              to: '/admin/language',
+              label: t('common.accountSettings'),
+            },
+          ],
         },
       ],
     })
