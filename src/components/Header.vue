@@ -8,7 +8,7 @@
         <emqx-dropdown>
           <span class="el-dropdown-link">
             <span class="user-bg">
-              <i class="iconfont iconAdministration"></i>
+              <i class="iconfont iconAdministration1"></i>
             </span>
             {{ $t('common.user') }}
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -121,7 +121,7 @@ export default defineComponent({
     font-size: 20px;
   }
 }
-.iconfont.iconAdministration {
+.iconfont.iconAdministration1 {
   font-size: 20px;
   position: relative;
   left: 1px;
