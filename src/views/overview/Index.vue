@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="overview">
+  <emqx-card class="overview" v-emqx-loading="isLoading">
     <h3 class="card-title">{{ $t('common.home') }}</h3>
     <div class="overview-body">
       <div class="row up">
@@ -44,6 +44,7 @@ const { t } = useI18n()
 
 const { northDriverList, getNorthDriverList } = useNorthDriver(false)
 const { southDriverList, getSouthDriverList } = useSouthDriver(false)
+const isLoading = ref(false)
 
 const { upEdgeContentEl, downEdgeContentEl, edgeCanvasWrapEl, draw } = useDrawEdge()
 
@@ -57,8 +58,10 @@ const southDriverLinkText = computed(() =>
 const showList = (list: Array<DriverItem>) => list.slice(0, 3)
 
 onMounted(async () => {
+  isLoading.value = true
   await Promise.all([getSouthDriverList(), getNorthDriverList()])
   draw(northDriverList.value.length, southDriverList.value.length)
+  isLoading.value = false
 })
 </script>
 
@@ -90,6 +93,7 @@ onMounted(async () => {
     display: flex;
     justify-content: center;
     position: relative;
+    min-height: 118px;
   }
   .row-block {
     box-sizing: border-box;
