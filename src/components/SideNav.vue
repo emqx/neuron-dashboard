@@ -70,7 +70,7 @@ export default defineComponent({
         {
           to: '/admin',
           label: t('admin.admin'),
-          icon: 'iconAdministration',
+          icon: 'iconAdministration1',
         },
       ],
     })
