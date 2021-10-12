@@ -112,8 +112,8 @@ export default () => {
     canvasWidth = upEdgeContentEl.value.offsetWidth
     canvasHeight = upEdgeContentEl.value.offsetHeight
     cardItemWidth = Number(((canvasWidth - 2 * BLOCK_DISTANCE) / 3).toFixed(2))
-    northListLength = northDriverListLength
-    southListLength = southDriverListLength
+    northListLength = northDriverListLength > 3 ? 3 : northDriverListLength
+    southListLength = southDriverListLength > 3 ? 3 : southDriverListLength
 
     drawUpEdge()
     drawDownEdge()
