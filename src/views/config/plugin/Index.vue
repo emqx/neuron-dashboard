@@ -14,7 +14,7 @@
     <ul class="setup-list">
       <emqx-row :gutter="24">
         <emqx-col :span="8" v-for="item in pluginListToShow" :key="item.id" tag="li" class="setup-item">
-          <PluginItemCard :data="item" />
+          <PluginItemCard :data="item" @deleted="getPluginList" />
         </emqx-col>
       </emqx-row>
     </ul>

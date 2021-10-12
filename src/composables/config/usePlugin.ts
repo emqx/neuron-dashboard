@@ -1,11 +1,11 @@
 import { ref, computed, Ref, ComputedRef } from 'vue'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { DriverDirection, PluginKind } from '@/types/enums'
-import { addPlugin, queryPluginList } from '@/api/config'
+import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
 import { CreatedPlugin, PluginForm } from '@/types/config'
 import { createCommonErrorMessage, createOptionListFromEnum } from '@/utils/utils'
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
 
 export default () => {
   const totalPluginList: Ref<Array<CreatedPlugin>> = ref([])
@@ -105,5 +105,22 @@ export const useAddPlugin = () => {
     isSubmitting,
     createRawPluginForm,
     submitData,
+  }
+}
+
+export const useDeletePlugin = () => {
+  const { t } = useI18n()
+  const delPlugin = async ({ id }: CreatedPlugin) => {
+    try {
+      await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete'), type: 'warning' })
+      await deletePlugin(id)
+      EmqxMessage.success(t('common.operateSuccessfully'))
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject()
+    }
+  }
+  return {
+    delPlugin,
   }
 }
