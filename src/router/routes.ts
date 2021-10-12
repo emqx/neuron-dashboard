@@ -46,6 +46,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'SouthDriverGroupAddTag',
         component: () => import('@/views/config/southDriver/AddTag.vue'),
       },
+      {
+        path: '/configuration/plugin',
+        name: 'PluginManagement',
+        component: () => import('@/views/config/plugin/Index.vue'),
+      },
     ],
   },
   {
