@@ -19,6 +19,7 @@
       </emqx-row>
     </ul>
   </emqx-card>
+  <AddPluginDialog v-model="showDialog" :type="activeTab" @submitted="getPluginList" />
 </template>
 
 <script lang="ts" setup>
@@ -27,8 +28,9 @@ import { ElTabs, ElTabPane } from 'element-plus'
 import { DriverDirection } from '@/types/enums'
 import PluginItemCard from './components/PluginItemCard.vue'
 import usePlugin from '@/composables/config/usePlugin'
+import AddPluginDialog from './components/AddPluginDialog.vue'
 
-const { northPluginList, southPluginList } = usePlugin()
+const { northPluginList, southPluginList, getPluginList } = usePlugin()
 
 const activeTab = ref(DriverDirection.North)
 const showDialog = ref(false)

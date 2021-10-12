@@ -7,7 +7,7 @@ import { DriverDirection, PluginKind } from './enums'
 type Parm = Array<{ vars: string; pars: string }>
 
 export interface PluginForm {
-  kind: PluginKind
+  kind: PluginKind | null
   node_type: DriverDirection
   name: string
   lib_name: string
