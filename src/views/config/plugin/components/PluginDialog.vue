@@ -3,12 +3,12 @@
     v-model="showDialog"
     :width="600"
     custom-class="common-dialog"
-    :title="`${$t('common.add')} Plugin`"
+    :title="`${!!plugin ? $t('common.edit') : $t('common.add')} Plugin`"
     :z-index="2000"
   >
     <emqx-form ref="pluginFormCom" :model="pluginForm" :rules="pluginFormRules">
       <emqx-form-item prop="name" :label="$t('common.name')" required>
-        <emqx-input v-model="pluginForm.name" />
+        <emqx-input v-model="pluginForm.name" :disabled="!!plugin" />
       </emqx-form-item>
       <emqx-form-item prop="node_type" :label="$t('config.useFor')" required>
         <emqx-select v-model="pluginForm.node_type">
@@ -16,7 +16,7 @@
         </emqx-select>
       </emqx-form-item>
       <emqx-form-item prop="kind" :label="$t('common.type')" required>
-        <emqx-select v-model="pluginForm.kind">
+        <emqx-select v-model="pluginForm.kind" :disabled="!!plugin">
           <emqx-option v-for="item in pluginKindList" :key="item.value" :value="item.value" :label="item.label" />
         </emqx-select>
       </emqx-form-item>
@@ -27,7 +27,7 @@
     <template #footer>
       <span class="dialog-footer">
         <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
-          $t('common.create')
+          !!plugin ? $t('common.submit') : $t('common.create')
         }}</emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
       </span>
@@ -40,11 +40,15 @@ import { computed, defineProps, defineEmits, PropType, watch, nextTick } from 'v
 import { ElDialog } from 'element-plus'
 import { useAddPlugin } from '@/composables/config/usePlugin'
 import { DriverDirection } from '@/types/enums'
+import { CreatedPlugin } from '@/types/config'
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     required: true,
+  },
+  plugin: {
+    type: Object as PropType<CreatedPlugin>,
   },
   type: {
     type: Number as PropType<DriverDirection>,
@@ -62,9 +66,14 @@ const showDialog = computed({
 
 watch(showDialog, async (val) => {
   if (val) {
-    pluginForm.value = createRawPluginForm(props.type)
+    if (props.plugin) {
+      const { kind, node_type, name, lib_name } = props.plugin
+      pluginForm.value = { kind, node_type, name, lib_name }
+    } else {
+      pluginForm.value = createRawPluginForm(props.type)
+    }
     await nextTick()
-    pluginFormCom.value.resetField()
+    pluginFormCom.value.$refs.form.clearValidate()
   }
 })
 
@@ -79,7 +88,7 @@ const {
   submitData,
 } = useAddPlugin()
 const submit = async () => {
-  await submitData()
+  await submitData(props.plugin)
   showDialog.value = false
   emit('submitted')
 }

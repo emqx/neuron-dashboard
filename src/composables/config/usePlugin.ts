@@ -1,7 +1,7 @@
 import { ref, computed, Ref, ComputedRef } from 'vue'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { DriverDirection, PluginKind } from '@/types/enums'
-import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
+import { addPlugin, deletePlugin, queryPluginList, updatePlugin } from '@/api/config'
 import { CreatedPlugin, PluginForm } from '@/types/config'
 import { createCommonErrorMessage, createOptionListFromEnum } from '@/utils/utils'
 import { useI18n } from 'vue-i18n'
@@ -9,6 +9,7 @@ import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
 
 export default () => {
   const totalPluginList: Ref<Array<CreatedPlugin>> = ref([])
+  const isListLoading = ref(false)
 
   const northPluginList: ComputedRef<Array<CreatedPlugin>> = computed(() =>
     totalPluginList.value.filter(({ node_type }) => NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)),
@@ -18,8 +19,10 @@ export default () => {
   )
 
   const getPluginList = async () => {
+    isListLoading.value = true
     const { data } = await queryPluginList()
     totalPluginList.value = data.plugin_libs || []
+    isListLoading.value = false
   }
 
   getPluginList()
@@ -27,6 +30,7 @@ export default () => {
   return {
     northPluginList,
     southPluginList,
+    isListLoading,
     getPluginList,
   }
 }
@@ -82,12 +86,17 @@ export const useAddPlugin = () => {
     { label: t('config.southDriver'), value: DriverDirection.South },
   ]
 
-  const submitData = async () => {
+  const submitData = async (currentPlugin?: CreatedPlugin) => {
     try {
       await pluginFormCom.value.validate()
       isSubmitting.value = true
-      await addPlugin(pluginForm.value)
-      EmqxMessage.success(t('common.createSuccess'))
+      if (currentPlugin) {
+        await updatePlugin(pluginForm.value)
+        EmqxMessage.success(t('common.submitSuccess'))
+      } else {
+        await addPlugin(pluginForm.value)
+        EmqxMessage.success(t('common.createSuccess'))
+      }
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()
