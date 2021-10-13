@@ -227,6 +227,14 @@ export default {
     zh: '使用对象',
     en: 'Use for',
   },
+  modifyAppPlugin: {
+    zh: '修改当前应用 plugin',
+    en: 'Modify the plugin of the current application',
+  },
+  modifyDriverPlugin: {
+    zh: '修改当前设备 plugin',
+    en: 'Modify the plugin of the current device',
+  },
   /* FOR FORM */
   groupNameRequired: {
     zh: '请填写 Group 名称',

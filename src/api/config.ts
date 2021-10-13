@@ -47,6 +47,10 @@ export const deleteDriver = (id: number) => {
   return http.delete('/node', { data: { id } })
 }
 
+export const updateDriver = (data: NodeForm) => {
+  return http.put('/node', data)
+}
+
 /* GROUP */
 
 export const queryGroupList = async (nodeID: number): Promise<Array<GroupData>> => {
