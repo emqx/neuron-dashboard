@@ -2,7 +2,10 @@
   <div class="plugin-item-card">
     <div class="plugin-item-card-hd common-flex">
       <p class="plugin-item-name">{{ data.name }}</p>
-      <i class="iconfont icondelete" @click="deletePlugin" />
+      <div class="handlers">
+        <i class="icon-edit el-icon-edit-outline" @click="editPlugin"></i>
+        <i class="iconfont icondelete" @click="deletePlugin" />
+      </div>
     </div>
     <div class="info-row">
       <label>{{ $t('common.type') }}</label>
@@ -10,7 +13,7 @@
     </div>
     <div class="info-row">
       <label>{{ $t('config.libName') }}</label>
-      <span>{{ data.lib_name }}</span>
+      <span class="ellipsis">{{ data.lib_name }}</span>
     </div>
   </div>
 </template>
@@ -27,11 +30,15 @@ const props = defineProps({
     required: true,
   },
 })
-const emit = defineEmits(['deleted'])
+const emit = defineEmits(['deleted', 'edit'])
 const { delPlugin } = useDeletePlugin()
 const deletePlugin = async () => {
   await delPlugin(props.data)
   emit('deleted')
+}
+
+const editPlugin = async () => {
+  emit('edit')
 }
 </script>
 
@@ -45,6 +52,16 @@ const deletePlugin = async () => {
   }
   .iconfont {
     font-size: 20px;
+  }
+  .icon-edit {
+    position: relative;
+    top: -1px;
+    font-size: 17px;
+    margin-right: 8px;
+    opacity: 0.9;
+  }
+  .iconfont,
+  .icon-edit {
     cursor: pointer;
     color: #20466c;
   }
