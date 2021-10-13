@@ -52,7 +52,7 @@ const northDriverLinkText = computed(() =>
   northDriverList.value.length > 3 ? t('config.moreApp') : t('config.northApp'),
 )
 const southDriverLinkText = computed(() =>
-  southDriverList.value.length > 3 ? t('config.moreDriver') : t('config.southDriver'),
+  southDriverList.value.length > 3 ? t('config.moreDevices') : t('config.southDevice'),
 )
 
 const showList = (list: Array<DriverItem>) => list.slice(0, 3)

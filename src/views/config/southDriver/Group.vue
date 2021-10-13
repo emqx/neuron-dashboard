@@ -4,7 +4,7 @@
     <div class="card-bar-under-title common-flex">
       <div class="bar-left common-flex">
         <p class="driver-name">
-          <label>{{ $t('config.driverName') }}</label>
+          <label>{{ $t('config.deviceName') }}</label>
           <span>{{ getNodeNameById(nodeID) }}</span>
         </p>
         <emqx-button size="small" @click="changePlugin">{{ $t('config.modifyDriverPlugin') }}</emqx-button>

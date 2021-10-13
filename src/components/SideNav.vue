@@ -4,14 +4,14 @@
       <emqx-menu-item class="nav-item" v-if="!nav.subMenus" style="padding-left: 0" :key="index" :index="nav.to">
         <div class="nav-item-content">
           <i class="nav-icon iconfont" :class="nav.icon"></i>
-          <span class="nav-label">{{ nav.label }}</span>
+          <span class="nav-label ellipsis">{{ nav.label }}</span>
         </div>
       </emqx-menu-item>
       <emqx-submenu v-else :key="nav.to" :index="nav.to">
         <template #title>
           <div class="nav-item-content">
             <i class="nav-icon iconfont" :class="nav.icon"></i>
-            <span class="nav-label">{{ nav.label }}</span>
+            <span class="nav-label ellipsis">{{ nav.label }}</span>
           </div>
         </template>
         <div class="sub-menu-list">
@@ -22,7 +22,7 @@
             :index="subMenuItem.to"
           >
             <div class="nav-item-content">
-              <span class="nav-label">{{ subMenuItem.label }}</span>
+              <span class="nav-label ellipsis">{{ subMenuItem.label }}</span>
             </div>
           </emqx-menu-item>
         </div>
@@ -63,7 +63,7 @@ export default defineComponent({
             },
             {
               to: '/configuration/south-driver',
-              label: t('config.south') + t('config.driverSetup'),
+              label: t('config.southDeviceManagement'),
             },
             {
               to: '/configuration/plugin',

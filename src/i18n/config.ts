@@ -7,6 +7,10 @@ export default {
     zh: '北向应用设置',
     en: 'North Application Setup',
   },
+  southDeviceManagement: {
+    zh: '南向设备管理',
+    en: 'South Devices',
+  },
   appName: {
     zh: '应用名称',
     en: 'Name of Application ',
@@ -87,17 +91,21 @@ export default {
     zh: '驱动设置',
     en: 'Driver Setup',
   },
-  driverName: {
-    zh: '驱动名称',
-    en: 'Driver Name',
+  deviceManagement: {
+    zh: '设备管理',
+    en: 'Device Management',
+  },
+  deviceName: {
+    zh: '设备名称',
+    en: 'Device Name',
   },
   driverType: {
     zh: '驱动类型',
     en: 'Driver Type',
   },
-  newDriver: {
-    zh: '新建驱动',
-    en: 'New Driver',
+  newDevice: {
+    zh: '新增设备',
+    en: 'New Device',
   },
   editDriver: {
     zh: '编辑驱动',
@@ -207,13 +215,13 @@ export default {
     zh: '北向应用',
     en: 'North application',
   },
-  moreDriver: {
-    zh: '更多驱动',
-    en: 'More drivers',
+  moreDevices: {
+    zh: '更多设备',
+    en: 'More devices',
   },
-  southDriver: {
-    zh: '南向驱动',
-    en: 'South driver',
+  southDevice: {
+    zh: '南向设备',
+    en: 'South device',
   },
   pluginManagement: {
     zh: 'Plugin 管理',
