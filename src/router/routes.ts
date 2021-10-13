@@ -6,7 +6,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/data',
+    redirect: '/overview',
     component: Home,
     children: [
       {
@@ -50,6 +50,13 @@ const routes: Array<RouteRecordRaw> = [
         path: '/configuration/plugin',
         name: 'PluginManagement',
         component: () => import('@/views/config/plugin/Index.vue'),
+      },
+      /* ADMIN */
+      {
+        path: '/admin/account-settings',
+        name: 'AccountSettings',
+        meta: { requireAuth: true },
+        component: () => import('@/views/admin/AccountSetting.vue'),
       },
     ],
   },

@@ -1,5 +1,9 @@
 import { Language } from '@/types/locale'
 import { createI18n } from 'vue-i18n'
+import locale from 'element-plus/lib/locale'
+import zhLang from 'element-plus/lib/locale/lang/zh-cn'
+import enLang from 'element-plus/lib/locale/lang/en'
+import store from '@/store'
 
 const LangModules = ['data', 'logs', 'script', 'common', 'config', 'alarm', 'admin']
 
@@ -30,9 +34,15 @@ const messages = {
 }
 
 const i18n = createI18n({
-  locale: 'zh',
+  locale: store.state.lang,
   fallbackLocale: 'zh',
   messages,
 })
+
+if (store.state.lang === 'zh') {
+  locale.use(zhLang)
+} else {
+  locale.use(enLang)
+}
 
 export default i18n
