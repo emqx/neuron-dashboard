@@ -8,7 +8,7 @@
     </div>
     <el-tabs v-model="activeTab" type="card">
       <el-tab-pane :label="`${$t('config.northApp')} plugin`" :name="DriverDirection.North.toString()" />
-      <el-tab-pane :label="`${$t('config.southDriver')} plugin`" :name="DriverDirection.South.toString()" />
+      <el-tab-pane :label="`${$t('config.southDevice')} plugin`" :name="DriverDirection.South.toString()" />
     </el-tabs>
     <ul class="setup-list">
       <emqx-row :gutter="24">

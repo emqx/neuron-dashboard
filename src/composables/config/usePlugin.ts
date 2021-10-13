@@ -83,7 +83,7 @@ export const useAddPlugin = () => {
   const { pluginKindList } = usePluginKindSelect()
   const useForOptionList = [
     { label: t('config.northApp'), value: DriverDirection.North },
-    { label: t('config.southDriver'), value: DriverDirection.South },
+    { label: t('config.southDevice'), value: DriverDirection.South },
   ]
 
   const submitData = async (currentPlugin?: CreatedPlugin) => {

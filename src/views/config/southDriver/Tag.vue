@@ -1,8 +1,8 @@
 <template>
   <emqx-breadcrumb separator="/">
-    <emqx-breadcrumb-item :to="{ name: 'SouthDriver' }">{{
-      $t('config.south') + $t('config.driverSetup')
-    }}</emqx-breadcrumb-item>
+    <emqx-breadcrumb-item :to="{ name: 'SouthDriver' }">
+      {{ $t('config.southDeviceManagement') }}
+    </emqx-breadcrumb-item>
     <emqx-breadcrumb-item :to="{ name: 'SouthDriverGroup' }">{{ $t('config.groupList') }}</emqx-breadcrumb-item>
     <emqx-breadcrumb-item>{{ $t('config.tagList') }}</emqx-breadcrumb-item>
   </emqx-breadcrumb>
@@ -11,7 +11,7 @@
     <div class="card-bar-under-title common-flex">
       <div class="bar-left">
         <p class="driver-name">
-          <label>{{ $t('config.driverName') }}</label>
+          <label>{{ $t('config.deviceName') }}</label>
           <span>{{ getNodeNameById(nodeID) }}</span>
         </p>
       </div>

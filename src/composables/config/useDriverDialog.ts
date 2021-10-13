@@ -44,7 +44,7 @@ export default (type: DriverDirection) => {
     plugin_name: [{ required: true, message: t('config.pluginRequired') }],
   }
 
-  const dialogTitle = computed(() => (type === DriverDirection.North ? t('config.addApp') : t('config.newDriver')))
+  const dialogTitle = computed(() => (type === DriverDirection.North ? t('config.addApp') : t('config.newDevice')))
 
   const initForm = async () => {
     formCom.value.resetField()
