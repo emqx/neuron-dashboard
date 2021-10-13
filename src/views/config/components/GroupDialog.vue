@@ -3,7 +3,7 @@
     v-model="showDialog"
     :width="500"
     custom-class="common-dialog"
-    :title="$t('config.createGroup')"
+    :title="!!group ? $t('config.editGroup') : $t('config.createGroup')"
     :z-index="2000"
   >
     <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
@@ -21,9 +21,9 @@
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
-          group ? $t('common.submit') : $t('common.create')
-        }}</emqx-button>
+        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+          {{ group ? $t('common.submit') : $t('common.create') }}
+        </emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
       </span>
     </template>
