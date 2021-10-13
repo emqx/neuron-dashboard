@@ -7,7 +7,7 @@
           <label>{{ $t('config.driverName') }}</label>
           <span>{{ getNodeNameById(nodeID) }}</span>
         </p>
-        <emqx-button size="small">{{ $t('config.editDriver') }}</emqx-button>
+        <emqx-button size="small" @click="changePlugin">{{ $t('config.modifyDriverPlugin') }}</emqx-button>
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
@@ -52,15 +52,18 @@
     </emqx-table>
   </emqx-card>
   <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" :group="currentGroup" />
+  <EditDriverPluginDialog v-model="showChangePluginDialog" :type="DriverDirection.South" :node="currentNode" />
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref } from 'vue'
+import { ref, Ref, computed } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from '@/views/config/components/GroupDialog.vue'
+import EditDriverPluginDialog from '@/views/config/components/EditDriverPluginDialog.vue'
 import useNodeList from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'
 import { useRouter } from 'vue-router'
+import { DriverDirection } from '@/types/enums'
 
 const router = useRouter()
 const {
@@ -76,6 +79,12 @@ const {
 const showGroupDialog = ref(false)
 const { getNodeNameById } = useNodeList()
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
+const showChangePluginDialog = ref(false)
+
+const currentNode = computed(() => ({
+  id: nodeID.value,
+  name: getNodeNameById(nodeID.value),
+}))
 
 const addGroup = () => {
   currentGroup.value = undefined
@@ -96,6 +105,9 @@ const goTagPage = ({ name }: GroupData) => {
     name: 'SouthDriverGroupTag',
     params: { group: name },
   })
+}
+const changePlugin = () => {
+  showChangePluginDialog.value = true
 }
 </script>
 
