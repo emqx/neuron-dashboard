@@ -63,6 +63,10 @@ export default {
     zh: '创建 Group',
     en: 'Create Group',
   },
+  editGroup: {
+    zh: '编辑 Group',
+    en: 'Edit Group',
+  },
   objectSetup: {
     zh: 'Object 设置',
     en: 'Object Setup',
