@@ -77,7 +77,7 @@ export default defineComponent({
           icon: 'iconAdministration1',
           subMenus: [
             {
-              to: '/admin/language',
+              to: '/admin/account-settings',
               label: t('common.accountSettings'),
             },
           ],

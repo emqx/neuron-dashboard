@@ -5,6 +5,14 @@ interface State {
   status: Status | null
   objd: Array<ObjdModel>
   chnl: Array<ChnlModel>
+  lang: string
+}
+
+const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
+const getDefaultLanguage = () => {
+  const browserLanguage = checkLanguage(navigator.language.substr(0, 2))
+  const localStorageLanguage = checkLanguage(localStorage.getItem('language') || '')
+  return localStorageLanguage || browserLanguage || 'zh'
 }
 
 export default createStore<State>({
@@ -13,6 +21,7 @@ export default createStore<State>({
       status: null,
       objd: [],
       chnl: [],
+      lang: getDefaultLanguage(),
     }
   },
   mutations: {
@@ -24,6 +33,10 @@ export default createStore<State>({
     },
     SET_DRIVER_DATA(state: State, payload: ChnlModel[]) {
       state.chnl = payload
+    },
+    SET_LANG(state: State, payload: string) {
+      state.lang = payload
+      localStorage.setItem('language', payload)
     },
   },
   getters: {

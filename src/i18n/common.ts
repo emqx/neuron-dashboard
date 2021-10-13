@@ -31,6 +31,10 @@ export default {
     zh: '用户管理',
     en: 'User Admin',
   },
+  accountSettings: {
+    zh: '账户设置',
+    en: 'Account Settings',
+  },
   newPassword: {
     zh: '新密码',
     en: 'New password',
@@ -254,5 +258,13 @@ export default {
   unauthorized: {
     zh: '未授权',
     en: 'Unauthorized',
+  },
+  inputRequired: {
+    zh: '请输入',
+    en: 'Please enter the ',
+  },
+  selectRequired: {
+    zh: '请选择',
+    en: 'Please select the ',
   },
 }
