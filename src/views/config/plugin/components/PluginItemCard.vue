@@ -3,8 +3,8 @@
     <div class="plugin-item-card-hd common-flex">
       <p class="plugin-item-name">{{ data.name }}</p>
       <div class="handlers">
-        <i class="icon-edit el-icon-edit-outline" @click="editPlugin"></i>
-        <i class="iconfont icondelete" @click="deletePlugin" />
+        <i class="icon el-icon-edit-outline" @click="editPlugin"></i>
+        <i class="iconfont icon icondelete" @click="deletePlugin" />
       </div>
     </div>
     <div class="info-row">
@@ -50,20 +50,13 @@ const editPlugin = async () => {
   .plugin-item-card-hd {
     margin-bottom: 16px;
   }
-  .iconfont {
+  .icon {
     font-size: 20px;
-  }
-  .icon-edit {
-    position: relative;
-    top: -1px;
-    font-size: 17px;
-    margin-right: 8px;
-    opacity: 0.9;
-  }
-  .iconfont,
-  .icon-edit {
     cursor: pointer;
     color: #20466c;
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
   }
   .info-row:not(:last-child) {
     margin-bottom: 10px;
