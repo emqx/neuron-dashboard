@@ -41,5 +41,6 @@ module.exports = {
       },
     ],
     camelcase: 'off',
+    '@typescript-eslint/no-unused-vars': ['off'],
   },
 }
