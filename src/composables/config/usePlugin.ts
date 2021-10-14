@@ -36,7 +36,7 @@ export default () => {
 }
 
 const usePluginKindSelect = () => {
-  const pluginKindList = createOptionListFromEnum(PluginKind)
+  const pluginKindList = createOptionListFromEnum(PluginKind).filter(({ value }) => value !== PluginKind.Static)
   return {
     pluginKindList,
   }

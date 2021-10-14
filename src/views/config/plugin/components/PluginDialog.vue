@@ -15,7 +15,7 @@
           <emqx-option v-for="item in useForOptionList" :key="item.value" :value="item.value" :label="item.label" />
         </emqx-select>
       </emqx-form-item>
-      <emqx-form-item prop="kind" :label="$t('common.type')" required>
+      <emqx-form-item prop="kind" :label="$t('config.pluginKind')" required>
         <emqx-select v-model="pluginForm.kind" :disabled="!!plugin">
           <emqx-option v-for="item in pluginKindList" :key="item.value" :value="item.value" :label="item.label" />
         </emqx-select>

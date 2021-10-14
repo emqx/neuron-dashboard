@@ -236,8 +236,12 @@ export default {
     en: 'Lib name',
   },
   useFor: {
-    zh: '使用对象',
-    en: 'Use for',
+    zh: '关联节点类型',
+    en: 'Associated node type',
+  },
+  pluginKind: {
+    zh: '插件类别',
+    en: 'Kind of plugin',
   },
   modifyAppPlugin: {
     zh: '修改当前应用 plugin',
