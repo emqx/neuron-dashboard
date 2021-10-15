@@ -4,7 +4,7 @@
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <i class="iconfont iconsetting" @click="goGroupPage"></i>
-        <i class="iconfont icondelete" @click="deleteDriver"></i>
+        <i class="iconfont icondelete" :class="{ disabled: data.name === DEFAULT_NODE_NAME }" @click="deleteDriver"></i>
       </div>
     </div>
     <div class="setup-item-info common-flex">
@@ -40,6 +40,7 @@ import { useDriverStatus } from '@/composables/config/useDriver'
 const emit = defineEmits(['deleted'])
 const router = useRouter()
 const { statusIconClassMap } = useDriverStatus()
+const DEFAULT_NODE_NAME = 'default-dashboard-adapter'
 
 const props = defineProps({
   data: { type: Object as PropType<DriverItem>, required: true },
@@ -56,6 +57,9 @@ const goGroupPage = () => {
 
 const { delDriver } = useDeleteDriver()
 const deleteDriver = async () => {
+  if (props.data.name === DEFAULT_NODE_NAME) {
+    return
+  }
   await delDriver(props.data)
   emit('deleted')
 }
@@ -82,6 +86,10 @@ const deleteDriver = async () => {
       cursor: pointer;
       &:not(:last-child) {
         margin-right: 16px;
+      }
+      &.disabled {
+        opacity: 0.2;
+        cursor: not-allowed;
       }
     }
   }
