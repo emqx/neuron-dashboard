@@ -8,7 +8,7 @@ type Parm = Array<{ vars: string; pars: string }>
 
 export interface PluginForm {
   kind: PluginKind | null
-  node_type: DriverDirection
+  node_type: DriverDirection | null
   name: string
   lib_name: string
 }

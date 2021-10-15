@@ -8,8 +8,12 @@
       </div>
     </div>
     <div class="info-row">
-      <label>{{ $t('common.type') }}</label>
-      <span>{{ PluginKind[data.kind] }}</span>
+      <label>{{ $t('config.useFor') }}</label>
+      <span class="ellipsis">{{ getNodeTypeLabelByValue(data.node_type) }}</span>
+    </div>
+    <div class="info-row">
+      <label>{{ $t('config.pluginKind') }}</label>
+      <span class="ellipsis">{{ PluginKind[data.kind] }}</span>
     </div>
     <div class="info-row">
       <label>{{ $t('config.libName') }}</label>
@@ -23,6 +27,7 @@ import { useDeletePlugin } from '@/composables/config/usePlugin'
 import { CreatedPlugin } from '@/types/config'
 import { PluginKind } from '@/types/enums'
 import { defineProps, PropType, defineEmits } from 'vue'
+import { useNodeType } from '@/composables/config/useDriver'
 
 const props = defineProps({
   data: {
@@ -31,6 +36,7 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['deleted', 'edit'])
+const { getNodeTypeLabelByValue } = useNodeType()
 const { delPlugin } = useDeletePlugin()
 const deletePlugin = async () => {
   await delPlugin(props.data)
@@ -58,8 +64,14 @@ const editPlugin = async () => {
       margin-right: 8px;
     }
   }
-  .info-row:not(:last-child) {
-    margin-bottom: 10px;
+  .info-row {
+    display: flex;
+    > label {
+      flex-shrink: 0;
+    }
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
   }
 }
 </style>

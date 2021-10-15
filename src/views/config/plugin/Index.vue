@@ -1,24 +1,25 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <emqx-card class="plugin" v-emqx-loading="isListLoading">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('config.pluginManagement') }}</h3>
       <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addPlugin"
         >{{ $t('common.add') }} Plugin</emqx-button
       >
     </div>
-    <el-tabs v-model="activeTab" type="card">
-      <el-tab-pane :label="`${$t('config.northApp')} plugin`" :name="DriverDirection.North.toString()" />
-      <el-tab-pane :label="`${$t('config.southDevice')} plugin`" :name="DriverDirection.South.toString()" />
-    </el-tabs>
+    <div class="filter-bar">
+      <emqx-select v-model="filterNodeType" clearable>
+        <emqx-option v-for="item in nodeTypeList" :key="item.value" :value="item.value" :label="item.label" />
+      </emqx-select>
+    </div>
     <ul class="setup-list">
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="item in pluginListToShow" :key="item.id" tag="li" class="setup-item">
+        <emqx-col :span="8" v-for="item in listToShow" :key="item.id" tag="li" class="setup-item">
           <PluginItemCard :data="item" @deleted="getPluginList" @edit="editPlugin(item)" />
         </emqx-col>
       </emqx-row>
     </ul>
   </emqx-card>
-  <PluginDialog v-model="showDialog" :type="currentPluginType" :plugin="currentPlugin" @submitted="getPluginList" />
+  <PluginDialog v-model="showDialog" :plugin="currentPlugin" @submitted="getPluginList" />
 </template>
 
 <script lang="ts" setup>
@@ -29,25 +30,25 @@ import PluginItemCard from './components/PluginItemCard.vue'
 import usePlugin from '@/composables/config/usePlugin'
 import PluginDialog from './components/PluginDialog.vue'
 import { CreatedPlugin } from '@/types/config'
+import { useNodeTypeSelect } from '@/composables/config/useDriver'
+import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 
-const { northPluginList, southPluginList, isListLoading, getPluginList } = usePlugin()
-
-const currentPluginType = ref(DriverDirection.North)
-const activeTab = computed({
-  get() {
-    return currentPluginType.value.toString()
-  },
-  set(val) {
-    currentPluginType.value = Number(val)
-  },
-})
-
+const { pluginList, isListLoading, getPluginList } = usePlugin()
+const { nodeTypeList } = useNodeTypeSelect()
+const filterNodeType = ref(null)
 const currentPlugin: Ref<undefined | CreatedPlugin> = ref(undefined)
 const showDialog = ref(false)
 
-const pluginListToShow = computed(() =>
-  currentPluginType.value === DriverDirection.North ? northPluginList.value : southPluginList.value,
-)
+const listToShow = computed(() => {
+  if (!filterNodeType.value) {
+    return pluginList.value
+  }
+  return pluginList.value.filter(({ node_type }) =>
+    filterNodeType.value === DriverDirection.South
+      ? node_type === DriverDirection.South
+      : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
+  )
+})
 
 const addPlugin = () => {
   currentPlugin.value = undefined
@@ -61,10 +62,18 @@ const editPlugin = (pluginItem: CreatedPlugin) => {
 </script>
 
 <style lang="scss">
-.setup-list {
-  list-style: none;
-  .setup-item {
-    margin-bottom: 24px;
+.plugin {
+  .filter-bar {
+    margin-bottom: 16px;
+    .emqx-select {
+      width: 280px;
+    }
+  }
+  .setup-list {
+    list-style: none;
+    .setup-item {
+      margin-bottom: 24px;
+    }
   }
 }
 </style>

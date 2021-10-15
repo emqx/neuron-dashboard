@@ -9,6 +9,10 @@ export enum SystemStatus {
   ACTIVE = 'ACTIVE',
 }
 
+/**
+ * infact, the node type value of the north node can be 3, 4, 5
+ * but we use 5 when add or query node
+ */
 export enum DriverDirection {
   North = 5,
   South = 1,

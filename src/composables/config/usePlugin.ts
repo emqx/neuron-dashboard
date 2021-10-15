@@ -6,30 +6,23 @@ import { CreatedPlugin, PluginForm } from '@/types/config'
 import { createCommonErrorMessage, createOptionListFromEnum } from '@/utils/utils'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
+import { useNodeTypeSelect } from './useDriver'
 
 export default () => {
-  const totalPluginList: Ref<Array<CreatedPlugin>> = ref([])
+  const pluginList: Ref<Array<CreatedPlugin>> = ref([])
   const isListLoading = ref(false)
-
-  const northPluginList: ComputedRef<Array<CreatedPlugin>> = computed(() =>
-    totalPluginList.value.filter(({ node_type }) => NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)),
-  )
-  const southPluginList: ComputedRef<Array<CreatedPlugin>> = computed(() =>
-    totalPluginList.value.filter(({ node_type }) => node_type === DriverDirection.South),
-  )
 
   const getPluginList = async () => {
     isListLoading.value = true
     const { data } = await queryPluginList()
-    totalPluginList.value = data.plugin_libs || []
+    pluginList.value = data.plugin_libs || []
     isListLoading.value = false
   }
 
   getPluginList()
 
   return {
-    northPluginList,
-    southPluginList,
+    pluginList,
     isListLoading,
     getPluginList,
   }
@@ -43,14 +36,14 @@ const usePluginKindSelect = () => {
 }
 
 export const useAddPlugin = () => {
-  const createRawPluginForm = (type: DriverDirection): PluginForm => ({
-    node_type: type,
+  const createRawPluginForm = (): PluginForm => ({
+    node_type: null,
     name: '',
     kind: null,
     lib_name: '',
   })
   const { t } = useI18n()
-  const pluginForm = ref(createRawPluginForm(DriverDirection.North))
+  const pluginForm = ref(createRawPluginForm())
   const pluginFormCom = ref()
   const pluginFormRules = {
     name: [
@@ -81,10 +74,7 @@ export const useAddPlugin = () => {
   const isSubmitting = ref(false)
 
   const { pluginKindList } = usePluginKindSelect()
-  const useForOptionList = [
-    { label: t('config.northApp'), value: DriverDirection.North },
-    { label: t('config.southDevice'), value: DriverDirection.South },
-  ]
+  const { nodeTypeList: useForOptionList } = useNodeTypeSelect()
 
   const submitData = async (currentPlugin?: CreatedPlugin) => {
     try {
