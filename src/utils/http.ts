@@ -2,13 +2,17 @@ import axios, { AxiosError } from 'axios'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 
+const { host, protocol } = window.location
+const serverAddress = host.split(':').length > 1 ? `${host.split(':')[0]}:7001` : host
+const { NODE_ENV } = process.env
+const baseURL = `${protocol}//${NODE_ENV === 'development' ? 'localhost:7001' : serverAddress}/api/v2`
 const option = {
   headers: {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
     Accept: 'application/json',
   },
-  baseURL: '/api/v2',
+  baseURL,
   timeout: 10000,
 }
 
