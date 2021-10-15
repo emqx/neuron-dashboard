@@ -4,8 +4,8 @@ export default {
     en: 'Configuration',
   },
   northAppSetup: {
-    zh: '北向应用设置',
-    en: 'North Application Setup',
+    zh: '北向应用管理',
+    en: 'North Application',
   },
   southDeviceManagement: {
     zh: '南向设备管理',
