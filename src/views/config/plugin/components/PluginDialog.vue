@@ -50,10 +50,6 @@ const props = defineProps({
   plugin: {
     type: Object as PropType<CreatedPlugin>,
   },
-  type: {
-    type: Number as PropType<DriverDirection>,
-    required: true,
-  },
 })
 const emit = defineEmits(['update:modelValue', 'submitted'])
 
@@ -70,7 +66,7 @@ watch(showDialog, async (val) => {
       const { kind, node_type, name, lib_name } = props.plugin
       pluginForm.value = { kind, node_type, name, lib_name }
     } else {
-      pluginForm.value = createRawPluginForm(props.type)
+      pluginForm.value = createRawPluginForm()
     }
     await nextTick()
     pluginFormCom.value.$refs.form.clearValidate()

@@ -1,4 +1,5 @@
-import { DriverStatus } from '@/types/enums'
+import { DriverDirection, DriverStatus } from '@/types/enums'
+import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 export const useDriverStatus = () => {
@@ -16,5 +17,32 @@ export const useDriverStatus = () => {
   return {
     statusIconClassMap,
     statusTextMap,
+  }
+}
+
+export const useNodeTypeSelect = () => {
+  const { t } = useI18n()
+  const nodeTypeList = [
+    { label: t('config.northApp'), value: DriverDirection.North },
+    { label: t('config.southDevice'), value: DriverDirection.South },
+  ]
+  return {
+    nodeTypeList,
+  }
+}
+
+export const useNodeType = () => {
+  const { t } = useI18n()
+  const getNodeTypeLabelByValue = (value: 1 | 2 | 3 | 4 | 5) => {
+    if (value === DriverDirection.South) {
+      return t('config.southDevice')
+    }
+    if (NORTH_DRIVER_NODE_TYPE.some((val) => val === value)) {
+      return t('config.northApp')
+    }
+    return '-'
+  }
+  return {
+    getNodeTypeLabelByValue,
   }
 }
