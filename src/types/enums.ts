@@ -19,7 +19,8 @@ export enum DriverDirection {
 }
 
 export enum TagType {
-  Int8 = 2,
+  Byte = 2,
+  Int8,
   Int16,
   Int32,
   Int64,
@@ -31,7 +32,6 @@ export enum TagType {
   Double,
   Bool,
   Bit,
-  CSTR,
 }
 
 export enum TagAttrbuteType {

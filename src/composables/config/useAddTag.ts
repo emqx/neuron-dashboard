@@ -31,10 +31,30 @@ export const useTagAttributeTypeSelect = () => {
       label: TagAttrbuteType[key as keyof typeof TagAttrbuteType],
     }))
 
+  // 1, 2, 4
+  // Possible values are 1, 2, 3, 4, 5, 6, 7
+  const tagAttrValueMap = {
+    [1]: [1],
+    [2]: [2],
+    [3]: [1, 2],
+    [4]: [4],
+    [5]: [1, 4],
+    [6]: [2, 4],
+    [7]: [1, 2, 4],
+  }
+
   const findLabelByValue = (val: number) => tagAttributeTypeOptList.find(({ value }) => val === value)?.label || ''
+
+  const getAttrStrByValue = (val: number) => {
+    const key = Number(Object.keys(tagAttrValueMap).find((total) => Number(total) === val))
+    const valueArr = tagAttrValueMap[key as keyof typeof tagAttrValueMap]
+    return valueArr.map((value) => findLabelByValue(value)).join(', ')
+  }
 
   return {
     tagAttributeTypeOptList,
+    tagAttrValueMap,
+    getAttrStrByValue,
     findLabelByValue,
   }
 }
