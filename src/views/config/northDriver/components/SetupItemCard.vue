@@ -36,11 +36,11 @@ import { PropType, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useDriverStatus } from '@/composables/config/useDriver'
+import { DEFAULT_NODE_NAME } from '@/utils/constants'
 
 const emit = defineEmits(['deleted'])
 const router = useRouter()
 const { statusIconClassMap } = useDriverStatus()
-const DEFAULT_NODE_NAME = 'default-dashboard-adapter'
 
 const props = defineProps({
   data: { type: Object as PropType<DriverItem>, required: true },

@@ -5,7 +5,7 @@ import router from '@/router/'
 const { host, protocol } = window.location
 const serverAddress = host.split(':').length > 1 ? `${host.split(':')[0]}:7001` : host
 const { NODE_ENV } = process.env
-const baseURL = `${protocol}//${NODE_ENV === 'development' ? 'localhost:7001' : serverAddress}/api/v2`
+const baseURL = `${protocol}//${NODE_ENV === 'development' ? 'localhost:3003' : serverAddress}/api/v2`
 const option = {
   headers: {
     'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ Object.assign(axios.defaults, option)
 const handleError = (error: AxiosError) => {
   const { response } = error
   if (response?.data) {
-    EmqxMessage.error(`${response.data}`)
+    EmqxMessage.error(`${JSON.stringify(response.data)}`)
   } else {
     EmqxMessage.error(error.toString())
   }

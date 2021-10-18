@@ -28,3 +28,7 @@ export const createCommonErrorMessage = (type: 'input' | 'select', target: strin
   }
   return tc('common.selectRequired') + targetStr
 }
+
+export const paginate = (data: Array<any>, pageSize: number, pageNumber: number) => {
+  return data.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+}

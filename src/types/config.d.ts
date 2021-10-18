@@ -22,6 +22,7 @@ export interface NodeForm {
   name: string
   plugin_name: string
 }
+
 export interface SerialNorthDriversFormData {
   /**
    * Device name
@@ -44,6 +45,12 @@ export interface SerialNorthDriversFormData {
    */
   ttyp: string
   parm: Parm
+}
+
+export interface SubscriptionData {
+  dst_node_id: number
+  src_node_id: number
+  name: string
 }
 
 export type EthernetNorthDriversFormData = {

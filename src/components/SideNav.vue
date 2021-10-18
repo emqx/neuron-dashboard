@@ -53,6 +53,17 @@ export default defineComponent({
           icon: 'iconattributed',
         },
         {
+          to: '/monitoring/data',
+          label: t('data.monitoring'),
+          icon: 'iconstatus',
+          subMenus: [
+            {
+              to: '/monitoring/data',
+              label: t('data.dataMonitoring'),
+            },
+          ],
+        },
+        {
           to: '/configuration',
           label: t('config.config'),
           icon: 'iconconfig',
