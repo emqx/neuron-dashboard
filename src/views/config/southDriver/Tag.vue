@@ -39,7 +39,7 @@
         <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
       </emqx-table-column>
       <emqx-table-column label="RW">
-        <template #default="{ row }">{{ findTagAttributeTypeLabelByValue(row.attribute) }}</template>
+        <template #default="{ row }">{{ getAttrStrByValue(row.attribute) }}</template>
       </emqx-table-column>
 
       <emqx-table-column align="right">
@@ -77,7 +77,7 @@ const {
   batchDeleteTag,
 } = useTagList()
 const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
-const { findLabelByValue: findTagAttributeTypeLabelByValue } = useTagAttributeTypeSelect()
+const { getAttrStrByValue } = useTagAttributeTypeSelect()
 const { getNodeNameById } = useNodeList()
 
 const goCreatePage = () => {

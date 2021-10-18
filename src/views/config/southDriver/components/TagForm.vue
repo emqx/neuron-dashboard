@@ -13,14 +13,7 @@
       </emqx-col>
       <emqx-col :span="12">
         <emqx-form-item label="Attribute" prop="attribute" required>
-          <emqx-select v-model="form.attribute">
-            <emqx-option
-              v-for="item in tagAttributeTypeOptList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </emqx-select>
+          <TagAttributeSelect v-model="form.attribute" />
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
@@ -37,6 +30,7 @@
 <script lang="ts" setup>
 import { ref, defineExpose } from 'vue'
 import { useTagAttributeTypeSelect, useTagTypeSelect } from '@/composables/config/useAddTag'
+import TagAttributeSelect from './TagAttributeSelect.vue'
 import { TagForm } from '@/types/config'
 import { computed, defineProps, PropType, defineEmits, WritableComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
