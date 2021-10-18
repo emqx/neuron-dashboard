@@ -10,6 +10,7 @@ import {
   NodeForm,
   PluginForm,
   ResponseDriverListData,
+  SubscriptionData,
   TagData,
   TagForm,
 } from '@/types/config'
@@ -49,6 +50,15 @@ export const deleteDriver = (id: number) => {
 
 export const updateDriver = (data: NodeForm) => {
   return http.put('/node', data)
+}
+
+/* NORTH APP */
+export const addSubscription = (data: SubscriptionData) => {
+  return http.post('/subscribe', data)
+}
+
+export const deleteSubscription = (data: SubscriptionData) => {
+  return http.delete('/subscribe', { data })
 }
 
 /* GROUP */

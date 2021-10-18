@@ -58,6 +58,17 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/admin/AccountSetting.vue'),
       },
+      /* MONITORING */
+      {
+        path: '/monitoring/data',
+        name: 'DataMonitoring',
+        component: () => import('@/views/monitoring/DataMonitoring.vue'),
+      },
+      {
+        path: '/monitoring/log',
+        name: 'Log',
+        component: () => import('@/views/monitoring/Log.vue'),
+      },
     ],
   },
   {
