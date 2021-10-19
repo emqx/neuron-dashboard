@@ -12,6 +12,6 @@ export const getMonitoringData = (
   })
 }
 
-export const writeData = (data: AxiosResponse<{ tags: Array<TagDataInMonitoring> }>) => {
+export const writeData = (data: WriteData) => {
   return http.post('/write', data)
 }
