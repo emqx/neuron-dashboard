@@ -171,6 +171,7 @@ export default () => {
 
     tableEmptyText,
 
+    getTableData,
     selectedNodeChanged,
     selectedGroupChanged,
     handleSizeChange,

@@ -1,6 +1,7 @@
 export interface TagDataInMonitoring {
   id: number
-  value: number
+  value: any
+  name?: null | string
 }
 
 export interface WriteData {

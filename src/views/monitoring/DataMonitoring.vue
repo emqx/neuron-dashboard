@@ -28,11 +28,10 @@
         <emqx-table-column prop="id" label="ID" min-width="180"></emqx-table-column>
         <emqx-table-column prop="name" :label="$t('common.name')" min-width="180"></emqx-table-column>
         <emqx-table-column prop="value" :label="$t('data.value')" min-width="180"></emqx-table-column>
-        <emqx-table-column prop="tag_id" label="Tag ID" min-width="180"></emqx-table-column>
         <emqx-table-column width="300" :label="$t('common.oper')" align="right">
-          <!-- <template #default="{ row }">
-            <emqx-button type="text">Write</emqx-button>
-          </template> -->
+          <template #default="{ row }">
+            <emqx-button type="text" @click="writeData(row)">Write</emqx-button>
+          </template>
         </emqx-table-column>
       </emqx-table>
     </div>
@@ -46,11 +45,16 @@
       @size-change="handleSizeChange"
     />
   </emqx-card>
+  <WriteDialog v-model="showWriteDialog" :data="currentWriteData" :tag-name="currentTagName" @updated="getTableData" />
 </template>
 
 <script lang="ts" setup>
+import { ref, Ref } from 'vue'
 import useDataMonitoring from '@/composables/data/useDataMonitoring'
 import dateformat from 'dateformat'
+import WriteDialog, { DataForWrite } from './components/WriteDialog.vue'
+import { TagDataInMonitoring } from '@/types/data'
+
 const {
   nodeList,
   groupList,
@@ -60,10 +64,25 @@ const {
   tableData,
   updated,
   tableEmptyText,
+  getTableData,
   handleSizeChange,
   selectedNodeChanged,
   selectedGroupChanged,
 } = useDataMonitoring()
+const showWriteDialog = ref(false)
+const currentWriteData: Ref<undefined | DataForWrite> = ref(undefined)
+const currentTagName = ref('')
+
+const writeData = ({ id, value, name }: TagDataInMonitoring) => {
+  currentWriteData.value = {
+    node_id: Number(currentGroup.value.nodeID),
+    group_config_name: currentGroup.value.groupName,
+    tagID: id,
+    tagValue: value,
+  }
+  currentTagName.value = name || 'Tag'
+  showWriteDialog.value = true
+}
 </script>
 
 <style lang="scss">
