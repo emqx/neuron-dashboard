@@ -1,5 +1,5 @@
 <template>
-  <emqx-form ref="formCom" :model="form" :rules="rules">
+  <emqx-form ref="formCom" :model="form" :rules="rules" @submit.prevent>
     <emqx-row :gutter="28">
       <emqx-col :span="12">
         <emqx-form-item :label="$t('config.tagName')" prop="name" required>

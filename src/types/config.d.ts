@@ -102,7 +102,7 @@ export interface GroupData extends Omit<GroupForm, 'node_id'> {
 export interface TagForm {
   name: string
   address: string
-  attribute: number | null
+  attribute: number | undefined
   type: number | null
 }
 

@@ -9,7 +9,7 @@ import { defineProps, computed, defineEmits } from 'vue'
 import { useTagAttributeTypeSelect } from '@/composables/config/useAddTag'
 
 const props = defineProps({
-  modelValue: { type: [Number], required: true },
+  modelValue: { type: [Number] },
 })
 const emit = defineEmits(['update:modelValue'])
 

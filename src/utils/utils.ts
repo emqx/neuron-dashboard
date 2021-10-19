@@ -32,3 +32,13 @@ export const createCommonErrorMessage = (type: 'input' | 'select', target: strin
 export const paginate = (data: Array<any>, pageSize: number, pageNumber: number) => {
   return data.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
 }
+
+export const createRandomString = (length = 6): string => {
+  const libLetters = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+  const libLettersLength = libLetters.length
+  let ret = ''
+  for (let i = 0; i < length; i++) {
+    ret += libLetters.charAt(Math.floor(Math.random() * libLettersLength))
+  }
+  return ret
+}
