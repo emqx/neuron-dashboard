@@ -1,13 +1,15 @@
 import { ref, Ref, computed, onUnmounted, onMounted } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import useNodeList from '@/composables/config/useNodeList'
-import { addSubscription, deleteSubscription, queryGroupList, queryNorthDriverList } from '@/api/config'
-import { GroupData } from '@/types/config'
+import { addSubscription, deleteSubscription, queryGroupList, queryNorthDriverList, queryTagList } from '@/api/config'
+import { GroupData, TagData, TagForm } from '@/types/config'
 import { getMonitoringData } from '@/api/data'
 import { useI18n } from 'vue-i18n'
 import { TagDataInMonitoring } from '@/types/data'
 import { DEFAULT_NODE_NAME } from '@/utils/constants'
 import { paginate } from '@/utils/utils'
+import { useTagAttributeTypeSelect } from '../config/useAddTag'
+import { TagAttrbuteType } from '@/types/enums'
 
 export const useSubscribeForGetMonitoringData = () => {
   let defaultDashboardId: undefined | number = undefined
@@ -60,27 +62,36 @@ export const useSubscribeForGetMonitoringData = () => {
   }
 }
 
+export interface TagDataInTable extends TagDataInMonitoring {
+  attribute: Array<number>
+  type: number
+  tagName: string
+}
+
 export default () => {
   const { t } = useI18n()
 
   const { subscribe, unsubscribe } = useSubscribeForGetMonitoringData()
 
-  const isDataLoading = ref(false)
   const { nodeList } = useNodeList()
   const groupList: Ref<Array<GroupData>> = ref([])
+
   let selectedGroup: undefined | { nodeID: number; groupName: string } = undefined
   const currentGroup = ref({
     nodeID: '',
     groupName: '',
   })
+
   const pageController = ref({
     num: 1,
     size: 100,
     total: 0,
   })
-  const totalData: Ref<Array<TagDataInMonitoring>> = ref([])
+  const totalData: Ref<Array<TagDataInTable>> = ref([])
+  let tagIdMap: Record<number, any> = {}
   let pollTimer: undefined | number = undefined
   const updated = ref(Date.now())
+  const { tagAttrValueMap } = useTagAttributeTypeSelect()
 
   const tableEmptyText = computed(() =>
     !currentGroup.value.nodeID || !currentGroup.value.groupName ? t('data.selectGroupTip') : t('common.emptyData'),
@@ -105,6 +116,23 @@ export default () => {
     groupList.value = data
   }
 
+  const getTagAttrNTypeNName = async () => {
+    if (!selectedGroup?.nodeID || !selectedGroup.groupName) {
+      return {}
+    }
+    const tags = await queryTagList(selectedGroup?.nodeID, selectedGroup.groupName)
+    const tagIdMap: Record<string | number, any> = {}
+    tags.forEach(
+      ({ tag_id, attribute, type, name }) =>
+        (tagIdMap[tag_id] = {
+          attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
+          type,
+          tagName: name,
+        }),
+    )
+    return Promise.resolve(tagIdMap)
+  }
+
   const getTableData = async () => {
     const { nodeID, groupName } = currentGroup.value
     if (!nodeID || !groupName) {
@@ -112,7 +140,9 @@ export default () => {
     }
     const { data } = await getMonitoringData(Number(currentGroup.value.nodeID), currentGroup.value.groupName)
     updated.value = Date.now()
-    totalData.value = data.tags || []
+    totalData.value = (data.tags || []).map((item) => {
+      return Object.assign(item, tagIdMap[item.id])
+    })
     pageController.value.total = totalData.value.length
   }
 
@@ -139,6 +169,7 @@ export default () => {
     await unsubscribeCurrentGroup()
     selectedGroup = { nodeID: Number(nodeID), groupName }
     await subscribe(Number(nodeID), groupName)
+    tagIdMap = await getTagAttrNTypeNName()
     initPageController()
     getTableData()
     startPoll()
@@ -147,6 +178,10 @@ export default () => {
   const handleSizeChange = (size: number) => {
     pageController.value.size = size
     pageController.value.num = 1
+  }
+
+  const canWrite = (item: TagDataInTable) => {
+    return item.attribute.some((item) => item === TagAttrbuteType.Write)
   }
 
   onUnmounted(() => {
@@ -164,13 +199,13 @@ export default () => {
     nodeList,
     groupList,
     currentGroup,
-    isDataLoading,
     pageController,
     tableData,
     updated,
 
     tableEmptyText,
 
+    canWrite,
     getTableData,
     selectedNodeChanged,
     selectedGroupChanged,

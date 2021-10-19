@@ -99,11 +99,8 @@ export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
 /* TAG */
 
 export const queryTagList = async (nodeID: number, groupName: string): Promise<Array<TagData>> => {
-  const { data } = await http.get('/tags', { params: { node_id: nodeID } })
-  const tags: Array<TagData> = (data.tags || []).filter(
-    ({ group_config_name }: TagData) => group_config_name === groupName,
-  )
-  return Promise.resolve(tags)
+  const { data } = await http.get('/tags', { params: { node_id: nodeID, group_config_name: groupName } })
+  return Promise.resolve(data.tags || [])
 }
 
 export const addTag = (data: { node_id: number; group_config_name: string; tags: Array<TagForm> }) => {

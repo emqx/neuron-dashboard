@@ -23,14 +23,14 @@
         </div>
       </div>
     </div>
-    <div class="table-container" v-emqx-loading="isDataLoading">
+    <div class="table-container">
       <emqx-table :data="tableData" :empty-text="tableEmptyText">
-        <emqx-table-column prop="id" label="ID" min-width="180"></emqx-table-column>
-        <emqx-table-column prop="name" :label="$t('common.name')" min-width="180"></emqx-table-column>
+        <emqx-table-column prop="id" label="ID" min-width="60"></emqx-table-column>
+        <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="180"></emqx-table-column>
         <emqx-table-column prop="value" :label="$t('data.value')" min-width="180"></emqx-table-column>
         <emqx-table-column width="300" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
-            <emqx-button type="text" @click="writeData(row)">Write</emqx-button>
+            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
           </template>
         </emqx-table-column>
       </emqx-table>
@@ -50,7 +50,7 @@
 
 <script lang="ts" setup>
 import { ref, Ref } from 'vue'
-import useDataMonitoring from '@/composables/data/useDataMonitoring'
+import useDataMonitoring, { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import dateformat from 'dateformat'
 import WriteDialog, { DataForWrite } from './components/WriteDialog.vue'
 import { TagDataInMonitoring } from '@/types/data'
@@ -59,11 +59,11 @@ const {
   nodeList,
   groupList,
   currentGroup,
-  isDataLoading,
   pageController,
   tableData,
   updated,
   tableEmptyText,
+  canWrite,
   getTableData,
   handleSizeChange,
   selectedNodeChanged,
@@ -73,14 +73,14 @@ const showWriteDialog = ref(false)
 const currentWriteData: Ref<undefined | DataForWrite> = ref(undefined)
 const currentTagName = ref('')
 
-const writeData = ({ id, value, name }: TagDataInMonitoring) => {
+const writeData = ({ id, value, tagName }: TagDataInTable) => {
   currentWriteData.value = {
     node_id: Number(currentGroup.value.nodeID),
     group_config_name: currentGroup.value.groupName,
     tagID: id,
     tagValue: value,
   }
-  currentTagName.value = name || 'Tag'
+  currentTagName.value = tagName || 'Tag'
   showWriteDialog.value = true
 }
 </script>
