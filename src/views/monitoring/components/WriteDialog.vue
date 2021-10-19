@@ -12,9 +12,9 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
-          $t('common.submit')
-        }}</emqx-button>
+        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+          {{ $t('common.submit') }}
+        </emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
       </span>
     </template>
@@ -69,17 +69,19 @@ const submit = async () => {
   try {
     const { node_id, group_config_name, tagID, tagValue } = props.data as DataForWrite
     isSubmitting.value = true
+    const value = !Number.isNaN(Number(inputValue.value)) ? Number(inputValue.value) : inputValue.value
     await writeData({
       node_id,
       group_config_name,
       tags: [
         {
+          value,
           id: tagID,
-          value: tagValue,
         },
       ],
     })
     emit('updated')
+    showDialog.value = false
   } catch (error) {
     //
   } finally {
