@@ -1,8 +1,7 @@
-import { ref, Ref, computed, onUnmounted, onMounted } from 'vue'
+import { ref, Ref, computed, onUnmounted } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import useNodeList from '@/composables/config/useNodeList'
 import { addSubscription, deleteSubscription, queryGroupList, queryNorthDriverList, queryTagList } from '@/api/config'
-import { GroupData, TagData, TagForm } from '@/types/config'
+import { GroupData } from '@/types/config'
 import { getMonitoringData } from '@/api/data'
 import { useI18n } from 'vue-i18n'
 import { TagDataInMonitoring } from '@/types/data'
@@ -10,6 +9,7 @@ import { DEFAULT_NODE_NAME } from '@/utils/constants'
 import { paginate } from '@/utils/utils'
 import { useTagAttributeTypeSelect } from '../config/useAddTag'
 import { TagAttrbuteType } from '@/types/enums'
+import useSouthDriver from '@/composables/config/useSouthDriver'
 
 export const useSubscribeForGetMonitoringData = () => {
   let defaultDashboardId: undefined | number = undefined
@@ -73,7 +73,7 @@ export default () => {
 
   const { subscribe, unsubscribe } = useSubscribeForGetMonitoringData()
 
-  const { nodeList } = useNodeList()
+  const { southDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
   let selectedGroup: undefined | { nodeID: number; groupName: string } = undefined
