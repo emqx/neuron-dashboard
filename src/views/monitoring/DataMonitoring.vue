@@ -10,7 +10,7 @@
       </div>
       <div class="target-select">
         <div>
-          <label>{{ $t('config.northApp') }}/{{ $t('config.southDevice') }}</label>
+          <label>{{ $t('config.southDevice') }}</label>
           <emqx-select v-model="currentGroup.nodeID" @change="selectedNodeChanged">
             <emqx-option v-for="item in nodeList" :key="item.id" :value="item.id" :label="item.name" />
           </emqx-select>
