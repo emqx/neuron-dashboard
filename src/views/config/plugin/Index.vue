@@ -75,5 +75,11 @@ const editPlugin = (pluginItem: CreatedPlugin) => {
       margin-bottom: 24px;
     }
   }
+
+  .emqx-select {
+    .el-icon-circle-close {
+      font-size: 16px;
+    }
+  }
 }
 </style>
