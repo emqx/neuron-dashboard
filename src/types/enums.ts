@@ -32,6 +32,7 @@ export enum TagType {
   Double,
   Bool,
   Bit,
+  CSTRING,
 }
 
 export enum TagAttrbuteType {
