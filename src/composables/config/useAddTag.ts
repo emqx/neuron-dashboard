@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
+import { createRandomString } from '@/utils/utils'
 
 export const useTagTypeSelect = () => {
   const tagTypeOptList = Object.keys(TagType)
@@ -59,17 +60,26 @@ export const useTagAttributeTypeSelect = () => {
   }
 }
 
+interface TagFormItem extends TagForm {
+  id: string
+}
+
 export default () => {
   const route = useRoute()
   const router = useRouter()
   const { t } = useI18n()
 
-  const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])
-  const tagList: Ref<Array<TagForm>> = ref([])
-  const tagNum: Ref<number> = ref(0)
-  const isSubmitting = ref(false)
+  const createRawTagForm = (): TagFormItem => ({
+    name: '',
+    address: '',
+    attribute: undefined,
+    type: null,
+    id: createRandomString(6),
+  })
 
-  const tagNumForInput: Ref<number | null> = ref(null)
+  const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])
+  const tagList: Ref<Array<TagForm>> = ref([createRawTagForm()])
+  const isSubmitting = ref(false)
 
   const setFormRef = (com: typeof TagFormCom) => {
     if (com) {
@@ -77,33 +87,12 @@ export default () => {
     }
   }
 
-  const createRawTagForm = (): TagForm => ({
-    name: '',
-    address: '',
-    attribute: null,
-    type: null,
-  })
+  const addTagItem = () => {
+    tagList.value.push(createRawTagForm())
+  }
 
-  const tagNumChanged = () => {
-    if (Number.isNaN(Number(tagNumForInput.value)) && tagNumForInput.value !== undefined) {
-      return
-    }
-    if (Number(tagNumForInput.value) > 100) {
-      EmqxMessage.warning(t('config.tagNumExceedsTheMaximumError'))
-      return
-    }
-    const diff = tagNumForInput.value === null ? -tagNum.value : tagNumForInput.value - tagNum.value
-    if (diff === 0) {
-      return
-    }
-    if (diff > 0) {
-      for (let i = 0; i < diff; i += 1) {
-        tagList.value.push(createRawTagForm())
-      }
-    } else {
-      tagList.value.splice(tagList.value.length + diff, -diff)
-    }
-    tagNum.value = tagNumForInput.value === null ? 0 : tagNumForInput.value
+  const deleteTagItem = (index: number) => {
+    tagList.value.splice(index, 1)
   }
 
   const submit = async () => {
@@ -112,7 +101,8 @@ export default () => {
       isSubmitting.value = true
       const nodeID = Number(route.params.nodeID)
       const groupName: string = route.params.group as string
-      await addTag({ node_id: nodeID, group_config_name: groupName, tags: tagList.value })
+      const tags = tagList.value.map(({ name, address, attribute, type }) => ({ name, address, attribute, type }))
+      await addTag({ tags, node_id: nodeID, group_config_name: groupName })
       EmqxMessage.success(t('common.createSuccess'))
       router.push({
         name: 'SouthDriverGroupTag',
@@ -130,9 +120,10 @@ export default () => {
 
   return {
     tagList,
-    tagNumForInput,
     isSubmitting,
-    tagNumChanged,
+
+    addTagItem,
+    deleteTagItem,
     setFormRef,
     cancel,
     submit,
