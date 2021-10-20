@@ -78,7 +78,7 @@ export default defineComponent({
             },
             {
               to: '/configuration/plugin',
-              label: 'Plugin',
+              label: t('config.pluginManagement'),
             },
           ],
         },

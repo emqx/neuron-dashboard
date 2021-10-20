@@ -55,6 +55,7 @@ const editPlugin = async () => {
   background-color: #f4f9fc;
   .plugin-item-card-hd {
     margin-bottom: 16px;
+    font-size: 16px;
   }
   .icon {
     font-size: 20px;

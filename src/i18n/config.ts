@@ -228,8 +228,8 @@ export default {
     en: 'South device',
   },
   pluginManagement: {
-    zh: 'Plugin 管理',
-    en: 'Plugin Management',
+    zh: '插件管理',
+    en: 'Plugin',
   },
   libName: {
     zh: '驱动库名称',

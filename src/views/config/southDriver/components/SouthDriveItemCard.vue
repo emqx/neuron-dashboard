@@ -1,10 +1,10 @@
 <template>
-  <div class="south-drive-item-card">
+  <div class="south-drive-item-card" @click="goGroupPage">
     <div class="south-drive-item-card-hd common-flex">
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <i class="iconfont iconsetting" @click="goGroupPage"></i>
-        <i class="iconfont icondelete" @click="deleteDriver"></i>
+        <!-- <i class="iconfont iconsetting"></i> -->
+        <i class="iconfont icondelete" @click.stop="deleteDriver"></i>
       </div>
     </div>
     <div class="south-drive-item-info">
@@ -78,8 +78,10 @@ const deleteDriver = async () => {
   padding: 24px;
   border-radius: 4px;
   background-color: #f3f3ff;
+  cursor: pointer;
   .south-drive-item-card-hd {
     margin-bottom: 28px;
+    font-size: 16px;
   }
   .iconfont {
     display: inline-block;
@@ -107,7 +109,7 @@ const deleteDriver = async () => {
       margin-right: 8px;
     }
     > div:not(:last-child) {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
   }
 }

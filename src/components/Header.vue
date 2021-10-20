@@ -22,24 +22,6 @@
                   <emqx-button type="text">{{ $t('common.logout') }}</emqx-button>
                 </div>
               </div>
-              <div class="user-menu-bd">
-                <emqx-dropdown-item>
-                  <i class="iconfont iconuseradmin"></i>
-                  <span>{{ $t('common.userAdmin') }}</span>
-                </emqx-dropdown-item>
-                <emqx-dropdown-item>
-                  <i class="iconfont iconLicense"></i>
-                  <span>License</span>
-                </emqx-dropdown-item>
-                <emqx-dropdown-item>
-                  <i class="iconfont iconabout"></i>
-                  <span>{{ $t('common.about') }}</span>
-                </emqx-dropdown-item>
-                <emqx-dropdown-item>
-                  <i class="iconfont iconlanguage"></i>
-                  <span>{{ $t('common.lang') }}</span>
-                </emqx-dropdown-item>
-              </div>
             </emqx-dropdown-menu>
           </template>
         </emqx-dropdown>
@@ -82,15 +64,6 @@ export default defineComponent({
   padding: 24px;
   border-bottom: 1px solid #e2e7ea;
 }
-.user-menu-bd {
-  padding: 14px 0;
-  .iconfont {
-    color: #0d446e;
-  }
-  .el-dropdown-menu__item {
-    padding: 0 24px;
-  }
-}
 .username {
   margin-bottom: 12px;
 }
@@ -112,13 +85,6 @@ export default defineComponent({
         background-color: #d4dbe0;
       }
     }
-  }
-}
-.el-dropdown-menu__item {
-  display: flex;
-  align-items: center;
-  i {
-    font-size: 20px;
   }
 }
 .iconfont.iconAdministration1 {
