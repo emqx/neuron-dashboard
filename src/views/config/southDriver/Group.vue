@@ -41,7 +41,7 @@
       </emqx-table-column>
       <emqx-table-column :label="$t('config.groupName')" prop="name"></emqx-table-column>
       <emqx-table-column label="Tag Count" prop="tag_count"></emqx-table-column>
-      <emqx-table-column label="Update Time"></emqx-table-column>
+      <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
           <i class="el-icon-edit-outline" @click="editGroup(row)" />
