@@ -45,15 +45,14 @@
       @size-change="handleSizeChange"
     />
   </emqx-card>
-  <WriteDialog v-model="showWriteDialog" :data="currentWriteData" :tag-name="currentTagName" @updated="getTableData" />
+  <WriteDialog v-model="showWriteDialog" :group="currentGroup" :tag="currentTag" @updated="getTableData" />
 </template>
 
 <script lang="ts" setup>
 import { ref, Ref } from 'vue'
 import useDataMonitoring, { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import dateformat from 'dateformat'
-import WriteDialog, { DataForWrite } from './components/WriteDialog.vue'
-import { TagDataInMonitoring } from '@/types/data'
+import WriteDialog from './components/WriteDialog.vue'
 
 const {
   nodeList,
@@ -70,17 +69,10 @@ const {
   selectedGroupChanged,
 } = useDataMonitoring()
 const showWriteDialog = ref(false)
-const currentWriteData: Ref<undefined | DataForWrite> = ref(undefined)
-const currentTagName = ref('')
+const currentTag: Ref<undefined | TagDataInTable> = ref(undefined)
 
-const writeData = ({ id, value, tagName }: TagDataInTable) => {
-  currentWriteData.value = {
-    node_id: Number(currentGroup.value.nodeID),
-    group_config_name: currentGroup.value.groupName,
-    tagID: id,
-    tagValue: value,
-  }
-  currentTagName.value = tagName || 'Tag'
+const writeData = (item: TagDataInTable) => {
+  currentTag.value = item
   showWriteDialog.value = true
 }
 </script>

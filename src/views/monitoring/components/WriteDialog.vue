@@ -3,18 +3,23 @@
     v-model="showDialog"
     :width="500"
     custom-class="common-dialog write-dialog"
-    :title="tagName"
+    :title="dialogTitle"
     :z-index="2000"
   >
-    <div>
-      <label>{{ $t('data.value') }}:</label>
-      <emqx-input v-model="inputValue" />
-    </div>
+    <emqx-form @keyup.enter="submitData">
+      <emqx-form-item :label="$t('data.value')" :error="inputErrorMsg">
+        <emqx-input v-if="tag.type !== TagType.BOOL" v-model="inputValue" @blur="validate" />
+        <emqx-radio-group v-else v-model="inputValue">
+          <emqx-radio :label="true">True</emqx-radio>
+          <emqx-radio :label="false">False</emqx-radio>
+        </emqx-radio-group>
+      </emqx-form-item>
+    </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
-          {{ $t('common.submit') }}
-        </emqx-button>
+        <emqx-button type="primary" size="small" @click="submitData" :loading="isSubmitting">{{
+          $t('common.submit')
+        }}</emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
       </span>
     </template>
@@ -24,25 +29,20 @@
 <script lang="ts" setup>
 import { computed, defineProps, defineEmits, PropType, watch, ref } from 'vue'
 import { ElDialog } from 'element-plus'
-import { writeData } from '@/api/data'
-
-export interface DataForWrite {
-  node_id: number
-  group_config_name: string
-  tagID: number
-  tagValue: string
-}
+import { TagDataInTable } from '@/composables/data/useDataMonitoring'
+import { TagType } from '@/types/enums'
+import useWriteDataDialog, { Group } from '@/composables/data/useWriteDataDialog'
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     required: true,
   },
-  data: {
-    type: Object as PropType<DataForWrite>,
+  group: {
+    type: Object as PropType<Group>,
   },
-  tagName: {
-    type: String,
+  tag: {
+    type: Object as PropType<TagDataInTable>,
   },
 })
 const emit = defineEmits(['update:modelValue', 'updated'])
@@ -53,48 +53,34 @@ const showDialog = computed({
     emit('update:modelValue', val)
   },
 })
+const dialogTitle = computed(() => props.tag?.tagName)
 
-const inputValue = ref('')
+const { inputErrorMsg, inputValue, isSubmitting, validate, submit } = useWriteDataDialog(props)
 
 watch(showDialog, (val) => {
-  if (!props.data) {
-    return
+  if (val) {
+    if (!props.group || !props.tag) {
+      return
+    }
+    inputValue.value = props.tag.value
+  } else {
+    inputErrorMsg.value = ''
   }
-  inputValue.value = props.data.tagValue
 })
-
-const isSubmitting = ref(false)
-
-const submit = async () => {
-  try {
-    const { node_id, group_config_name, tagID, tagValue } = props.data as DataForWrite
-    isSubmitting.value = true
-    const value = !Number.isNaN(Number(inputValue.value)) ? Number(inputValue.value) : inputValue.value
-    await writeData({
-      node_id,
-      group_config_name,
-      tags: [
-        {
-          value,
-          id: tagID,
-        },
-      ],
-    })
-    emit('updated')
-    showDialog.value = false
-  } catch (error) {
-    //
-  } finally {
-    isSubmitting.value = false
-  }
+const submitData = async () => {
+  await submit()
+  emit('updated')
+  showDialog.value = false
 }
 </script>
 
 <style lang="scss">
 .write-dialog {
-  label {
-    display: block;
-    margin-bottom: 12px;
+  .el-radio-group {
+    width: 100%;
+    .el-radio {
+      width: 100px;
+    }
   }
 }
 </style>

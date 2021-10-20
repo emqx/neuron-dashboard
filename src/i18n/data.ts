@@ -43,4 +43,28 @@ export default {
     zh: '更新时间',
     en: 'Updated',
   },
+  writeDataFormattingErrorPrefix: {
+    zh: '类型 ',
+    en: 'Type',
+  },
+  writeDataFormattingErrorSuffix: {
+    zh: ' 内容格式错误',
+    en: ' content format error',
+  },
+  writeDataMinimumErrorPrefix: {
+    zh: '小于数据类型 ',
+    en: 'Less than the minimum value of data type ',
+  },
+  writeDataMinimumErrorSuffix: {
+    zh: ' 的最小值',
+    en: '',
+  },
+  writeDataMaximumErrorPrefix: {
+    zh: '大于数据类型 ',
+    en: 'Greater than the maximum value of data type ',
+  },
+  writeDataMaximumErrorSuffix: {
+    zh: ' 的最大值',
+    en: '',
+  },
 }
