@@ -1,10 +1,14 @@
 <template>
-  <div class="setup-item-card">
+  <div class="setup-item-card" @click="goGroupPage">
     <div class="setup-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <i class="iconfont iconsetting" @click="goGroupPage"></i>
-        <i class="iconfont icondelete" :class="{ disabled: data.name === DEFAULT_NODE_NAME }" @click="deleteDriver"></i>
+        <!-- <i class="iconfont iconsetting"></i> -->
+        <i
+          class="iconfont icondelete"
+          :class="{ disabled: data.name === DEFAULT_NODE_NAME }"
+          @click.stop="deleteDriver"
+        ></i>
       </div>
     </div>
     <div class="setup-item-info common-flex">
@@ -70,8 +74,10 @@ const deleteDriver = async () => {
   padding: 24px;
   border-radius: 4px;
   background-color: #f4f9fc;
+  cursor: pointer;
   .setup-item-hd {
     margin-bottom: 28px;
+    font-size: 16px;
   }
   .iconfont {
     display: inline-block;
