@@ -88,7 +88,7 @@ export default () => {
     total: 0,
   })
   const totalData: Ref<Array<TagDataInTable>> = ref([])
-  let tagIdMap: Record<number, any> = {}
+  let tagMsgMap: Record<number, any> = {}
   let pollTimer: undefined | number = undefined
   const updated = ref(Date.now())
   const { tagAttrValueMap } = useTagAttributeTypeSelect()
@@ -116,7 +116,7 @@ export default () => {
     groupList.value = data
   }
 
-  const getTagAttrNTypeNName = async () => {
+  const getTagDetail = async () => {
     if (!selectedGroup?.nodeID || !selectedGroup.groupName) {
       return {}
     }
@@ -141,7 +141,7 @@ export default () => {
     const { data } = await getMonitoringData(Number(currentGroup.value.nodeID), currentGroup.value.groupName)
     updated.value = Date.now()
     totalData.value = (data.tags || []).map((item) => {
-      return Object.assign(item, tagIdMap[item.id])
+      return Object.assign(item, tagMsgMap[item.id])
     })
     pageController.value.total = totalData.value.length
   }
@@ -169,7 +169,7 @@ export default () => {
     await unsubscribeCurrentGroup()
     selectedGroup = { nodeID: Number(nodeID), groupName }
     await subscribe(Number(nodeID), groupName)
-    tagIdMap = await getTagAttrNTypeNName()
+    tagMsgMap = await getTagDetail()
     initPageController()
     getTableData()
     startPoll()
@@ -181,7 +181,7 @@ export default () => {
   }
 
   const canWrite = (item: TagDataInTable) => {
-    return item.attribute.some((item) => item === TagAttrbuteType.Write)
+    return item.attribute && item.attribute.some((item) => item === TagAttrbuteType.Write)
   }
 
   onUnmounted(() => {

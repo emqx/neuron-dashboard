@@ -19,19 +19,19 @@ export enum DriverDirection {
 }
 
 export enum TagType {
-  Byte = 2,
-  Int8,
-  Int16,
-  Int32,
-  Int64,
-  UInt8,
-  UInt16,
-  UInt32,
-  UInt64,
-  Float,
-  Double,
-  Bool,
-  Bit,
+  BYTE = 2,
+  INT8,
+  INT16,
+  INT32,
+  INT64,
+  UINT8,
+  UINT16,
+  UINT32,
+  UINT64,
+  FLOAT,
+  DOUBLE,
+  BOOL,
+  BIT,
   CSTRING,
 }
 
