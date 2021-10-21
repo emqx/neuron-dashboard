@@ -110,7 +110,7 @@ export const addTag = (data: { node_id: number; group_config_name: string; tags:
 export const deleteTag = (data: {
   node_id: number
   group_config_name: string
-  tag_ids: Array<number>
+  ids: Array<number>
 }): Promise<AxiosResponse> => {
   return http.delete('/tags', { data })
 }

@@ -108,5 +108,5 @@ export interface TagForm {
 
 export interface TagData extends TagForm {
   group_config_name: string
-  tag_id: number
+  id: number
 }
