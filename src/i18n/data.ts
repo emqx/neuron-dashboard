@@ -83,4 +83,8 @@ export default {
     zh: '请输入格式正确的 16 进制数',
     en: 'Please enter a hexadecimal number in the correct format',
   },
+  displayTheValueInHexadecimal: {
+    zh: '以 16 进制展示值',
+    en: 'Display the value in hexadecimal',
+  },
 }

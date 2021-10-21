@@ -85,6 +85,7 @@ watch(showDialog, (val) => {
     inputValue.value = props.tag.value
   } else {
     inputErrorMsg.value = ''
+    isUseHexadecimal.value = false
   }
 })
 const submitData = async () => {

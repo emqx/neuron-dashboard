@@ -20,6 +20,7 @@ STRING    15  string
 */
 
 import { TagType } from '@/types/enums'
+import { HEXADECIMAL_PREFIX } from '@/utils/constants'
 
 export enum WriteDataErrorCode {
   FormattingError = 1,
@@ -136,11 +137,11 @@ export default () => {
   }
 
   const checkHexadecimal = (value: string) => {
-    const str = value.slice(0, 2).toUpperCase() === '0x' ? value : '0x' + value
+    const str = value.slice(0, 2).toLowerCase() === HEXADECIMAL_PREFIX ? value : HEXADECIMAL_PREFIX + value
     return checkByte(str)
   }
   const transToDecimal = async (value: string) => {
-    const str = value.slice(0, 2).toUpperCase() === '0x' ? value : '0x' + value
+    const str = value.slice(0, 2).toLowerCase() === HEXADECIMAL_PREFIX ? value : HEXADECIMAL_PREFIX + value
     try {
       await checkByte(str)
       return Number(str).toString()
@@ -151,7 +152,7 @@ export default () => {
   const transToHexadecimal = async (value: string) => {
     try {
       await checkFloat(value)
-      return Number(value).toString(16)
+      return HEXADECIMAL_PREFIX + Number(value).toString(16)
     } catch (error) {
       return value
     }
