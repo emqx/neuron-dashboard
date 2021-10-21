@@ -134,5 +134,27 @@ export default () => {
   const checkWriteData = async (type: number, value: string): Promise<boolean | Error> => {
     return check(type, value)
   }
-  return { checkWriteData, parseWriteData }
+
+  const checkHexadecimal = (value: string) => {
+    const str = value.slice(0, 2).toUpperCase() === '0x' ? value : '0x' + value
+    return checkByte(str)
+  }
+  const transToDecimal = async (value: string) => {
+    const str = value.slice(0, 2).toUpperCase() === '0x' ? value : '0x' + value
+    try {
+      await checkByte(str)
+      return Number(str).toString()
+    } catch (error) {
+      return value
+    }
+  }
+  const transToHexadecimal = async (value: string) => {
+    try {
+      await checkFloat(value)
+      return Number(value).toString(16)
+    } catch (error) {
+      return value
+    }
+  }
+  return { checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal }
 }
