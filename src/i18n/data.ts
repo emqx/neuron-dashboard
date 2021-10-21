@@ -67,4 +67,12 @@ export default {
     zh: ' 的最大值',
     en: '',
   },
+  writeDataSafeMinimumError: {
+    zh: `暂不支持输入小于 ${Number.MIN_SAFE_INTEGER} 的数`,
+    en: `It is not currently supported to enter a number less than ${Number.MIN_SAFE_INTEGER}`,
+  },
+  writeDataSafeMaximumError: {
+    zh: `暂不支持输入大于 ${Number.MAX_SAFE_INTEGER} 的数`,
+    en: `It is not currently supported to enter a number greater than ${Number.MAX_SAFE_INTEGER}.`,
+  },
 }

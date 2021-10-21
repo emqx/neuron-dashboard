@@ -47,6 +47,8 @@ export default (props: Props) => {
       t('data.writeDataMaximumErrorPrefix'),
       t('data.writeDataMaximumErrorSuffix'),
     ),
+    [WriteDataErrorCode.LessThanMinSafeInteger]: t('data.writeDataSafeMinimumError'),
+    [WriteDataErrorCode.GreaterThanMaxSafeInteger]: t('data.writeDataSafeMaximumError'),
   }))
 
   const inputValue = ref('')

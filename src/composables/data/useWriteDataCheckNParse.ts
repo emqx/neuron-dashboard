@@ -25,6 +25,8 @@ export enum WriteDataErrorCode {
   FormattingError = 1,
   LessThanMinimum,
   GreaterThanMaximum,
+  LessThanMinSafeInteger,
+  GreaterThanMaxSafeInteger,
 }
 
 export default () => {
@@ -67,21 +69,37 @@ export default () => {
       : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
 
   const checkIsInt = (value: string): boolean => /^-?\d+$/.test(value)
+  const checkLessThanMinimumSafeNumber = (value: string) => BigInt(value) < BigInt(Number.MIN_SAFE_INTEGER)
+  const checkGreaterThanMaximumSafeNumber = (value: string): boolean => BigInt(value) > BigInt(Number.MAX_SAFE_INTEGER)
   const checkInt = (rangeObj: RangeObj, value: string): Promise<Error | boolean> => {
+    let errorCode: undefined | WriteDataErrorCode = undefined
     if (!checkIsInt(value)) {
-      return Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
+      errorCode = WriteDataErrorCode.FormattingError
+    } else if (checkLessThanMinimumSafeNumber(value)) {
+      /**
+       * Because when the data is large Number.MAX_SAFE_INTEGER,
+       * passing parameters to the interface will hava the data error,
+       * so limit the maximum value of the input
+       */
+      errorCode = WriteDataErrorCode.LessThanMinSafeInteger
+    } else if (checkGreaterThanMaximumSafeNumber(value)) {
+      errorCode = WriteDataErrorCode.GreaterThanMaxSafeInteger
+    } else if (BigInt(value) < rangeObj.MIN) {
+      errorCode = WriteDataErrorCode.LessThanMinimum
+    } else if (BigInt(value) > rangeObj.MAX) {
+      errorCode = WriteDataErrorCode.GreaterThanMaximum
     }
-    if (BigInt(value) < rangeObj.MIN) {
-      return Promise.reject(new Error(WriteDataErrorCode.LessThanMinimum.toString()))
-    }
-    if (BigInt(value) > rangeObj.MAX) {
-      return Promise.reject(new Error(WriteDataErrorCode.GreaterThanMaximum.toString()))
+    if (errorCode) {
+      return Promise.reject(new Error(errorCode.toString()))
     }
     return Promise.resolve(true)
   }
 
-  const temp = () => {
-    // TODO:
+  const checkIsFloat = (value: string): boolean => /^-?\d*\.?\d+$/.test(value)
+  const checkFloat = (value: string): Promise<Error | boolean> => {
+    if (!checkIsFloat(value)) {
+      return Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
+    }
     return Promise.resolve(true)
   }
 
@@ -98,8 +116,8 @@ export default () => {
       [TagType.UINT16]: checkInt.bind(null, UINT16_RANGE, value),
       [TagType.UINT32]: checkInt.bind(null, UINT32_RANGE, value),
       [TagType.UINT64]: checkInt.bind(null, UINT64_RANGE, value),
-      [TagType.FLOAT]: temp.bind(null),
-      [TagType.DOUBLE]: temp.bind(null),
+      [TagType.FLOAT]: checkFloat.bind(null, value),
+      [TagType.DOUBLE]: checkFloat.bind(null, value),
       [TagType.BOOL]: checkStrNBool.bind(null),
       [TagType.BIT]: checkBit.bind(null, value),
       [TagType.CSTRING]: checkStrNBool.bind(null),
