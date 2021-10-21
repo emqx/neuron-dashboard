@@ -23,11 +23,29 @@
         </div>
       </div>
     </div>
+
     <div class="table-container">
       <emqx-table :data="tableData" :empty-text="tableEmptyText">
         <emqx-table-column prop="id" label="ID" min-width="60"></emqx-table-column>
         <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="180"></emqx-table-column>
-        <emqx-table-column prop="value" :label="$t('data.value')" min-width="180"></emqx-table-column>
+        <emqx-table-column prop="valueToShow" min-width="180">
+          <template #header>
+            <div class="value-column-hd">
+              <span>{{ $t('data.value') }}</span>
+              <el-popover placement="top-start" :width="180" trigger="hover">
+                <template #reference>
+                  <i class="iconfont iconalarm" />
+                </template>
+                <label class="hexadecimal-label">{{ $t('data.displayTheValueInHexadecimal') }}</label>
+                <emqx-switch
+                  size="mini"
+                  v-model="showValueByHexadecimal"
+                  @change="handleShowValueByHexadecimalChanged"
+                />
+              </el-popover>
+            </div>
+          </template>
+        </emqx-table-column>
         <emqx-table-column width="300" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
             <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
@@ -50,6 +68,7 @@
 
 <script lang="ts" setup>
 import { ref, Ref } from 'vue'
+import { ElPopover } from 'element-plus'
 import useDataMonitoring, { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import dateformat from 'dateformat'
 import WriteDialog from './components/WriteDialog.vue'
@@ -60,8 +79,12 @@ const {
   currentGroup,
   pageController,
   tableData,
+  showValueByHexadecimal,
   updated,
+
   tableEmptyText,
+
+  handleShowValueByHexadecimalChanged,
   canWrite,
   getTableData,
   handleSizeChange,
@@ -98,6 +121,17 @@ const writeData = (item: TagDataInTable) => {
   }
   .emqx-pagination {
     text-align: right;
+  }
+  .value-column-hd {
+    display: flex;
+    align-items: center;
+  }
+  .iconalarm {
+    font-size: 22px;
+    margin-left: 4px;
+    font-weight: normal;
+    cursor: pointer;
+    color: var(--main-green-color);
   }
 }
 </style>

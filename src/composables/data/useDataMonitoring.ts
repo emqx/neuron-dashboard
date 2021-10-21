@@ -8,8 +8,9 @@ import { TagDataInMonitoring } from '@/types/data'
 import { DEFAULT_NODE_NAME } from '@/utils/constants'
 import { paginate } from '@/utils/utils'
 import { useTagAttributeTypeSelect } from '../config/useAddTag'
-import { TagAttrbuteType } from '@/types/enums'
+import { TagAttrbuteType, TagType } from '@/types/enums'
 import useSouthDriver from '@/composables/config/useSouthDriver'
+import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 
 export const useSubscribeForGetMonitoringData = () => {
   let defaultDashboardId: undefined | number = undefined
@@ -66,6 +67,7 @@ export interface TagDataInTable extends TagDataInMonitoring {
   attribute: Array<number>
   type: number
   tagName: string
+  valueToShow: string
 }
 
 export default () => {
@@ -88,10 +90,12 @@ export default () => {
     total: 0,
   })
   const totalData: Ref<Array<TagDataInTable>> = ref([])
+  const showValueByHexadecimal = ref(false)
   let tagMsgMap: Record<number, any> = {}
   let pollTimer: undefined | number = undefined
   const updated = ref(Date.now())
   const { tagAttrValueMap } = useTagAttributeTypeSelect()
+  const { transToHexadecimal } = useWriteDataCheckNParse()
 
   const tableEmptyText = computed(() =>
     !currentGroup.value.nodeID || !currentGroup.value.groupName ? t('data.selectGroupTip') : t('common.emptyData'),
@@ -143,6 +147,7 @@ export default () => {
     totalData.value = (data.tags || []).map((item) => {
       return Object.assign(item, tagMsgMap[item.id])
     })
+    handleShowValueByHexadecimalChanged()
     pageController.value.total = totalData.value.length
   }
 
@@ -180,6 +185,27 @@ export default () => {
     pageController.value.num = 1
   }
 
+  const valueToShow = async ({ value, type }: TagDataInTable) => {
+    if (
+      !showValueByHexadecimal.value ||
+      type === TagType.BYTE ||
+      type === TagType.BOOL ||
+      type === TagType.BIT ||
+      type === TagType.CSTRING
+    ) {
+      return value
+    }
+    const data = await transToHexadecimal(value.toString())
+    return data
+  }
+
+  const handleShowValueByHexadecimalChanged = () => {
+    totalData.value.forEach(async (item) => {
+      item.valueToShow = await valueToShow(item)
+      console.log(item.valueToShow)
+    })
+  }
+
   const canWrite = (item: TagDataInTable) => {
     return item.attribute && item.attribute.some((item) => item === TagAttrbuteType.Write)
   }
@@ -201,10 +227,12 @@ export default () => {
     currentGroup,
     pageController,
     tableData,
+    showValueByHexadecimal,
     updated,
 
     tableEmptyText,
 
+    handleShowValueByHexadecimalChanged,
     canWrite,
     getTableData,
     selectedNodeChanged,
