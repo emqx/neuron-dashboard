@@ -52,14 +52,48 @@ export default (props: Props) => {
   }))
 
   const inputValue = ref('')
+  const isUseHexadecimal = ref(false)
   const isSubmitting = ref(false)
 
-  const { checkWriteData, parseWriteData } = useWriteDataCheckNParse()
+  const {
+    checkHexadecimal,
+    checkWriteData,
+    parseWriteData,
+    transToDecimal,
+    transToHexadecimal,
+  } = useWriteDataCheckNParse()
+
+  const showToggleHexadecimalSwitch = computed(() => {
+    return (
+      props.tag?.type &&
+      props.tag.type !== TagType.BYTE &&
+      props.tag.type !== TagType.BOOL &&
+      props.tag.type !== TagType.BIT &&
+      props.tag.type !== TagType.CSTRING
+    )
+  })
+
+  const handleIsUseHexadecimalChanged = async () => {
+    if (isUseHexadecimal.value) {
+      inputValue.value = await transToHexadecimal(inputValue.value)
+    } else {
+      inputValue.value = await transToDecimal(inputValue.value)
+    }
+  }
 
   const validate = async () => {
     const { type } = props.tag as TagDataInTable
     try {
-      await checkWriteData(type, inputValue.value)
+      if (isUseHexadecimal.value) {
+        await checkHexadecimal(inputValue.value)
+      }
+    } catch (error) {
+      inputErrorMsg.value = t('data.hexadecimalError')
+      return
+    }
+    try {
+      const trueValue = isUseHexadecimal.value ? await transToDecimal(inputValue.value) : inputValue.value
+      await checkWriteData(type, trueValue)
       inputErrorMsg.value = ''
       return Promise.resolve()
     } catch (error: any) {
@@ -75,7 +109,8 @@ export default (props: Props) => {
       await validate()
       isSubmitting.value = true
 
-      const value = parseWriteData(type, inputValue.value)
+      const trueValue = isUseHexadecimal.value ? await transToDecimal(inputValue.value) : inputValue.value
+      const value = parseWriteData(type, trueValue)
       await writeData({
         node_id: Number(nodeID),
         group_config_name: groupName,
@@ -94,5 +129,18 @@ export default (props: Props) => {
       isSubmitting.value = false
     }
   }
-  return { validate, inputErrorMsg, inputValue, isSubmitting, checkWriteData, parseWriteData, submit }
+  return {
+    inputErrorMsg,
+    inputValue,
+    isUseHexadecimal,
+    isSubmitting,
+
+    showToggleHexadecimalSwitch,
+
+    validate,
+    handleIsUseHexadecimalChanged,
+    checkWriteData,
+    parseWriteData,
+    submit,
+  }
 }

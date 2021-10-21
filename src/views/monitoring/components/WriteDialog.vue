@@ -7,7 +7,16 @@
     :z-index="2000"
   >
     <emqx-form @keyup.enter="submitData">
-      <emqx-form-item :label="$t('data.value')" :error="inputErrorMsg">
+      <emqx-form-item :error="inputErrorMsg">
+        <template #label>
+          <div class="common-flex">
+            <span>{{ $t('data.value') }}</span>
+            <div v-if="showToggleHexadecimalSwitch">
+              <label>{{ $t('data.useHexadecimalInput') }}</label>
+              <emqx-switch v-model="isUseHexadecimal" @change="handleIsUseHexadecimalChanged" />
+            </div>
+          </div>
+        </template>
         <emqx-input v-if="tag.type !== TagType.BOOL" v-model="inputValue" @blur="validate" />
         <emqx-radio-group v-else v-model="inputValue">
           <emqx-radio :label="true">True</emqx-radio>
@@ -55,7 +64,18 @@ const showDialog = computed({
 })
 const dialogTitle = computed(() => props.tag?.tagName)
 
-const { inputErrorMsg, inputValue, isSubmitting, validate, submit } = useWriteDataDialog(props)
+const {
+  inputErrorMsg,
+  inputValue,
+  isUseHexadecimal,
+  isSubmitting,
+
+  showToggleHexadecimalSwitch,
+
+  handleIsUseHexadecimalChanged,
+  validate,
+  submit,
+} = useWriteDataDialog(props)
 
 watch(showDialog, (val) => {
   if (val) {
@@ -76,6 +96,11 @@ const submitData = async () => {
 
 <style lang="scss">
 .write-dialog {
+  .el-form-item__label {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
   .el-radio-group {
     width: 100%;
     .el-radio {

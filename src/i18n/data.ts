@@ -75,4 +75,12 @@ export default {
     zh: `暂不支持输入大于 ${Number.MAX_SAFE_INTEGER} 的数`,
     en: `It is not currently supported to enter a number greater than ${Number.MAX_SAFE_INTEGER}.`,
   },
+  useHexadecimalInput: {
+    zh: '使用 16 进制输入',
+    en: 'Use hexadecimal input',
+  },
+  hexadecimalError: {
+    zh: '请输入格式正确的 16 进制数',
+    en: 'Please enter a hexadecimal number in the correct format',
+  },
 }
