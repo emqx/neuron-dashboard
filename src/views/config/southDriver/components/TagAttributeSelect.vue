@@ -23,7 +23,9 @@ const selectedValue = computed({
   },
   set(val: Array<number>) {
     const value = Object.keys(tagAttrValueMap).find(
-      (total) => tagAttrValueMap[Number(total) as keyof typeof tagAttrValueMap].join(',') === val.join(','),
+      (total) =>
+        tagAttrValueMap[Number(total) as keyof typeof tagAttrValueMap].join(',') ===
+        val.sort((a, b) => a - b).join(','),
     )
     emit('update:modelValue', Number(value))
   },
