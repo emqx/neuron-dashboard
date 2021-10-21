@@ -26,8 +26,8 @@
 
     <div class="table-container">
       <emqx-table :data="tableData" :empty-text="tableEmptyText">
-        <emqx-table-column prop="id" label="ID" min-width="60"></emqx-table-column>
         <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="180"></emqx-table-column>
+        <emqx-table-column prop="address" :label="$t('config.address')" min-width="180"></emqx-table-column>
         <emqx-table-column prop="valueToShow" min-width="180">
           <template #header>
             <div class="value-column-hd">
