@@ -46,7 +46,7 @@ export default () => {
     await deleteTag({
       node_id: nodeID.value,
       group_config_name: groupName.value,
-      tag_ids: list.map(({ tag_id }) => tag_id),
+      ids: list.map(({ id }) => id),
     })
     EmqxMessage.success(t('common.operateSuccessfully'))
     getTagList()

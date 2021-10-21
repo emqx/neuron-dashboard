@@ -123,8 +123,8 @@ export default () => {
     const tags = await queryTagList(selectedGroup?.nodeID, selectedGroup.groupName)
     const tagIdMap: Record<string | number, any> = {}
     tags.forEach(
-      ({ tag_id, attribute, type, name }) =>
-        (tagIdMap[tag_id] = {
+      ({ id, attribute, type, name }) =>
+        (tagIdMap[id] = {
           attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
           type,
           tagName: name,
