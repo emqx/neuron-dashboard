@@ -5,7 +5,7 @@
       <div class="bar-left common-flex">
         <p class="driver-name">
           <label>{{ $t('config.appName') }}</label>
-          <span>{{ getNodeNameById(nodeID) }}</span>
+          <span>{{ nodeName }}</span>
         </p>
         <emqx-button size="small" @click="editDriverPlugin">{{ $t('config.modifyAppPlugin') }}</emqx-button>
       </div>
@@ -59,7 +59,7 @@ import { computed, ref, Ref } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from '@/views/config/components/GroupDialog.vue'
 import EditDriverPluginDialog from '@/views/config/components/EditDriverPluginDialog.vue'
-import useNodeList from '@/composables/config/useNodeList'
+import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 
@@ -73,14 +73,17 @@ const {
   delGroup,
   batchDeleteGroup,
 } = useGroupList()
-const { getNodeNameById } = useNodeList()
+const { getNodeMsgById } = useNodeMsgMap(DriverDirection.North)
+
 const showGroupDialog = ref(false)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 const showChangePluginDialog = ref(false)
 
+const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
 const currentNode = computed(() => ({
   id: nodeID.value,
-  name: getNodeNameById(nodeID.value),
+  name: nodeName.value,
+  plugin_id: getNodeMsgById(nodeID.value).plugin_id,
 }))
 
 const addGroup = () => {
