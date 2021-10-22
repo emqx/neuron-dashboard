@@ -42,3 +42,9 @@ export const createRandomString = (length = 6): string => {
   }
   return ret
 }
+
+export const createMapFromArray = (array: Array<Record<any, any>>, mapKey = 'id') =>
+  array.reduce((obj, curr) => {
+    obj[curr[mapKey]] = curr
+    return obj
+  }, Object.create(null))
