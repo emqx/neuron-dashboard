@@ -1,6 +1,5 @@
-import { ref, computed, Ref, ComputedRef } from 'vue'
-import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-import { DriverDirection, PluginKind } from '@/types/enums'
+import { ref, Ref } from 'vue'
+import { PluginKind } from '@/types/enums'
 import { addPlugin, deletePlugin, queryPluginList, updatePlugin } from '@/api/config'
 import { CreatedPlugin, PluginForm } from '@/types/config'
 import { createCommonErrorMessage, createOptionListFromEnum } from '@/utils/utils'
@@ -33,6 +32,23 @@ const usePluginKindSelect = () => {
   return {
     pluginKindList,
   }
+}
+
+export const useGetPluginMsgIdMap = () => {
+  const pluginMsgIdMap: Record<number, CreatedPlugin> = {}
+  const initMsgIdMap = async () => {
+    try {
+      const { data } = await queryPluginList()
+      ;(data.plugin_libs || []).forEach((item) => {
+        pluginMsgIdMap[item.id] = item
+      })
+      return Promise.resolve(pluginMsgIdMap)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  return { pluginMsgIdMap, initMsgIdMap }
 }
 
 export const useAddPlugin = () => {

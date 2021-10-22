@@ -23,61 +23,20 @@ export interface NodeForm {
   plugin_name: string
 }
 
-export interface SerialNorthDriversFormData {
-  /**
-   * Device name
-   */
-  ttyc: string
-  /**
-   * Baud rate
-   */
-  ttyb: number
-  /**
-   * Data bit
-   */
-  ttyd: number
-  /**
-   * Stop bit
-   */
-  ttys: string
-  /**
-   * Parity bit
-   */
-  ttyp: string
-  parm: Parm
-}
-
 export interface SubscriptionData {
   dst_node_id: number
   src_node_id: number
   name: string
 }
 
-export type EthernetNorthDriversFormData = {
-  /**
-   * Host name
-   */
-  tcph: string
-  /**
-   * Port no
-   */
-  tcpp: number
-  parm: Parm
-}
-
-export type NorthDriverFormData = Merge<
-  {
-    /**
-     * north driver type
-     */
-    chdv: string
-  },
-  Merge<SerialNorthDriversFormData, EthernetNorthDriversFormData>
->
-
 export interface DriverItem {
   name: string
   id: number
+  plugin_id: number
+}
+
+export interface DirverItemWithPluginKind extends DriverItem {
+  pluginKind: PluginKind
 }
 
 export interface ResponseDriverListData {

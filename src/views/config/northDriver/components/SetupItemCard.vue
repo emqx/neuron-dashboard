@@ -6,7 +6,7 @@
         <!-- <i class="iconfont iconsetting"></i> -->
         <i
           class="iconfont icondelete"
-          :class="{ disabled: data.name === DEFAULT_NODE_NAME }"
+          :class="{ disabled: data.pluginKind === PluginKind.Static }"
           @click.stop="deleteDriver"
         ></i>
       </div>
@@ -35,19 +35,19 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { DriverItem } from '@/types/config'
+import { DirverItemWithPluginKind } from '@/types/config'
 import { PropType, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useDriverStatus } from '@/composables/config/useDriver'
-import { DEFAULT_NODE_NAME } from '@/utils/constants'
+import { PluginKind } from '@/types/enums'
 
 const emit = defineEmits(['deleted'])
 const router = useRouter()
 const { statusIconClassMap } = useDriverStatus()
 
 const props = defineProps({
-  data: { type: Object as PropType<DriverItem>, required: true },
+  data: { type: Object as PropType<DirverItemWithPluginKind>, required: true },
 })
 
 const goGroupPage = () => {
@@ -61,7 +61,7 @@ const goGroupPage = () => {
 
 const { delDriver } = useDeleteDriver()
 const deleteDriver = async () => {
-  if (props.data.name === DEFAULT_NODE_NAME) {
+  if (props.data.pluginKind === PluginKind.Static) {
     return
   }
   await delDriver(props.data)
