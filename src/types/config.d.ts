@@ -23,7 +23,13 @@ export interface NodeForm {
   plugin_name: string
 }
 
-export interface SubscriptionData {
+export interface SubscriptionDataForm {
+  dst_node_id: number | null
+  src_node_id: number | null
+  name: string
+}
+
+export interface SubscriptionData extends SubscriptionDataForm {
   dst_node_id: number
   src_node_id: number
   name: string

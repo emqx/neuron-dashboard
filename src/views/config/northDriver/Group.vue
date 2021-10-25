@@ -21,7 +21,9 @@
           </emqx-button>
         </div>
         <div class="btn-group">
-          <emqx-button size="small" type="primary" @click="addGroup">{{ $t('common.create') }}</emqx-button>
+          <emqx-button size="small" type="primary" @click="addSubscription">
+            {{ $t('config.addSubscription') }}
+          </emqx-button>
           <emqx-button size="small" type="warning" @click="clearGroup">{{ $t('common.clear') }}</emqx-button>
           <emqx-button size="small" type="danger" @click="batchDeleteGroup">{{ $t('common.delete') }}</emqx-button>
         </div>
@@ -43,7 +45,6 @@
       <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
-          <i class="el-icon-edit-outline" @click="editGroup(row)"></i>
           <i class="iconfont iconalarm"></i>
           <i class="iconfont icondelete" @click="delGroup(row)"></i>
         </template>
@@ -52,6 +53,7 @@
   </emqx-card>
   <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" :group="currentGroup" />
   <EditDriverPluginDialog v-model="showChangePluginDialog" :type="DriverDirection.North" :node="currentNode" />
+  <AddSubscriptionDialog v-model="showAddSubscriptionDialog" :current-node-id="nodeID" @submitted="getGroupList" />
 </template>
 
 <script lang="ts" setup>
@@ -60,8 +62,10 @@ import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from '@/views/config/components/GroupDialog.vue'
 import EditDriverPluginDialog from '@/views/config/components/EditDriverPluginDialog.vue'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
-import { GroupData, GroupForm } from '@/types/config'
+import { GroupForm } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
+import { useSubscriptionList } from '@/composables/config/useSubscription'
+import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
 
 const {
   nodeID,
@@ -73,9 +77,11 @@ const {
   delGroup,
   batchDeleteGroup,
 } = useGroupList()
+const { subscriptionList } = useSubscriptionList()
 const { getNodeMsgById } = useNodeMsgMap(DriverDirection.North)
 
 const showGroupDialog = ref(false)
+const showAddSubscriptionDialog = ref(false)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 const showChangePluginDialog = ref(false)
 
@@ -86,18 +92,8 @@ const currentNode = computed(() => ({
   plugin_id: getNodeMsgById(nodeID.value).plugin_id,
 }))
 
-const addGroup = () => {
-  currentGroup.value = undefined
-  showGroupDialog.value = true
-}
-
-const editGroup = ({ name, interval }: GroupData) => {
-  currentGroup.value = {
-    interval,
-    name,
-    node_id: nodeID.value,
-  }
-  showGroupDialog.value = true
+const addSubscription = () => {
+  showAddSubscriptionDialog.value = true
 }
 
 const editDriverPlugin = () => {
