@@ -251,6 +251,10 @@ export default {
     zh: '修改当前设备 plugin',
     en: 'Modify the plugin of the current device',
   },
+  addSubscription: {
+    zh: '添加订阅',
+    en: 'Add subscription',
+  },
   /* FOR FORM */
   groupNameRequired: {
     zh: '请填写 Group 名称',
@@ -295,5 +299,13 @@ export default {
   pluginRequired: {
     zh: '请选择 Plugin',
     en: 'Please select the plugin',
+  },
+  southDeviceRequired: {
+    zh: '请选择南向设备',
+    en: 'Please select south device',
+  },
+  groupRequired: {
+    zh: '请选择 group',
+    en: '',
   },
 }

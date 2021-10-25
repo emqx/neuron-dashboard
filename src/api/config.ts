@@ -61,6 +61,10 @@ export const deleteSubscription = (data: SubscriptionData) => {
   return http.delete('/subscribe', { data })
 }
 
+export const querySubscription = (node_id: number) => {
+  return http.get('/subscribe', { params: { node_id } })
+}
+
 /* GROUP */
 
 export const queryGroupList = async (nodeID: number): Promise<Array<GroupData>> => {
