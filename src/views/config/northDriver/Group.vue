@@ -21,11 +21,11 @@
           </emqx-button>
         </div>
         <div class="btn-group">
-          <emqx-button size="small" type="primary" @click="addSubscription">
-            {{ $t('config.addSubscription') }}
-          </emqx-button>
-          <emqx-button size="small" type="warning" @click="clearGroup">{{ $t('common.clear') }}</emqx-button>
-          <emqx-button size="small" type="danger" @click="batchDeleteGroup">{{ $t('common.delete') }}</emqx-button>
+          <emqx-button size="small" type="primary" @click="addSubscription">{{
+            $t('config.addSubscription')
+          }}</emqx-button>
+          <emqx-button size="small" type="warning" @click="clearSubscription">{{ $t('common.clear') }}</emqx-button>
+          <emqx-button size="small" type="danger" @click="unsubscribeInBulk">{{ $t('common.delete') }}</emqx-button>
         </div>
       </div>
     </div>
@@ -46,43 +46,29 @@
       <emqx-table-column align="right">
         <template #default="{ row }">
           <i class="iconfont iconalarm"></i>
-          <i class="iconfont icondelete" @click="delGroup(row)"></i>
+          <i class="iconfont icondelete" @click="unsubscribeGroup(row)"></i>
         </template>
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
-  <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" :group="currentGroup" />
   <EditDriverPluginDialog v-model="showChangePluginDialog" :type="DriverDirection.North" :node="currentNode" />
   <AddSubscriptionDialog v-model="showAddSubscriptionDialog" :current-node-id="nodeID" @submitted="getGroupList" />
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, Ref } from 'vue'
+import { computed, ref } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
-import GroupDialog from '@/views/config/components/GroupDialog.vue'
 import EditDriverPluginDialog from '@/views/config/components/EditDriverPluginDialog.vue'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
-import { GroupForm } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import { useSubscriptionList } from '@/composables/config/useSubscription'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
 
-const {
-  nodeID,
-  groupList,
-  isListLoading,
-  allChecked,
-  getGroupList,
-  clearGroup,
-  delGroup,
-  batchDeleteGroup,
-} = useGroupList()
-const { subscriptionList } = useSubscriptionList()
+const { nodeID, groupList, isListLoading, allChecked, getGroupList } = useGroupList()
+const { subscriptionList, unsubscribeGroup, clearSubscription, unsubscribeInBulk } = useSubscriptionList()
 const { getNodeMsgById } = useNodeMsgMap(DriverDirection.North)
 
-const showGroupDialog = ref(false)
 const showAddSubscriptionDialog = ref(false)
-const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 const showChangePluginDialog = ref(false)
 
 const nodeName = computed(() => getNodeMsgById(nodeID.value).name)

@@ -58,7 +58,7 @@
 <script lang="ts" setup>
 import { ref, Ref, computed } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
-import GroupDialog from '@/views/config/components/GroupDialog.vue'
+import GroupDialog from './components/GroupDialog.vue'
 import EditDriverPluginDialog from '@/views/config/components/EditDriverPluginDialog.vue'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'

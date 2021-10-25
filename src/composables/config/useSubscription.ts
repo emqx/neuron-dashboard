@@ -1,26 +1,78 @@
-import { addSubscription, queryGroupList, querySubscription } from '@/api/config'
+import { addSubscription, deleteSubscription, queryGroupList, querySubscription } from '@/api/config'
 import { GroupData, SubscriptionData, SubscriptionDataForm } from '@/types/config'
 import { ref, computed, Ref, nextTick } from 'vue'
+import { EmqxMessageBox } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import useSouthDriver from './useSouthDriver'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { createCommonErrorMessage } from '@/utils/utils'
 
+interface SubscriptionDataInTable extends SubscriptionData {
+  checked: boolean
+}
+
 export const useSubscriptionList = () => {
   const route = useRoute()
+  const { t } = useI18n()
 
-  const subscriptionList = ref([])
+  const subscriptionList: Ref<Array<SubscriptionDataInTable>> = ref([])
   const nodeID = computed(() => parseInt(route.params.nodeID as string))
+
+  const allChecked = computed({
+    get() {
+      if (subscriptionList.value.length === 0) {
+        return false
+      }
+      return subscriptionList.value.every(({ checked }) => checked)
+    },
+    set(val: boolean) {
+      subscriptionList.value.forEach((item) => {
+        item.checked = val
+      })
+    },
+  })
 
   const getSubscriptionList = async () => {
     const { data } = await querySubscription(nodeID.value)
+    // subscriptionList.value = data.map((item) => {
+    //   Object.assign(item, { checked: false })
+    // })
   }
+
+  const unsubscribe = async (confirmText: string, data: SubscriptionData | Array<SubscriptionData>) => {
+    try {
+      await EmqxMessageBox.confirm(confirmText, t('common.operateConfirm'))
+      if (Array.isArray(data)) {
+        await Promise.all(data.map((groupItem) => deleteSubscription(groupItem)))
+      } else {
+        await deleteSubscription(data)
+      }
+      EmqxMessage.success(t('common.operateSuccessfully'))
+      getSubscriptionList()
+    } catch (error) {
+      //
+    }
+  }
+
+  const unsubscribeGroup = async (group: SubscriptionData) => unsubscribe(t('config.unsubscribeGroupConfirm'), group)
+
+  const clearSubscription = () => unsubscribe(t('config.clearSubscriptionConfirm'), subscriptionList.value)
+
+  const unsubscribeInBulk = () =>
+    unsubscribe(
+      t('config.unsubscribeInBulkConfirm'),
+      subscriptionList.value.filter((item) => item.checked),
+    )
 
   getSubscriptionList()
 
   return {
     subscriptionList,
+    allChecked,
+    unsubscribeGroup,
+    clearSubscription,
+    unsubscribeInBulk,
   }
 }
 

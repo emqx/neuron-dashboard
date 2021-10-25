@@ -255,6 +255,18 @@ export default {
     zh: '添加订阅',
     en: 'Add subscription',
   },
+  unsubscribeGroupConfirm: {
+    zh: '是否确定取消订阅该 group',
+    en: 'Are you sure you want to unsubscribe this group',
+  },
+  clearSubscriptionConfirm: {
+    zh: '是否确认清空订阅',
+    en: 'Are you sure to clear the subscription?',
+  },
+  unsubscribeInBulkConfirm: {
+    zh: '是否确认取消订阅所选 group',
+    en: 'Are you sure to unsubscribe from selected groups?',
+  },
   /* FOR FORM */
   groupNameRequired: {
     zh: '请填写 Group 名称',
