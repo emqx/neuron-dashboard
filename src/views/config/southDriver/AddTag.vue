@@ -16,7 +16,7 @@
           >
         </div>
         <emqx-card shadow="none">
-          <TagForm :ref="setFormRef" :data="item" />
+          <TagForm :ref="setFormRef" :data="item" :node-plugin-info="nodePluginInfo" />
         </emqx-card>
       </li>
     </ul>
@@ -25,9 +25,9 @@
       <span>{{ $t('common.add') }}</span>
     </emqx-button>
     <emqx-card shadow="none" class="add-tag-ft">
-      <emqx-button type="primary" @click="submit" :disabled="tagList.length === 0" :loading="isSubmitting">
-        {{ $t('common.create') }}
-      </emqx-button>
+      <emqx-button type="primary" @click="submit" :disabled="tagList.length === 0" :loading="isSubmitting">{{
+        $t('common.create')
+      }}</emqx-button>
       <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
     </emqx-card>
   </div>
@@ -37,7 +37,7 @@
 import TagForm from './components/TagForm.vue'
 import useAddTag from '@/composables/config/useAddTag'
 
-const { tagList, isSubmitting, addTagItem, deleteTagItem, setFormRef, cancel, submit } = useAddTag()
+const { nodePluginInfo, tagList, isSubmitting, addTagItem, deleteTagItem, setFormRef, cancel, submit } = useAddTag()
 </script>
 
 <style lang="scss">
