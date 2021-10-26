@@ -260,11 +260,11 @@ export default {
     en: 'Unauthorized',
   },
   inputRequired: {
-    zh: '请输入',
+    zh: '请输入 ',
     en: 'Please enter the ',
   },
   selectRequired: {
-    zh: '请选择',
+    zh: '请选择 ',
     en: 'Please select the ',
   },
 }

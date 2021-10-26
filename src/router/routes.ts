@@ -1,6 +1,7 @@
 import { RouteRecordRaw } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
+import { DriverDirection } from '@/types/enums'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,6 +28,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/northDriver/Group.vue'),
       },
       {
+        path: '/configuration/north-driver/config/:nodeID',
+        name: 'NorthDriverConfig',
+        component: () => import('@/views/config/NodeConfig.vue'),
+        props: {
+          direction: DriverDirection.North,
+        },
+      },
+      {
         path: '/configuration/south-driver',
         name: 'SouthDriver',
         component: () => import('@/views/config/southDriver/Index.vue'),
@@ -35,6 +44,14 @@ const routes: Array<RouteRecordRaw> = [
         path: '/configuration/south-driver/:nodeID',
         name: 'SouthDriverGroup',
         component: () => import('@/views/config/southDriver/Group.vue'),
+      },
+      {
+        path: '/configuration/south-driver/config/:nodeID',
+        name: 'SouthDriverConfig',
+        component: () => import('@/views/config/NodeConfig.vue'),
+        props: {
+          direction: DriverDirection.South,
+        },
       },
       {
         path: '/configuration/south-driver/:nodeID/:group',

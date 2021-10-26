@@ -3,7 +3,7 @@
     <div class="setup-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <!-- <i class="iconfont iconsetting"></i> -->
+        <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
         <i
           class="iconfont icondelete"
           :class="{ disabled: data.pluginKind === PluginKind.Static }"
@@ -58,6 +58,8 @@ const goGroupPage = () => {
     },
   })
 }
+
+const goNodeConfig = () => router.push({ name: 'NorthDriverConfig', params: { nodeID: props.data.id } })
 
 const { delDriver } = useDeleteDriver()
 const deleteDriver = async () => {

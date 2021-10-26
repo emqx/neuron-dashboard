@@ -18,6 +18,13 @@ export enum DriverDirection {
   South = 1,
 }
 
+export enum TypeOfPluginParam {
+  Int = 'int',
+  String = 'string',
+  Boolean = 'bool',
+  Enum = 'enum',
+}
+
 export enum TagType {
   BYTE = 2,
   INT8,

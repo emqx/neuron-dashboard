@@ -255,6 +255,14 @@ export default {
     zh: '添加订阅',
     en: 'Add subscription',
   },
+  appConfig: {
+    zh: '应用配置',
+    en: 'Application configuration',
+  },
+  deviceConfig: {
+    zh: '设备配置',
+    en: 'Device configuration ',
+  },
   unsubscribeGroupConfirm: {
     zh: '是否确定取消订阅该 group',
     en: 'Are you sure you want to unsubscribe this group',
@@ -266,6 +274,10 @@ export default {
   unsubscribeInBulkConfirm: {
     zh: '是否确认取消订阅所选 group',
     en: 'Are you sure to unsubscribe from selected groups?',
+  },
+  noConfigInfoDesc: {
+    zh: '没有需要配置的数据',
+    en: 'There is no data to configure.',
   },
   /* FOR FORM */
   groupNameRequired: {
@@ -319,5 +331,21 @@ export default {
   groupRequired: {
     zh: '请选择 group',
     en: '',
+  },
+  numberErrorPrefix: {
+    zh: '请输入',
+    en: 'Please enter a number between',
+  },
+  numberErrorSuffix: {
+    zh: '之间的数字',
+    en: '',
+  },
+  stringLengthErrorPrefix: {
+    zh: '请输入',
+    en: 'Please enter ',
+  },
+  stringLengthErrorSuffix: {
+    zh: '个字符',
+    en: ' characters',
   },
 }
