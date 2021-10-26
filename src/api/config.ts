@@ -8,6 +8,7 @@ import {
   GroupData,
   GroupForm,
   NodeForm,
+  AllPluginConfigInfo,
   PluginForm,
   ResponseDriverListData,
   SubscriptionData,
@@ -63,6 +64,25 @@ export const deleteSubscription = (data: SubscriptionData) => {
 
 export const querySubscription = (node_id: number) => {
   return http.get('/subscribe', { params: { node_id } })
+}
+
+/**
+ * Obtain which fields need to be configured for each plugin
+ * And specific information about these fields
+ */
+export const queryPluginConfigInfo = (): Promise<AxiosResponse<AllPluginConfigInfo>> => {
+  return http.get('/schema/plugin')
+}
+
+export const submitNodeConfig = (nodeID: number, form: Record<string, any>) => {
+  return http.post('/node/setting', {
+    node_id: nodeID,
+    params: form,
+  })
+}
+
+export const queryNodeConfig = (nodeID: number) => {
+  return http.get('/node/setting', { params: { node_id: nodeID } })
 }
 
 /* GROUP */

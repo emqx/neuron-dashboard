@@ -3,7 +3,7 @@
     <div class="south-drive-item-card-hd common-flex">
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <!-- <i class="iconfont iconsetting"></i> -->
+        <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
         <i class="iconfont icondelete" @click.stop="deleteDriver"></i>
       </div>
     </div>
@@ -71,6 +71,7 @@ const deleteDriver = async () => {
   await delDriver(props.data)
   emit('deleted')
 }
+const goNodeConfig = () => router.push({ name: 'SouthDriverConfig', params: { nodeID: props.data.id } })
 </script>
 
 <style lang="scss">

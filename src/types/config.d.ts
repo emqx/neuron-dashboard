@@ -1,5 +1,5 @@
 import { Merge } from 'type-fest'
-import { DriverDirection, PluginKind } from './enums'
+import { DriverDirection, PluginKind, TypeOfPluginParam } from './enums'
 
 /**
  * Params get from API
@@ -48,6 +48,52 @@ export interface DirverItemWithPluginKind extends DriverItem {
 export interface ResponseDriverListData {
   function: number
   nodes: Array<DriverItem>
+}
+
+interface ParamBaseInfo {
+  description: string
+}
+
+export interface NumberParamInfo extends ParamBaseInfo {
+  type: TypeOfPluginParam.Int
+  default: number
+  valid: {
+    min: number
+    max: number
+  }
+}
+
+export interface StringParamInfo extends ParamBaseInfo {
+  type: TypeOfPluginParam.String
+  default: string
+  valid: {
+    length: number
+  }
+}
+
+interface BoolParamInfo extends ParamBaseInfo {
+  type: TypeOfPluginParam.Boolean
+  default: boolean
+  valid: Record<string, never>
+}
+
+export type ParamInfo = NumberParamInfo | StringParamInfo | BoolParamInfo
+
+export interface PluginInfo {
+  tag_type: Array<TagType>
+  params: Array<string>
+  /**
+   * params items
+   */
+  [propName: string]: ParamInfo
+}
+
+interface AllPluginConfigInfo {
+  plugins: Array<string>
+  /**
+   * plugins items
+   */
+  [propName: string]: PluginInfo
 }
 
 export interface GroupForm {

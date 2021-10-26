@@ -4,18 +4,28 @@ import { DriverDirection } from '@/types/enums'
 import { createMapFromArray } from '@/utils/utils'
 import { ref, Ref } from 'vue'
 
-export const useNodeMsgMap = (direction: DriverDirection) => {
+export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
   const nodeMsgMap: Ref<Record<number, DriverItem>> = ref({})
 
   const initMap = async () => {
-    const request = direction === DriverDirection.North ? queryNorthDriverList : querySouthDriverList
-    nodeMsgMap.value = createMapFromArray(await request())
+    try {
+      const request = direction === DriverDirection.North ? queryNorthDriverList : querySouthDriverList
+      nodeMsgMap.value = createMapFromArray(await request())
+      return Promise.resolve(nodeMsgMap.value)
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
   const getNodeMsgById = (nodeID: number) => {
     return nodeMsgMap.value[nodeID] || {}
   }
-  initMap()
+
+  if (autoInit) {
+    initMap()
+  }
+
   return {
+    initMap,
     getNodeMsgById,
   }
 }
