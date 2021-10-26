@@ -19,7 +19,12 @@
       <emqx-col :span="12">
         <emqx-form-item label="Type" prop="type" required>
           <emqx-select v-model="form.type">
-            <emqx-option v-for="item in tagTypeOptList" :key="item.value" :value="item.value" :label="item.label" />
+            <emqx-option
+              v-for="item in tagTypeOptListAfterFilter"
+              :key="item.value"
+              :value="item.value"
+              :label="item.label"
+            />
           </emqx-select>
         </emqx-form-item>
       </emqx-col>
@@ -29,9 +34,9 @@
 
 <script lang="ts" setup>
 import { ref, defineExpose } from 'vue'
-import { useTagAttributeTypeSelect, useTagTypeSelect } from '@/composables/config/useAddTag'
+import { useTagTypeSelect } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
-import { TagForm } from '@/types/config'
+import { PluginInfo, TagForm } from '@/types/config'
 import { computed, defineProps, PropType, defineEmits, WritableComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -41,12 +46,27 @@ const props = defineProps({
     type: Object as PropType<TagForm>,
     required: true,
   },
+  nodePluginInfo: {
+    type: Object as PropType<PluginInfo>,
+  },
 })
 const emit = defineEmits(['update:modelValue'])
 
 const formCom = ref()
 const { tagTypeOptList } = useTagTypeSelect()
-const { tagAttributeTypeOptList } = useTagAttributeTypeSelect()
+
+/**
+ * The available tag types are restricted by
+ * the plug-in type bound to the current node.
+ */
+const tagTypeOptListAfterFilter = computed(() => {
+  if (!props?.nodePluginInfo?.tag_type) {
+    return tagTypeOptList
+  }
+  return tagTypeOptList.filter((tagType) =>
+    (props.nodePluginInfo as PluginInfo).tag_type.some((canSelectTagType) => canSelectTagType === tagType.value),
+  )
+})
 
 const form: WritableComputedRef<TagForm> = computed({
   get() {
