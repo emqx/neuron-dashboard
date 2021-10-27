@@ -17,7 +17,7 @@ export default (props: Props) => {
   const createNumberParamRules = () => [
     {
       required: true,
-      message: createCommonErrorMessage('input', props.paramInfo.description),
+      message: createCommonErrorMessage('input', props.paramInfo.name),
     },
     {
       validator(rule: unknown, value: string) {
@@ -36,7 +36,7 @@ export default (props: Props) => {
   const createStringParamRules = () => [
     {
       required: true,
-      message: createCommonErrorMessage('input', props.paramInfo.description),
+      message: createCommonErrorMessage('input', props.paramInfo.name),
     },
     {
       validator(rule: unknown, value: string) {
@@ -54,7 +54,7 @@ export default (props: Props) => {
 
   const createEnumNBooleanParamRules = () => ({
     required: true,
-    message: createCommonErrorMessage('select', props.paramInfo.description),
+    message: createCommonErrorMessage('select', props.paramInfo.name),
   })
 
   const fillRules = () => {

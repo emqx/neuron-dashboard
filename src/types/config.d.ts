@@ -52,11 +52,12 @@ export interface ResponseDriverListData {
 
 interface ParamBaseInfo {
   description: string
+  name: string
 }
 
 export interface NumberParamInfo extends ParamBaseInfo {
   type: TypeOfPluginParam.Int
-  default: number
+  default?: number
   valid: {
     min: number
     max: number
@@ -65,7 +66,7 @@ export interface NumberParamInfo extends ParamBaseInfo {
 
 export interface StringParamInfo extends ParamBaseInfo {
   type: TypeOfPluginParam.String
-  default: string
+  default?: string
   valid: {
     length: number
   }
@@ -73,7 +74,7 @@ export interface StringParamInfo extends ParamBaseInfo {
 
 interface BoolParamInfo extends ParamBaseInfo {
   type: TypeOfPluginParam.Boolean
-  default: boolean
+  default?: boolean
   valid: Record<string, never>
 }
 
@@ -81,6 +82,7 @@ export type ParamInfo = NumberParamInfo | StringParamInfo | BoolParamInfo
 
 export interface PluginInfo {
   tag_type: Array<TagType>
+  // TODO: delete params after api changed
   params: Array<string>
   /**
    * params items

@@ -1,5 +1,13 @@
 <template>
-  <emqx-form-item :label="showLabel(props.paramInfo.description)" :rules="rules" :prop="paramKey">
+  <emqx-form-item class="node-config-param-item" :rules="rules" :prop="paramKey">
+    <template #label>
+      <span>{{ showLabel() }}</span>
+      <el-popover placement="top-start" :width="300" trigger="hover" :content="paramInfo.description">
+        <template #reference>
+          <i class="iconfont iconalarm" />
+        </template>
+      </el-popover>
+    </template>
     <!-- Number -->
     <emqx-input v-if="paramInfo.type === TypeOfPluginParam.Int" v-model.number="inputValue" />
     <!-- String -->
@@ -17,7 +25,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType, computed, defineEmits } from 'vue'
+import { defineProps, PropType, computed, defineEmits, ref } from 'vue'
+import { ElPopover } from 'element-plus'
 import { ParamInfo } from '@/types/config'
 import { TypeOfPluginParam } from '@/types/enums'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
@@ -49,10 +58,29 @@ const inputValue = computed({
 
 const { rules } = useNodeConfigParamItem(props)
 
-const showLabel = (label: string) => {
+const showLabel = () => {
+  const label = props.paramInfo?.name || ''
   if (/^[a-z]/.test(label)) {
     return label.slice(0, 1).toUpperCase() + label.slice(1)
   }
   return label
 }
 </script>
+
+<style lang="scss">
+.node-config-param-item {
+  .el-form-item__label {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    > span {
+      margin-right: 8px;
+    }
+    > .iconfont {
+      font-size: 18px;
+      cursor: pointer;
+    }
+  }
+}
+</style>
