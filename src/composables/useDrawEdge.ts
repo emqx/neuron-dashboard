@@ -1,13 +1,12 @@
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Graph } from '@antv/x6'
-import { DriverData } from '@/types/neuron'
+import { MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW } from '@/utils/constants'
 
 // If you change the value here,
 // also change the relevant scss variable in the src/views/overview/Index.vue file
 const BLOCK_DISTANCE = 24
 const ARROW_DISTANCE = 16
 const CIRCLE_RADIUS = 8
-const A_ROW_MAX_CARDS_NUM = 3
 
 export default () => {
   const upEdgeContentEl = ref()
@@ -38,29 +37,11 @@ export default () => {
     return ret
   }
 
-  // TODO:rewrite
   const countXCoordinate = (total: number, index: number) => {
-    /* 
-      1. total
-      2. total = 2, index = 0,1
-      3, total = 3, index = 0,1,2
-    */
-    if (total === 1) {
-      return { start: canvasWidth / 2, end: canvasWidth / 2 }
-    } else if (total === 2) {
-      if (index === 0) {
-        return { start: canvasWidth / 2 - BLOCK_DISTANCE / 2 - canvasWidth / 2, end: canvasWidth / 2 - ARROW_DISTANCE }
-      } else {
-        return { start: canvasWidth / 2 + BLOCK_DISTANCE / 2 + canvasWidth / 2, end: canvasWidth / 2 + ARROW_DISTANCE }
-      }
-    } else {
-      if (index === 0) {
-        return { start: cardItemWidth / 2, end: canvasWidth / 2 - ARROW_DISTANCE }
-      } else if (index === 1) {
-        return { start: canvasWidth / 2, end: canvasWidth / 2 }
-      } else {
-        return { start: canvasWidth - cardItemWidth / 2, end: canvasWidth / 2 + ARROW_DISTANCE }
-      }
+    const centerIndex = (total - 1) / 2
+    return {
+      start: canvasWidth / 2 - (centerIndex - index) * (cardItemWidth + BLOCK_DISTANCE),
+      end: canvasWidth / 2 - (centerIndex - index) * ARROW_DISTANCE,
     }
   }
 
@@ -111,9 +92,15 @@ export default () => {
   const draw = (northDriverListLength: number, southDriverListLength: number) => {
     canvasWidth = upEdgeContentEl.value.offsetWidth
     canvasHeight = upEdgeContentEl.value.offsetHeight
-    cardItemWidth = Number(((canvasWidth - 2 * BLOCK_DISTANCE) / 3).toFixed(2))
-    northListLength = northDriverListLength > 3 ? 3 : northDriverListLength
-    southListLength = southDriverListLength > 3 ? 3 : southDriverListLength
+    cardItemWidth = Number(((canvasWidth - 2 * BLOCK_DISTANCE) / MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW).toFixed(2))
+    northListLength =
+      northDriverListLength > MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW
+        ? MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW
+        : northDriverListLength
+    southListLength =
+      southDriverListLength > MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW
+        ? MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW
+        : southDriverListLength
 
     drawUpEdge()
     drawDownEdge()
