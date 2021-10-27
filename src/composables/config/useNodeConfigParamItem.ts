@@ -52,7 +52,7 @@ export default (props: Props) => {
     },
   ]
 
-  const createEnumNBooleanParamRules = () => ({
+  const createSelectParamRules = () => ({
     required: true,
     message: createCommonErrorMessage('select', props.paramInfo.name),
   })
@@ -61,8 +61,9 @@ export default (props: Props) => {
     const createMap = {
       [TypeOfPluginParam.Int]: createNumberParamRules,
       [TypeOfPluginParam.String]: createStringParamRules,
-      [TypeOfPluginParam.Boolean]: createEnumNBooleanParamRules,
-      [TypeOfPluginParam.Enum]: createEnumNBooleanParamRules,
+      [TypeOfPluginParam.Boolean]: createSelectParamRules,
+      [TypeOfPluginParam.Enum]: createSelectParamRules,
+      [TypeOfPluginParam.Map]: createSelectParamRules,
     }
     rules.value = createMap[props.paramInfo.type] && createMap[props.paramInfo.type]()
   }

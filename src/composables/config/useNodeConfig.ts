@@ -56,6 +56,7 @@ export default (props: Props) => {
       [TypeOfPluginParam.String]: '',
       [TypeOfPluginParam.Boolean]: null,
       [TypeOfPluginParam.Enum]: '',
+      [TypeOfPluginParam.Map]: '',
     }
     return initValueMap[param.type as TypeOfPluginParam] || ''
   }

@@ -23,6 +23,7 @@ export enum TypeOfPluginParam {
   String = 'string',
   Boolean = 'bool',
   Enum = 'enum',
+  Map = 'map',
 }
 
 export enum TagType {

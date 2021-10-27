@@ -21,6 +21,22 @@
     <!-- <emqx-select v-else-if="paramInfo.type === TypeOfPluginParam.Enum">
       <emqx-option />
     </emqx-select>-->
+    <!-- Map -->
+    <template v-else-if="paramInfo.type === TypeOfPluginParam.Map">
+      <emqx-radio-group v-if="paramInfo.valid.map.length < 3" v-model="inputValue">
+        <emqx-radio v-for="{ key, value } in paramInfo.valid.map" :key="value" :label="value">
+          {{ upperFirstLetter(key) }}
+        </emqx-radio>
+      </emqx-radio-group>
+      <emqx-select v-else v-model="inputValue">
+        <emqx-option
+          v-for="{ key, value } in paramInfo.valid.map"
+          :key="value"
+          :value="value"
+          :label="upperFirstLetter(key)"
+        />
+      </emqx-select>
+    </template>
   </emqx-form-item>
 </template>
 
@@ -58,12 +74,13 @@ const inputValue = computed({
 
 const { rules } = useNodeConfigParamItem(props)
 
-const showLabel = () => {
-  const label = props.paramInfo?.name || ''
-  if (/^[a-z]/.test(label)) {
-    return label.slice(0, 1).toUpperCase() + label.slice(1)
+const showLabel = () => upperFirstLetter(props.paramInfo?.name || '')
+
+const upperFirstLetter = (str: string) => {
+  if (/^[a-z]/.test(str)) {
+    return str.slice(0, 1).toUpperCase() + str.slice(1)
   }
-  return label
+  return str
 }
 </script>
 

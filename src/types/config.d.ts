@@ -78,7 +78,19 @@ interface BoolParamInfo extends ParamBaseInfo {
   valid: Record<string, never>
 }
 
-export type ParamInfo = NumberParamInfo | StringParamInfo | BoolParamInfo
+interface MapItem {
+  key: string
+  value: number
+}
+interface MapParamInfo extends ParamBaseInfo {
+  type: TypeOfPluginParam.Map
+  default?: number
+  valid: {
+    map: Array<MapItem>
+  }
+}
+
+export type ParamInfo = NumberParamInfo | StringParamInfo | BoolParamInfo | MapParamInfo
 
 export interface PluginInfo {
   tag_type: Array<TagType>
