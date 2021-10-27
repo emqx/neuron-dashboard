@@ -39,6 +39,7 @@ import SouthDriveItemCard from '@/views/config/southDriver/components/SouthDrive
 import { computed } from '@vue/reactivity'
 import { useI18n } from 'vue-i18n'
 import NeuronInfoCard from './components/NeuronInfoCard.vue'
+import { MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW } from '@/utils/constants'
 
 const { t } = useI18n()
 
@@ -49,13 +50,13 @@ const isLoading = ref(false)
 const { upEdgeContentEl, downEdgeContentEl, edgeCanvasWrapEl, draw } = useDrawEdge()
 
 const northDriverLinkText = computed(() =>
-  northDriverList.value.length > 3 ? t('config.moreApp') : t('config.northApp'),
+  northDriverList.value.length > MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW ? t('config.moreApp') : t('config.northApp'),
 )
 const southDriverLinkText = computed(() =>
-  southDriverList.value.length > 3 ? t('config.moreDevices') : t('config.southDevice'),
+  southDriverList.value.length > MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW ? t('config.moreDevices') : t('config.southDevice'),
 )
 
-const showList = (list: Array<DriverItem>) => list.slice(0, 3)
+const showList = (list: Array<DriverItem>) => list.slice(0, MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW)
 
 onMounted(async () => {
   isLoading.value = true
@@ -97,6 +98,7 @@ onMounted(async () => {
   }
   .row-block {
     box-sizing: border-box;
+    // the 3 is MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW value is @/utils/constants.ts
     width: calc((100% - 2 * $block-distance) / 3);
     flex-grow: 0;
     &:not(:last-of-type) {
