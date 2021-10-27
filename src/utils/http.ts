@@ -18,7 +18,7 @@ const option = {
 
 Object.assign(axios.defaults, option)
 
-const handleError = (error: AxiosError) => {
+export const handleError = (error: AxiosError) => {
   const { response } = error
   if (response?.data) {
     EmqxMessage.error(`${JSON.stringify(response.data)}`)

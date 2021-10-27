@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { DriverDirection } from '@/types/enums'
-import http from '@/utils/http'
+import http, { handleError } from '@/utils/http'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import {
   CreatedPlugin,
@@ -15,6 +15,7 @@ import {
   TagData,
   TagForm,
 } from '@/types/config'
+import router from '@/router/index'
 
 /* NODE(DRIVER & APP) */
 
@@ -82,7 +83,21 @@ export const submitNodeConfig = (nodeID: number, form: Record<string, any>) => {
 }
 
 export const queryNodeConfig = (nodeID: number) => {
-  return http.get('/node/setting', { params: { node_id: nodeID } })
+  const request = http.create()
+  request.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response.status === 401) {
+        router.push({ name: 'Login' })
+      } else if (error.response.status === 404) {
+        return Promise.resolve({ data: null })
+      } else {
+        handleError(error)
+      }
+      return Promise.reject(error)
+    },
+  )
+  return request.get('/node/setting', { params: { node_id: nodeID } })
 }
 
 /* GROUP */
