@@ -16,6 +16,7 @@ export const useSubscriptionList = () => {
   const route = useRoute()
   const { t } = useI18n()
 
+  const isListLoading = ref(false)
   const subscriptionList: Ref<Array<SubscriptionDataInTable>> = ref([])
   const nodeID = computed(() => parseInt(route.params.nodeID as string))
 
@@ -34,10 +35,12 @@ export const useSubscriptionList = () => {
   })
 
   const getSubscriptionList = async () => {
-    const { data } = await querySubscription(nodeID.value)
-    // subscriptionList.value = data.map((item) => {
-    //   Object.assign(item, { checked: false })
-    // })
+    isListLoading.value = true
+    const list = await querySubscription(nodeID.value)
+    subscriptionList.value = list.map((item) => {
+      return Object.assign(item, { checked: false })
+    })
+    isListLoading.value = false
   }
 
   const unsubscribe = async (confirmText: string, data: SubscriptionData | Array<SubscriptionData>) => {
@@ -68,8 +71,12 @@ export const useSubscriptionList = () => {
   getSubscriptionList()
 
   return {
+    nodeID,
     subscriptionList,
+    isListLoading,
     allChecked,
+
+    getSubscriptionList,
     unsubscribeGroup,
     clearSubscription,
     unsubscribeInBulk,

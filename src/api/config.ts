@@ -59,6 +59,14 @@ export const sendCommandToNode = (nodeID: number, command: NodeOperationCommand)
 }
 
 export const queryNodeState = (nodeID: number) => {
+  return Promise.resolve({
+    data: {
+      //running state
+      running: 2,
+      //link state
+      link: 1,
+    },
+  })
   return http.get('/node/state', { params: { node_id: nodeID } })
 }
 
@@ -71,8 +79,46 @@ export const deleteSubscription = (data: SubscriptionData) => {
   return http.delete('/subscribe', { data })
 }
 
-export const querySubscription = (node_id: number) => {
-  return http.get('/subscribe', { params: { node_id } })
+export const querySubscription = async (node_id: number): Promise<Array<SubscriptionData>> => {
+  try {
+    // FIXME:delete
+    const data1 = {
+      groups: [
+        {
+          //node id
+          node_id: 1,
+          //group config name
+          group_config_name: 'g1name',
+        },
+        {
+          node_id: 2,
+          group_config_name: 'g2name',
+        },
+      ],
+    }
+    return Promise.resolve(
+      (data1.groups || []).map(({ node_id, group_config_name }) => ({
+        dst_node_id: node_id,
+        src_node_id: node_id,
+        name: group_config_name,
+      })),
+    )
+    const { data }: AxiosResponse<{ groups: Array<{ node_id: number; group_config_name: string }> }> = await http.get(
+      '/subscribe',
+      {
+        params: { node_id },
+      },
+    )
+    return Promise.resolve(
+      (data.groups || []).map(({ node_id, group_config_name }) => ({
+        dst_node_id: node_id,
+        src_node_id: node_id,
+        name: group_config_name,
+      })),
+    )
+  } catch (error) {
+    return Promise.reject(error)
+  }
 }
 
 /**
