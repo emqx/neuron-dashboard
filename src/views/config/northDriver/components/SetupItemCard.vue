@@ -14,14 +14,18 @@
     <div class="setup-item-info common-flex">
       <div class="common-flex">
         <label>{{ $t('config.workStatus') }}</label>
-        <emqx-switch></emqx-switch>
+        <emqx-switch v-model="getNodeStartStopStatus" @change="toggleStatus" @click.stop />
       </div>
       <div class="common-flex">
         <svg class="iconfont icon-svg" aria-hidden="true">
-          <use :xlink:href="`#${statusIconClassMap[Math.floor(Math.random() * 3)]}`" />
+          <use :xlink:href="`#${statusIcon}`" />
         </svg>
-        <span>XXXX</span>
+        <span>{{ statusText }}</span>
       </div>
+    </div>
+    <div class="setup-item-info">
+      <label>{{ $t('config.connectionStatus') }}</label>
+      <span>{{ connectionStatusText }}</span>
     </div>
   </div>
 </template>
@@ -35,20 +39,23 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { DirverItemWithPluginKind } from '@/types/config'
+import { DriverItemInList } from '@/types/config'
 import { PropType, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
-import { useDriverStatus } from '@/composables/config/useDriver'
+import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
 import { PluginKind } from '@/types/enums'
 
-const emit = defineEmits(['deleted'])
+const emit = defineEmits(['deleted', 'updated'])
 const router = useRouter()
-const { statusIconClassMap } = useDriverStatus()
 
 const props = defineProps({
-  data: { type: Object as PropType<DirverItemWithPluginKind>, required: true },
+  data: { type: Object as PropType<DriverItemInList>, required: true },
 })
+
+const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props.data)
+
+const { getNodeStartStopStatus, setNodeStartStopStatus } = useNodeStartStopStatus(props.data)
 
 const goGroupPage = () => {
   router.push({
@@ -69,6 +76,14 @@ const deleteDriver = async () => {
   await delDriver(props.data)
   emit('deleted')
 }
+const toggleStatus = async (val: boolean) => {
+  try {
+    await setNodeStartStopStatus(val)
+    emit('updated')
+  } catch (error) {
+    //
+  }
+}
 </script>
 
 <style lang="scss">
@@ -78,7 +93,7 @@ const deleteDriver = async () => {
   background-color: #f4f9fc;
   cursor: pointer;
   .setup-item-hd {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     font-size: 16px;
   }
   .iconfont {
@@ -107,11 +122,15 @@ const deleteDriver = async () => {
       line-height: 20px;
       height: 20px;
     }
-    label {
+    label,
+    span {
       vertical-align: middle;
     }
     .iconfont {
       margin-right: 8px;
+    }
+    &:not(:last-child) {
+      margin-bottom: 16px;
     }
   }
 }

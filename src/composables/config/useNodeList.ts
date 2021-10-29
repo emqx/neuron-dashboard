@@ -1,11 +1,11 @@
-import { queryNorthDriverList, querySouthDriverList } from '@/api/config'
-import { DriverItem } from '@/types/config'
+import { queryNodeState, queryNorthDriverList, querySouthDriverList } from '@/api/config'
+import { RawDriverData } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import { createMapFromArray } from '@/utils/utils'
 import { ref, Ref } from 'vue'
 
 export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
-  const nodeMsgMap: Ref<Record<number, DriverItem>> = ref({})
+  const nodeMsgMap: Ref<Record<number, RawDriverData>> = ref({})
 
   const initMap = async () => {
     try {
@@ -30,11 +30,22 @@ export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
   }
 }
 
+export const useFillNodeListStatusData = () => {
+  return async (nodeList: Array<RawDriverData>) => {
+    return Promise.all(
+      nodeList.map(async (item) => {
+        const { data } = await queryNodeState(item.id)
+        return Promise.resolve(Object.assign(item, data))
+      }),
+    )
+  }
+}
+
 export default () => {
   /**
    * total north driver list & south driver list
    */
-  const nodeList: Ref<Array<DriverItem>> = ref([])
+  const nodeList: Ref<Array<RawDriverData>> = ref([])
 
   const getNodeList = async () => {
     const ret = await Promise.all([queryNorthDriverList(), querySouthDriverList()])

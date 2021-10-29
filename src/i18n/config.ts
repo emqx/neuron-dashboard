@@ -279,6 +279,38 @@ export default {
     zh: '没有需要配置的数据',
     en: 'There is no data to configure.',
   },
+  idle: {
+    zh: '空闲',
+    en: 'Idle',
+  },
+  ready: {
+    zh: '准备好',
+    en: 'Ready',
+  },
+  running: {
+    zh: '运行中',
+    en: 'Running',
+  },
+  stopped: {
+    zh: '停止',
+    en: 'Stopped',
+  },
+  connectionStatus: {
+    zh: '连接状态',
+    en: 'Connection status',
+  },
+  disconnected: {
+    zh: '断开连接',
+    en: 'Disconnected',
+  },
+  connecting: {
+    zh: '正在连接',
+    en: 'Connecting',
+  },
+  connected: {
+    zh: '已连接',
+    en: 'Connected',
+  },
   /* FOR FORM */
   groupNameRequired: {
     zh: '请填写 Group 名称',

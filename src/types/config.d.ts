@@ -1,5 +1,5 @@
 import { Merge } from 'type-fest'
-import { DriverDirection, PluginKind, TypeOfPluginParam } from './enums'
+import { DriverDirection, NodeLinkState, NodeState, PluginKind, TypeOfPluginParam } from './enums'
 
 /**
  * Params get from API
@@ -35,19 +35,27 @@ export interface SubscriptionData extends SubscriptionDataForm {
   name: string
 }
 
-export interface DriverItem {
+export interface RawDriverData {
   name: string
   id: number
   plugin_id: number
 }
 
-export interface DirverItemWithPluginKind extends DriverItem {
-  pluginKind: PluginKind
+export interface DriverStateData {
+  running: NodeState
+  link: NodeLinkState
 }
+
+export type DriverItemInList = Merge<
+  Merge<RawDriverData, DriverStateData>,
+  {
+    pluginKind: PluginKind
+  }
+>
 
 export interface ResponseDriverListData {
   function: number
-  nodes: Array<DriverItem>
+  nodes: Array<RawDriverData>
 }
 
 interface ParamBaseInfo {

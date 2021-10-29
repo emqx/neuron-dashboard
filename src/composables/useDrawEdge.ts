@@ -44,7 +44,6 @@ export default () => {
       end: canvasWidth / 2 - (centerIndex - index) * ARROW_DISTANCE,
     }
   }
-
   const countEdgeData = (XCoordinate: { start: number; end: number }, type: 'up' | 'down') => {
     const startY = type === 'up' ? CIRCLE_RADIUS : canvasHeight - CIRCLE_RADIUS
     const endY = type === 'up' ? canvasHeight : 0

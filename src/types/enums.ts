@@ -60,3 +60,21 @@ export enum DriverStatus {
   Standby,
   Activate,
 }
+
+export enum NodeOperationCommand {
+  Start,
+  Stop,
+}
+
+export enum NodeState {
+  Idle,
+  Ready,
+  Running,
+  Stopped,
+}
+
+export enum NodeLinkState {
+  Disconnected,
+  Connecting,
+  Connected,
+}
