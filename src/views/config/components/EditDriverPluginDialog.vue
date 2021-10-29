@@ -28,7 +28,7 @@
 import { computed, defineEmits, defineProps, nextTick, PropType, ref, watch } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { ElDialog } from 'element-plus'
-import { DriverItem } from '@/types/config'
+import { RawDriverData } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import { updateDriver } from '@/api/config'
 import { useI18n } from 'vue-i18n'
@@ -44,7 +44,7 @@ const props = defineProps({
     required: true,
   },
   node: {
-    type: Object as PropType<DriverItem>,
+    type: Object as PropType<RawDriverData>,
   },
 })
 const emit = defineEmits(['update:modelValue', 'submitted'])

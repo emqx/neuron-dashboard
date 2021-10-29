@@ -11,14 +11,18 @@
       <div class="common-flex">
         <div class="common-flex">
           <label>{{ $t('config.workStatus') }}</label>
-          <emqx-switch></emqx-switch>
+          <emqx-switch v-model="getNodeStartStopStatus" @click.stop @change="setNodeStartStopStatus" />
         </div>
         <div class="common-flex">
           <svg class="iconfont icon-svg" aria-hidden="true">
-            <use :xlink:href="`#${statusIconClassMap[Math.floor(Math.random() * 3)]}`" />
+            <use :xlink:href="`#${statusIcon}`" />
           </svg>
-          <span>XXXX</span>
+          <span>{{ statusText }}</span>
         </div>
+      </div>
+      <div class="setup-item-info">
+        <label>{{ $t('config.connectionStatus') }}</label>
+        <span>{{ connectionStatusText }}</span>
       </div>
       <div>
         <label>点数统计信息</label>
@@ -42,20 +46,22 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import { PropType, defineEmits } from 'vue'
-import { DriverItem } from '@/types/config'
+import { DriverItemInList } from '@/types/config'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
-import { useDriverStatus } from '@/composables/config/useDriver'
+import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
 
 const props = defineProps({
   data: {
-    type: Object as PropType<DriverItem>,
+    type: Object as PropType<DriverItemInList>,
     required: true,
   },
 })
-const emit = defineEmits(['deleted'])
+
+const emit = defineEmits(['deleted', 'updated'])
 const router = useRouter()
-const { statusIconClassMap } = useDriverStatus()
+const { getNodeStartStopStatus, setNodeStartStopStatus } = useNodeStartStopStatus(props.data)
+const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props.data)
 
 const goGroupPage = () => {
   router.push({
@@ -72,6 +78,14 @@ const deleteDriver = async () => {
   emit('deleted')
 }
 const goNodeConfig = () => router.push({ name: 'SouthDriverConfig', params: { nodeID: props.data.id } })
+const toggleStatus = async (val: boolean) => {
+  try {
+    await setNodeStartStopStatus(val)
+    emit('updated')
+  } catch (error) {
+    //
+  }
+}
 </script>
 
 <style lang="scss">
@@ -81,7 +95,7 @@ const goNodeConfig = () => router.push({ name: 'SouthDriverConfig', params: { no
   background-color: #f3f3ff;
   cursor: pointer;
   .south-drive-item-card-hd {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     font-size: 16px;
   }
   .iconfont {

@@ -32,7 +32,7 @@ import { nextTick, onMounted, ref } from 'vue'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import useDrawEdge from '@/composables/useDrawEdge'
-import { DriverItem } from '@/types/config'
+import { DriverItemInList } from '@/types/config'
 import { DriverData } from '@/types/neuron'
 import SetupItemCard from '@/views/config/northDriver/components/SetupItemCard.vue'
 import SouthDriveItemCard from '@/views/config/southDriver/components/SouthDriveItemCard.vue'
@@ -56,7 +56,7 @@ const southDriverLinkText = computed(() =>
   southDriverList.value.length > MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW ? t('config.moreDevices') : t('config.southDevice'),
 )
 
-const showList = (list: Array<DriverItem>) => list.slice(0, MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW)
+const showList = (list: Array<DriverItemInList>) => list.slice(0, MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW)
 
 onMounted(async () => {
   isLoading.value = true

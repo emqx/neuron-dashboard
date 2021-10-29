@@ -1,10 +1,10 @@
 import { AxiosResponse } from 'axios'
-import { DriverDirection } from '@/types/enums'
+import { DriverDirection, NodeOperationCommand } from '@/types/enums'
 import http, { handleError } from '@/utils/http'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import {
   CreatedPlugin,
-  DriverItem,
+  RawDriverData,
   GroupData,
   GroupForm,
   NodeForm,
@@ -23,9 +23,9 @@ const queryDriverList = (nodeType: number): Promise<AxiosResponse<ResponseDriver
   return http.get('/node', { params: { type: nodeType } })
 }
 
-const getDataFromResponse = (res: AxiosResponse<ResponseDriverListData>): Array<DriverItem> => res?.data?.nodes || []
+const getDataFromResponse = (res: AxiosResponse<ResponseDriverListData>): Array<RawDriverData> => res?.data?.nodes || []
 
-export const queryNorthDriverList = async (): Promise<Array<DriverItem>> => {
+export const queryNorthDriverList = async (): Promise<Array<RawDriverData>> => {
   try {
     const request = await queryDriverList(DriverDirection.North)
     return Promise.resolve(getDataFromResponse(request))
@@ -34,7 +34,7 @@ export const queryNorthDriverList = async (): Promise<Array<DriverItem>> => {
   }
 }
 
-export const querySouthDriverList = async (): Promise<Array<DriverItem>> => {
+export const querySouthDriverList = async (): Promise<Array<RawDriverData>> => {
   const ret = await queryDriverList(DriverDirection.South as number)
   return getDataFromResponse(ret)
 }
@@ -52,6 +52,14 @@ export const deleteDriver = (id: number) => {
 
 export const updateDriver = (data: NodeForm) => {
   return http.put('/node', data)
+}
+
+export const sendCommandToNode = (nodeID: number, command: NodeOperationCommand) => {
+  return http.post('/node/ctl', { id: nodeID, cmd: command })
+}
+
+export const queryNodeState = (nodeID: number) => {
+  return http.get('/node/state', { params: { node_id: nodeID } })
 }
 
 /* NORTH APP */
