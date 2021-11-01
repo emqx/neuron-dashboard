@@ -34,7 +34,7 @@ export default {
     ...mapGetters(['res', 'deviceObj']),
     ...mapState({
       // FIXME: add to state
-      status: state => state?.Status?.status,
+      status: (state) => state?.Status?.status,
     }),
     active() {
       const srt = this.status?.mode || ''
@@ -52,7 +52,7 @@ export default {
         stat: 'active',
         wtrm: 'neruon',
       })
-        .then(res => {
+        .then((res) => {
           this.starting = false
           if (res.data.errc !== 0) {
             EmqxMessage.error(res.data.emsg)
@@ -74,7 +74,7 @@ export default {
         stat: 'standby',
         wtrm: 'neruon',
       })
-        .then(res => {
+        .then((res) => {
           this.stoping = false
           if (res.data.errc !== 0) {
             EmqxMessage.error(res.data.emsg)
@@ -120,13 +120,13 @@ export default {
           if (data.chdv) {
             delete data.chdv
           }
-          data.objd.forEach(i => {
+          data.objd.forEach((i) => {
             if (i.preAndSuff) delete i.preAndSuff
           })
           data.wtrm = 'neuron'
           data.func = 21
           postData(this.nodeId, data)
-            .then(res => {
+            .then((res) => {
               this.handleSuccess(res.data)
             })
             .catch(() => {
@@ -152,6 +152,7 @@ export default {
               duration: 8000,
             })
             setTimeout(() => {
+              window.localStorage.setItem('restartnewTimestamp', Date.now())
               window.location.reload()
             }, 8000)
           })
