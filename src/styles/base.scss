@@ -179,10 +179,6 @@ label {
   text-align: right;
 }
 
-.card-oper {
-  margin-bottom: 24px;
-}
-
 .right {
   text-align: right;
 }
@@ -190,4 +186,51 @@ label {
 .el-icon-edit-outline {
   opacity: 0.9;
   transform: scale(0.8);
+}
+
+.node-card {
+  padding: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  .node-item-hd {
+    margin-bottom: 24px;
+    font-size: 16px;
+  }
+  .iconfont {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .setup-item-handlers {
+    flex-shrink: 0;
+    .iconfont {
+      color: #20466c;
+      cursor: pointer;
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
+      &.disabled {
+        opacity: 0.2;
+        cursor: not-allowed;
+      }
+    }
+  }
+  .node-item-info-row {
+    span,
+    label {
+      line-height: 20px;
+      height: 20px;
+    }
+    label,
+    span {
+      vertical-align: middle;
+    }
+    .iconfont {
+      margin-right: 8px;
+    }
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
 }
