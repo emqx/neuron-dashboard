@@ -43,6 +43,7 @@ export default {
       theme: 'default',
       collapse: false,
       loadData: false,
+      pollingStatusTimer: undefined,
     }
   },
   computed: {
@@ -55,6 +56,7 @@ export default {
   },
   mounted() {
     this.initData()
+    this.checkRestartnewTimestampNHandle()
   },
   methods: {
     ...mapMutations(['setAllData', 'setAlarmStatus', 'setNorthDriverList', 'setSouthDriverList']),
@@ -104,6 +106,44 @@ export default {
         this.setAlarmStatus(data)
       } else {
         EmqxMessage.error(data.emsg)
+      }
+    },
+    refreshStatus() {
+      getData(this.nodeId, {
+        func: 61,
+        actn: 'act_en',
+        wtrm: 'neuron',
+      }).then((res) => {
+        const { data } = res
+        if (!data.func && data.tstp) {
+          this.setAlarmStatus(data)
+        }
+      })
+    },
+    pollingStatus() {
+      if (this.pollingStatusTimer) {
+        window.clearInterval(this.pollingStatusTimer)
+      }
+      this.pollingStatusTimer = window.setInterval(() => {
+        this.refreshStatus()
+      }, 2000)
+      window.setTimeout(() => {
+        window.clearInterval(this.pollingStatusTimer)
+      }, 2000 * 30 * 2)
+    },
+    /**
+     * After the restart, poll the status data for two minutes to solve
+     * the status data display error caused by the restart still in progress
+     * when the status data is obtained after the restart.
+     */
+    checkRestartnewTimestampNHandle() {
+      const restartnewTimestamp = window.localStorage.getItem('restartnewTimestamp')
+      if (
+        restartnewTimestamp &&
+        !Number.isNaN(Number(restartnewTimestamp)) &&
+        Date.now() - Number(restartnewTimestamp) < 10 * 1000
+      ) {
+        this.pollingStatus()
       }
     },
   },
