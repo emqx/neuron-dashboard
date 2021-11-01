@@ -1,7 +1,7 @@
 <template>
   <emqx-header class="header">
     <template #title>
-      <img src="../assets/images/logo.png" alt="emqx-platform-logo" width="141" />
+      <img src="../assets/images/logo.png" alt="neuron-logo" width="141" />
     </template>
     <template v-slot:right>
       <div>
@@ -19,7 +19,7 @@
                 <p class="username">用户名用户名</p>
                 <div class="account-setting">
                   <emqx-button type="text">{{ $t('common.newPassword') }}</emqx-button>
-                  <emqx-button type="text">{{ $t('common.logout') }}</emqx-button>
+                  <emqx-button type="text" @click="logout">{{ $t('common.logout') }}</emqx-button>
                 </div>
               </div>
             </emqx-dropdown-menu>
@@ -31,24 +31,32 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'Header',
-  setup() {
-    const store = useStore()
-
-    const status = computed(() => store.state.status || {})
-
-    const user = computed(() => store.state.status || {})
-
-    return {
-      status,
-      user,
-    }
-  },
 })
+</script>
+
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { logout as requestLogout } from '@/api/common'
+import { useRouter } from 'vue-router'
+
+const store = useStore()
+const router = useRouter()
+
+const status = computed(() => store.state.status || {})
+
+const user = computed(() => store.state.status || {})
+
+const logout = async () => {
+  await requestLogout()
+  router.push({
+    name: 'Login',
+  })
+}
 </script>
 
 <style lang="scss">
