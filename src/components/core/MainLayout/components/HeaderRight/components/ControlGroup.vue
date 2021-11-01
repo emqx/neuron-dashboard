@@ -152,6 +152,7 @@ export default {
               duration: 8000,
             })
             setTimeout(() => {
+              window.localStorage.setItem('restartnewTimestamp', Date.now())
               window.location.reload()
             }, 8000)
           })
