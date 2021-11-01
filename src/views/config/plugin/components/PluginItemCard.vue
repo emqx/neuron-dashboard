@@ -3,8 +3,12 @@
     <div class="plugin-item-card-hd common-flex">
       <p class="plugin-item-name">{{ data.name }}</p>
       <div class="handlers">
-        <i class="icon el-icon-edit-outline" @click="editPlugin"></i>
-        <i class="iconfont icon icondelete" @click="deletePlugin" />
+        <AComWithDesc :content="$t('common.edit')">
+          <i class="icon el-icon-edit-outline" @click="editPlugin" />
+        </AComWithDesc>
+        <AComWithDesc :content="$t('common.delete')">
+          <i class="iconfont icon icondelete" @click="deletePlugin" />
+        </AComWithDesc>
       </div>
     </div>
     <div class="info-row">
@@ -28,6 +32,7 @@ import { CreatedPlugin } from '@/types/config'
 import { PluginKind } from '@/types/enums'
 import { defineProps, PropType, defineEmits } from 'vue'
 import { useNodeType } from '@/composables/config/useDriver'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const props = defineProps({
   data: {

@@ -21,9 +21,9 @@
           </emqx-button>
         </div>
         <div class="btn-group">
-          <emqx-button size="small" type="primary" @click="addSubscription">
-            {{ $t('config.addSubscription') }}
-          </emqx-button>
+          <emqx-button size="small" type="primary" @click="addSubscription">{{
+            $t('config.addSubscription')
+          }}</emqx-button>
           <emqx-button size="small" type="warning" @click="clearSubscription">{{ $t('common.clear') }}</emqx-button>
           <emqx-button size="small" type="danger" @click="unsubscribeInBulk">{{ $t('common.delete') }}</emqx-button>
         </div>
@@ -47,7 +47,9 @@
       </emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
-          <i class="iconfont icondelete" @click="unsubscribeGroup(row)"></i>
+          <AComWithDesc :content="$t('config.unsubscribe')">
+            <i class="iconfont icondelete" @click="unsubscribeGroup(row)" />
+          </AComWithDesc>
         </template>
       </emqx-table-column>
     </emqx-table>
@@ -65,6 +67,7 @@ import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { DriverDirection } from '@/types/enums'
 import { useSubscriptionList } from '@/composables/config/useSubscription'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const {
   nodeID,
