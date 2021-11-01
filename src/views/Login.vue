@@ -1,48 +1,70 @@
 <template>
   <div class="login-page">
     <div class="container">
-      <emqx-card>
-        <emqx-input v-model="userName" type="text" placeholder="Username" />
-        <emqx-input v-model="password" type="password" placeholder="Password" />
-        <emqx-button type="primary" class="login" @click="login">Login</emqx-button>
+      <emqx-card shadow="never">
+        <img class="img-login" src="~@/assets/images/img-login.png" />
+        <div class="login-main">
+          <img class="img-logo" src="~@/assets/images/logo.png" alt="neuron-logo" width="141" />
+          <emqx-form ref="formCom" :model="form" :rules="rules" @keyup.enter="login">
+            <emqx-form-item prop="userName">
+              <emqx-input v-model="form.userName" type="text" :placeholder="$t('common.username')" />
+            </emqx-form-item>
+            <emqx-form-item prop="password">
+              <emqx-input v-model="form.password" type="password" :placeholder="$t('common.password')" />
+            </emqx-form-item>
+            <emqx-button type="primary" class="login" @click="login">{{ $t('common.login') }}</emqx-button>
+          </emqx-form>
+        </div>
       </emqx-card>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
-// import { useRouter } from 'vue-router'
+import { createCommonErrorMessage } from '@/utils/utils'
+import { defineComponent, reactive } from 'vue'
 
 export default defineComponent({
   name: 'Login',
-  setup() {
-    // const router = useRouter()
-    const form = reactive({
-      userName: '',
-      password: '',
-    })
-    const login = () => {
-      // const loginInfo = {
-      //   func: 10,
-      //   name: form.userName,
-      //   pass: form.password,
-      // }
-      // ws(loginInfo)
-      //   .connect()
-      //   .then((userInfo) => {
-      //     sessionStorage.setItem('user', JSON.stringify(userInfo))
-      //     router.push({
-      //       name: 'Data',
-      //     })
-      //   })
-    }
-    return {
-      ...toRefs(form),
-      login,
-    }
-  },
 })
+</script>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { login as requestLogin } from '@/api/common'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const { t } = useI18n()
+
+const formCom = ref()
+const form = reactive({
+  userName: '',
+  password: '',
+})
+const rules = {
+  userName: [
+    {
+      required: true,
+      message: createCommonErrorMessage('input', t('common.username')),
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: createCommonErrorMessage('input', t('common.password')),
+    },
+  ],
+}
+const login = async () => {
+  await formCom.value.validate()
+  await requestLogin()
+  // sessionStorage.setItem('user', JSON.stringify(userInfo))
+  router.push({
+    name: 'Overview',
+  })
+}
 </script>
 
 <style lang="scss">
@@ -50,30 +72,87 @@ export default defineComponent({
   position: fixed;
   top: 0;
   left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  padding: 120px 0;
   font-size: 62px;
   color: #888;
   text-align: center;
-  background-color: #fff;
+  background-color: #f4f9fc;
 
   .container {
-    width: 400px;
-    margin: 0 auto;
+    width: 768px;
+    height: 390px;
   }
 
-  .buttonafter:after {
-    content: '';
+  $img-width: 360px;
+  .emqx-card {
+    position: relative;
+    height: 100%;
+    padding-left: $img-width;
+    border-radius: 16px;
+    background: #0c283e;
+  }
+
+  .emqx-card.el-card .el-card__body {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 64px 64px 61px;
+  }
+
+  img {
     display: block;
+  }
+
+  .img-login {
+    width: $img-width;
+    height: 100%;
     position: absolute;
-    top: 8px;
-    left: 100%;
-    width: 0;
-    height: 0;
-    border-color: transparent transparent transparent #14a03d;
-    border-style: solid;
-    border-width: 5px;
+    top: 0;
+    left: 0;
+  }
+
+  .img-logo {
+    margin: 0 auto 46px;
+  }
+  .emqx-form-item {
+    margin-bottom: 30px;
+  }
+  /* 
+    给的页面里面，除了license，用户管理和关于之外，其他的都已经写了
+    license，用户管理和关于还没有相关接口，如果有相关接口了很快就可以写完
+  */
+
+  .emqx-input .el-input__inner {
+    border-radius: 0px;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #394f60;
+    background-color: transparent;
+    padding-left: 0;
+    padding-right: 0;
+    &::placeholder {
+      color: #3a5163;
+    }
+    &:-webkit-autofill {
+      padding-left: 12px;
+      padding-right: 12px;
+      -webkit-text-fill-color: var(--color-normal-font);
+      border-radius: 4px;
+    }
+  }
+  .emqx-form-item.is-error .el-input__inner,
+  .emqx-form-item.is-error .el-input__inner:focus {
+    border-top: 1px solid transparent !important;
+    border-right: 1px solid transparent !important;
+    border-left: 1px solid transparent !important;
+  }
+
+  .emqx-button {
+    display: block;
+    width: 100%;
+    margin-top: 40px;
   }
 }
 </style>
