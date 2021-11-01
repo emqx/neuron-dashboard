@@ -81,28 +81,6 @@ export const deleteSubscription = (data: SubscriptionData) => {
 
 export const querySubscription = async (node_id: number): Promise<Array<SubscriptionData>> => {
   try {
-    // FIXME:delete
-    const data1 = {
-      groups: [
-        {
-          //node id
-          node_id: 1,
-          //group config name
-          group_config_name: 'g1name',
-        },
-        {
-          node_id: 2,
-          group_config_name: 'g2name',
-        },
-      ],
-    }
-    return Promise.resolve(
-      (data1.groups || []).map(({ node_id, group_config_name }) => ({
-        dst_node_id: node_id,
-        src_node_id: node_id,
-        name: group_config_name,
-      })),
-    )
     const { data }: AxiosResponse<{ groups: Array<{ node_id: number; group_config_name: string }> }> = await http.get(
       '/subscribe',
       {
