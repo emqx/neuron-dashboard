@@ -311,6 +311,10 @@ export default {
     zh: '已连接',
     en: 'Connected',
   },
+  unsubscribe: {
+    zh: '取消订阅',
+    en: 'unsubscribe',
+  },
   /* FOR FORM */
   groupNameRequired: {
     zh: '请填写 Group 名称',

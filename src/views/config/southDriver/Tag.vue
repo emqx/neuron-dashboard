@@ -1,8 +1,6 @@
 <template>
   <emqx-breadcrumb separator="/">
-    <emqx-breadcrumb-item :to="{ name: 'SouthDriver' }">
-      {{ $t('config.southDeviceManagement') }}
-    </emqx-breadcrumb-item>
+    <emqx-breadcrumb-item :to="{ name: 'SouthDriver' }">{{ $t('config.southDeviceManagement') }}</emqx-breadcrumb-item>
     <emqx-breadcrumb-item :to="{ name: 'SouthDriverGroup' }">{{ $t('config.groupList') }}</emqx-breadcrumb-item>
     <emqx-breadcrumb-item>{{ $t('config.tagList') }}</emqx-breadcrumb-item>
   </emqx-breadcrumb>
@@ -44,9 +42,15 @@
 
       <emqx-table-column align="right">
         <template #default="{ row }">
-          <i class="el-icon-edit-outline" @click="editTag(row)" />
-          <i class="iconfont iconalarm" />
-          <i class="iconfont icondelete" @click="delTag(row)" />
+          <AComWithDesc :content="$t('common.edit')">
+            <i class="el-icon-edit-outline" @click="editTag(row)" />
+          </AComWithDesc>
+          <!-- <AComWithDesc>
+            <i class="iconfont iconalarm" />
+          </AComWithDesc>-->
+          <AComWithDesc :content="$t('common.delete')">
+            <i class="iconfont icondelete" @click="delTag(row)" />
+          </AComWithDesc>
         </template>
       </emqx-table-column>
     </emqx-table>
@@ -60,6 +64,7 @@ import EditTagDialog from './components/EditTagDialog.vue'
 import useTagList from '@/composables/config/useTagList'
 import useNodeList from '@/composables/config/useNodeList'
 import { useRouter } from 'vue-router'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const router = useRouter()
 

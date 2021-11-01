@@ -44,9 +44,15 @@
       <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
-          <i class="el-icon-edit-outline" @click="editGroup(row)" />
-          <i class="iconfont iconalarm" @click="goTagPage(row)" />
-          <i class="iconfont icondelete" @click="delGroup(row)" />
+          <AComWithDesc :content="$t('common.edit')">
+            <i class="el-icon-edit-outline" @click="editGroup(row)" />
+          </AComWithDesc>
+          <AComWithDesc :content="$t('config.tagList')">
+            <i class="iconfont iconalarm" @click="goTagPage(row)" />
+          </AComWithDesc>
+          <AComWithDesc :content="$t('common.delete')">
+            <i class="iconfont icondelete" @click="delGroup(row)" />
+          </AComWithDesc>
         </template>
       </emqx-table-column>
     </emqx-table>
@@ -64,6 +70,7 @@ import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'
 import { useRouter } from 'vue-router'
 import { DriverDirection } from '@/types/enums'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const router = useRouter()
 const {

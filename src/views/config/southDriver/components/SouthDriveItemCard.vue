@@ -3,8 +3,12 @@
     <div class="south-drive-item-card-hd common-flex">
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
-        <i class="iconfont icondelete" @click.stop="deleteDriver"></i>
+        <AComWithDesc :content="$t('config.deviceConfig')">
+          <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
+        </AComWithDesc>
+        <AComWithDesc :content="$t('common.delete')">
+          <i class="iconfont icondelete" @click.stop="deleteDriver"></i>
+        </AComWithDesc>
       </div>
     </div>
     <div class="south-drive-item-info">
@@ -50,6 +54,7 @@ import { DriverItemInList } from '@/types/config'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const props = defineProps({
   data: {

@@ -3,12 +3,16 @@
     <div class="setup-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
-        <i
-          class="iconfont icondelete"
-          :class="{ disabled: data.pluginKind === PluginKind.Static }"
-          @click.stop="deleteDriver"
-        ></i>
+        <AComWithDesc :content="$t('config.appConfig')">
+          <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
+        </AComWithDesc>
+        <AComWithDesc :content="$t('common.delete')">
+          <i
+            class="iconfont icondelete"
+            :class="{ disabled: data.pluginKind === PluginKind.Static }"
+            @click.stop="deleteDriver"
+          />
+        </AComWithDesc>
       </div>
     </div>
     <div class="setup-item-info common-flex">
@@ -45,6 +49,7 @@ import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
 import { PluginKind } from '@/types/enums'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const emit = defineEmits(['deleted', 'updated'])
 const router = useRouter()
