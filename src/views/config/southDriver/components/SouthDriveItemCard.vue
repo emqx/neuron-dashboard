@@ -1,6 +1,6 @@
 <template>
-  <div class="south-drive-item-card" @click="goGroupPage">
-    <div class="south-drive-item-card-hd common-flex">
+  <div class="node-card south-drive-item-card" @click="goGroupPage">
+    <div class="node-item-hd common-flex">
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <AComWithDesc :content="$t('config.deviceConfig')">
@@ -11,8 +11,8 @@
         </AComWithDesc>
       </div>
     </div>
-    <div class="south-drive-item-info">
-      <div class="common-flex">
+    <div>
+      <div class="node-item-info-row common-flex">
         <div class="common-flex">
           <label>{{ $t('config.workStatus') }}</label>
           <emqx-switch v-model="getNodeStartStopStatus" @click.stop @change="setNodeStartStopStatus" />
@@ -24,15 +24,15 @@
           <span>{{ statusText }}</span>
         </div>
       </div>
-      <div class="setup-item-info">
+      <div class="node-item-info-row">
         <label>{{ $t('config.connectionStatus') }}</label>
         <span>{{ connectionStatusText }}</span>
       </div>
-      <div>
+      <div class="node-item-info-row">
         <label>点数统计信息</label>
         <span>233</span>
       </div>
-      <div>
+      <div class="node-item-info-row">
         <label>运行时长</label>
         <span>66</span>
       </div>
@@ -95,42 +95,6 @@ const toggleStatus = async (val: boolean) => {
 
 <style lang="scss">
 .south-drive-item-card {
-  padding: 24px;
-  border-radius: 4px;
   background-color: #f3f3ff;
-  cursor: pointer;
-  .south-drive-item-card-hd {
-    margin-bottom: 24px;
-    font-size: 16px;
-  }
-  .iconfont {
-    display: inline-block;
-    vertical-align: top;
-    font-size: 20px;
-    line-height: 1;
-  }
-  .setup-item-handlers {
-    flex-shrink: 0;
-    .iconfont {
-      color: #20466c;
-      cursor: pointer;
-      &:not(:last-child) {
-        margin-right: 16px;
-      }
-    }
-  }
-  .south-drive-item-info {
-    span,
-    label {
-      line-height: 20px;
-      height: 20px;
-    }
-    .iconfont {
-      margin-right: 8px;
-    }
-    > div:not(:last-child) {
-      margin-bottom: 16px;
-    }
-  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="setup-item-card" @click="goGroupPage">
-    <div class="setup-item-hd common-flex">
+  <div class="node-card setup-item-card" @click="goGroupPage">
+    <div class="node-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <AComWithDesc :content="$t('config.appConfig')">
@@ -15,7 +15,7 @@
         </AComWithDesc>
       </div>
     </div>
-    <div class="setup-item-info common-flex">
+    <div class="node-item-info-row common-flex">
       <div class="common-flex">
         <label>{{ $t('config.workStatus') }}</label>
         <emqx-switch v-model="getNodeStartStopStatus" @change="toggleStatus" @click.stop />
@@ -27,7 +27,7 @@
         <span>{{ statusText }}</span>
       </div>
     </div>
-    <div class="setup-item-info">
+    <div class="node-item-info-row">
       <label>{{ $t('config.connectionStatus') }}</label>
       <span>{{ connectionStatusText }}</span>
     </div>
@@ -93,50 +93,6 @@ const toggleStatus = async (val: boolean) => {
 
 <style lang="scss">
 .setup-item-card {
-  padding: 24px;
-  border-radius: 4px;
   background-color: #f4f9fc;
-  cursor: pointer;
-  .setup-item-hd {
-    margin-bottom: 24px;
-    font-size: 16px;
-  }
-  .iconfont {
-    display: inline-block;
-    vertical-align: top;
-    font-size: 20px;
-    line-height: 1;
-  }
-  .setup-item-handlers {
-    flex-shrink: 0;
-    .iconfont {
-      color: #20466c;
-      cursor: pointer;
-      &:not(:last-child) {
-        margin-right: 16px;
-      }
-      &.disabled {
-        opacity: 0.2;
-        cursor: not-allowed;
-      }
-    }
-  }
-  .setup-item-info {
-    span,
-    label {
-      line-height: 20px;
-      height: 20px;
-    }
-    label,
-    span {
-      vertical-align: middle;
-    }
-    .iconfont {
-      margin-right: 8px;
-    }
-    &:not(:last-child) {
-      margin-bottom: 16px;
-    }
-  }
 }
 </style>
