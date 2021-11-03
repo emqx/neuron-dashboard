@@ -2,7 +2,7 @@ import { queryNodeConfig, queryPluginConfigInfo, submitNodeConfig } from '@/api/
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { ParamInfo, PluginInfo } from '@/types/config'
 import { DriverDirection, TypeOfPluginParam } from '@/types/enums'
-import { computed, onBeforeMount, ref, Ref } from 'vue'
+import { computed, onMounted, ref, Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGetPluginMsgIdMap } from './usePlugin'
 import { EmqxMessage } from '@emqx/emqx-ui'
@@ -119,7 +119,7 @@ export default (props: Props) => {
     }
   }
 
-  onBeforeMount(async () => {
+  onMounted(async () => {
     isLoading.value = true
     await Promise.all([initMap(), initMsgIdMap()])
     await Promise.all([getPluginInfo(), getNodeConfig()])
