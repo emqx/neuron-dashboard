@@ -16,7 +16,9 @@
         </emqx-select>
       </emqx-form-item>
       <emqx-form-item prop="interval" label="Interval" required>
-        <emqx-input v-model="groupForm.interval" />
+        <emqx-input v-model="groupForm.interval">
+          <template #append>ms</template>
+        </emqx-input>
       </emqx-form-item>
     </emqx-form>
     <template #footer>
