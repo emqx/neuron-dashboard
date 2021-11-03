@@ -33,20 +33,20 @@ export enum WriteDataErrorCode {
 export default () => {
   const createIntTypeRange = (bitsNum: number): RangeObj => {
     return {
-      MIN: BigInt(-Math.pow(2, bitsNum - 1)),
-      MAX: BigInt(Math.pow(2, bitsNum - 1) - 1),
+      MIN: -Math.pow(2, bitsNum - 1),
+      MAX: Math.pow(2, bitsNum - 1) - 1,
     }
   }
   const createUIntTypeRange = (bitsNum: number): RangeObj => {
     return {
-      MIN: BigInt(0),
-      MAX: BigInt(Math.pow(2, bitsNum) - 1),
+      MIN: 0,
+      MAX: Math.pow(2, bitsNum) - 1,
     }
   }
 
   interface RangeObj {
-    MIN: bigint
-    MAX: bigint
+    MIN: number
+    MAX: number
   }
 
   const INT8_RANGE = createIntTypeRange(8)
@@ -70,8 +70,8 @@ export default () => {
       : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
 
   const checkIsInt = (value: string): boolean => /^-?\d+$/.test(value)
-  const checkLessThanMinimumSafeNumber = (value: string) => BigInt(value) < BigInt(Number.MIN_SAFE_INTEGER)
-  const checkGreaterThanMaximumSafeNumber = (value: string): boolean => BigInt(value) > BigInt(Number.MAX_SAFE_INTEGER)
+  const checkLessThanMinimumSafeNumber = (value: string) => Number(value) < Number.MIN_SAFE_INTEGER
+  const checkGreaterThanMaximumSafeNumber = (value: string): boolean => Number(value) > Number.MAX_SAFE_INTEGER
   const checkInt = (rangeObj: RangeObj, value: string): Promise<Error | boolean> => {
     let errorCode: undefined | WriteDataErrorCode = undefined
     if (!checkIsInt(value)) {
@@ -85,9 +85,9 @@ export default () => {
       errorCode = WriteDataErrorCode.LessThanMinSafeInteger
     } else if (checkGreaterThanMaximumSafeNumber(value)) {
       errorCode = WriteDataErrorCode.GreaterThanMaxSafeInteger
-    } else if (BigInt(value) < rangeObj.MIN) {
+    } else if (Number(value) < rangeObj.MIN) {
       errorCode = WriteDataErrorCode.LessThanMinimum
-    } else if (BigInt(value) > rangeObj.MAX) {
+    } else if (Number(value) > rangeObj.MAX) {
       errorCode = WriteDataErrorCode.GreaterThanMaximum
     }
     if (errorCode) {
