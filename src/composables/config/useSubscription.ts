@@ -43,13 +43,15 @@ export const useSubscriptionList = () => {
     isListLoading.value = false
   }
 
-  const unsubscribe = async (confirmText: string, data: SubscriptionData | Array<SubscriptionData>) => {
+  const getGroupDataExpectChecked = ({ checked, ...groupData }: SubscriptionDataInTable) => groupData
+
+  const unsubscribe = async (confirmText: string, data: SubscriptionDataInTable | Array<SubscriptionDataInTable>) => {
     try {
       await EmqxMessageBox.confirm(confirmText, t('common.operateConfirm'))
       if (Array.isArray(data)) {
-        await Promise.all(data.map((groupItem) => deleteSubscription(groupItem)))
+        await Promise.all(data.map((groupItem) => deleteSubscription(getGroupDataExpectChecked(groupItem))))
       } else {
-        await deleteSubscription(data)
+        await deleteSubscription(getGroupDataExpectChecked(data))
       }
       EmqxMessage.success(t('common.operateSuccessfully'))
       getSubscriptionList()
@@ -58,7 +60,8 @@ export const useSubscriptionList = () => {
     }
   }
 
-  const unsubscribeGroup = async (group: SubscriptionData) => unsubscribe(t('config.unsubscribeGroupConfirm'), group)
+  const unsubscribeGroup = async (group: SubscriptionDataInTable) =>
+    unsubscribe(t('config.unsubscribeGroupConfirm'), group)
 
   const clearSubscription = () => unsubscribe(t('config.clearSubscriptionConfirm'), subscriptionList.value)
 
