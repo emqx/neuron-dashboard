@@ -59,14 +59,6 @@ export const sendCommandToNode = (nodeID: number, command: NodeOperationCommand)
 }
 
 export const queryNodeState = (nodeID: number) => {
-  return Promise.resolve({
-    data: {
-      //running state
-      running: 2,
-      //link state
-      link: 1,
-    },
-  })
   return http.get('/node/state', { params: { node_id: nodeID } })
 }
 
@@ -79,17 +71,17 @@ export const deleteSubscription = (data: SubscriptionData) => {
   return http.delete('/subscribe', { data })
 }
 
-export const querySubscription = async (node_id: number): Promise<Array<SubscriptionData>> => {
+export const querySubscription = async (nodeID: number): Promise<Array<SubscriptionData>> => {
   try {
     const { data }: AxiosResponse<{ groups: Array<{ node_id: number; group_config_name: string }> }> = await http.get(
       '/subscribe',
       {
-        params: { node_id },
+        params: { node_id: nodeID },
       },
     )
     return Promise.resolve(
       (data.groups || []).map(({ node_id, group_config_name }) => ({
-        dst_node_id: node_id,
+        dst_node_id: nodeID,
         src_node_id: node_id,
         name: group_config_name,
       })),
