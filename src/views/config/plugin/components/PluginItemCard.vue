@@ -1,7 +1,7 @@
 <template>
   <div class="plugin-item-card">
     <div class="plugin-item-card-hd common-flex">
-      <p class="plugin-item-name">{{ data.name }}</p>
+      <p class="plugin-item-name ellipsis">{{ data.name }}</p>
       <div class="handlers">
         <AComWithDesc :content="$t('common.edit')">
           <i class="icon el-icon-edit-outline" @click="editPlugin" />
@@ -61,6 +61,9 @@ const editPlugin = async () => {
   .plugin-item-card-hd {
     margin-bottom: 16px;
     font-size: 16px;
+  }
+  .handlers {
+    flex-shrink: 0;
   }
   .icon {
     font-size: 20px;
