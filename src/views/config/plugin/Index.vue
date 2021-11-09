@@ -83,5 +83,11 @@ const editPlugin = (pluginItem: CreatedPlugin) => {
       font-size: 16px;
     }
   }
+  .el-col-8 {
+    max-width: 33.2%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 33.2%;
+  }
 }
 </style>
