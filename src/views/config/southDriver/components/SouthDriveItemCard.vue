@@ -29,10 +29,6 @@
         <span>{{ connectionStatusText }}</span>
       </div>
       <div class="node-item-info-row">
-        <label>点数统计信息</label>
-        <span>233</span>
-      </div>
-      <div class="node-item-info-row">
         <label>运行时长</label>
         <span>66</span>
       </div>
@@ -49,7 +45,7 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { PropType, defineEmits } from 'vue'
+import { PropType, defineEmits, defineProps } from 'vue'
 import { DriverItemInList } from '@/types/config'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
