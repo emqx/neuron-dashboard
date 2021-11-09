@@ -9,6 +9,7 @@
     <div class="filter-bar">
       <emqx-select v-model="filterNodeType" clearable>
         <emqx-option v-for="item in nodeTypeList" :key="item.value" :value="item.value" :label="item.label" />
+        <emqx-option :value="ALL_KEY" :label="$t('config.all')"></emqx-option>
       </emqx-select>
     </div>
     <ul class="setup-list">
@@ -38,9 +39,10 @@ const { nodeTypeList } = useNodeTypeSelect()
 const filterNodeType = ref(null)
 const currentPlugin: Ref<undefined | CreatedPlugin> = ref(undefined)
 const showDialog = ref(false)
+const ALL_KEY = 'all'
 
 const listToShow = computed(() => {
-  if (!filterNodeType.value) {
+  if (!filterNodeType.value || filterNodeType.value === ALL_KEY) {
     return pluginList.value
   }
   return pluginList.value.filter(({ node_type }) =>
