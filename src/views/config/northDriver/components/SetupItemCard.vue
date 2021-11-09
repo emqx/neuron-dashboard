@@ -44,7 +44,7 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import { DriverItemInList } from '@/types/config'
-import { PropType, defineEmits } from 'vue'
+import { PropType, defineEmits, defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
