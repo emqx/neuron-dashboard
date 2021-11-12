@@ -4,8 +4,8 @@
     <div class="mach">
       {{ status.mach || '' }}
     </div>
-    <div :class="status.mode === 'ACTIVE' ? 'green' : status.mach === 'STANDBY' ? 'yellow' : 'red'">
-      {{ status.mode || '' }}
+    <div :class="mode === 'ACTIVE' ? 'green' : status.mach === 'STANDBY' ? 'yellow' : 'red'">
+      {{ mode }}
     </div>
     <div :class="status.mqcn === 'MQDISCONNECT' ? 'red' : 'green'">
       {{ status.mqcn || 'MQDISCONNECT' }}
@@ -25,6 +25,12 @@ export default {
     }),
     commState() {
       return this.status.model === 'ACTIVE' ? 'OK' : this.status.model
+    },
+    mode() {
+      if (this.status.mode === 'SEMI') {
+        return 'EXPIRED'
+      }
+      return this.status.mode || ''
     },
     galm() {
       let res
