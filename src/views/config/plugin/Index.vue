@@ -83,7 +83,7 @@ const editPlugin = (pluginItem: CreatedPlugin) => {
       font-size: 16px;
     }
   }
-  .el-col-8 {
+  .setup-item {
     max-width: 33.2%;
     flex-grow: 0;
     flex-shrink: 0;
