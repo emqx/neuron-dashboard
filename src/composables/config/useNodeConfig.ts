@@ -92,12 +92,16 @@ export default (props: Props) => {
     fieldList.value = createFieldListFormPluginInfo(pluginInfo)
   }
 
-  const keysToString = (obj: Record<string, any>) => {
-    return Object.keys(obj).sort().join(',')
+  const keysToString = (obj: Record<string, any> | undefined) => {
+    return Object.keys(obj ?? {})
+      .sort()
+      .join(',')
   }
 
   const fillOutTheFormFromConfiguredData = () => {
-    if (configuredData.value && keysToString(configForm.value) === keysToString(configuredData.value)) {
+    const configFormKeysString = keysToString(configForm.value)
+    const configuredDataKeyString = keysToString(configuredData.value)
+    if (configuredData.value && configFormKeysString === configuredDataKeyString) {
       configForm.value = { ...configuredData.value }
     }
   }
