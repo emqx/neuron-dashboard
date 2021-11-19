@@ -64,7 +64,7 @@
 
 <script>
 import Mixins from '@/mixins'
-import moment from 'moment'
+import formatDate from '@/utils/formatDate'
 import { setOneHourTime, setTimeDate } from '@/utils/time'
 
 export default {
@@ -115,9 +115,7 @@ export default {
         logl: this.logType,
       })
     },
-    format(time) {
-      return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss')
-    },
+    format: formatDate,
     handleSubmit() {
       this.sendData()
     },

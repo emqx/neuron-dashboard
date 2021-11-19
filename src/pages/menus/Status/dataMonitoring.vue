@@ -70,7 +70,7 @@
 <script>
 import Mixins from '@/mixins'
 import { mapState } from 'vuex'
-import moment from 'moment'
+import formatDate from '@/utils/formatDate'
 
 const paginateWithTimeStamp = (data, pageSize, pageNo) => {
   // Array<Array<data item>>
@@ -195,9 +195,7 @@ export default {
         i.check = val
       })
     },
-    format(time) {
-      return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss')
-    },
+    format: formatDate,
   },
   components: {
     CurrentChartDialog: () => import('./components/CurrentChartDialog'),

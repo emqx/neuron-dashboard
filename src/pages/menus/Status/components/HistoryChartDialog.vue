@@ -102,7 +102,7 @@ export default {
             const dataList = this.option.series
             const timeList = this.option.xAxis.data
             dataList.forEach((j) => j.data.push(i[j.name]))
-            timeList.push(moment(i.tstp * 1000).format('YYYY-MM-DD HH:mm:ss'))
+            timeList.push(formatDate(i.tstp))
           })
         }
         if (data.tokn) {
