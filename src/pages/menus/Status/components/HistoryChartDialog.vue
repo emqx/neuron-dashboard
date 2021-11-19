@@ -8,9 +8,7 @@
         end-placeholder="end"
         type="datetimerange"
         value-format="timestamp"
-      >
-      </el-date-picker>
-      &nbsp;&nbsp;&nbsp;&nbsp;
+      ></el-date-picker>&nbsp;&nbsp;&nbsp;&nbsp;
       <el-button @click="handleSubmit(-1)">{{ $t('common.submit') }}</el-button>
     </div>
     <div :style="chartStyle" ref="chartContainer"></div>
@@ -19,6 +17,7 @@
 
 <script>
 import moment from 'moment'
+import formatDate from "@/utils/formatDate.js";
 import charts from 'echarts'
 import { setOneHourTime, setTimeDate } from '@/utils/time'
 
@@ -164,8 +163,10 @@ export default {
 <style lang="scss" scoped>
 /deep/.el-dialog__body {
   padding: 0;
+
+/deep/.el-dialog__body {
+  padding: 0;
 }
 .select {
   padding: 20px;
 }
-</style>
