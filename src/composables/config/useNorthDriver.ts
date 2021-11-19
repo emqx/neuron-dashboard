@@ -17,7 +17,7 @@ export default (autoLoad = true) => {
       const [northDriverListData, msgIdMap] = await Promise.all([await queryNorthDriverList(), initMsgIdMap()])
       northDriverList.value = await fillNodeListStatusData(
         northDriverListData.map((item) =>
-          Object.assign(item, { pluginKind: pluginMsgIdMap[item.plugin_id].kind as PluginKind }),
+          Object.assign(item, { pluginKind: pluginMsgIdMap[item.plugin_id]?.kind as PluginKind }),
         ),
       )
       isListLoading.value = false
