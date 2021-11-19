@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import moment from 'moment'
 import Mixins from '@/mixins'
+import formatDate from '@/utils/formatDate'
 import { setOneHourTime, setTimeDate } from '@/utils/time'
 
 export default {
@@ -106,9 +106,7 @@ export default {
         }
       }
     },
-    format(time) {
-      return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss')
-    },
+    format: formatDate,
   },
   created() {
     this.time = setOneHourTime()

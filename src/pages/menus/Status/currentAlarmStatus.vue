@@ -34,7 +34,7 @@
 
 <script>
 import Mixins from '@/mixins'
-import moment from 'moment'
+import formatDate from '@/utils/formatDate'
 
 export default {
   mixins: [Mixins],
@@ -100,9 +100,7 @@ export default {
         actn: this.action,
       })
     },
-    format(time) {
-      return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss')
-    },
+    format: formatDate,
   },
 }
 </script>
