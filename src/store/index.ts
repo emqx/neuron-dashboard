@@ -1,11 +1,13 @@
 import { Status, ObjdModel, ChnlModel } from '@/types/neuron'
 import { createStore } from 'vuex'
+import { getToken, setToken, clearToken } from '@/utils/user'
 
 interface State {
   status: Status | null
   objd: Array<ObjdModel>
   chnl: Array<ChnlModel>
   lang: string
+  token: string
 }
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
@@ -22,6 +24,7 @@ export default createStore<State>({
       objd: [],
       chnl: [],
       lang: getDefaultLanguage(),
+      token: getToken() ?? '',
     }
   },
   mutations: {
@@ -37,6 +40,14 @@ export default createStore<State>({
     SET_LANG(state: State, payload: string) {
       state.lang = payload
       localStorage.setItem('language', payload)
+    },
+    SET_TOKEN(state: State, payload: string) {
+      state.token = payload
+      setToken(payload)
+    },
+    LOGOUT(state) {
+      state.token = ''
+      clearToken()
     },
   },
   getters: {

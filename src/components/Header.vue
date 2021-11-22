@@ -52,10 +52,15 @@ const status = computed(() => store.state.status || {})
 const user = computed(() => store.state.status || {})
 
 const logout = async () => {
-  await requestLogout()
-  router.push({
-    name: 'Login',
-  })
+  try {
+    await requestLogout()
+    store.commit('LOGOUT')
+    router.push({
+      name: 'Login',
+    })
+  } catch (error) {
+    //
+  }
 }
 </script>
 
