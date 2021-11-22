@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import { ERROR_CODE_MSG_MAP } from './constants'
+import store from '@/store/index'
 
 const { host, protocol } = window.location
 const serverAddress = host.split(':').length > 1 ? `${host.split(':')[0]}:7001` : host
@@ -12,6 +13,7 @@ const option = {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
     Accept: 'application/json',
+    Authorization: 'Bearer ' + store.state.token,
   },
   baseURL,
   timeout: 10000,

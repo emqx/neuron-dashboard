@@ -34,9 +34,11 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { login as requestLogin } from '@/api/common'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 const router = useRouter()
 const { t } = useI18n()
+const store = useStore()
 
 const formCom = ref()
 const form = reactive({
@@ -57,13 +59,23 @@ const rules = {
     },
   ],
 }
+const isLoading = ref(false)
+
 const login = async () => {
-  await formCom.value.validate()
-  await requestLogin()
-  // sessionStorage.setItem('user', JSON.stringify(userInfo))
-  router.push({
-    name: 'Overview',
-  })
+  try {
+    await formCom.value.validate()
+    isLoading.value = true
+    const { userName, password } = form
+    const { data } = await requestLogin({ name: userName, pass: password })
+    store.commit('SET_TOKEN', data.token)
+    router.push({
+      name: 'Overview',
+    })
+  } catch (error) {
+    //
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
