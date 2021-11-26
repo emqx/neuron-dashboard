@@ -7,7 +7,6 @@
           <label>{{ $t('config.deviceName') }}</label>
           <span>{{ nodeName }}</span>
         </p>
-        <emqx-button size="small" @click="changePlugin">{{ $t('config.modifyDriverPlugin') }}</emqx-button>
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
@@ -58,14 +57,12 @@
     </emqx-table>
   </emqx-card>
   <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" :group="currentGroup" />
-  <EditDriverPluginDialog v-model="showChangePluginDialog" :type="DriverDirection.South" :node="currentNode" />
 </template>
 
 <script lang="ts" setup>
 import { ref, Ref, computed } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from './components/GroupDialog.vue'
-import EditDriverPluginDialog from '@/views/config/components/EditDriverPluginDialog.vue'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'
 import { useRouter } from 'vue-router'
@@ -73,27 +70,13 @@ import { DriverDirection } from '@/types/enums'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const router = useRouter()
-const {
-  nodeID,
-  groupList,
-  isListLoading,
-  allChecked,
-  getGroupList,
-  clearGroup,
-  delGroup,
-  batchDeleteGroup,
-} = useGroupList()
+const { nodeID, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =
+  useGroupList()
 const showGroupDialog = ref(false)
 const { getNodeMsgById } = useNodeMsgMap(DriverDirection.South)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
-const showChangePluginDialog = ref(false)
 
 const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
-const currentNode = computed(() => ({
-  id: nodeID.value,
-  name: nodeName.value,
-  plugin_id: getNodeMsgById(nodeID.value).id,
-}))
 
 const addGroup = () => {
   currentGroup.value = undefined
@@ -114,9 +97,6 @@ const goTagPage = ({ name }: GroupData) => {
     name: 'SouthDriverGroupTag',
     params: { group: name },
   })
-}
-const changePlugin = () => {
-  showChangePluginDialog.value = true
 }
 </script>
 

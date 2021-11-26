@@ -7,7 +7,6 @@
           <label>{{ $t('config.appName') }}</label>
           <span>{{ nodeName }}</span>
         </p>
-        <emqx-button size="small" @click="editDriverPlugin">{{ $t('config.modifyAppPlugin') }}</emqx-button>
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
@@ -83,16 +82,11 @@ const { getNodeMsgById } = useNodeMsgMap(DriverDirection.North)
 const { getNodeMsgById: getSrcNodeMsgById } = useNodeMsgMap(DriverDirection.South)
 
 const showAddSubscriptionDialog = ref(false)
-const showChangePluginDialog = ref(false)
 
 const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
 
 const addSubscription = () => {
   showAddSubscriptionDialog.value = true
-}
-
-const editDriverPlugin = () => {
-  showChangePluginDialog.value = true
 }
 </script>
 
