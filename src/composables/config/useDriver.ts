@@ -9,12 +9,14 @@ export const useDriverStatus = (driver: DriverItemInList) => {
   const { t } = useI18n()
   const statusIconClassMap = {
     [NodeState.Idle]: 'iconStandby',
+    [NodeState.Init]: 'iconStandby',
     [NodeState.Ready]: 'iconStandby',
     [NodeState.Running]: 'iconactivation',
     [NodeState.Stopped]: 'iconstop',
   }
   const statusTextMap = {
     [NodeState.Idle]: t('config.idle'),
+    [NodeState.Init]: t('config.init'),
     [NodeState.Ready]: t('config.ready'),
     [NodeState.Running]: t('config.running'),
     [NodeState.Stopped]: t('config.stopped'),
