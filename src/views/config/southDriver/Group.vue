@@ -6,6 +6,7 @@
         <p class="driver-name">
           <label>{{ $t('config.deviceName') }}</label>
           <span>{{ nodeName }}</span>
+          <i class="el-icon-edit icon-edit" :title="$t('common.edit')" @click="editNodeName" />
         </p>
       </div>
       <div class="btns common-flex">
@@ -57,6 +58,7 @@
     </emqx-table>
   </emqx-card>
   <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" :group="currentGroup" />
+  <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="refreshNodeMsgMap" />
 </template>
 
 <script lang="ts" setup>
@@ -68,15 +70,23 @@ import { GroupData, GroupForm } from '@/types/config'
 import { useRouter } from 'vue-router'
 import { DriverDirection } from '@/types/enums'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import EditNodeNameDialog from '../components/EditNodeNameDialog.vue'
 
 const router = useRouter()
 const { nodeID, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =
   useGroupList()
 const showGroupDialog = ref(false)
-const { getNodeMsgById } = useNodeMsgMap(DriverDirection.South)
+const { initMap: refreshNodeMsgMap, getNodeMsgById } = useNodeMsgMap(DriverDirection.South)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 
 const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
+const showEditDialog = ref(false)
+
+const currentNode = computed(() => ({
+  id: nodeID.value,
+  name: nodeName.value,
+  plugin_id: getNodeMsgById(nodeID.value).id,
+}))
 
 const addGroup = () => {
   currentGroup.value = undefined
@@ -98,6 +108,10 @@ const goTagPage = ({ name }: GroupData) => {
     params: { group: name },
   })
 }
+
+const editNodeName = () => {
+  showEditDialog.value = true
+}
 </script>
 
 <style lang="scss">
@@ -109,6 +123,9 @@ const goTagPage = ({ name }: GroupData) => {
     &:not(:last-child) {
       margin-right: 32px;
     }
+  }
+  .icon-edit {
+    margin-left: 8px;
   }
 }
 </style>

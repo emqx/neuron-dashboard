@@ -50,7 +50,7 @@ export const deleteDriver = (id: number) => {
   return http.delete('/node', { data: { id } })
 }
 
-export const updateDriver = (data: NodeForm) => {
+export const updateDriver = (data: { id: number; name: string }) => {
   return http.put('/node', data)
 }
 

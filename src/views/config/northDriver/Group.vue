@@ -6,6 +6,7 @@
         <p class="driver-name">
           <label>{{ $t('config.appName') }}</label>
           <span>{{ nodeName }}</span>
+          <i class="el-icon-edit icon-edit" :title="$t('common.edit')" @click="editNodeName" />
         </p>
       </div>
       <div class="btns common-flex">
@@ -58,6 +59,7 @@
     :current-node-id="nodeID"
     @submitted="getSubscriptionList"
   />
+  <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="refreshNodeMsgMap" />
 </template>
 
 <script lang="ts" setup>
@@ -66,6 +68,7 @@ import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { DriverDirection } from '@/types/enums'
 import { useSubscriptionList } from '@/composables/config/useSubscription'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
+import EditNodeNameDialog from '../components/EditNodeNameDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const {
@@ -78,8 +81,15 @@ const {
   unsubscribeInBulk,
   getSubscriptionList,
 } = useSubscriptionList()
-const { getNodeMsgById } = useNodeMsgMap(DriverDirection.North)
+const { initMap: refreshNodeMsgMap, getNodeMsgById } = useNodeMsgMap(DriverDirection.North)
 const { getNodeMsgById: getSrcNodeMsgById } = useNodeMsgMap(DriverDirection.South)
+const showEditDialog = ref(false)
+
+const currentNode = computed(() => ({
+  id: nodeID.value,
+  name: nodeName.value,
+  plugin_id: getNodeMsgById(nodeID.value).id,
+}))
 
 const showAddSubscriptionDialog = ref(false)
 
@@ -88,12 +98,19 @@ const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
 const addSubscription = () => {
   showAddSubscriptionDialog.value = true
 }
+
+const editNodeName = () => {
+  showEditDialog.value = true
+}
 </script>
 
 <style lang="scss">
 .north-driver-group {
   .driver-name {
     margin-right: 22px;
+  }
+  .icon-edit {
+    margin-left: 8px;
   }
   .btn-group {
     &:not(:last-child) {
