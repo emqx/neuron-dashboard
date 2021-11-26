@@ -287,6 +287,10 @@ export default {
     zh: '空闲',
     en: 'Idle',
   },
+  init: {
+    zh: '初始化',
+    en: 'Init',
+  },
   ready: {
     zh: '准备好',
     en: 'Ready',
