@@ -18,4 +18,9 @@ export const ERROR_CODE_MSG_MAP: Record<number, string> = {
   [2006]: 'Tag attribute not support',
   [2007]: 'Node setting invalid',
   [2008]: 'Node setting not exist',
+  [2009]: 'Group config in use',
+  [2010]: 'Node not ready',
+  [2011]: 'Node is running',
+  [2012]: 'Node not running',
+  [2013]: 'Node is stoped',
 }
