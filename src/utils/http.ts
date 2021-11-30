@@ -13,7 +13,6 @@ const option = {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
     Accept: 'application/json',
-    Authorization: 'Bearer ' + store.state.token,
   },
   baseURL,
   timeout: 10000,
@@ -33,7 +32,15 @@ export const handleError = (error: AxiosError) => {
 }
 
 axios.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    if (store.state.token) {
+      config.headers = {
+        ...config.headers,
+        Authorization: 'Bearer ' + store.state.token,
+      }
+    }
+    return config
+  },
   (error) => Promise.reject(error),
 )
 
@@ -41,6 +48,7 @@ axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
+      store.commit('LOGOUT')
       router.push({ name: 'Login' })
     } else {
       handleError(error)
