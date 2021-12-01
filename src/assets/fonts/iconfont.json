@@ -6,32 +6,46 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "26113325",
+      "name": "idle",
+      "font_class": "idle",
+      "unicode": "e716",
+      "unicode_decimal": 59158
+    },
+    {
+      "icon_id": "26113326",
+      "name": "init",
+      "font_class": "init",
+      "unicode": "e717",
+      "unicode_decimal": 59159
+    },
+    {
+      "icon_id": "26113327",
+      "name": "ready",
+      "font_class": "ready",
+      "unicode": "e718",
+      "unicode_decimal": 59160
+    },
+    {
+      "icon_id": "26113328",
+      "name": "stopped",
+      "font_class": "stopped",
+      "unicode": "e719",
+      "unicode_decimal": 59161
+    },
+    {
+      "icon_id": "26113329",
+      "name": "running",
+      "font_class": "running",
+      "unicode": "e71a",
+      "unicode_decimal": 59162
+    },
+    {
       "icon_id": "24850069",
       "name": "setting",
       "font_class": "setting",
       "unicode": "e701",
       "unicode_decimal": 59137
-    },
-    {
-      "icon_id": "24848258",
-      "name": "stop",
-      "font_class": "stop",
-      "unicode": "e6fe",
-      "unicode_decimal": 59134
-    },
-    {
-      "icon_id": "24848346",
-      "name": "activation",
-      "font_class": "activation",
-      "unicode": "e6ff",
-      "unicode_decimal": 59135
-    },
-    {
-      "icon_id": "24848347",
-      "name": "Standby",
-      "font_class": "Standby",
-      "unicode": "e700",
-      "unicode_decimal": 59136
     },
     {
       "icon_id": "24397773",
