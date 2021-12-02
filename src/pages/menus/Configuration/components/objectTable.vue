@@ -12,6 +12,7 @@
     <el-table-column v-if="showSelection" type="selection" width="55"> </el-table-column>
     <el-table-column type="index" width="100" label="No" />
     <el-table-column prop="objn" :label="$t('status.objectName')" min-width="250" />
+    <el-table-column prop="description" :label="$t('common.description')" min-width="150" />
     <el-table-column prop="obsz" :min-width="100" label="Size" />
     <el-table-column prop="updt" :min-width="100" label="Update Time" />
     <el-table-column prop="logt" :min-width="100" label="Log Time" />
