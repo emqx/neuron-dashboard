@@ -62,6 +62,9 @@
                 <el-radio :label="0">No</el-radio>
               </el-radio-group>
             </el-form-item>
+            <el-form-item :label="$t('common.description')" prop="description">
+              <el-input v-model="objectSetupFrom.description"></el-input>
+            </el-form-item>
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">

@@ -60,6 +60,9 @@
         <el-form-item label="Read time (100ms)" prop="rtim" v-if="showReadTime">
           <el-input-number v-model="AttributeSetupForm.rtim" :controls="false" :precision="0" :min="0" />
         </el-form-item>
+        <el-form-item :label="$t('common.description')" prop="description">
+          <el-input v-model="AttributeSetupForm.description" />
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="submitAttributeSetupFrom">{{ $t('common.submit') }}</el-button>

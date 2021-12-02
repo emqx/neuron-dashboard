@@ -14,6 +14,7 @@
     >
       <vxe-table-column v-if="showBtn" type="checkbox" width="55"></vxe-table-column>
       <vxe-table-column field="attn" :min-width="80" :title="$t('common.name')" />
+      <vxe-table-column field="description" :min-width="80" :title="$t('common.description')" />
       <vxe-table-column :title="`Object: ${$t('configuration.address')}`" min-width="250">
         <template slot-scope="scope">
           <div>
