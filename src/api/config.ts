@@ -16,6 +16,7 @@ import {
   TagForm,
 } from '@/types/config'
 import router from '@/router/index'
+import store from '@/store/index'
 
 /* NODE(DRIVER & APP) */
 
@@ -108,6 +109,18 @@ export const submitNodeConfig = (nodeID: number, form: Record<string, any>) => {
 
 export const queryNodeConfig = (nodeID: number) => {
   const request = http.create()
+  request.interceptors.request.use(
+    (config) => {
+      if (store.state.token) {
+        config.headers = {
+          ...config.headers,
+          Authorization: 'Bearer ' + store.state.token,
+        }
+      }
+      return config
+    },
+    (error) => Promise.reject(error),
+  )
   request.interceptors.response.use(
     (response) => response,
     (error) => {

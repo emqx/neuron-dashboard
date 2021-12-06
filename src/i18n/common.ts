@@ -243,6 +243,10 @@ export default {
     zh: '首页',
     en: 'Home',
   },
+  copyright: {
+    zh: '版权',
+    en: 'Copyright',
+  },
   minute: {
     zh: '分钟',
     en: 'minute | minute | minutes',

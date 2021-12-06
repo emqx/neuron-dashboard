@@ -7,21 +7,35 @@
       <div>
         <emqx-dropdown>
           <span class="el-dropdown-link">
-            <span class="user-bg">
-              <i class="iconfont iconAdministration1"></i>
-            </span>
-            {{ $t('common.user') }}
+            {{ $t('common.about') }}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <template #dropdown>
-            <emqx-dropdown-menu class="user-menu">
-              <div class="user-menu-hd">
-                <p class="username">用户名用户名</p>
-                <div class="account-setting">
-                  <emqx-button type="text">{{ $t('common.newPassword') }}</emqx-button>
-                  <emqx-button type="text" @click="logout">{{ $t('common.logout') }}</emqx-button>
+            <emqx-dropdown-menu class="header-menu">
+              <emqx-dropdown-item>
+                <div>
+                  <i class="iconfont iconrestart"></i>
+                  <span>{{ $t('common.restart') }}</span>
                 </div>
-              </div>
+              </emqx-dropdown-item>
+              <emqx-dropdown-item>
+                <i class="iconfont iconalarm"></i>
+                <span>License</span>
+              </emqx-dropdown-item>
+            </emqx-dropdown-menu>
+          </template>
+        </emqx-dropdown>
+
+        <emqx-dropdown>
+          <span class="el-dropdown-link">
+            <span class="user-bg">
+              <i class="iconfont iconAdministration1"></i>
+            </span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <template #dropdown>
+            <emqx-dropdown-menu class="header-menu">
+              <emqx-dropdown-item @click="logout">{{ $t('common.logout') }}</emqx-dropdown-item>
             </emqx-dropdown-menu>
           </template>
         </emqx-dropdown>
@@ -70,12 +84,11 @@ const logout = async () => {
     color: #fff;
   }
 }
-.el-dropdown-menu.user-menu {
-  padding: 0;
-}
-.user-menu-hd {
-  padding: 24px;
-  border-bottom: 1px solid #e2e7ea;
+.header-menu {
+  .emqx-dropdown-item {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 .username {
   margin-bottom: 12px;

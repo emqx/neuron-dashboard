@@ -27,6 +27,10 @@ export default {
     zh: '工作状态',
     en: 'Status',
   },
+  north: {
+    zh: '北向',
+    en: 'North',
+  },
   south: {
     zh: '南向',
     en: 'South',
@@ -205,7 +209,7 @@ export default {
   },
   runningTime: {
     zh: '运行时长',
-    en: 'Running time',
+    en: 'Up time',
   },
   versionNAuthInfo: {
     zh: '版本和授权信息',
@@ -322,6 +326,30 @@ export default {
   unsubscribe: {
     zh: '取消订阅',
     en: 'unsubscribe',
+  },
+  viewAll: {
+    zh: '查看全部',
+    en: 'View all',
+  },
+  numberOfNorthApp: {
+    zh: '北向应用数',
+    en: 'North apps',
+  },
+  numberOfSouthDevices: {
+    zh: '南向设备数',
+    en: 'South devices',
+  },
+  numberOfRunningInstances: {
+    zh: '运行实例数',
+    en: 'Running instances',
+  },
+  southMessageCount: {
+    zh: '总共南向采集消息数',
+    en: 'Total number of South collected messages',
+  },
+  northMessageCount: {
+    zh: '总共北向发送消息数',
+    en: 'Total number of North messages sent',
   },
   /* FOR FORM */
   groupNameRequired: {

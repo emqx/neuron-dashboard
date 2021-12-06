@@ -14,7 +14,7 @@
     <div>
       <div class="node-item-info-row common-flex">
         <div class="common-flex">
-          <label>{{ $t('config.workStatus') }}</label>
+          <label>{{ $t('config.workStatus') }}:</label>
           <emqx-switch v-model="getNodeStartStopStatus" @click.stop @change="setNodeStartStopStatus" />
         </div>
         <div class="common-flex">
@@ -25,11 +25,11 @@
         </div>
       </div>
       <div class="node-item-info-row">
-        <label>{{ $t('config.connectionStatus') }}</label>
+        <label>{{ $t('config.connectionStatus') }}:</label>
         <span>{{ connectionStatusText }}</span>
       </div>
       <div class="node-item-info-row">
-        <label>运行时长</label>
+        <label>{{ $t('config.runningTime') }}:</label>
         <span>66</span>
       </div>
     </div>
@@ -92,5 +92,8 @@ const toggleStatus = async (val: boolean) => {
 <style lang="scss">
 .south-drive-item-card {
   background-color: #f3f3ff;
+  label {
+    display: inline-block;
+  }
 }
 </style>
