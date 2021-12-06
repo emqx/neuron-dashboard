@@ -40,7 +40,7 @@ export const useDriverStatus = (driver: DriverItemInList) => {
 
 export const useNodeStartStopStatus = (node: DriverItemInList) => {
   const getNodeStartStopStatus: ComputedRef<boolean> = computed(() =>
-    node.running === NodeState.Stopped ? false : true,
+    node.running === NodeState.Running ? true : false,
   )
   const setNodeStartStopStatus = async (val: boolean) => {
     try {
