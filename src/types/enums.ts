@@ -16,6 +16,7 @@ export enum SystemStatus {
 export enum DriverDirection {
   North = 5,
   South = 1,
+  Web = 2,
 }
 
 export enum TypeOfPluginParam {

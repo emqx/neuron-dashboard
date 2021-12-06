@@ -1,6 +1,6 @@
 import { ref, Ref, computed, onUnmounted } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import { addSubscription, deleteSubscription, queryGroupList, queryTagList } from '@/api/config'
+import { addSubscription, deleteSubscription, queryGroupList, queryTagList, queryWebDriverList } from '@/api/config'
 import { GroupData } from '@/types/config'
 import { getMonitoringData } from '@/api/data'
 import { useI18n } from 'vue-i18n'
@@ -10,15 +10,13 @@ import { useTagAttributeTypeSelect } from '../config/useAddTag'
 import { PluginKind, TagAttrbuteType, TagType } from '@/types/enums'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
-import useNorthDriver from '@/composables/config/useNorthDriver'
 
 export const useSubscribeForGetMonitoringData = () => {
   let defaultDashboardId: undefined | number = undefined
-  const { getNorthDriverList } = useNorthDriver(false)
   const getDefaultDashboardId = async () => {
     try {
-      const data = await getNorthDriverList()
-      defaultDashboardId = data.find(({ pluginKind }) => pluginKind === PluginKind.Static)?.id
+      const data = await queryWebDriverList()
+      defaultDashboardId = data[0]?.id
       if (!defaultDashboardId) {
         throw new Error('Can not find default dashboard')
       }

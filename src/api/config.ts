@@ -40,6 +40,11 @@ export const querySouthDriverList = async (): Promise<Array<RawDriverData>> => {
   return getDataFromResponse(ret)
 }
 
+export const queryWebDriverList = async (): Promise<Array<RawDriverData>> => {
+  const ret = await queryDriverList(DriverDirection.Web as number)
+  return getDataFromResponse(ret)
+}
+
 export const addDriver = (driverData: NodeForm, direction: DriverDirection) => {
   return http.post('/node', {
     ...driverData,
