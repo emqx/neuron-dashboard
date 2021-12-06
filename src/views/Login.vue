@@ -138,12 +138,13 @@ const login = async () => {
   */
 
   .emqx-input .el-input__inner {
-    border-radius: 0px;
-    border: 1px solid transparent;
-    border-bottom: 1px solid #394f60;
-    background-color: transparent;
     padding-left: 0;
     padding-right: 0;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #394f60;
+    border-radius: 0px;
+    color: #fff;
+    background-color: transparent;
     &::placeholder {
       color: #3a5163;
     }
