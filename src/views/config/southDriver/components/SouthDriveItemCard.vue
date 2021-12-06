@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="common-flex">
-          <emqx-switch v-model="getNodeStartStopStatus" @click.stop @change="setNodeStartStopStatus" />
+          <emqx-switch v-model="getNodeStartStopStatus" @click.stop />
         </div>
       </div>
       <div class="node-item-info-row">
@@ -63,7 +63,9 @@ const props = defineProps({
 
 const emit = defineEmits(['deleted', 'updated'])
 const router = useRouter()
-const { getNodeStartStopStatus, setNodeStartStopStatus } = useNodeStartStopStatus(props.data)
+const { getNodeStartStopStatus, setNodeStartStopStatus } = useNodeStartStopStatus(props.data, () => {
+  emit('updated')
+})
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props.data)
 
 const goGroupPage = () => {
@@ -81,14 +83,6 @@ const deleteDriver = async () => {
   emit('deleted')
 }
 const goNodeConfig = () => router.push({ name: 'SouthDriverConfig', params: { nodeID: props.data.id } })
-const toggleStatus = async (val: boolean) => {
-  try {
-    await setNodeStartStopStatus(val)
-    emit('updated')
-  } catch (error) {
-    //
-  }
-}
 </script>
 
 <style lang="scss">
