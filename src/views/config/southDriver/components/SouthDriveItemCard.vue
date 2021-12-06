@@ -15,13 +15,15 @@
       <div class="node-item-info-row common-flex">
         <div class="common-flex">
           <label>{{ $t('config.workStatus') }}:</label>
-          <emqx-switch v-model="getNodeStartStopStatus" @click.stop @change="setNodeStartStopStatus" />
+          <div>
+            <svg class="iconfont icon-svg" aria-hidden="true">
+              <use :xlink:href="`#${statusIcon}`" />
+            </svg>
+            <span>{{ statusText }}</span>
+          </div>
         </div>
         <div class="common-flex">
-          <svg class="iconfont icon-svg" aria-hidden="true">
-            <use :xlink:href="`#${statusIcon}`" />
-          </svg>
-          <span>{{ statusText }}</span>
+          <emqx-switch v-model="getNodeStartStopStatus" @click.stop @change="setNodeStartStopStatus" />
         </div>
       </div>
       <div class="node-item-info-row">
