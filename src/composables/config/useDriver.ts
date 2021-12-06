@@ -1,9 +1,10 @@
-import { computed, ComputedRef } from 'vue'
+import { computed, WritableComputedRef } from 'vue'
 import { sendCommandToNode } from '@/api/config'
 import { DriverItemInList } from '@/types/config'
-import { DriverDirection, DriverStatus, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
+import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import { EmqxMessage } from '@emqx/emqx-ui'
 
 export const useDriverStatus = (driver: DriverItemInList) => {
   const { t } = useI18n()
@@ -38,10 +39,25 @@ export const useDriverStatus = (driver: DriverItemInList) => {
   }
 }
 
-export const useNodeStartStopStatus = (node: DriverItemInList) => {
-  const getNodeStartStopStatus: ComputedRef<boolean> = computed(() =>
-    node.running === NodeState.Running ? true : false,
-  )
+export const useNodeStartStopStatus = (node: DriverItemInList, updatedCallback: () => void) => {
+  const { t } = useI18n()
+
+  const getNodeStartStopStatus: WritableComputedRef<boolean> = computed({
+    get() {
+      return node.running === NodeState.Running ? true : false
+    },
+    async set(val) {
+      try {
+        await setNodeStartStopStatus(val)
+        EmqxMessage.success(t('common.operateSuccessfully'))
+        if (updatedCallback && typeof updatedCallback === 'function') {
+          updatedCallback()
+        }
+      } catch (error) {
+        //
+      }
+    },
+  })
   const setNodeStartStopStatus = async (val: boolean) => {
     try {
       await sendCommandToNode(node.id, val ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
