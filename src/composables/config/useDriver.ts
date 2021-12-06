@@ -8,11 +8,11 @@ import { useI18n } from 'vue-i18n'
 export const useDriverStatus = (driver: DriverItemInList) => {
   const { t } = useI18n()
   const statusIconClassMap = {
-    [NodeState.Idle]: 'iconStandby',
-    [NodeState.Init]: 'iconStandby',
-    [NodeState.Ready]: 'iconStandby',
-    [NodeState.Running]: 'iconactivation',
-    [NodeState.Stopped]: 'iconstop',
+    [NodeState.Idle]: 'iconidle',
+    [NodeState.Init]: 'iconinit',
+    [NodeState.Ready]: 'iconready',
+    [NodeState.Running]: 'iconrunning',
+    [NodeState.Stopped]: 'iconstopped',
   }
   const statusTextMap = {
     [NodeState.Idle]: t('config.idle'),
