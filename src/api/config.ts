@@ -28,8 +28,12 @@ const getDataFromResponse = (res: AxiosResponse<ResponseDriverListData>): Array<
 
 export const queryNorthDriverList = async (): Promise<Array<RawDriverData>> => {
   try {
-    const request = await queryDriverList(DriverDirection.North)
-    return Promise.resolve(getDataFromResponse(request))
+    const retArr: Array<AxiosResponse<ResponseDriverListData>> = await Promise.all(
+      NORTH_DRIVER_NODE_TYPE.map((code) => queryDriverList(code)),
+    )
+    return Promise.resolve(
+      retArr.reduce((arr: Array<RawDriverData>, currentData) => arr.concat(getDataFromResponse(currentData)), []),
+    )
   } catch (error) {
     return Promise.reject(error)
   }
