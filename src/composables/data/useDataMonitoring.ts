@@ -143,13 +143,20 @@ export default () => {
     if (!nodeID || !groupName) {
       return
     }
-    const { data } = await getMonitoringData(Number(currentGroup.value.nodeID), currentGroup.value.groupName)
-    updated.value = Date.now()
-    totalData.value = (data.tags || []).map((item) => {
-      return Object.assign(item, tagMsgMap[item.id])
-    })
-    handleShowValueByHexadecimalChanged()
-    pageController.value.total = totalData.value.length
+    try {
+      const { data } = await getMonitoringData(Number(currentGroup.value.nodeID), currentGroup.value.groupName)
+      updated.value = Date.now()
+      totalData.value = (data.tags || []).map((item) => {
+        return Object.assign(item, tagMsgMap[item.id])
+      })
+      handleShowValueByHexadecimalChanged()
+      pageController.value.total = totalData.value.length
+    } catch (error: any) {
+      if (error?.response?.data?.error === 2014) {
+        await selectedGroupChanged()
+        getTableData()
+      }
+    }
   }
 
   const initPageController = () => {
