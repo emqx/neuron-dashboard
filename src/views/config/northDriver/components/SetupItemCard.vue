@@ -62,7 +62,7 @@ const props = defineProps({
 
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props.data)
 
-const { getNodeStartStopStatus, setNodeStartStopStatus } = useNodeStartStopStatus(props.data, () => {
+const { getNodeStartStopStatus } = useNodeStartStopStatus(props, () => {
   emit('updated')
 })
 
