@@ -39,12 +39,12 @@ export const useDriverStatus = (driver: DriverItemInList) => {
   }
 }
 
-export const useNodeStartStopStatus = (node: DriverItemInList, updatedCallback: () => void) => {
+export const useNodeStartStopStatus = (props: { data: DriverItemInList }, updatedCallback: () => void) => {
   const { t } = useI18n()
 
   const getNodeStartStopStatus: WritableComputedRef<boolean> = computed({
     get() {
-      return node.running === NodeState.Running ? true : false
+      return props.data.running === NodeState.Running ? true : false
     },
     async set(val) {
       try {
@@ -60,7 +60,7 @@ export const useNodeStartStopStatus = (node: DriverItemInList, updatedCallback: 
   })
   const setNodeStartStopStatus = async (val: boolean) => {
     try {
-      await sendCommandToNode(node.id, val ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
+      await sendCommandToNode(props.data.id, val ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
       return Promise.resolve(true)
     } catch (error) {
       return Promise.reject(error)

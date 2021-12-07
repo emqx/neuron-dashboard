@@ -63,7 +63,7 @@ const props = defineProps({
 
 const emit = defineEmits(['deleted', 'updated'])
 const router = useRouter()
-const { getNodeStartStopStatus, setNodeStartStopStatus } = useNodeStartStopStatus(props.data, () => {
+const { getNodeStartStopStatus } = useNodeStartStopStatus(props, () => {
   emit('updated')
 })
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props.data)
