@@ -60,7 +60,7 @@ const props = defineProps({
   data: { type: Object as PropType<DriverItemInList>, required: true },
 })
 
-const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props.data)
+const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
 
 const { getNodeStartStopStatus } = useNodeStartStopStatus(props, () => {
   emit('updated')
