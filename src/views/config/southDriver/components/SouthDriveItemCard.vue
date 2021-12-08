@@ -66,7 +66,7 @@ const router = useRouter()
 const { getNodeStartStopStatus } = useNodeStartStopStatus(props, () => {
   emit('updated')
 })
-const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props.data)
+const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
 
 const goGroupPage = () => {
   router.push({

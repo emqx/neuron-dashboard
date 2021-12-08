@@ -6,7 +6,7 @@ import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage } from '@emqx/emqx-ui'
 
-export const useDriverStatus = (driver: DriverItemInList) => {
+export const useDriverStatus = (props: { data: DriverItemInList }) => {
   const { t } = useI18n()
   const statusIconClassMap = {
     [NodeState.Idle]: 'iconidle',
@@ -28,9 +28,9 @@ export const useDriverStatus = (driver: DriverItemInList) => {
     [NodeLinkState.Connecting]: t('config.connecting'),
     [NodeLinkState.Connected]: t('config.connected'),
   }
-  const statusIcon = computed(() => statusIconClassMap[driver.running])
-  const statusText = computed(() => statusTextMap[driver.running] || '-')
-  const connectionStatusText = computed(() => connectionStatusTextMap[driver.link])
+  const statusIcon = computed(() => statusIconClassMap[props.data.running])
+  const statusText = computed(() => statusTextMap[props.data.running] || '-')
+  const connectionStatusText = computed(() => connectionStatusTextMap[props.data.link])
   return {
     statusIconClassMap,
     statusIcon,
