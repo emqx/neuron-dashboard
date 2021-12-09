@@ -1,8 +1,9 @@
 import axios, { AxiosError } from 'axios'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
-import { ERROR_CODE_MSG_MAP } from './constants'
 import store from '@/store/index'
+import i18n from '@/i18n/index'
+import { ERROR_CODE_ARR } from './constants'
 
 const { host, protocol } = window.location
 const serverAddress = host.split(':').length > 1 ? `${host.split(':')[0]}:7001` : host
@@ -23,7 +24,12 @@ Object.assign(axios.defaults, option)
 export const handleError = (error: AxiosError) => {
   const { response } = error
   if (response?.data?.error) {
-    EmqxMessage.error(`Error (code: ${response.data.error}): ${ERROR_CODE_MSG_MAP[response.data.error] || 'unknown'}`)
+    const hasErrorMsg = ERROR_CODE_ARR.includes(response?.data?.error)
+    EmqxMessage.error(
+      `Error (code: ${response.data.error}): ${
+        hasErrorMsg ? i18n.global.t(`error.${response.data.error}`) : 'unknown'
+      }`,
+    )
   } else if (response?.data) {
     EmqxMessage.error(`${JSON.stringify(response.data)}`)
   } else {
