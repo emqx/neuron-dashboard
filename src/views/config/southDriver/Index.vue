@@ -8,8 +8,13 @@
     </div>
     <ul class="setup-list">
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="item in southDriverList" :key="item.id" tag="li" class="setup-item">
-          <SouthDriveItemCard :data="item" @deleted="getSouthDriverList" @updated="getSouthDriverList" />
+        <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.id" tag="li" class="setup-item">
+          <SouthDriveItemCard
+            :data="item"
+            @deleted="getSouthDriverList"
+            @updated="getSouthDriverList"
+            @toggle-status="setNodeStartStopStatus(item, $event, index)"
+          />
         </emqx-col>
       </emqx-row>
     </ul>
@@ -23,10 +28,26 @@ import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
 import { DriverDirection } from '@/types/enums'
+import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
+import { DriverItemInList } from '@/types/config'
 
 const { southDriverList, isListLoading, getSouthDriverList } = useSouthDriver()
 
 const showDialog = ref(false)
+
+const { toggleNodeStartStopStatus } = useToggleNodeStartStopStatus()
+const setNodeStartStopStatus = async (node: DriverItemInList, status: boolean, nodeIndex: number) => {
+  try {
+    const ret = await toggleNodeStartStopStatus(node, status)
+    if (typeof ret === 'object') {
+      southDriverList.value.splice(nodeIndex, 1, ret)
+    } else {
+      getSouthDriverList()
+    }
+  } catch (error) {
+    //
+  }
+}
 
 const addConfig = () => {
   showDialog.value = true

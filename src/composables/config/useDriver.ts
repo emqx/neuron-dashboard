@@ -39,36 +39,35 @@ export const useDriverStatus = (props: { data: DriverItemInList }) => {
   }
 }
 
-export const useNodeStartStopStatus = (props: { data: DriverItemInList }, updatedCallback: () => void) => {
-  const { t } = useI18n()
+export const useNodeStartStopStatus = () => {
+  const countNodeStartStopStatus = (data: DriverItemInList) => (data.running === NodeState.Running ? true : false)
+  return {
+    countNodeStartStopStatus,
+  }
+}
 
-  const getNodeStartStopStatus: WritableComputedRef<boolean> = computed({
-    get() {
-      return props.data.running === NodeState.Running ? true : false
-    },
-    async set(val) {
-      try {
-        await setNodeStartStopStatus(val)
-        EmqxMessage.success(t('common.operateSuccessfully'))
-        if (updatedCallback && typeof updatedCallback === 'function') {
-          updatedCallback()
-        }
-      } catch (error) {
-        //
-      }
-    },
-  })
-  const setNodeStartStopStatus = async (val: boolean) => {
+export const useToggleNodeStartStopStatus = () => {
+  const toggleNodeStartStopStatus = async (node: DriverItemInList, status: boolean) => {
     try {
-      await sendCommandToNode(props.data.id, val ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
+      await sendCommandToNode(node.id, status ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
       return Promise.resolve(true)
-    } catch (error) {
+    } catch (error: any) {
+      /* 
+        Demand from the backend
+        If an error is reported in 2011, Node is running, set the button to green;
+        If error 2013 is reported, Node is stop, turn the button to gray.
+      */
+      const errorCode = error?.response?.data?.error
+      if (errorCode === 2011) {
+        return Promise.resolve({ ...node, running: NodeState.Running })
+      } else if (errorCode === 2013) {
+        return Promise.resolve({ ...node, running: NodeState.Stopped })
+      }
       return Promise.reject(error)
     }
   }
   return {
-    getNodeStartStopStatus,
-    setNodeStartStopStatus,
+    toggleNodeStartStopStatus,
   }
 }
 

@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="common-flex">
-          <emqx-switch v-model="getNodeStartStopStatus" @click.stop />
+          <emqx-switch v-model="nodeStartStopStatus" @click.stop />
         </div>
       </div>
       <div class="node-item-info-row">
@@ -47,7 +47,7 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { PropType, defineEmits, defineProps } from 'vue'
+import { PropType, defineEmits, defineProps, computed } from 'vue'
 import { DriverItemInList } from '@/types/config'
 import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
@@ -61,10 +61,17 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['deleted', 'updated'])
+const emit = defineEmits(['deleted', 'updated', 'toggleStatus'])
 const router = useRouter()
-const { getNodeStartStopStatus } = useNodeStartStopStatus(props, () => {
-  emit('updated')
+const { countNodeStartStopStatus } = useNodeStartStopStatus()
+
+const nodeStartStopStatus = computed({
+  get() {
+    return countNodeStartStopStatus(props.data)
+  },
+  set(val) {
+    emit('toggleStatus', val)
+  },
 })
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
 
