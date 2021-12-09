@@ -96,6 +96,18 @@ export default () => {
   const updated = ref(Date.now())
   const { tagAttrValueMap } = useTagAttributeTypeSelect()
   const { transToHexadecimal } = useWriteDataCheckNParse()
+  /**
+   * This variable is that when the monitoring data is obtained,
+   * the request returns the error code 2014,
+   * and the count starts when the subscription is re-subscribed.
+   * If the re-subscription reaches 3 times,
+   * the re-subscription is stopped to prevent unlimited sending of requests.
+   */
+  const reSubCount: { groupName: undefined | string; lastTimestamp: number; count: number } = {
+    groupName: undefined,
+    lastTimestamp: 0,
+    count: 0,
+  }
 
   const tableEmptyText = computed(() =>
     !currentGroup.value.nodeID || !currentGroup.value.groupName ? t('data.selectGroupTip') : t('common.emptyData'),
@@ -118,6 +130,27 @@ export default () => {
     selectedGroup = undefined
     const data = await queryGroupList(Number(currentGroup.value.nodeID))
     groupList.value = data
+  }
+
+  const reSubAfterReturnError = async () => {
+    const { groupName, lastTimestamp, count } = reSubCount
+    const { nodeID, groupName: currentGroupName } = currentGroup.value
+    let canReSubAndRequest = false
+    if (Date.now() - lastTimestamp < 500 && groupName === currentGroupName && count < 3) {
+      console.log(1)
+      canReSubAndRequest = true
+    } else if (Date.now() - lastTimestamp > 500 || groupName !== currentGroupName) {
+      console.log(2)
+      reSubCount.count = 0
+      reSubCount.groupName = currentGroupName
+      canReSubAndRequest = true
+    }
+    if (canReSubAndRequest) {
+      reSubCount.count++
+      reSubCount.lastTimestamp = Date.now()
+      await subscribe(Number(nodeID), currentGroupName)
+      getTableData()
+    }
   }
 
   const getTagDetail = async () => {
@@ -151,10 +184,10 @@ export default () => {
       })
       handleShowValueByHexadecimalChanged()
       pageController.value.total = totalData.value.length
+      startPoll()
     } catch (error: any) {
       if (error?.response?.data?.error === 2014) {
-        await selectedGroupChanged()
-        getTableData()
+        reSubAfterReturnError()
       }
     }
   }
@@ -185,7 +218,6 @@ export default () => {
     tagMsgMap = await getTagDetail()
     initPageController()
     getTableData()
-    startPoll()
   }
 
   const handleSizeChange = (size: number) => {
