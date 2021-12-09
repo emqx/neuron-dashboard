@@ -27,8 +27,13 @@
         </div>
       </div>
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="item in showList(northDriverList)" :key="item.id">
-          <SetupItemCard :data="item" @deleted="getNorthDriverList" @updated="getNorthDriverList" />
+        <emqx-col :span="8" v-for="(item, index) in showList(northDriverList)" :key="item.id">
+          <SetupItemCard
+            :data="item"
+            @deleted="getNorthDriverList"
+            @updated="getNorthDriverList"
+            @toggle-status="setNorthNodeStartStopStatus(item, $event, index)"
+          />
         </emqx-col>
       </emqx-row>
     </div>
@@ -45,8 +50,13 @@
         </div>
       </div>
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="item in showList(southDriverList)" :key="item.id">
-          <SouthDriveItemCard :data="item" @deleted="getSouthDriverList" @updated="getSouthDriverList" />
+        <emqx-col :span="8" v-for="(item, index) in showList(southDriverList)" :key="item.id">
+          <SouthDriveItemCard
+            :data="item"
+            @deleted="getSouthDriverList"
+            @updated="getSouthDriverList"
+            @toggle-status="setSouthNodeStartStopStatus(item, $event, index)"
+          />
         </emqx-col>
       </emqx-row>
     </div>
@@ -67,6 +77,7 @@ import SetupItemCard from '@/views/config/northDriver/components/SetupItemCard.v
 import SouthDriveItemCard from '@/views/config/southDriver/components/SouthDriveItemCard.vue'
 import { MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW } from '@/utils/constants'
 import { DriverDirection } from '@/types/enums'
+import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
 
 const { northDriverList, getNorthDriverList } = useNorthDriver(false)
 const { southDriverList, getSouthDriverList } = useSouthDriver(false)
@@ -74,6 +85,32 @@ const isLoading = ref(false)
 
 const showNorthDialog = ref(false)
 const showSouthDialog = ref(false)
+
+const { toggleNodeStartStopStatus } = useToggleNodeStartStopStatus()
+const setNorthNodeStartStopStatus = async (node: DriverItemInList, status: boolean, nodeIndex: number) => {
+  try {
+    const ret = await toggleNodeStartStopStatus(node, status)
+    if (typeof ret === 'object') {
+      northDriverList.value.splice(nodeIndex, 1, ret)
+    } else {
+      getNorthDriverList()
+    }
+  } catch (error) {
+    //
+  }
+}
+const setSouthNodeStartStopStatus = async (node: DriverItemInList, status: boolean, nodeIndex: number) => {
+  try {
+    const ret = await toggleNodeStartStopStatus(node, status)
+    if (typeof ret === 'object') {
+      southDriverList.value.splice(nodeIndex, 1, ret)
+    } else {
+      getSouthDriverList()
+    }
+  } catch (error) {
+    //
+  }
+}
 
 const showList = (list: Array<DriverItemInList>) => list.slice(0, MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW)
 
