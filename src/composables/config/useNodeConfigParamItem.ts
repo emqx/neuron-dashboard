@@ -16,7 +16,7 @@ export default (props: Props) => {
 
   const createNumberParamRules = () => [
     {
-      required: true,
+      required: !!props.paramInfo.default,
       message: createCommonErrorMessage('input', props.paramInfo.name),
     },
     {
@@ -35,7 +35,7 @@ export default (props: Props) => {
 
   const createStringParamRules = () => [
     {
-      required: true,
+      required: !!props.paramInfo.default,
       message: createCommonErrorMessage('input', props.paramInfo.name),
     },
     {
@@ -53,7 +53,7 @@ export default (props: Props) => {
   ]
 
   const createSelectParamRules = () => ({
-    required: true,
+    required: !!props.paramInfo.default,
     message: createCommonErrorMessage('select', props.paramInfo.name),
   })
 

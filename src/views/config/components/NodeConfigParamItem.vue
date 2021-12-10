@@ -1,5 +1,5 @@
 <template>
-  <emqx-form-item class="node-config-param-item" :rules="rules" :prop="paramKey">
+  <emqx-form-item class="node-config-param-item" :rules="rules" :prop="paramKey" :required="!!paramInfo.default">
     <template #label>
       <span>{{ showLabel() }}</span>
       <el-popover placement="top-start" :width="300" trigger="hover" :content="paramInfo.description">
