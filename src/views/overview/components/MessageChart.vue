@@ -4,9 +4,25 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, watchEffect, watch } from 'vue'
-import * as echarts from 'echarts'
+import * as echarts from 'echarts/core'
+import { LineChart } from 'echarts/charts'
+import { AxisPointerComponent, LegendComponent, TooltipComponent, GridComponent } from 'echarts/components'
+import { LabelLayout, UniversalTransition } from 'echarts/features'
+import { CanvasRenderer } from 'echarts/renderers'
+
 import { useI18n } from 'vue-i18n'
 import dateFormat from 'dateformat'
+
+echarts.use([
+  AxisPointerComponent,
+  LegendComponent,
+  TooltipComponent,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer,
+  LineChart,
+  GridComponent,
+])
 
 const { t } = useI18n()
 
