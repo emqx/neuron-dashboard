@@ -15,6 +15,9 @@ export default {
     objName: {
       type: String,
     },
+    attr: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -30,12 +33,19 @@ export default {
       this.dialogVisible = true
     },
     handleSubmit() {
+      /* 
+        When the attribute type is 'string', 
+        even if the write data is ‘123’, 
+        it must be submitted as string type data.
+      */
+      const { type = 'word' } = this.attr
+      const valn = type === 'string' ? this.val : Number.isNaN(+this.val) ? this.val : +this.val
       if (this.val) {
         const params = {
           func: 51,
           srcn: this.objName,
           attn: this.propName,
-          valn: isNaN(+this.val) ? this.val : +this.val,
+          valn,
         }
         this.$ws().send(params)
       }

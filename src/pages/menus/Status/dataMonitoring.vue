@@ -63,7 +63,7 @@
     </el-pagination>
     <CurrentChartDialog ref="CurrentChartDialog" :props="multipleSelection" :objName="objName" />
     <HistoryChartDialog ref="HistoryChartDialog" :props="multipleSelection" :objName="objName" />
-    <WriteDialog ref="WriteDialog" :objName="objName" />
+    <WriteDialog ref="WriteDialog" :objName="objName" :attr="currentAttr" />
   </Container>
 </template>
 
@@ -110,6 +110,7 @@ export default {
       count: 0,
       pageSize: 500,
       page: 1,
+      currentAttr: {},
     }
   },
   computed: {
@@ -120,6 +121,17 @@ export default {
     }),
     objList() {
       return this.dataList.map((i) => i.objn)
+    },
+    /**
+     * The attribute list of the currently selected object,
+     * in order to obtain the data type of the attribute.
+     */
+    currentAttrList() {
+      const findResult = this.objectData.find(({ objn }) => objn === this.objName)
+      if (findResult) {
+        return findResult.oatt
+      }
+      return []
     },
     tableData() {
       return this.dataList
@@ -149,11 +161,13 @@ export default {
       const currentTableKey = paginateWithTimeStamp(tableKeyWithTimeStamp, this.pageSize, this.page)
       currentTableKey.forEach((i) => {
         const checked = this.multipleSelection.find((j) => j.prop === i)
+        const type = (this.currentAttrList[i] || {}).oatt || 'word'
         data.push({
           prop: i === 'tstp' ? 'Time' : i,
           val: this.tableData[0][i],
           writable: this.currentWritableData ? !!this.currentWritableData[i] : false,
           checked: checked ? checked.check : false,
+          type,
         })
       })
       return data
@@ -178,6 +192,7 @@ export default {
   },
   methods: {
     handleWrite(row) {
+      this.currentAttr = row
       this.$refs.WriteDialog.handleShow(row.prop)
     },
     handleShow(row, type) {
