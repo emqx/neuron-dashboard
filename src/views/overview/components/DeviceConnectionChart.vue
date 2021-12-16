@@ -4,8 +4,22 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
-import * as echarts from 'echarts'
 import dateFormat from 'dateformat'
+import * as echarts from 'echarts/core'
+import { BarChart } from 'echarts/charts'
+import { AxisPointerComponent, LegendComponent, TooltipComponent } from 'echarts/components'
+import { LabelLayout, UniversalTransition } from 'echarts/features'
+import { CanvasRenderer } from 'echarts/renderers'
+
+echarts.use([
+  BarChart,
+  AxisPointerComponent,
+  LegendComponent,
+  TooltipComponent,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer,
+])
 
 const mockXData = (length = 27) => {
   const ret = []
