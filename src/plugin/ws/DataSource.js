@@ -94,7 +94,14 @@ class DataSource {
 
     if (this.websocket && success) {
       this.websocket.onmessage = (e) => {
-        const data = e.data && JSON.parse(e.data)
+        let { data } = e
+        try {
+          if (data) {
+            data = JSON.parse(data)
+          }
+        } catch (error) {
+          console.error(error)
+        }
         this.onsuccess.forEach((i) => {
           if (!data.wtrm || data.wtrm === this.wtrm) {
             if (data.errc) {
