@@ -72,7 +72,7 @@ const login = async () => {
       name: 'Overview',
     })
   } catch (error) {
-    //
+    console.error(error)
   } finally {
     isLoading.value = false
   }

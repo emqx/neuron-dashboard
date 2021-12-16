@@ -80,7 +80,7 @@ const submit = async () => {
     emit('submitted')
     showDialog.value = false
   } catch (error) {
-    //
+    console.error(error)
   }
 }
 </script>

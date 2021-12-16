@@ -124,7 +124,7 @@ export default () => {
         name: 'SouthDriverGroupTag',
       })
     } catch (error) {
-      //
+      console.error(error)
     } finally {
       isSubmitting.value = false
     }

@@ -78,7 +78,7 @@ const submit = async () => {
     showDialog.value = false
     emit('updated')
   } catch (error) {
-    //
+    console.error(error)
   } finally {
     isSubmitting.value = false
   }
