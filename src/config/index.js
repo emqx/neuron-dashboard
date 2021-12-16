@@ -114,6 +114,9 @@ export const AttributeTypeList = [
   {
     val: 'bit',
   },
+  {
+    val: 'string',
+  },
 ]
 
 export const Operator = [
