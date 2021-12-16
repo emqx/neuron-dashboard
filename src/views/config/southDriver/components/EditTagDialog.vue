@@ -73,7 +73,7 @@ const submit = async () => {
     EmqxMessage.success(t('common.submitSuccess'))
     emit('submitted')
   } catch (error) {
-    //
+    console.error(error)
   } finally {
     isSubmitting.value = false
   }

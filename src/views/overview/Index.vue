@@ -96,7 +96,7 @@ const setNorthNodeStartStopStatus = async (node: DriverItemInList, status: boole
       getNorthDriverList()
     }
   } catch (error) {
-    //
+    console.error(error)
   }
 }
 const setSouthNodeStartStopStatus = async (node: DriverItemInList, status: boolean, nodeIndex: number) => {
@@ -108,7 +108,7 @@ const setSouthNodeStartStopStatus = async (node: DriverItemInList, status: boole
       getSouthDriverList()
     }
   } catch (error) {
-    //
+    console.error(error)
   }
 }
 

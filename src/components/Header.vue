@@ -73,7 +73,7 @@ const logout = async () => {
       name: 'Login',
     })
   } catch (error) {
-    //
+    console.error(error)
   }
 }
 </script>

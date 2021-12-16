@@ -56,7 +56,7 @@ export const useSubscriptionList = () => {
       EmqxMessage.success(t('common.operateSuccessfully'))
       getSubscriptionList()
     } catch (error) {
-      //
+      console.error(error)
     }
   }
 

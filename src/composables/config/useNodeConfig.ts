@@ -118,7 +118,7 @@ export default (props: Props) => {
       EmqxMessage.success(t('common.submitSuccess'))
       router.back()
     } catch (error) {
-      //
+      console.error(error)
     } finally {
       isSubmitting.value = false
     }

@@ -45,7 +45,7 @@ const setNodeStartStopStatus = async (node: DriverItemInList, status: boolean, n
       getSouthDriverList()
     }
   } catch (error) {
-    //
+    console.error(error)
   }
 }
 
