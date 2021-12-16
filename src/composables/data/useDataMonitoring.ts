@@ -137,16 +137,14 @@ export default () => {
     const { nodeID, groupName: currentGroupName } = currentGroup.value
     let canReSubAndRequest = false
     if (Date.now() - lastTimestamp < 500 && groupName === currentGroupName && count < 3) {
-      console.log(1)
       canReSubAndRequest = true
     } else if (Date.now() - lastTimestamp > 500 || groupName !== currentGroupName) {
-      console.log(2)
       reSubCount.count = 0
       reSubCount.groupName = currentGroupName
       canReSubAndRequest = true
     }
     if (canReSubAndRequest) {
-      reSubCount.count++
+      reSubCount.count += 1
       reSubCount.lastTimestamp = Date.now()
       await subscribe(Number(nodeID), currentGroupName)
       getTableData()
@@ -242,7 +240,6 @@ export default () => {
   const handleShowValueByHexadecimalChanged = () => {
     totalData.value.forEach(async (item) => {
       item.valueToShow = await valueToShow(item)
-      console.log(item.valueToShow)
     })
   }
 
