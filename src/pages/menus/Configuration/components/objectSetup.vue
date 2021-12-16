@@ -192,6 +192,7 @@ export default {
           tstd: sheet.tstd,
           updt: sheet.updt,
           obsz: sheet.obsz,
+          description: sheet.objdesc,
         })),
         (sheet) => sheet.objn,
       )
@@ -206,6 +207,7 @@ export default {
             rtim: currentObj.rtim,
             adis: currentObj.adis,
             achg: currentObj.achg,
+            description: currentObj.attrdesc,
           })),
           (currentObj) => currentObj.attn,
         )
@@ -243,12 +245,14 @@ export default {
       const cols = [
         'pref',
         'objn',
+        'objdesc',
         'suff',
         'updt',
         'logt',
         'tstd',
         'obsz',
         'attn',
+        'attdesc',
         'attt',
         'deci',
         'achg',
@@ -259,13 +263,31 @@ export default {
       ]
       const webwork = [cols]
       objList.forEach((obj) => {
-        const { objn, updt, logt, tstd, obsz } = obj
+        const { objn, description: objdesc, updt, logt, tstd, obsz } = obj
         const content = []
         obj.oatt.forEach((attrs) => {
-          const { attn, attt, deci, achg, adis, attr, rtim, aadd } = attrs
+          const { attn, description: attdesc, attt, deci, achg, adis, attr, rtim, aadd } = attrs
           aadd.forEach((item) => {
             const { pref, suff, addr } = item
-            content.push([pref, objn, suff, updt, logt, tstd, obsz, attn, attt, deci, achg, adis, attr, rtim, addr])
+            content.push([
+              pref,
+              objn,
+              objdesc,
+              suff,
+              updt,
+              logt,
+              tstd,
+              obsz,
+              attn,
+              attdesc,
+              attt,
+              deci,
+              achg,
+              adis,
+              attr,
+              rtim,
+              addr,
+            ])
           })
         })
         webwork.push(...content)
