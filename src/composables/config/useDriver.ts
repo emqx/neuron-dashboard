@@ -40,7 +40,7 @@ export const useDriverStatus = (props: { data: DriverItemInList }) => {
 }
 
 export const useNodeStartStopStatus = () => {
-  const countNodeStartStopStatus = (data: DriverItemInList) => (data.running === NodeState.Running ? true : false)
+  const countNodeStartStopStatus = (data: DriverItemInList) => data.running === NodeState.Running
   return {
     countNodeStartStopStatus,
   }
