@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <Header />
-    <emqx-container normal fixed-nav class="body">
+    <emqx-container normal fixed-nav class="body" :page-min-width="1250">
       <template #nav>
         <side-nav></side-nav>
       </template>
