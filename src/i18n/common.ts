@@ -71,10 +71,6 @@ export default {
     zh: '关机',
     en: 'Shutdown',
   },
-  restarting: {
-    zh: '正在重启',
-    en: 'Restarting',
-  },
   send: {
     zh: '发送',
     en: 'Send',
@@ -175,21 +171,9 @@ export default {
     zh: '确认退出登录？',
     en: 'Are you sure logout?',
   },
-  confirmRestart: {
-    zh: '确认重启网关？',
-    en: 'Are you sure Restart Gateway',
-  },
-  confirmSend: {
-    zh: '确认发送配置？',
-    en: 'Are you sure send your Configuration',
-  },
   confirm: {
     zh: '确认',
     en: 'Confirm',
-  },
-  discardChanges: {
-    zh: '放弃更改',
-    en: 'Discard Changes',
   },
   back: {
     zh: '返回',
@@ -203,10 +187,6 @@ export default {
     zh: '描述',
     en: 'Description',
   },
-  statement: {
-    zh: '语句',
-    en: 'Statement',
-  },
   lang: {
     zh: '语言',
     en: 'Language',
@@ -218,10 +198,6 @@ export default {
   save: {
     zh: '保存',
     en: 'Save',
-  },
-  unsubmitAndSave: {
-    zh: '您尚未提交更改，提交并继续？',
-    en: 'You have unsubmitted changes, submit and proceed?',
   },
   oper: {
     zh: '操作',
