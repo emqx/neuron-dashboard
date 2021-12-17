@@ -10,11 +10,6 @@
       <emqx-form-item prop="name" :label="$t('config.groupName')" required>
         <emqx-input v-model="groupForm.name" :disabled="group" />
       </emqx-form-item>
-      <emqx-form-item prop="node_id" label="Node" required>
-        <emqx-select v-model="groupForm.node_id" :disabled="group">
-          <emqx-option v-for="item in nodeList" :key="item.id" :value="item.id" :label="item.name" />
-        </emqx-select>
-      </emqx-form-item>
       <emqx-form-item prop="interval" label="Interval" required>
         <emqx-input v-model="groupForm.interval">
           <template #append>ms</template>
