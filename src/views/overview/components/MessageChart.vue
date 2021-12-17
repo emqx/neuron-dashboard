@@ -9,6 +9,7 @@ import { LineChart } from 'echarts/charts'
 import { AxisPointerComponent, LegendComponent, TooltipComponent, GridComponent } from 'echarts/components'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
+import useResizeChart from '@/composables/useResizeChart'
 
 import { useI18n } from 'vue-i18n'
 import dateFormat from 'dateformat'
@@ -25,7 +26,6 @@ echarts.use([
 ])
 
 const { t } = useI18n()
-
 const NORTH = t('config.north')
 const SOUTH = t('config.south')
 
@@ -55,6 +55,8 @@ const baseAxisOption = {
   axisLine: { show: false },
   axisTick: { show: false },
 }
+
+const { setEChartInstance } = useResizeChart()
 
 const mockXData = (length = 16) => {
   const ret = []
@@ -148,6 +150,7 @@ const option = reactive({
 
 onMounted(() => {
   chartInstance = echarts.init(chartEl.value)
+  setEChartInstance(chartInstance)
   chartInstance.setOption(option)
 })
 </script>
