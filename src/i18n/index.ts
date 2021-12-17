@@ -5,7 +5,7 @@ import zhLang from 'element-plus/lib/locale/lang/zh-cn'
 import enLang from 'element-plus/lib/locale/lang/en'
 import store from '@/store'
 
-const LangModules = ['data', 'logs', 'script', 'common', 'config', 'alarm', 'admin', 'error']
+const LangModules = ['data', 'common', 'config', 'admin', 'error']
 
 type LangModel = {
   [key in Language]: $TSFixed
