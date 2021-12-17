@@ -10,6 +10,7 @@ import { BarChart } from 'echarts/charts'
 import { AxisPointerComponent, LegendComponent, TooltipComponent } from 'echarts/components'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
+import useResizeChart from '@/composables/useResizeChart'
 
 echarts.use([
   BarChart,
@@ -20,6 +21,8 @@ echarts.use([
   UniversalTransition,
   CanvasRenderer,
 ])
+
+const { setEChartInstance } = useResizeChart()
 
 const mockXData = (length = 27) => {
   const ret = []
@@ -86,6 +89,7 @@ const options = reactive({
 
 onMounted(() => {
   chartInstance = echarts.init(chartEl.value)
+  setEChartInstance(chartInstance)
   chartInstance.setOption(options)
 })
 </script>
