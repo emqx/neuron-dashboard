@@ -8,12 +8,12 @@
   >
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
       <emqx-form-item prop="src_node_id" :label="$t('config.southDevice')">
-        <emqx-select v-model="subscriptionForm.src_node_id" @change="selectedNodeChanged">
+        <emqx-select v-model="subscriptionForm.src_node_id" @change="selectedNodeChanged" filterable>
           <emqx-option v-for="item in deviceList" :key="item.id" :value="item.id" :label="item.name" />
         </emqx-select>
       </emqx-form-item>
       <emqx-form-item prop="name" label="Group">
-        <emqx-select v-model="subscriptionForm.name">
+        <emqx-select v-model="subscriptionForm.name" filterable>
           <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
         </emqx-select>
       </emqx-form-item>
