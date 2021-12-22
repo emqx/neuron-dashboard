@@ -85,6 +85,11 @@ const rules = {
 }
 
 const validate = () => {
+  // When the component is deleted, the form component is no longer available
+  // but the validate method can still be called
+  if (!formCom.value) {
+    return Promise.resolve()
+  }
   return formCom.value.validate()
 }
 
