@@ -255,8 +255,6 @@ export default {
         'attrdesc',
         'attt',
         'deci',
-        'achg',
-        'adis',
         'attr',
         'rtim',
         'addr',
@@ -266,7 +264,7 @@ export default {
         const { objn, description: objdesc, updt, logt, tstd, obsz } = obj
         const content = []
         obj.oatt.forEach((attrs) => {
-          const { attn, description: attrdesc, attt, deci, achg, adis, attr, rtim, aadd } = attrs
+          const { attn, description: attrdesc, attt, deci, attr, rtim, aadd } = attrs
           aadd.forEach((item) => {
             const { pref, suff, addr } = item
             content.push([
@@ -282,8 +280,6 @@ export default {
               attrdesc,
               attt,
               deci,
-              achg,
-              adis,
               attr,
               rtim,
               addr,
