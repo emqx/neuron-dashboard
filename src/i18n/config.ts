@@ -312,4 +312,8 @@ export default {
     zh: '个字符',
     en: ' characters',
   },
+  contentPreview: {
+    zh: '内容预览',
+    en: 'Content preview',
+  },
 }

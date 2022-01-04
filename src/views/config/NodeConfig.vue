@@ -13,13 +13,14 @@
       <emqx-row>
         <emqx-col :span="12">
           <emqx-form ref="formCom" :model="configForm">
-            <NodeConfigParamItem
-              v-for="field in fieldList"
-              :key="field.key"
-              v-model="configForm[field.key]"
-              :param-key="field.key"
-              :param-info="field.info"
-            />
+            <template v-for="field in fieldList" :key="field.key">
+              <NodeConfigParamItem
+                v-if="shouldFieldShow(field)"
+                v-model="configForm[field.key]"
+                :param-key="field.key"
+                :param-info="field.info"
+              />
+            </template>
           </emqx-form>
         </emqx-col>
       </emqx-row>
@@ -50,7 +51,8 @@ const props = defineProps({
   },
 })
 
-const { nodeName, configForm, fieldList, isLoading, formCom, isSubmitting, submit, cancel } = useNodeConfig(props)
+const { nodeName, configForm, fieldList, isLoading, formCom, isSubmitting, shouldFieldShow, submit, cancel } =
+  useNodeConfig(props)
 </script>
 
 <style lang="scss">

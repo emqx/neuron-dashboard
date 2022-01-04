@@ -1,5 +1,5 @@
 import { Merge } from 'type-fest'
-import { DriverDirection, NodeLinkState, NodeState, PluginKind, TypeOfPluginParam } from './enums'
+import { DriverDirection, NodeLinkState, NodeState, ParamRequired, PluginKind, TypeOfPluginParam } from './enums'
 
 /**
  * Params get from API
@@ -61,6 +61,11 @@ export interface ResponseDriverListData {
 interface ParamBaseInfo {
   description: string
   name: string
+  attribute: ParamRequired
+  condition?: {
+    field: string
+    value: boolean | number | string
+  }
 }
 
 export interface NumberParamInfo extends ParamBaseInfo {
@@ -86,6 +91,12 @@ interface BoolParamInfo extends ParamBaseInfo {
   valid: Record<string, never>
 }
 
+interface FileParamInfo extends ParamBaseInfo {
+  type: TypeOfPluginParam.File
+  default?: string
+  valid: Record<string, never>
+}
+
 interface MapItem {
   key: string
   value: number
@@ -98,7 +109,7 @@ interface MapParamInfo extends ParamBaseInfo {
   }
 }
 
-export type ParamInfo = NumberParamInfo | StringParamInfo | BoolParamInfo | MapParamInfo
+export type ParamInfo = NumberParamInfo | StringParamInfo | BoolParamInfo | MapParamInfo | FileParamInfo
 
 export interface PluginInfo {
   tag_type: Array<TagType>
