@@ -57,6 +57,7 @@ export default (props: Props) => {
       [TypeOfPluginParam.Boolean]: null,
       [TypeOfPluginParam.Enum]: '',
       [TypeOfPluginParam.Map]: '',
+      [TypeOfPluginParam.File]: '',
     }
     return initValueMap[param.type as TypeOfPluginParam] || ''
   }
@@ -106,6 +107,14 @@ export default (props: Props) => {
     }
   }
 
+  const shouldFieldShow = (fieldData: Field) => {
+    if (!fieldData.info.condition) {
+      return true
+    }
+    const { field, value } = fieldData.info.condition
+    return configForm.value[field] === value
+  }
+
   const cancel = () => {
     router.back()
   }
@@ -139,7 +148,7 @@ export default (props: Props) => {
     isLoading,
     formCom,
     isSubmitting,
-
+    shouldFieldShow,
     submit,
     cancel,
   }

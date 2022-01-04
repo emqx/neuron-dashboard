@@ -247,4 +247,20 @@ export default {
     zh: '请选择',
     en: 'Please select the ',
   },
+  fileRequired: {
+    zh: '请上传文件',
+    en: 'Please upload files',
+  },
+  uploadFile: {
+    zh: '上传文件',
+    en: 'Upload file',
+  },
+  readFileError: {
+    zh: '读取文件时发生错误。',
+    en: 'An error occurred while reading the file.',
+  },
+  validFileError: {
+    zh: '请上传具有内容的文件',
+    en: 'Please upload a file with content',
+  },
 }

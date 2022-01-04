@@ -25,6 +25,7 @@ export enum TypeOfPluginParam {
   Boolean = 'bool',
   Enum = 'enum',
   Map = 'map',
+  File = 'file',
 }
 
 export enum TagType {
@@ -79,4 +80,9 @@ export enum NodeLinkState {
   Disconnected,
   Connecting,
   Connected,
+}
+
+export enum ParamRequired {
+  True = 'required',
+  False = 'optional',
 }

@@ -1,5 +1,5 @@
 import { NumberParamInfo, ParamInfo, StringParamInfo } from '@/types/config'
-import { TypeOfPluginParam } from '@/types/enums'
+import { ParamRequired, TypeOfPluginParam } from '@/types/enums'
 import { createCommonErrorMessage } from '@/utils/utils'
 import { Ref, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -16,7 +16,8 @@ export default (props: Props) => {
 
   const createNumberParamRules = () => [
     {
-      required: !!props.paramInfo.default,
+      // required: !!props.paramInfo.default,
+      required: props.paramInfo.attribute === ParamRequired.True,
       message: createCommonErrorMessage('input', props.paramInfo.name),
     },
     {
@@ -35,7 +36,8 @@ export default (props: Props) => {
 
   const createStringParamRules = () => [
     {
-      required: !!props.paramInfo.default,
+      // required: !!props.paramInfo.default,
+      required: props.paramInfo.attribute === ParamRequired.True,
       message: createCommonErrorMessage('input', props.paramInfo.name),
     },
     {
@@ -53,9 +55,18 @@ export default (props: Props) => {
   ]
 
   const createSelectParamRules = () => ({
-    required: !!props.paramInfo.default,
+    // required: !!props.paramInfo.default,
+    required: props.paramInfo.attribute === ParamRequired.True,
     message: createCommonErrorMessage('select', props.paramInfo.name),
   })
+
+  const createFileParamRules = () => [
+    {
+      // required: !!props.paramInfo.default,
+      required: props.paramInfo.attribute === ParamRequired.True,
+      message: t('common.fileRequired'),
+    },
+  ]
 
   const fillRules = () => {
     const createMap = {
@@ -64,6 +75,7 @@ export default (props: Props) => {
       [TypeOfPluginParam.Boolean]: createSelectParamRules,
       [TypeOfPluginParam.Enum]: createSelectParamRules,
       [TypeOfPluginParam.Map]: createSelectParamRules,
+      [TypeOfPluginParam.File]: createFileParamRules,
     }
     rules.value = createMap[props.paramInfo.type] && createMap[props.paramInfo.type]()
   }

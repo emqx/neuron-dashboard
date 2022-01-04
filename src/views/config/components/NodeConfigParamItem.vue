@@ -2,7 +2,13 @@
   <emqx-form-item class="node-config-param-item" :rules="rules" :prop="paramKey" :required="!!paramInfo.default">
     <template #label>
       <span>{{ showLabel() }}</span>
-      <el-popover placement="top-start" :width="300" trigger="hover" :content="paramInfo.description">
+      <el-popover
+        v-if="paramInfo.description"
+        placement="top-start"
+        :width="300"
+        trigger="hover"
+        :content="paramInfo.description"
+      >
         <template #reference>
           <i class="iconfont iconalarm" />
         </template>
@@ -17,6 +23,16 @@
       <emqx-radio :label="true">True</emqx-radio>
       <emqx-radio :label="false">False</emqx-radio>
     </emqx-radio-group>
+    <!-- File -->
+    <div class="file-param" v-else-if="paramInfo.type === TypeOfPluginParam.File">
+      <emqx-upload class="file-upload" :show-file-list="false" :before-upload="handleUpload">
+        <emqx-button size="mini">{{ t('common.uploadFile') }}</emqx-button>
+      </emqx-upload>
+      <div class="file-content-preview" v-if="inputValue">
+        <label>{{ t('config.contentPreview') }}:</label>
+        <span>{{ fileContentPreview(inputValue) }}</span>
+      </div>
+    </div>
     <!-- Enum -->
     <!-- <emqx-select v-else-if="paramInfo.type === TypeOfPluginParam.Enum">
       <emqx-option />
@@ -46,6 +62,10 @@ import { ElPopover } from 'element-plus'
 import { ParamInfo } from '@/types/config'
 import { TypeOfPluginParam } from '@/types/enums'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
+import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   modelValue: {
@@ -73,6 +93,16 @@ const inputValue = computed({
 })
 
 const { rules } = useNodeConfigParamItem(props)
+const { setMaxSize, readFile } = useUploadFileAndRead()
+
+const handleUpload = async (file: any) => {
+  try {
+    const content = await readFile(file)
+    inputValue.value = content
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 const showLabel = () => upperFirstLetter(props.paramInfo?.name || '')
 
@@ -82,6 +112,10 @@ const upperFirstLetter = (str: string) => {
   }
   return str
 }
+
+const PREVIEW_MAX_LENGTH = 50
+const fileContentPreview = (content: string) =>
+  content.length > PREVIEW_MAX_LENGTH ? content.slice(0, 50) + '...' : content
 </script>
 
 <style lang="scss">
@@ -98,6 +132,13 @@ const upperFirstLetter = (str: string) => {
       font-size: 18px;
       cursor: pointer;
     }
+  }
+  .el-form-item__content::before,
+  .el-form-item__content::after {
+    clear: both;
+  }
+  .file-content-preview {
+    font-size: 12px;
   }
 }
 </style>
