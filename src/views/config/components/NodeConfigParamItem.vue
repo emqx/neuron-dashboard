@@ -29,7 +29,7 @@
         <emqx-button size="mini">{{ t('common.uploadFile') }}</emqx-button>
       </emqx-upload>
       <div class="file-content-preview" v-if="inputValue">
-        <label>{{ t('config.contentPreview') }}:</label>
+        <label>Content-MD5:</label>
         <span>{{ fileContentPreview(inputValue) }}</span>
       </div>
     </div>
@@ -64,6 +64,7 @@ import { TypeOfPluginParam } from '@/types/enums'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import { useI18n } from 'vue-i18n'
+import md5 from 'blueimp-md5'
 
 const { t } = useI18n()
 
@@ -113,9 +114,7 @@ const upperFirstLetter = (str: string) => {
   return str
 }
 
-const PREVIEW_MAX_LENGTH = 50
-const fileContentPreview = (content: string) =>
-  content.length > PREVIEW_MAX_LENGTH ? content.slice(0, 50) + '...' : content
+const fileContentPreview = md5
 </script>
 
 <style lang="scss">
