@@ -159,13 +159,14 @@ export default {
       const canUseTableKey = tableKeyWithTimeStamp.filter((i) => i !== 'tstp')
       this.count = canUseTableKey.length
       const currentTableKey = paginateWithTimeStamp(tableKeyWithTimeStamp, this.pageSize, this.page)
-      currentTableKey.forEach((i) => {
-        const checked = this.multipleSelection.find((j) => j.prop === i)
-        const type = (this.currentAttrList[i] || {}).oatt || 'word'
+      currentTableKey.forEach((key) => {
+        const checked = this.multipleSelection.find((j) => j.prop === key)
+        const type = (this.currentAttrList.find(({ attn }) => attn === key) || {}).attt || 'word'
+        console.log(type)
         data.push({
-          prop: i === 'tstp' ? 'Time' : i,
-          val: this.tableData[0][i],
-          writable: this.currentWritableData ? !!this.currentWritableData[i] : false,
+          prop: key === 'tstp' ? 'Time' : key,
+          val: this.tableData[0][key],
+          writable: this.currentWritableData ? !!this.currentWritableData[key] : false,
           checked: checked ? checked.check : false,
           type,
         })
