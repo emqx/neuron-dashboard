@@ -114,6 +114,7 @@ export default () => {
   const nodeID = computed(() => Number(route.params.nodeID))
   const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
+  // Limit the type of tag
   const nodePluginInfo: Ref<PluginInfo> = ref({} as PluginInfo)
 
   const getNodePluginInfo = async () => {
