@@ -332,4 +332,8 @@ export default {
     zh: '下载模版',
     en: 'Download template',
   },
+  tagTypeError: {
+    zh: '当前设备 plugin 能添加的 tag 的 type 为 {typesStr}, 请调整表格数据后再尝试提交',
+    en: 'The type of the tag that can be added by the current device plugin is {typesStr}, please try to upload after adjusting the table data',
+  },
 }

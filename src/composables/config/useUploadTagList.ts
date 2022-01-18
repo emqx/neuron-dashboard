@@ -3,17 +3,18 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import { addTag } from '@/api/config'
 import { TagForm } from '@/types/config'
 import { useI18n } from 'vue-i18n'
-import useAddTag from '@/composables/config/useAddTag'
 import { matchObjShape } from '@/utils/utils'
 import { useRoute } from 'vue-router'
-import { useTagTypeSelect, useTagAttributeTypeSelect } from './useAddTag'
+import useAddTag, { useTagTypeSelect, useTagAttributeTypeSelect } from './useAddTag'
+import { TagType } from '@/types/enums'
 
 export default () => {
   const { fileReader } = useTableFileReader()
-  const { createRawTagForm } = useAddTag()
+  const { createRawTagForm, nodePluginInfo } = useAddTag()
   const { t } = useI18n()
   const route = useRoute()
-  const { findValueByLabel: findTypeValueByLabel } = useTagTypeSelect()
+
+  const { findValueByLabel: findTypeValueByLabel, findLabelByValue: findTypeLabelByValue } = useTagTypeSelect()
   const { getTotalValueByStr: getAttrTotalValueByStr } = useTagAttributeTypeSelect()
 
   const checkTagListInTableFile = (data: Array<TagForm>): boolean => {
@@ -29,6 +30,8 @@ export default () => {
     return true
   }
 
+  const checkTagType = (type: TagType) => nodePluginInfo.value.tag_type.some((item) => item === type)
+
   const handleTagListInTableFile = async (tagList: Array<Record<string, any>>): Promise<Array<TagForm>> => {
     return new Promise((resolve, reject) => {
       let startIndex = 2
@@ -38,6 +41,15 @@ export default () => {
         const type = findTypeValueByLabel(typeLabel)
         if (!type || !attr) {
           EmqxMessage.error(`${t('config.tableRowDataError', { rowNum: startIndex })} ${t('config.errorTableError')}`)
+          reject()
+          break
+        }
+        if (!checkTagType(type)) {
+          EmqxMessage.error(
+            t('config.tagTypeError', {
+              typesStr: nodePluginInfo.value.tag_type.map((item) => findTypeLabelByValue(item)).join(', '),
+            }),
+          )
           reject()
           break
         }
