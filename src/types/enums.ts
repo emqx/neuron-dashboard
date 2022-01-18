@@ -45,7 +45,7 @@ export enum TagType {
   CSTRING,
 }
 
-export enum TagAttrbuteType {
+export enum TagAttributeType {
   Read = 1,
   Write = 2,
   Subscribe = 4,

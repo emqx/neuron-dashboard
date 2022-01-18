@@ -11,10 +11,10 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <emqx-button size="small">
+          <!-- <emqx-button size="small">
             <i class="icon iconfont"></i>
             <span>{{ $t('common.import') }}</span>
-          </emqx-button>
+          </emqx-button> -->
           <emqx-button size="small">
             <i class="icon iconfont"></i>
             <span>{{ $t('common.export') }}</span>

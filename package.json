@@ -25,7 +25,7 @@
     "vuex": "^4.0.0-0",
     "vxe-table": "^4.0.14",
     "xe-utils": "^3.2.1",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.17.5"
   },
   "devDependencies": {
     "@types/blueimp-md5": "^2.18.0",
