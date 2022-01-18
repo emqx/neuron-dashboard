@@ -1,6 +1,6 @@
 import { addTag, queryPluginConfigInfo } from '@/api/config'
 import { PluginInfo, TagForm } from '@/types/config'
-import { DriverDirection, TagAttrbuteType, TagType } from '@/types/enums'
+import { DriverDirection, TagAttributeType, TagType } from '@/types/enums'
 import { ref, Ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
@@ -20,18 +20,21 @@ export const useTagTypeSelect = () => {
 
   const findLabelByValue = (val: number) => tagTypeOptList.find(({ value }) => val === value)?.label || ''
 
+  const findValueByLabel = (lab: TagType) => tagTypeOptList.find(({ label }) => label === lab)?.value || undefined
+
   return {
     tagTypeOptList,
     findLabelByValue,
+    findValueByLabel,
   }
 }
 
 export const useTagAttributeTypeSelect = () => {
-  const tagAttributeTypeOptList = Object.keys(TagAttrbuteType)
-    .filter((key) => typeof TagAttrbuteType[key as keyof typeof TagAttrbuteType] === 'string')
+  const tagAttributeTypeOptList = Object.keys(TagAttributeType)
+    .filter((key) => typeof TagAttributeType[key as keyof typeof TagAttributeType] === 'string')
     .map((key) => ({
       value: Number(key),
-      label: TagAttrbuteType[key as keyof typeof TagAttrbuteType],
+      label: TagAttributeType[key as keyof typeof TagAttributeType],
     }))
 
   // 1, 2, 4
@@ -47,6 +50,7 @@ export const useTagAttributeTypeSelect = () => {
   }
 
   const findLabelByValue = (val: number) => tagAttributeTypeOptList.find(({ value }) => val === value)?.label || ''
+  const findValueByLabel = (lab: any) => tagAttributeTypeOptList.find(({ label }) => label === lab)?.value || undefined
 
   const getAttrStrByValue = (val: number) => {
     const key = Number(Object.keys(tagAttrValueMap).find((total) => Number(total) === val))
@@ -54,11 +58,34 @@ export const useTagAttributeTypeSelect = () => {
     return valueArr.map((value) => findLabelByValue(value)).join(', ')
   }
 
+  // "Write Subscribe" to 5
+  const getTotalValueByStr = (str: string, separator: string): number | undefined => {
+    try {
+      if (!str) {
+        return undefined
+      }
+      const labelArr = str.split(separator)
+      let ret = 0
+      let currentValue: number | undefined = 0
+      for (const label of labelArr) {
+        currentValue = findValueByLabel(label)
+        if (!currentValue) {
+          return undefined
+        }
+        ret += currentValue
+      }
+      return ret
+    } catch (error) {
+      return undefined
+    }
+  }
+
   return {
     tagAttributeTypeOptList,
     tagAttrValueMap,
     getAttrStrByValue,
     findLabelByValue,
+    getTotalValueByStr,
   }
 }
 
@@ -76,6 +103,7 @@ export default () => {
     address: '',
     attribute: undefined,
     type: null,
+    // for the key when use v-for
     id: createRandomString(6),
   })
 
@@ -140,6 +168,7 @@ export default () => {
     tagList,
     isSubmitting,
 
+    createRawTagForm,
     addTagItem,
     deleteTagItem,
     setFormRef,

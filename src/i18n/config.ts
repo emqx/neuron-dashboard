@@ -312,4 +312,24 @@ export default {
     zh: '个字符',
     en: ' characters',
   },
+  validTableError: {
+    zh: '请上传具有有效数据的表格',
+    en: 'Please upload a form with valid data',
+  },
+  errorTableError: {
+    zh: '请下载模版，根据模版填充表格数据再尝试上传',
+    en: 'Please download the template, fill in the form data according to the template and try to upload',
+  },
+  uploadSuc: {
+    zh: '上传成功',
+    en: 'Uploaded successfully',
+  },
+  tableRowDataError: {
+    zh: '表格第 {rowNum} 行数据有误',
+    en: 'Incorrect data in row {rowNum} of the table',
+  },
+  downloadTemplate: {
+    zh: '下载模版',
+    en: 'Download template',
+  },
 }

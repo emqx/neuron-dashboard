@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n'
 import { TagDataInMonitoring } from '@/types/data'
 import { paginate } from '@/utils/utils'
 import { useTagAttributeTypeSelect } from '../config/useAddTag'
-import { PluginKind, TagAttrbuteType, TagType } from '@/types/enums'
+import { PluginKind, TagAttributeType, TagType } from '@/types/enums'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 
@@ -244,7 +244,7 @@ export default () => {
   }
 
   const canWrite = (item: TagDataInTable) => {
-    return item.attribute && item.attribute.some((item) => item === TagAttrbuteType.Write)
+    return item.attribute && item.attribute.some((item) => item === TagAttributeType.Write)
   }
 
   onUnmounted(() => {

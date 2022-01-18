@@ -48,3 +48,8 @@ export const createMapFromArray = (array: Array<Record<any, any>>, mapKey = 'id'
     obj[curr[mapKey]] = curr
     return obj
   }, Object.create(null))
+
+export const matchObjShape = (obj: Record<string, any>, templateObj: Record<string, any>): boolean => {
+  const keysToString = (obj: Record<string, any>) => Object.keys(obj).sort().join(',')
+  return keysToString(templateObj) === keysToString(obj)
+}

@@ -4,7 +4,7 @@
     <emqx-breadcrumb-item :to="{ name: 'SouthDriverGroup' }">{{ $t('config.groupList') }}</emqx-breadcrumb-item>
     <emqx-breadcrumb-item>{{ $t('config.tagList') }}</emqx-breadcrumb-item>
   </emqx-breadcrumb>
-  <emqx-card v-emqx-loading="isListLoading">
+  <emqx-card v-emqx-loading="isListLoading" class="tag-page">
     <h3 class="card-title">{{ $t('config.tagList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left">
@@ -15,6 +15,22 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
+          <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
+            <emqx-upload class="uploader-tag" :before-upload="uploadFile" :show-file-list="false" action="placeholder">
+              <emqx-button size="small">
+                <i class="iconfont icon-import icondownload"></i>
+                <span>{{ $t('common.import') }}</span>
+              </emqx-button>
+            </emqx-upload>
+            <template #dropdown>
+              <emqx-dropdown-menu>
+                <emqx-button class="btn-download-temp" @click="downloadTemplate">
+                  <span>{{ $t('config.downloadTemplate') }}</span>
+                </emqx-button>
+              </emqx-dropdown-menu>
+            </template>
+          </emqx-dropdown>
+
           <emqx-button size="small" type="primary" @click="goCreatePage">{{ $t('common.create') }}</emqx-button>
           <emqx-button size="small" type="warning" @click="clearTag">{{ $t('common.clear') }}</emqx-button>
           <emqx-button size="small" type="danger" @click="batchDeleteTag">{{ $t('common.delete') }}</emqx-button>
@@ -65,6 +81,7 @@ import useTagList from '@/composables/config/useTagList'
 import useNodeList from '@/composables/config/useNodeList'
 import { useRouter } from 'vue-router'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import useUploadTagList from '@/composables/config/useUploadTagList'
 
 const router = useRouter()
 
@@ -84,8 +101,41 @@ const {
 const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
 const { getAttrStrByValue } = useTagAttributeTypeSelect()
 const { getNodeNameById } = useNodeList()
+const { uploadTag } = useUploadTagList()
 
 const goCreatePage = () => {
   router.push({ name: 'SouthDriverGroupAddTag' })
 }
+
+const uploadFile = async (file: File) => {
+  try {
+    await uploadTag(file)
+    getTagList()
+  } catch (error) {
+    console.error(error)
+  }
+  return Promise.reject()
+}
+
+const downloadTemplate = () => {
+  window.open('/template/upload tag template.xlsx', '_blank')
+}
 </script>
+
+<style lang="scss">
+.tag-page {
+  .uploader-tag {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+.btn-download-temp {
+  font-weight: normal;
+  border: none;
+}
+.btn-download-temp-popper {
+  .el-dropdown-menu {
+    padding: 0;
+  }
+}
+</style>
