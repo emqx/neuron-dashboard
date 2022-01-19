@@ -39,6 +39,7 @@ import TagAttributeSelect from './TagAttributeSelect.vue'
 import { PluginInfo, TagForm } from '@/types/config'
 import { computed, defineProps, PropType, defineEmits, WritableComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { TagType } from '@/types/enums'
 
 const { t } = useI18n()
 const props = defineProps({
@@ -80,7 +81,17 @@ const form: WritableComputedRef<TagForm> = computed({
 const rules = {
   name: [{ required: true, message: t('config.tagNameRequired') }],
   address: [{ required: true, message: t('config.tagAddressRequired') }],
-  attribute: [{ required: true, message: t('config.tagAttributeRequired') }],
+  attribute: [
+    { required: true, message: t('config.tagAttributeRequired') },
+    {
+      validator(rule: unknown, value: Array<TagType>) {
+        if (!value || value.length === 0) {
+          return [new Error(t('config.tagAttributeRequired'))]
+        }
+        return []
+      },
+    },
+  ],
   type: [{ required: true, message: t('config.tagTypeRequired') }],
 }
 
