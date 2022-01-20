@@ -23,7 +23,7 @@ import { computed, defineProps, defineEmits, PropType, ref, Ref, watch } from 'v
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { ElDialog } from 'element-plus'
 import TagFormCom from './TagForm.vue'
-import { TagForm } from '@/types/config'
+import { TagData } from '@/types/config'
 import { updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
 
@@ -33,7 +33,7 @@ const props = defineProps({
     required: true,
   },
   tag: {
-    type: Object as PropType<TagForm>,
+    type: Object as PropType<TagData>,
     required: true,
   },
   nodeId: {
@@ -45,7 +45,7 @@ const emit = defineEmits(['update:modelValue', 'submitted'])
 
 const { t } = useI18n()
 
-const tagData: Ref<TagForm> = ref({} as TagForm)
+const tagData: Ref<TagData> = ref({} as TagData)
 const isSubmitting = ref(false)
 const formRef = ref()
 
@@ -68,7 +68,8 @@ const submit = async () => {
   try {
     await formRef.value.validate()
     isSubmitting.value = true
-    await updateTag(props.nodeId, tagData.value)
+    const { group_config_name, ...tagForm } = tagData.value
+    await updateTag(props.nodeId, group_config_name, tagForm)
     showDialog.value = false
     EmqxMessage.success(t('common.submitSuccess'))
     emit('submitted')
