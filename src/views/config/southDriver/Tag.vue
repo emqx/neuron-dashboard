@@ -118,7 +118,7 @@ const uploadFile = async (file: File) => {
 }
 
 const downloadTemplate = () => {
-  window.open('/template/upload tag template.xlsx', '_blank')
+  window.open('/template/upload-tag-template.xlsx', '_blank')
 }
 </script>
 
