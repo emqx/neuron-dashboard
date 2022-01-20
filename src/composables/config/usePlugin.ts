@@ -5,7 +5,6 @@ import { CreatedPlugin, PluginForm } from '@/types/config'
 import { createCommonErrorMessage, createOptionListFromEnum } from '@/utils/utils'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
-import { useNodeTypeSelect } from './useDriver'
 
 export default () => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])
@@ -24,13 +23,6 @@ export default () => {
     pluginList,
     isListLoading,
     getPluginList,
-  }
-}
-
-const usePluginKindSelect = () => {
-  const pluginKindList = createOptionListFromEnum(PluginKind).filter(({ value }) => value !== PluginKind.Static)
-  return {
-    pluginKindList,
   }
 }
 
@@ -53,33 +45,12 @@ export const useGetPluginMsgIdMap = () => {
 
 export const useAddPlugin = () => {
   const createRawPluginForm = (): PluginForm => ({
-    node_type: null,
-    name: '',
-    kind: null,
     lib_name: '',
   })
   const { t } = useI18n()
   const pluginForm = ref(createRawPluginForm())
   const pluginFormCom = ref()
   const pluginFormRules = {
-    name: [
-      {
-        required: true,
-        message: createCommonErrorMessage('input', t('common.name')),
-      },
-    ],
-    node_type: [
-      {
-        required: true,
-        message: createCommonErrorMessage('select', t('config.useFor')),
-      },
-    ],
-    kind: [
-      {
-        required: true,
-        message: createCommonErrorMessage('select', t('common.type')),
-      },
-    ],
     lib_name: [
       {
         required: true,
@@ -88,9 +59,6 @@ export const useAddPlugin = () => {
     ],
   }
   const isSubmitting = ref(false)
-
-  const { pluginKindList } = usePluginKindSelect()
-  const { nodeTypeList: useForOptionList } = useNodeTypeSelect()
 
   const submitData = async (currentPlugin?: CreatedPlugin) => {
     try {
@@ -115,8 +83,6 @@ export const useAddPlugin = () => {
     pluginForm,
     pluginFormCom,
     pluginFormRules,
-    useForOptionList,
-    pluginKindList,
     isSubmitting,
     createRawPluginForm,
     submitData,

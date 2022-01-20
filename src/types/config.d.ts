@@ -7,13 +7,13 @@ import { DriverDirection, NodeLinkState, NodeState, ParamRequired, PluginKind, T
 type Parm = Array<{ vars: string; pars: string }>
 
 export interface PluginForm {
-  kind: PluginKind | null
-  node_type: DriverDirection | null
-  name: string
   lib_name: string
 }
 
 export interface CreatedPlugin extends PluginForm {
+  kind: PluginKind | null
+  node_type: DriverDirection | null
+  name: string
   id: number
 }
 
