@@ -200,9 +200,10 @@ export const deleteTag = (data: {
   return http.delete('/tags', { data })
 }
 
-export const updateTag = (nodeID: number, tag: TagForm) => {
+export const updateTag = (nodeID: number, group_config_name: string, tag: TagForm) => {
   return http.put('/tags', {
     node_id: nodeID,
+    group_config_name,
     tags: [tag],
   })
 }
