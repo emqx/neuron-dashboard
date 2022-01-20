@@ -9,7 +9,7 @@
           <el-option v-for="item in objList" :key="item" :label="item" :value="item"> </el-option>
         </el-select>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button @click="handleShow(null, 'Current')">{{ $t('status.current') }}</el-button>
+        <!-- <el-button @click="handleShow(null, 'Current')">{{ $t('status.current') }}</el-button> -->
       </div>
     </div>
     <vxe-table
@@ -36,14 +36,14 @@
       </vxe-table-column>
       <vxe-table-column field="prop" :title="$t('status.attribute')" min-width="180"> </vxe-table-column>
       <vxe-table-column field="val" :title="$t('status.value')" min-width="180"> </vxe-table-column>
-      <vxe-table-column width="300">
+      <vxe-table-column width="160">
         <template slot-scope="scope">
           <div class="btn" v-if="scope.row.prop !== 'Time'">
             <el-button type="text" v-if="scope.row.writable" @click="handleWrite(scope.row)">{{
               $t('status.write')
             }}</el-button>
-            <el-button type="text" @click="handleShow(scope.row, 'History')">{{ $t('status.history') }}</el-button>
-            <el-button type="text" @click="handleShow(scope.row, 'Current')">{{ $t('status.current') }}</el-button>
+            <!-- <el-button type="text" @click="handleShow(scope.row, 'History')">{{ $t('status.history') }}</el-button> -->
+            <!-- <el-button type="text" @click="handleShow(scope.row, 'Current')">{{ $t('status.current') }}</el-button> -->
           </div>
         </template>
       </vxe-table-column>
