@@ -60,17 +60,12 @@ export const useAddPlugin = () => {
   }
   const isSubmitting = ref(false)
 
-  const submitData = async (currentPlugin?: CreatedPlugin) => {
+  const submitData = async () => {
     try {
       await pluginFormCom.value.validate()
       isSubmitting.value = true
-      if (currentPlugin) {
-        await updatePlugin(pluginForm.value)
-        EmqxMessage.success(t('common.submitSuccess'))
-      } else {
-        await addPlugin(pluginForm.value)
-        EmqxMessage.success(t('common.createSuccess'))
-      }
+      await addPlugin(pluginForm.value)
+      EmqxMessage.success(t('common.createSuccess'))
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()

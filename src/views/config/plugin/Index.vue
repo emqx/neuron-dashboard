@@ -56,11 +56,6 @@ const addPlugin = () => {
   currentPlugin.value = undefined
   showDialog.value = true
 }
-
-const editPlugin = (pluginItem: CreatedPlugin) => {
-  currentPlugin.value = pluginItem
-  showDialog.value = true
-}
 </script>
 
 <style lang="scss">
