@@ -3,9 +3,6 @@
     <div class="plugin-item-card-hd common-flex">
       <p class="plugin-item-name ellipsis">{{ data.name }}</p>
       <div class="handlers">
-        <AComWithDesc :content="$t('common.edit')">
-          <i class="icon el-icon-edit-outline" @click="editPlugin" />
-        </AComWithDesc>
         <AComWithDesc :content="$t('common.delete')">
           <i class="iconfont icon icondelete" @click="deletePlugin" />
         </AComWithDesc>
@@ -40,16 +37,12 @@ const props = defineProps({
     required: true,
   },
 })
-const emit = defineEmits(['deleted', 'edit'])
+const emit = defineEmits(['deleted'])
 const { getNodeTypeLabelByValue } = useNodeType()
 const { delPlugin } = useDeletePlugin()
 const deletePlugin = async () => {
   await delPlugin(props.data)
   emit('deleted')
-}
-
-const editPlugin = async () => {
-  emit('edit')
 }
 </script>
 

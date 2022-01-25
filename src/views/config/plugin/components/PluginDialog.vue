@@ -3,7 +3,7 @@
     v-model="showDialog"
     :width="600"
     custom-class="common-dialog"
-    :title="`${!!plugin ? $t('common.edit') : $t('common.add')} Plugin`"
+    :title="`${$t('common.add')} Plugin`"
     :z-index="2000"
   >
     <emqx-form ref="pluginFormCom" :model="pluginForm" :rules="pluginFormRules">
@@ -13,9 +13,9 @@
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
-          !!plugin ? $t('common.submit') : $t('common.create')
-        }}</emqx-button>
+        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+          {{ $t('common.create') }}
+        </emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
       </span>
     </template>
@@ -33,9 +33,6 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  plugin: {
-    type: Object as PropType<CreatedPlugin>,
-  },
 })
 const emit = defineEmits(['update:modelValue', 'submitted'])
 
@@ -48,12 +45,7 @@ const showDialog = computed({
 
 watch(showDialog, async (val) => {
   if (val) {
-    if (props.plugin) {
-      const { lib_name } = props.plugin
-      pluginForm.value = { lib_name }
-    } else {
-      pluginForm.value = createRawPluginForm()
-    }
+    pluginForm.value = createRawPluginForm()
     await nextTick()
     pluginFormCom.value.$refs.form.clearValidate()
   }
@@ -61,7 +53,7 @@ watch(showDialog, async (val) => {
 
 const { pluginForm, pluginFormCom, pluginFormRules, isSubmitting, createRawPluginForm, submitData } = useAddPlugin()
 const submit = async () => {
-  await submitData(props.plugin)
+  await submitData()
   showDialog.value = false
   emit('submitted')
 }
