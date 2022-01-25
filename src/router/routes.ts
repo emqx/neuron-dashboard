@@ -3,6 +3,8 @@ import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import { DriverDirection } from '@/types/enums'
 
+export const LOGIN_ROUTE_NAME = 'Login'
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -90,7 +92,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/login',
-    name: 'Login',
+    name: LOGIN_ROUTE_NAME,
     component: Login,
   },
 ]
