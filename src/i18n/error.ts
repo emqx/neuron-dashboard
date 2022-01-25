@@ -11,6 +11,30 @@ export default {
     zh: '请求参数无效',
     en: 'Request param invalid',
   },
+  [1004]: {
+    zh: '缺少令牌',
+    en: 'Missing token',
+  },
+  [1005]: {
+    zh: '解码令牌错误',
+    en: 'Decoding token error',
+  },
+  [1006]: {
+    zh: '过期的令牌',
+    en: 'Expired token',
+  },
+  [1007]: {
+    zh: '验证令牌错误',
+    en: 'Validate token error',
+  },
+  [1008]: {
+    zh: '无效令牌',
+    en: 'Invalid token',
+  },
+  [1009]: {
+    zh: '用户或密码错误',
+    en: 'User or password error',
+  },
   [2000]: {
     zh: '未找到插件名称',
     en: 'Plugin name not found',
@@ -78,6 +102,30 @@ export default {
   [2016]: {
     zh: 'Tag 配置已存在',
     en: 'Group config exist',
+  },
+  [2017]: {
+    zh: '标签名称存在',
+    en: 'Tag name exist',
+  },
+  [2018]: {
+    zh: '标签列表不存在',
+    en: 'Tag list not exist',
+  },
+  [2019]: {
+    zh: '标签地址格式无效',
+    en: 'Tag address format invalid',
+  },
+  [2020]: {
+    zh: '未找到插件库',
+    en: 'Plugin library not found',
+  },
+  [2021]: {
+    zh: '插件库信息无效',
+    en: 'Plugin library info invalid',
+  },
+  [2022]: {
+    zh: '插件名称冲突',
+    en: 'Plugin name conflict',
   },
   [3000]: {
     zh: '设备连接失败',

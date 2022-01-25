@@ -4,6 +4,7 @@ import router from '@/router/'
 import store from '@/store/index'
 import i18n from '@/i18n/index'
 import { ERROR_CODE_ARR } from './constants'
+import { LOGIN_ROUTE_NAME } from '@/router/routes'
 
 const { host, protocol } = window.location
 const serverAddress = host.split(':').length > 1 ? `${host.split(':')[0]}:7001` : host
@@ -53,7 +54,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401 || error.response.status === 403) {
+    // when requesting login, the interface will return 401 if the password or username is error, handle it
+    const isInLoginPage = router.currentRoute?.value?.name === LOGIN_ROUTE_NAME
+    if ((error.response.status === 401 && !isInLoginPage) || error.response.status === 403) {
       store.commit('LOGOUT')
       router.push({ name: 'Login' })
     } else {
