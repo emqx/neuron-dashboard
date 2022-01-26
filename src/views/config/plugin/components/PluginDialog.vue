@@ -6,7 +6,7 @@
     :title="`${$t('common.add')} Plugin`"
     :z-index="2000"
   >
-    <emqx-form ref="pluginFormCom" :model="pluginForm" :rules="pluginFormRules">
+    <emqx-form ref="pluginFormCom" :model="pluginForm" :rules="pluginFormRules" @submit.prevent>
       <emqx-form-item prop="lib_name" :label="$t('config.libName')" required>
         <emqx-input v-model="pluginForm.lib_name" />
       </emqx-form-item>
