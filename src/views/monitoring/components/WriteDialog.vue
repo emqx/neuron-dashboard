@@ -6,7 +6,7 @@
     :title="dialogTitle"
     :z-index="2000"
   >
-    <emqx-form @keyup.enter="submitData">
+    <emqx-form @keyup.enter="submitData" @submit.prevent>
       <emqx-form-item :error="inputErrorMsg">
         <template #label>
           <div class="common-flex">
