@@ -61,8 +61,8 @@
       </emqx-row>
     </div>
   </emqx-card>
-  <DriverDialog v-model="showNorthDialog" :type="DriverDirection.North" />
-  <DriverDialog v-model="showSouthDialog" :type="DriverDirection.South" />
+  <DriverDialog v-model="showNorthDialog" :type="DriverDirection.North" @submitted="getNorthDriverList" />
+  <DriverDialog v-model="showSouthDialog" :type="DriverDirection.South" @submitted="getSouthDriverList" />
 </template>
 
 <script lang="ts" setup>
