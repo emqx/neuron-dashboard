@@ -72,7 +72,7 @@ export default (props: Props) => {
     if (isUseHexadecimal.value) {
       inputValue.value = await transToHexadecimal({ ...props.tag, value: inputValue.value } as TagDataInTable)
     } else {
-      inputValue.value = await transToDecimal(inputValue.value)
+      inputValue.value = await transToDecimal({ ...props.tag, value: inputValue.value } as TagDataInTable)
     }
   }
 
@@ -87,7 +87,9 @@ export default (props: Props) => {
       return
     }
     try {
-      const trueValue = isUseHexadecimal.value ? await transToDecimal(inputValue.value) : inputValue.value
+      const trueValue = isUseHexadecimal.value
+        ? await transToDecimal({ ...props.tag, value: inputValue.value } as TagDataInTable)
+        : inputValue.value
       await checkWriteData(type, trueValue)
       inputErrorMsg.value = ''
       return Promise.resolve()
@@ -104,7 +106,9 @@ export default (props: Props) => {
       await validate()
       isSubmitting.value = true
 
-      const trueValue = isUseHexadecimal.value ? await transToDecimal(inputValue.value) : inputValue.value
+      const trueValue = isUseHexadecimal.value
+        ? await transToDecimal({ ...props.tag, value: inputValue.value } as TagDataInTable)
+        : inputValue.value
       const value = parseWriteData(type, trueValue)
       await writeData({
         node_id: Number(nodeID),
