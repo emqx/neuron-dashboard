@@ -21,7 +21,14 @@ STRING    15  string
 
 import { TagType } from '@/types/enums'
 import { HEXADECIMAL_PREFIX } from '@/utils/constants'
-import { transFloatNumberToHex, transNegativeNumberToHex, transPositiveIntegerToHex } from './convert'
+import {
+  transFloatNumberToHex,
+  transNegativeNumberToHex,
+  transPositiveIntegerToHex,
+  transFloatHexToDecimalNum,
+  transUintHexToDecimalNum,
+  transIntHexToDecimalNum,
+} from './convert'
 import { TagDataInTable } from './useDataMonitoring'
 
 export enum WriteDataErrorCode {
@@ -62,7 +69,7 @@ export default () => {
   const UINT64_RANGE = createUIntTypeRange(64)
 
   const checkByte = (value: string): Promise<boolean | Error> =>
-    /^0(x|X)[0-9a-f]+$/.test(value)
+    /^0(x|X)[0-9a-f]+$/.test(value.replace(/\s/g, ''))
       ? Promise.resolve(true)
       : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
 
@@ -139,14 +146,28 @@ export default () => {
   }
 
   const checkHexadecimal = (value: string) => {
-    const str = value.slice(0, 2).toLowerCase() === HEXADECIMAL_PREFIX ? value : HEXADECIMAL_PREFIX + value
+    const str =
+      value.slice(0, HEXADECIMAL_PREFIX.length).toLowerCase() === HEXADECIMAL_PREFIX
+        ? value
+        : HEXADECIMAL_PREFIX + value
     return checkByte(str)
   }
-  const transToDecimal = async (value: string) => {
-    const str = value.slice(0, 2).toLowerCase() === HEXADECIMAL_PREFIX ? value : HEXADECIMAL_PREFIX + value
+  const transToDecimal = async (tagData: TagDataInTable) => {
+    const { value, type } = tagData
+    const str =
+      value.slice(0, HEXADECIMAL_PREFIX.length).toLowerCase() === HEXADECIMAL_PREFIX
+        ? value
+        : HEXADECIMAL_PREFIX + value
     try {
       await checkByte(str)
-      return Number(str).toString()
+      const hexStr = value.slice(HEXADECIMAL_PREFIX.length)
+      if (type === TagType.FLOAT || type === TagType.DOUBLE) {
+        return transFloatHexToDecimalNum(hexStr, type)
+      }
+      if (type === TagType.UINT8 || type === TagType.UINT16 || type === TagType.UINT32 || type === TagType.UINT64) {
+        return transUintHexToDecimalNum(hexStr, type)
+      }
+      return transIntHexToDecimalNum(hexStr)
     } catch (error) {
       return value
     }

@@ -12,6 +12,9 @@ const floatMsgMap = {
   },
 }
 
+/**
+ * binary length
+ */
 const uintLengthMap = {
   [TagType.UINT8]: 8,
   [TagType.UINT16]: 16,
@@ -108,6 +111,14 @@ const transA4DigitBinaryNumberStrToHexStr = (str: string) => {
     .toString(16)
 }
 
+/**
+ * because toString(2) has the problem of loss of precision when the number is too large
+ */
+const transHexStrToBinaryStr = (str: string) =>
+  Array.from(str)
+    .map((item) => fillString(parseInt(item, 16).toString(2), '0', 4, true))
+    .join('')
+
 const transDecimalStrToHexStr = (str: string) => {
   if (!checkBinaryStr(str)) {
     return str
@@ -193,4 +204,97 @@ export const transNegativeNumberToHex = (
 
 export const transPositiveIntegerToHex = (value: string) => {
   return Number(value).toString(16)
+}
+
+/**
+ * For float & double
+ */
+export const transFloatHexToDecimalNum = (hexStr: string, type: TagType.FLOAT | TagType.DOUBLE) => {
+  let hex = hexStr.replace(/\s+/g, '')
+  if (hex === '') {
+    return ''
+  }
+
+  if (/^0+$/.test(hex)) {
+    return '0'
+  }
+
+  const { totalLength, exponentLength } = floatMsgMap[type]
+  const hexStrLength = totalLength / 4
+  const exponentBaseNum = Math.pow(2, exponentLength - 1) - 1
+
+  if (hex.length > hexStrLength || isNaN(parseInt(hex, 16))) {
+    return new Error('hex error')
+  }
+
+  if (hex.length < hexStrLength) {
+    hex = fillString(hex, '0', hexStrLength, true)
+  }
+
+  let binaryStr = transHexStrToBinaryStr(hex)
+  binaryStr = fillString(binaryStr, '0', totalLength, true)
+
+  const flagBit = Number(binaryStr.substring(0, 1))
+  const exponentPartBinaryStr = binaryStr.substring(1, exponentLength + 1)
+  const numExponentPartNeedToSub = parseInt(exponentPartBinaryStr, 2) - exponentBaseNum
+  let mantissaPartBinaryStr = binaryStr.substring(exponentLength + 1)
+  mantissaPartBinaryStr = '1' + mantissaPartBinaryStr
+  let totalBinaryStrWithPoint = ''
+  if (numExponentPartNeedToSub >= 0) {
+    // the number bigger than 1
+    totalBinaryStrWithPoint =
+      mantissaPartBinaryStr.substring(0, numExponentPartNeedToSub + 1) +
+      '.' +
+      mantissaPartBinaryStr.substring(numExponentPartNeedToSub + 1)
+  } else {
+    totalBinaryStrWithPoint =
+      '0.' + fillString(mantissaPartBinaryStr, '0', mantissaPartBinaryStr.length - numExponentPartNeedToSub - 1, true)
+  }
+
+  if (totalBinaryStrWithPoint.indexOf('.') == -1) {
+    totalBinaryStrWithPoint = totalBinaryStrWithPoint + '.0'
+  }
+  const [exponentPart, mantissaPart] = totalBinaryStrWithPoint.split('.')
+  const exponentPartNum = parseInt(exponentPart, 2)
+  let mantissaPartNum = 0
+  for (let i = 0; i < mantissaPart.length; i++) {
+    mantissaPartNum += parseFloat(mantissaPart.charAt(i)) * Math.pow(2, -(i + 1))
+  }
+  let totalNumPart = exponentPartNum + mantissaPartNum
+  if (flagBit === 1) {
+    totalNumPart = 0 - totalNumPart
+  }
+  return totalNumPart
+}
+
+/**
+ * For uint
+ */
+export const transUintHexToDecimalNum = (
+  unitHex: string,
+  type: TagType.UINT8 | TagType.UINT16 | TagType.UINT32 | TagType.UINT64,
+) => {
+  let hexStr = unitHex
+  const binaryLength = uintLengthMap[type]
+  const hexStrLength = binaryLength / 4
+  if (unitHex.length < hexStrLength) {
+    hexStr = fillString(hexStr, '0', hexStrLength, true)
+  }
+
+  let binaryStr = transHexStrToBinaryStr(hexStr)
+  binaryStr = fillString(binaryStr, '0', binaryLength, true)
+  const flagBit = Number(binaryStr.substring(0, 1))
+  if (flagBit === 1) {
+    binaryStr =
+      getComplement(fillString((parseInt(binaryStr.substring(1), 2) - 1).toString(2), '0', binaryLength, true)) || ''
+    return -parseInt(binaryStr.substring(1), 2)
+  }
+  return parseInt(binaryStr, 2)
+}
+
+/**
+ * For int
+ */
+export const transIntHexToDecimalNum = (intHex: string) => {
+  return parseInt(intHex, 16)
 }
