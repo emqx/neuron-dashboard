@@ -55,13 +55,8 @@ export default (props: Props) => {
   const isUseHexadecimal = ref(false)
   const isSubmitting = ref(false)
 
-  const {
-    checkHexadecimal,
-    checkWriteData,
-    parseWriteData,
-    transToDecimal,
-    transToHexadecimal,
-  } = useWriteDataCheckNParse()
+  const { checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal } =
+    useWriteDataCheckNParse()
 
   const showToggleHexadecimalSwitch = computed(() => {
     return (
@@ -75,7 +70,7 @@ export default (props: Props) => {
 
   const handleIsUseHexadecimalChanged = async () => {
     if (isUseHexadecimal.value) {
-      inputValue.value = await transToHexadecimal(inputValue.value)
+      inputValue.value = await transToHexadecimal({ ...props.tag, value: inputValue.value } as TagDataInTable)
     } else {
       inputValue.value = await transToDecimal(inputValue.value)
     }

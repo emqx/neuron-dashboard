@@ -21,6 +21,8 @@ STRING    15  string
 
 import { TagType } from '@/types/enums'
 import { HEXADECIMAL_PREFIX } from '@/utils/constants'
+import { transFloatNumberToHex, transNegativeNumberToHex, transPositiveIntegerToHex } from './convert'
+import { TagDataInTable } from './useDataMonitoring'
 
 export enum WriteDataErrorCode {
   FormattingError = 1,
@@ -149,10 +151,20 @@ export default () => {
       return value
     }
   }
-  const transToHexadecimal = async (value: string) => {
+  const transToHexadecimal = async (tagData: TagDataInTable) => {
+    const { value, type } = tagData
     try {
-      await checkFloat(value)
-      return HEXADECIMAL_PREFIX + Number(value).toString(16)
+      await checkFloat(value.toString())
+      if (type === TagType.FLOAT || type === TagType.DOUBLE) {
+        return HEXADECIMAL_PREFIX + transFloatNumberToHex(value, type)
+      }
+      if (
+        value < 0 &&
+        (type === TagType.UINT8 || type === TagType.UINT16 || type === TagType.UINT32 || type === TagType.UINT64)
+      ) {
+        return HEXADECIMAL_PREFIX + transNegativeNumberToHex(value, type)
+      }
+      return HEXADECIMAL_PREFIX + transPositiveIntegerToHex(value)
     } catch (error) {
       return value
     }
