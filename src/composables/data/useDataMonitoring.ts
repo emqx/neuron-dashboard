@@ -223,7 +223,8 @@ export default () => {
     pageController.value.num = 1
   }
 
-  const valueToShow = async ({ value, type }: TagDataInTable) => {
+  const valueToShow = async (tagData: TagDataInTable) => {
+    const { type, value } = tagData
     if (
       !showValueByHexadecimal.value ||
       type === TagType.BYTE ||
@@ -233,7 +234,7 @@ export default () => {
     ) {
       return value
     }
-    const data = await transToHexadecimal(value.toString())
+    const data = await transToHexadecimal(tagData)
     return data
   }
 
