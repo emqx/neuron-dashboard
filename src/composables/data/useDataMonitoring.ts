@@ -178,7 +178,11 @@ export default () => {
       const { data } = await getMonitoringData(Number(currentGroup.value.nodeID), currentGroup.value.groupName)
       updated.value = Date.now()
       totalData.value = (data.tags || []).map((item) => {
-        return Object.assign(item, tagMsgMap[item.id])
+        const ret = Object.assign(item, tagMsgMap[item.id])
+        if (!('value' in ret) || ret.value === undefined) {
+          ret.value = ''
+        }
+        return ret
       })
       handleShowValueByHexadecimalChanged()
       pageController.value.total = totalData.value.length
