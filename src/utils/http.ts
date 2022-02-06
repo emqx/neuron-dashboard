@@ -22,15 +22,15 @@ const option = {
 
 Object.assign(axios.defaults, option)
 
+const popUpErrorMessage = (error: number) => {
+  const hasErrorMsg = ERROR_CODE_ARR.includes(error)
+  EmqxMessage.error(`Error (code: ${error}): ${hasErrorMsg ? i18n.global.t(`error.${error}`) : 'unknown'}`)
+}
+
 export const handleError = (error: AxiosError) => {
   const { response } = error
   if (response?.data?.error) {
-    const hasErrorMsg = ERROR_CODE_ARR.includes(response?.data?.error)
-    EmqxMessage.error(
-      `Error (code: ${response.data.error}): ${
-        hasErrorMsg ? i18n.global.t(`error.${response.data.error}`) : 'unknown'
-      }`,
-    )
+    popUpErrorMessage(response.data.error)
   } else if (response?.data) {
     EmqxMessage.error(`${JSON.stringify(response.data)}`)
   } else {
@@ -52,7 +52,12 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response.status !== 200) {
+      popUpErrorMessage(response.data.error)
+    }
+    return response
+  },
   (error) => {
     // when requesting login, the interface will return 401 if the password or username is error, handle it
     const isInLoginPage = router.currentRoute?.value?.name === LOGIN_ROUTE_NAME
