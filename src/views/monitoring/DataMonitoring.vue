@@ -48,7 +48,7 @@
         </emqx-table-column>
         <emqx-table-column width="300" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
-            <emqx-button type="text" @click="writeData(row)">Write</emqx-button>
+            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
           </template>
         </emqx-table-column>
       </emqx-table>
