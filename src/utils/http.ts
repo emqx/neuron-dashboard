@@ -5,6 +5,7 @@ import store from '@/store/index'
 import i18n from '@/i18n/index'
 import { ERROR_CODE_ARR } from './constants'
 import { LOGIN_ROUTE_NAME } from '@/router/routes'
+import { getErrorMsg } from './utils'
 
 const { host, protocol } = window.location
 const serverAddress = host.split(':').length > 1 ? `${host.split(':')[0]}:7001` : host
@@ -23,8 +24,7 @@ const option = {
 Object.assign(axios.defaults, option)
 
 const popUpErrorMessage = (error: number) => {
-  const hasErrorMsg = ERROR_CODE_ARR.includes(error)
-  EmqxMessage.error(`Error (code: ${error}): ${hasErrorMsg ? i18n.global.t(`error.${error}`) : 'unknown'}`)
+  EmqxMessage.error(`Error (code: ${error}): ${getErrorMsg(error)}`)
 }
 
 export const handleError = (error: AxiosError) => {

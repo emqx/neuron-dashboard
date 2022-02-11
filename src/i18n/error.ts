@@ -79,7 +79,7 @@ export default {
     en: 'Group config not exist',
   },
   [2102]: {
-    zh: '正在使用的组配置',
+    zh: '组配置正在使用',
     en: 'Group config in use',
   },
   [2103]: {
@@ -119,31 +119,31 @@ export default {
     en: 'Library name conflict',
   },
   [3000]: {
-    zh: '插件读取失败',
-    en: 'Plugin read failure',
+    zh: '读取失败',
+    en: 'Read failure',
   },
   [3001]: {
-    zh: '插件写入失败',
-    en: 'Plugin write failure',
+    zh: '写入失败',
+    en: 'Write failure',
   },
   [3002]: {
-    zh: '插件断开连接',
-    en: 'Plugin disconnected',
+    zh: '断开连接',
+    en: 'Disconnected',
   },
   [3003]: {
-    zh: '插件标签不允许读取',
-    en: 'Plugin tag not allow read',
+    zh: '标签不允许读取',
+    en: 'Tag not allow read',
   },
   [3004]: {
-    zh: '插件标签不允许写入',
-    en: 'Plugin tag not allow write',
+    zh: '标签不允许写入',
+    en: 'Tag not allow write',
   },
   [3005]: {
-    zh: '插件标签不存在',
-    en: 'Plugin tag not exist',
+    zh: '标签不存在',
+    en: 'Tag not exist',
   },
   [3006]: {
-    zh: '插件组配置未订阅',
-    en: 'Plugin group config not subscribe',
+    zh: '组配置未订阅',
+    en: 'Group config not subscribe',
   },
 }

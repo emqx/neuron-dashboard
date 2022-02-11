@@ -68,6 +68,7 @@ export interface TagDataInTable extends TagDataInMonitoring {
   tagName: string
   valueToShow: string
   address: string
+  error: number
 }
 
 export default () => {
@@ -228,7 +229,10 @@ export default () => {
   }
 
   const valueToShow = async (tagData: TagDataInTable) => {
-    const { type, value } = tagData
+    const { type, value, error } = tagData
+    if (error) {
+      return error
+    }
     if (
       !showValueByHexadecimal.value ||
       type === TagType.BYTE ||
