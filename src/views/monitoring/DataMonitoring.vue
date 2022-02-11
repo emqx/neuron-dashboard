@@ -45,6 +45,10 @@
               </el-popover>
             </div>
           </template>
+          <template #default="{ row }">
+            <span v-if="!row.error">{{ row.valueToShow }}</span>
+            <span v-else class="has-error"> Error({{ row.error }}): {{ getErrorMsg(row.error) }} </span>
+          </template>
         </emqx-table-column>
         <emqx-table-column width="300" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
@@ -72,6 +76,7 @@ import { ElPopover } from 'element-plus'
 import useDataMonitoring, { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import dateformat from 'dateformat'
 import WriteDialog from './components/WriteDialog.vue'
+import { getErrorMsg } from '@/utils/utils'
 
 const {
   nodeList,
@@ -132,6 +137,9 @@ const writeData = (item: TagDataInTable) => {
     font-weight: normal;
     cursor: pointer;
     color: var(--main-green-color);
+  }
+  .has-error {
+    color: var(--main-red-color);
   }
 }
 </style>

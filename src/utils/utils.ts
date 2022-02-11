@@ -1,4 +1,5 @@
 import i18n from '@/i18n/index'
+import { ERROR_CODE_ARR } from './constants'
 
 /**
  * when the value is int, can use this func to create option list
@@ -52,4 +53,9 @@ export const createMapFromArray = (array: Array<Record<any, any>>, mapKey = 'id'
 export const matchObjShape = (obj: Record<string, any>, templateObj: Record<string, any>): boolean => {
   const keysToString = (obj: Record<string, any>) => Object.keys(obj).sort().join(',')
   return keysToString(templateObj) === keysToString(obj)
+}
+
+export const getErrorMsg = (errorCode: number): string => {
+  const hasErrorMsg = ERROR_CODE_ARR.includes(errorCode)
+  return hasErrorMsg ? i18n.global.t(`error.${errorCode}`) : 'unknown'
 }
