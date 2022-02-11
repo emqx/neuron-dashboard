@@ -30,7 +30,7 @@ export default () => {
     return true
   }
 
-  const checkTagType = (type: TagType) => nodePluginInfo.value.tag_type.some((item) => item === type)
+  const checkTagType = (type: TagType) => nodePluginInfo.value?.tag_type?.some((item) => item === type) || true
 
   const handleTagListInTableFile = async (tagList: Array<Record<string, any>>): Promise<Array<TagForm>> => {
     return new Promise((resolve, reject) => {
