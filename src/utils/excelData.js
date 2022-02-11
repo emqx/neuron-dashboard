@@ -32,7 +32,7 @@ export const exportExcelData = (content) => {
       const wb = XLSX.utils.book_new()
       XLSX.utils.book_append_sheet(wb, ws, 'SheetJS')
       /* generate file and send to client */
-      XLSX.writeFile(wb, 'neuon_export_configuration.xlsx')
+      XLSX.writeFile(wb, 'neuron_export_configuration.xlsx')
       resolve(true)
     } catch (error) {
       reject(error)
