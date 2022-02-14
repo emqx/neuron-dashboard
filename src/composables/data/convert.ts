@@ -156,8 +156,9 @@ const transBinaryStrToHexStr = (str: string) => {
  * like this: https://gregstoll.com/~gregstoll/floattohex/
  * Use binary as an intermediary
  */
-export const transFloatNumberToHex = (num: number, type: TagType.FLOAT | TagType.DOUBLE): string => {
-  if (Number.isNaN(num)) {
+export const transFloatNumberToHex = (num: number | string, type: TagType.FLOAT | TagType.DOUBLE): string => {
+  const inputNum = typeof num === 'number' ? num : parseFloat(num)
+  if (Number.isNaN(inputNum)) {
     return 'Error'
   }
 
@@ -165,20 +166,20 @@ export const transFloatNumberToHex = (num: number, type: TagType.FLOAT | TagType
   const mantissaLength = totalLength - exponentLength - 1
   const exponentBaseNum = Math.pow(2, exponentLength - 1) - 1
 
-  if (num === 0) {
+  if (inputNum === 0) {
     return new Array(totalLength / 4).fill('0').join('')
   }
 
-  let numPart = num
+  let numPart = inputNum
   let flagBit = 0
 
   let numForAddToExponent = 0
 
   let exponentPart = ''
   let mantissaPart = ''
-  if (num < 0) {
+  if (inputNum < 0) {
     flagBit = 1
-    numPart = -num
+    numPart = -inputNum
   }
 
   let binaryString = numPart.toString(2)
