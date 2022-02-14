@@ -205,8 +205,10 @@ export default {
             attr: currentObj.attr,
             deci: currentObj.deci,
             rtim: currentObj.rtim,
-            adis: currentObj.adis,
-            achg: currentObj.achg,
+            // There are no two columns of data in the new table,
+            // but not passing it to API will result in an error
+            adis: currentObj.adis || 1,
+            achg: currentObj.achg || 1,
             description: currentObj.attrdesc,
           })),
           (currentObj) => currentObj.attn,
