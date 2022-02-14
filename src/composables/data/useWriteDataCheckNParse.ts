@@ -105,7 +105,8 @@ export default () => {
     return Promise.resolve(true)
   }
 
-  const checkIsFloat = (value: string): boolean => /^-?\d*\.?\d+$/.test(value)
+  // Support scientific notation
+  const checkIsFloat = (value: string): boolean => /^-?\d*\.?\d+(e-?\d+)?$/.test(value)
   const checkFloat = (value: string): Promise<Error | boolean> => {
     if (!checkIsFloat(value)) {
       return Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
