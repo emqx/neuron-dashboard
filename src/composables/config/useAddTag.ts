@@ -147,11 +147,13 @@ export default () => {
       const nodeID = Number(route.params.nodeID)
       const groupName: string = route.params.group as string
       const tags = tagList.value.map(({ name, address, attribute, type }) => ({ name, address, attribute, type }))
-      await addTag({ tags, node_id: nodeID, group_config_name: groupName })
-      EmqxMessage.success(t('common.createSuccess'))
-      router.push({
-        name: 'SouthDriverGroupTag',
-      })
+      const res = await addTag({ tags, node_id: nodeID, group_config_name: groupName })
+      if (res.status === 200) {
+        EmqxMessage.success(t('common.createSuccess'))
+        router.push({
+          name: 'SouthDriverGroupTag',
+        })
+      }
     } catch (error) {
       console.error(error)
     } finally {
