@@ -86,3 +86,13 @@ export enum ParamRequired {
   True = 'required',
   False = 'optional',
 }
+
+export enum LogType {
+  All = 'all',
+  Trace = 'trace',
+  Debug = 'debug',
+  Info = 'info',
+  Warn = 'warn',
+  Error = 'error',
+  Fatal = 'fatal',
+}
