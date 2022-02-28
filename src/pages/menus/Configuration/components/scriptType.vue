@@ -1,6 +1,6 @@
 <template>
   <div style="display: inline-block;">
-    <span>Routine:</span>
+    <span>{{ $t('configuration.routine') }}:</span>
     &nbsp;&nbsp;
     <el-select v-model="scriptType.subr" style="width: 400px;" @change="handleSelect" placeholder="">
       <el-option v-for="item in scriptTypeList" :key="item.subr" :label="item.name" :value="item.subr"> </el-option>

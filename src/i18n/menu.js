@@ -1,6 +1,6 @@
 export default {
   objectSetup: {
-    zh: 'Object 设置',
+    zh: '对象设置',
     en: 'Object Setup',
   },
   attributeSetup: {

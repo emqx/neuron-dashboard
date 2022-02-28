@@ -44,19 +44,16 @@
             label-position="left"
             label-width="160px"
           >
-            <el-form-item label="Object name" prop="objn">
+            <el-form-item :label="$t('configuration.objectName')" prop="objn">
               <el-input v-model="objectSetupFrom.objn" :disabled="isEdit"></el-input>
             </el-form-item>
-            <el-form-item label="Object size" prop="obsz">
+            <el-form-item :label="$t('configuration.objectSize')" prop="obsz">
               <el-input-number v-model="objectSetupFrom.obsz" :controls="false" :precision="0" />
             </el-form-item>
-            <el-form-item label="Update time (100ms)" prop="updt">
+            <el-form-item :label="`${$t('configuration.updateTime')}(100ms)`" prop="updt">
               <el-input-number v-model="objectSetupFrom.updt" :controls="false" :precision="0" :min="0" />
             </el-form-item>
-            <el-form-item label="Logging time (1s)" prop="logt">
-              <el-input-number v-model="objectSetupFrom.logt" :controls="false" :precision="0" :min="0" />
-            </el-form-item>
-            <el-form-item label="Timestamp display" prop="tstd">
+            <el-form-item :label="$t('configuration.timestampDisplay')" prop="tstd">
               <el-radio-group v-model="objectSetupFrom.tstd">
                 <el-radio :label="1">Yes</el-radio>
                 <el-radio :label="0">No</el-radio>
@@ -162,6 +159,9 @@ export default {
       let list = this.objectIndexSetupList.map((i) => i.pref + i.suff)
       let { length } = list
       let newLength = [...new Set(list)].length
+      if (!('logt' in this.objectSetupFrom)) {
+        this.objectSetupFrom.logt = 0
+      }
       if (length && length === newLength) {
         this.objectSetupFrom.preAndSuff = this.objectIndexSetupList
         if (this.isEdit) {
@@ -188,7 +188,7 @@ export default {
       const objList = _.uniqBy(
         sheets.map((sheet) => ({
           objn: sheet.objn,
-          logt: sheet.logt,
+          logt: 0,
           tstd: sheet.tstd,
           updt: sheet.updt,
           obsz: sheet.obsz,
@@ -250,7 +250,6 @@ export default {
         'objdesc',
         'suff',
         'updt',
-        'logt',
         'tstd',
         'obsz',
         'attn',
@@ -263,29 +262,13 @@ export default {
       ]
       const webwork = [cols]
       objList.forEach((obj) => {
-        const { objn, description: objdesc, updt, logt, tstd, obsz } = obj
+        const { objn, description: objdesc, updt, tstd, obsz } = obj
         const content = []
         obj.oatt.forEach((attrs) => {
           const { attn, description: attrdesc, attt, deci, attr, rtim, aadd } = attrs
           aadd.forEach((item) => {
             const { pref, suff, addr } = item
-            content.push([
-              pref,
-              objn,
-              objdesc,
-              suff,
-              updt,
-              logt,
-              tstd,
-              obsz,
-              attn,
-              attrdesc,
-              attt,
-              deci,
-              attr,
-              rtim,
-              addr,
-            ])
+            content.push([pref, objn, objdesc, suff, updt, tstd, obsz, attn, attrdesc, attt, deci, attr, rtim, addr])
           })
         })
         webwork.push(...content)

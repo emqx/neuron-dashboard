@@ -91,6 +91,50 @@ export default {
     zh: '关于',
     en: 'About',
   },
+  modelNo: {
+    zh: '模型编号',
+    en: 'Model no.',
+  },
+  serialNo: {
+    zh: '序列号',
+    en: 'Serial no.',
+  },
+  buildVersion: {
+    zh: '版本号',
+    en: 'Build version',
+  },
+  protocolNo: {
+    zh: '协议号',
+    en: 'Protocol no.',
+  },
+  hostname: {
+    zh: '主机名',
+    en: 'Hostname',
+  },
+  expiredDate: {
+    zh: '过期日期',
+    en: 'Expired date',
+  },
+  tagPoints: {
+    zh: '点位数',
+    en: 'Tag points',
+  },
+  alarmsPoints: {
+    zh: '报警数',
+    en: 'Alarms points',
+  },
+  dataUsages: {
+    zh: '数据使用量',
+    en: 'Data usages',
+  },
+  emailContact: {
+    zh: '电子邮件联系人',
+    en: 'Email Contact',
+  },
+  uuid: {
+    zh: '通用唯一识别码',
+    en: 'UUID',
+  },
   warning: {
     zh: '警告',
     en: 'Warning',

@@ -1,3 +1,6 @@
+import lang from '@/i18n'
+import store from '@/store'
+
 export const Ethernet = [
   {
     val: 'mbstcp',
@@ -197,37 +200,39 @@ export const ScriptList = [
   },
 ]
 
+const local = store.state.base.lang
+const VueI18n = lang[local]
 export const UserLevels = [
   {
-    label: 'VIEW(0)',
+    label: `${VueI18n.administration.view}(0)`,
     key: 0,
   },
   {
-    label: 'OPERATOR(1)',
+    label: `${VueI18n.administration.operator}(1)`,
     key: 1,
   },
   {
-    label: 'FOREMAN(2)',
+    label: `${VueI18n.administration.foreman}(2)`,
     key: 2,
   },
   {
-    label: 'MAINENANCE(3)',
+    label: `${VueI18n.administration.mainenance}(3)`,
     key: 3,
   },
   {
-    label: 'SUPERVISOR(4)',
+    label: `${VueI18n.administration.supervisor}(4)`,
     key: 4,
   },
   {
-    label: 'ENGINEER(5)',
+    label: `${VueI18n.administration.engineer}(5)`,
     key: 5,
   },
   {
-    label: 'DESIGNER(6)',
+    label: `${VueI18n.administration.designer}(6)`,
     key: 6,
   },
   {
-    label: 'MANAGER(7)',
+    label: `${VueI18n.administration.manager}(7)`,
     key: 7,
   },
 ]

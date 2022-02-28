@@ -7,13 +7,13 @@
       </div>
     </div>
     <el-table class="script-table" :data="varData">
-      <el-table-column label="Variable G." min-width="120">
+      <el-table-column :label="$t('configuration.variableG')" min-width="120">
         <template slot-scope="scope">
           <el-input placeholder="" @keyup.enter.native="add(scope.$index)" size="mini" v-model="scope.row.glov">
           </el-input>
         </template>
       </el-table-column>
-      <el-table-column label="Nos" min-width="100">
+      <el-table-column :label="$t('configuration.nos')" min-width="100">
         <template slot-scope="scope">
           <el-input placeholder="" @keyup.enter.native="add(scope.$index)" size="mini" v-model="scope.row.leng" />
         </template>

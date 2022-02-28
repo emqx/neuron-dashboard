@@ -15,7 +15,7 @@
       <vxe-table-column v-if="showBtn" type="checkbox" width="55"></vxe-table-column>
       <vxe-table-column field="attn" :min-width="80" :title="$t('common.name')" />
       <vxe-table-column field="description" :min-width="80" :title="$t('common.description')" />
-      <vxe-table-column :title="`Object: ${$t('configuration.address')}`" min-width="250">
+      <vxe-table-column :title="`${$t('configuration.object')}: ${$t('configuration.address')}`" min-width="250">
         <template slot-scope="scope">
           <div>
             <div v-for="item in scope.row.aadd" class="addrs" :key="getFullName(item.pref, item.suff)">
@@ -26,14 +26,14 @@
         </template>
       </vxe-table-column>
       <vxe-table-column field="attt" :width="minWidth" :title="$t('common.type')" />
-      <vxe-table-column field="deci" :width="minWidth" title="Decimal" />
+      <vxe-table-column field="deci" :width="minWidth" :title="$t('configuration.decimal')" />
       <vxe-table-column field="attr" :width="minWidth" title="RW" />
-      <vxe-table-column field="rtim" :width="minWidth" title="Rtime" />
+      <vxe-table-column field="rtim" :width="128" :title="$t('configuration.readTime')" />
       <vxe-table-column :width="250" v-if="showBtn">
         <template slot-scope="scope">
           <el-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</el-button>
           <el-button type="text" @click="addAddress(scope.row)">{{ $t('configuration.addr') }}</el-button>
-          <el-button type="text" @click="handleDummy(scope.row)">Dummy</el-button>
+          <el-button type="text" @click="handleDummy(scope.row)">{{ $t('configuration.dummy') }}</el-button>
           <el-button type="text" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
         </template>
       </vxe-table-column>

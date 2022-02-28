@@ -5,7 +5,7 @@
     </div>
     <p>{{ $t('configuration.driverName') }}: {{ deviceObj.label }} &nbsp;&nbsp;&nbsp;&nbsp; {{ deviceObj.type }}</p>
     <div class="dd-mb">
-      <p>Object:</p>
+      <p>{{ $t('configuration.object') }}:</p>
       <ObjectTable showAttr :showSelection="false" />
     </div>
 

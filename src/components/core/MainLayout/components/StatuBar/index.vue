@@ -1,23 +1,27 @@
 <template>
   <div class="statu-bar">
-    <div :class="status.comm === 'UP' ? 'green' : 'red'">COMM&nbsp;{{ status.comm || '' }}</div>
+    <!-- <div :class="status.comm === 'UP' ? 'green' : 'red'">COMM&nbsp;{{ status.comm || '' }}</div> -->
+    <div :class="status.comm === 'UP' ? 'green' : 'red'">
+      {{ $t(status.comm ? `status.COMM ${status.comm}` : 'status.CONNECTING') }}
+    </div>
     <div class="mach">
-      {{ status.mach || '' }}
+      {{ status.mach ? $t(`status.${status.mach}`) : '' }}
     </div>
     <div :class="mode === 'ACTIVE' ? 'green' : status.mach === 'STANDBY' ? 'yellow' : 'red'">
-      {{ mode }}
+      {{ $t(`status.${mode}`) }}
     </div>
     <div :class="status.mqcn === 'MQDISCONNECT' ? 'red' : 'green'">
-      {{ status.mqcn || 'MQDISCONNECT' }}
+      {{ $t(`status.${status.mqcn || 'MQDISCONNECT'}`) }}
     </div>
     <div :class="galm === 'NO ALARM' ? 'green' : 'red'">
-      {{ galm }}
+      {{ $t(`status.${galm}`) }}
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+
 export default {
   computed: {
     ...mapState({
