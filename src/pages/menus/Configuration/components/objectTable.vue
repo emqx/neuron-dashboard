@@ -15,11 +15,6 @@
     <el-table-column prop="description" :label="$t('common.description')" min-width="150" />
     <el-table-column prop="obsz" :min-width="100" :label="$t('configuration.size')" />
     <el-table-column prop="updt" :min-width="100" :label="$t('configuration.updateTime')" />
-    <el-table-column prop="tstd" :min-width="100" :label="$t('configuration.timestampDisplay')">
-      <template slot-scope="scope">
-        {{ scope.row.tstd ? 'YES' : 'NO' }}
-      </template>
-    </el-table-column>
     <el-table-column :width="200" v-if="showBtn">
       <template slot-scope="scope">
         <el-button type="text" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</el-button>
