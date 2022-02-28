@@ -25,7 +25,7 @@
         <el-col :span="7">
           <el-form-item :label="$t('status.category')">
             <el-select v-model="cate" class="input" clearable>
-              <el-option v-for="item in cateList" :key="item" :label="item" :value="item"> </el-option>
+              <el-option v-for="item in cateList" :key="item" :label="$t(`status.${item}`)" :value="item"> </el-option>
             </el-select>
           </el-form-item>
         </el-col>

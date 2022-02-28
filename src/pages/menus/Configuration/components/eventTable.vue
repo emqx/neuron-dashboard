@@ -1,11 +1,11 @@
 <template>
   <el-table :data="eventList" @selection-change="handleSelectionChange" style="width: 100%;">
     <el-table-column type="selection" v-if="showBtn" width="55" />
-    <el-table-column :min-width="minWidth" prop="sobj" label="Object1" />
-    <el-table-column prop="satt" label="Attribute1" :min-width="minWidth" />
+    <el-table-column :min-width="minWidth" prop="sobj" :label="`${$t('configuration.object')} 1`" />
+    <el-table-column prop="satt" :label="`${$t('configuration.attribute')} 1`" :min-width="minWidth" />
     <el-table-column prop="msgt" :min-width="minWidth" :label="$t('common.type')" />
-    <el-table-column prop="cobj" :min-width="minWidth" label="Object2" />
-    <el-table-column prop="catt" :min-width="minWidth" label="Attribute2" />
+    <el-table-column prop="cobj" :min-width="minWidth" :label="`${$t('configuration.object')} 2`" />
+    <el-table-column prop="catt" :min-width="minWidth" :label="`${$t('configuration.attribute')} 2`" />
     <el-table-column prop="acat" :min-width="minWidth" :label="$t('status.category')" />
     <el-table-column prop="subr" :min-width="minWidth" :label="$t('configuration.subroutine')" />
     <el-table-column :width="160" v-if="showBtn">

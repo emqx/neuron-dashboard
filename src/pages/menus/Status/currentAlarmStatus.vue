@@ -45,27 +45,27 @@ export default {
       options: [
         {
           val: 'act_en',
-          label: 'Active enabled alarms',
+          label: this.$t('status.activeEnabledAlarms'),
         },
         {
           val: 'act_unack',
-          label: 'Active Unack alarms',
+          label: this.$t('status.activeUnackAlarms'),
         },
         {
           val: 'act_all',
-          label: 'Active all alarms',
+          label: this.$t('status.activeAllAlarms'),
         },
         {
           val: 'all_alm',
-          label: 'All alarms',
+          label: this.$t('status.allAlarms'),
         },
         {
           val: 'all_en',
-          label: 'All enabled alarms',
+          label: this.$t('status.allEnabledAlarms'),
         },
         {
           val: 'all_dis',
-          label: 'All disabled alarms',
+          label: this.$t('status.allDisabledAlarms'),
         },
       ],
     }
@@ -75,9 +75,9 @@ export default {
       return this.$store.state.Status.status.grow || []
     },
     actn() {
-      let res = 'acknowledge'
-      res = this.action === 'all_en' ? 'disable' : res
-      res = this.action === 'all_dis' ? 'enable' : res
+      let res = this.$t('status.acknowledge')
+      res = this.action === 'all_en' ? this.$t('status.disable') : res
+      res = this.action === 'all_dis' ? this.$t('status.enable') : res
       return res
     },
   },

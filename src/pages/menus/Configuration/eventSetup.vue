@@ -12,12 +12,12 @@
     <EventTable v-model="multipleSelection" :showBtn="true" :eventList="msgd" @delete="onDelete" @edit="onEdit" />
     <el-dialog :title="$t('configuration.eventSetup')" @closed="close" :visible.sync="dialogTableVisible">
       <el-form :model="eventForm" ref="eventForm" :rules="eventFormRules" label-width="120px">
-        <el-form-item label="Object1" prop="sobj">
+        <el-form-item :label="`${$t('configuration.object')} 1`" prop="sobj">
           <el-select v-model="eventForm.sobj">
             <el-option v-for="item in objectList" :key="item.name" :label="item.name" :value="item.name"> </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Attribute1" prop="satt">
+        <el-form-item :label="`${$t('configuration.attribute')} 1`" prop="satt">
           <el-select v-model="eventForm.satt">
             <el-option
               v-for="item in filterAttrList(eventForm.sobj)"
@@ -32,12 +32,12 @@
             <el-option v-for="item in Operator" :key="item.val" :label="item.val" :value="item.val"> </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Object2" prop="cobj">
+        <el-form-item :label="`${$t('configuration.object')} 2`" prop="cobj">
           <el-select v-model="eventForm.cobj">
             <el-option v-for="item in objectList" :key="item.name" :label="item.name" :value="item.name"> </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Attribute2" prop="catt">
+        <el-form-item :label="`${$t('configuration.attribute')} 2`" prop="catt">
           <el-select v-model="eventForm.catt">
             <el-option v-for="item in filterAttrList(eventForm.cobj)" :key="item + 'catt'" :label="item" :value="item">
             </el-option>
@@ -45,7 +45,13 @@
         </el-form-item>
         <el-form-item :label="$t('status.category')" prop="catt">
           <el-select v-model="eventForm.acat">
-            <el-option v-for="item in EventCategory" :key="item.val" :label="item.val" :value="item.val"> </el-option>
+            <el-option
+              v-for="item in EventCategory"
+              :key="item.val"
+              :label="$t(`status.${item.val}`)"
+              :value="item.val"
+            >
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('configuration.subroutine')" prop="subr">

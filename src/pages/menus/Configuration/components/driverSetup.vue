@@ -19,17 +19,17 @@
       <el-row class="edit-drivers-row" :gutter="20">
         <template v-if="northDriverType === 'Ethernet drivers'">
           <el-col :span="24">
-            <h3>Ethernet {{ $t('configuration.driverSetup') }}</h3>
+            <h3>{{ $t('configuration.driverSetup') }}</h3>
           </el-col>
           <el-col :span="24">
             <el-form ref="driverSetupForm" label-width="80px" label-position="left">
               <el-col :span="12">
-                <el-form-item label="Host name">
+                <el-form-item :label="$t('configuration.hostName')">
                   <el-input v-model="chnl[1].tcph"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="Port no">
+                <el-form-item :label="$t('configuration.portNo')">
                   <el-input-number v-model="chnl[1].tcpp" :controls="false" :precision="0" :min="0" />
                 </el-form-item>
               </el-col>
@@ -42,7 +42,7 @@
           </el-col>
           <el-col :span="24">
             <el-form ref="driverSetupForm" label-width="100px" :model="chnl[1]">
-              <el-form-item label="Device name">
+              <el-form-item :label="$t('configuration.deviceName')">
                 <el-input v-if="north !== 'rs232'" v-model="chnl[1].ttyc"></el-input>
                 <el-select
                   :class="{ 'error-permission': fdrw === -1 }"
@@ -59,22 +59,22 @@
                 </el-select>
                 <p v-if="fdrw === -1" class="permission-tip">{{ $t('configuration.noPermissions') }}</p>
               </el-form-item>
-              <el-form-item label="Baud rate">
+              <el-form-item :label="$t('configuration.baudRate')">
                 <el-select v-model="chnl[1].ttyb">
                   <el-option v-for="value in ttybList" :key="value" :label="value" :value="value"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Data bit">
+              <el-form-item :label="$t('configuration.dataBit')">
                 <el-select v-model="chnl[1].ttyd">
                   <el-option v-for="value in ttydList" :key="value" :label="value" :value="value"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Stop bit">
+              <el-form-item :label="$t('configuration.stopBit')">
                 <el-select v-model="chnl[1].ttys">
                   <el-option v-for="value in ttysList" :key="value" :label="value" :value="value"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Parity bit">
+              <el-form-item :label="$t('configuration.parityBit')">
                 <el-select v-model="chnl[1].ttyp">
                   <el-option
                     v-for="item in ttypList"
@@ -89,8 +89,8 @@
         </template>
         <el-col v-if="northDriverType === 'Serial drivers' || northDriverType === 'Ethernet drivers'" :span="24">
           <el-table v-if="chnl[1].parm && chnl[1].parm.length" class="script-table" :data="chnl[1].parm">
-            <el-table-column label="Vars" prop="vars"> </el-table-column>
-            <el-table-column label="Pars" prop="pars" min-width="180px">
+            <el-table-column :label="$t('configuration.vars')" prop="vars"> </el-table-column>
+            <el-table-column :label="$t('configuration.pars')" prop="pars" min-width="180px">
               <template slot-scope="scope">
                 <el-input :type="scope.row.vars === 'PASSWORD' ? 'password' : ''" size="mini" v-model="scope.row.pars">
                 </el-input>
@@ -100,7 +100,7 @@
         </el-col>
       </el-row>
       <h3 class="driver-type-title">
-        {{ $t('configuration.driverProtocolName') }}
+        {{ $t('configuration.southDriverProtocolName') }}
       </h3>
       <el-row class="type-row" :gutter="20" type="flex" align="middle">
         <el-col :span="12">
@@ -116,17 +116,17 @@
       <el-row class="edit-drivers-row" :gutter="20">
         <template v-if="southDriverType === 'Ethernet drivers'">
           <el-col :span="24">
-            <h3>Ethernet {{ $t('configuration.driverSetup') }}</h3>
+            <h3>{{ $t('configuration.driverSetup') }}</h3>
           </el-col>
           <el-col :span="24">
             <el-form ref="driverSetupForm" label-width="80px" label-position="left">
               <el-col :span="12">
-                <el-form-item label="Host name">
+                <el-form-item :label="$t('configuration.hostName')">
                   <el-input v-model="chnl[0].tcph"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="Port no">
+                <el-form-item :label="$t('configuration.portNo')">
                   <el-input-number v-model="chnl[0].tcpp" :controls="false" :precision="0" :min="0" />
                 </el-form-item>
               </el-col>
@@ -139,25 +139,25 @@
           </el-col>
           <el-col :span="24">
             <el-form ref="driverSetupForm" label-width="100px" :model="chnl[0]">
-              <el-form-item label="Device name">
+              <el-form-item :label="$t('configuration.deviceName')">
                 <el-input v-model="chnl[0].ttyc"></el-input>
               </el-form-item>
-              <el-form-item label="Baud rate">
+              <el-form-item :label="$t('configuration.baudRate')">
                 <el-select v-model="chnl[0].ttyb">
                   <el-option v-for="value in ttybList" :key="value" :label="value" :value="value"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Data bit">
+              <el-form-item :label="$t('configuration.dataBit')">
                 <el-select v-model="chnl[0].ttyd">
                   <el-option v-for="value in ttydList" :key="value" :label="value" :value="value"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Stop bit">
+              <el-form-item :label="$t('configuration.stopBit')">
                 <el-select v-model="chnl[0].ttys">
                   <el-option v-for="value in ttysList" :key="value" :label="value" :value="value"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Parity bit">
+              <el-form-item :label="$t('configuration.parityBit')">
                 <el-select v-model="chnl[0].ttyp">
                   <el-option
                     v-for="item in ttypList"
@@ -172,8 +172,8 @@
         </template>
         <el-col v-if="southDriverType === 'Serial drivers' || southDriverType === 'Ethernet drivers'" :span="24">
           <el-table v-if="chnl[0].parm && chnl[0].parm.length" class="script-table" :data="chnl[0].parm">
-            <el-table-column label="Vars" prop="vars"> </el-table-column>
-            <el-table-column label="Pars" prop="pars" min-width="180px">
+            <el-table-column :label="$t('configuration.vars')" prop="vars"> </el-table-column>
+            <el-table-column :label="$t('configuration.pars')" prop="pars" min-width="180px">
               <template slot-scope="scope">
                 <el-input size="mini" v-model="scope.row.pars"> </el-input>
               </template>
@@ -202,9 +202,9 @@ export default {
       ttydList: [5, 6, 7, 8],
       ttysList: ['1', '1.5', '2'],
       ttypList: [
-        { value: 'E', label: 'Even' },
-        { value: 'O', label: 'Odd' },
-        { value: 'N', label: 'None' },
+        { value: 'E', label: this.$t('configuration.even') },
+        { value: 'O', label: this.$t('configuration.odd') },
+        { value: 'N', label: this.$t('configuration.none') },
       ],
       chnl: [], // Channel Details
       rs232Options: [],

@@ -36,7 +36,7 @@
         ref="AttributeSetupForm"
         :model="AttributeSetupForm"
         :rules="AttributeSetupFormRules"
-        label-width="150px"
+        label-width="180px"
       >
         <el-form-item :label="$t('common.name')" prop="attn">
           <el-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></el-input>
@@ -47,17 +47,17 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Decimal" v-if="showDecimal" prop="deci">
+        <el-form-item :label="$t('configuration.decimal')" v-if="showDecimal" prop="deci">
           <el-input-number v-model="AttributeSetupForm.deci" :controls="false" :precision="0" :min="0" />
         </el-form-item>
-        <el-form-item label="Direction" prop="attr">
+        <el-form-item :label="$t('configuration.direction')" prop="attr">
           <el-radio-group v-model="AttributeSetupForm.attr">
             <el-radio v-for="item in driverAttrList" :key="item" :label="item">
-              {{ item }}
+              {{ $t(`configuration.${directionValueLabelMap[item]}`) }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Read time (100ms)" prop="rtim" v-if="showReadTime">
+        <el-form-item :label="`${$t('configuration.readTime')}(100ms)`" prop="rtim" v-if="showReadTime">
           <el-input-number v-model="AttributeSetupForm.rtim" :controls="false" :precision="0" :min="0" />
         </el-form-item>
         <el-form-item :label="$t('common.description')" prop="description">
@@ -97,9 +97,18 @@ import { AttributeTypeList } from '@/config/index'
 import AttributeTable from './components/attributeTable'
 import { mapState, mapMutations, mapGetters } from 'vuex'
 
+const directionValueLabelMap = {
+  RW: 'readWrite',
+  R: 'read',
+  W: 'write',
+  S: 'sub',
+  SW: 'subWrite',
+}
+
 export default {
   data() {
     return {
+      directionValueLabelMap,
       minWidth: 80,
       objn: '',
       preAndSuff: [],

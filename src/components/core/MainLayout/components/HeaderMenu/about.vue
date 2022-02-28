@@ -4,48 +4,48 @@
     <p>{{ data.cpyr }}</p>
     <div class="detail">
       <div>
-        <span>Model no.</span>:
-        <span>{{ data.modl }}</span>
+        <span>{{ $t('common.modelNo') }}</span>
+        :<span>{{ data.modl }}</span>
       </div>
       <div>
-        <span>Serial no.</span>:
-        <span>{{ data.srno }}</span>
+        <span>{{ $t('common.serialNo') }}</span>
+        :<span>{{ data.srno }}</span>
       </div>
       <div>
-        <span>Build version</span>:
-        <span>{{ data.bver }}</span>
+        <span>{{ $t('common.buildVersion') }}</span>
+        :<span>{{ data.bver }}</span>
       </div>
       <div>
-        <span>Protocol no.</span>:
-        <span>{{ data.pver }}</span>
+        <span>{{ $t('common.protocolNo') }}</span>
+        :<span>{{ data.pver }}</span>
       </div>
       <div>
-        <span>Hostname</span>:
-        <span>{{ data.host }}</span>
+        <span>{{ $t('common.hostname') }}</span>
+        :<span>{{ data.host }}</span>
       </div>
       <div>
-        <span>Expired date</span>:
-        <span>{{ data.expd }}</span>
+        <span>{{ $t('common.expiredDate') }}</span>
+        :<span>{{ data.expd }}</span>
       </div>
       <div>
-        <span>Tag points</span>:
-        <span>{{ data.tatt }}/{{ data.matt }}</span>
+        <span>{{ $t('common.tagPoints') }}</span>
+        :<span>{{ data.tatt }}/{{ data.matt }}</span>
       </div>
       <div>
-        <span>Alarms points</span>:
-        <span>{{ data.talr }}/{{ data.malr }}</span>
+        <span>{{ $t('common.alarmsPoints') }}</span>
+        :<span>{{ data.talr }}/{{ data.malr }}</span>
       </div>
       <div>
-        <span>Data usages</span>:
-        <span>{{ data.tusg }}/{{ data.musg }}</span>
+        <span>{{ $t('common.dataUsages') }}</span>
+        :<span>{{ data.tusg }}/{{ data.musg }}</span>
       </div>
       <div>
-        <span>Email Contact</span>:
-        <span>{{ data.cont }}</span>
+        <span>{{ $t('common.emailContact') }}</span>
+        :<span>{{ data.cont }}</span>
       </div>
       <div>
-        <span>UUID</span>:
-        <span>{{ data.uuid }}</span>
+        <span>{{ $t('common.uuid') }}</span>
+        :<span>{{ data.uuid }}</span>
       </div>
     </div>
     <div slot="footer" class="dialog-footer">
@@ -77,7 +77,7 @@ export default {
     display: flex;
     margin-top: 10px;
     span:first-child {
-      width: 100px;
+      width: 120px;
     }
   }
 }
