@@ -53,12 +53,6 @@
             <el-form-item :label="`${$t('configuration.updateTime')}(100ms)`" prop="updt">
               <el-input-number v-model="objectSetupFrom.updt" :controls="false" :precision="0" :min="0" />
             </el-form-item>
-            <el-form-item :label="$t('configuration.timestampDisplay')" prop="tstd">
-              <el-radio-group v-model="objectSetupFrom.tstd">
-                <el-radio :label="1">Yes</el-radio>
-                <el-radio :label="0">No</el-radio>
-              </el-radio-group>
-            </el-form-item>
             <el-form-item :label="$t('common.description')" prop="description">
               <el-input v-model="objectSetupFrom.description"></el-input>
             </el-form-item>
@@ -189,7 +183,7 @@ export default {
         sheets.map((sheet) => ({
           objn: sheet.objn,
           logt: 0,
-          tstd: sheet.tstd,
+          tstd: 1,
           updt: sheet.updt,
           obsz: sheet.obsz,
           description: sheet.objdesc,
@@ -250,7 +244,6 @@ export default {
         'objdesc',
         'suff',
         'updt',
-        'tstd',
         'obsz',
         'attn',
         'attrdesc',
@@ -262,13 +255,13 @@ export default {
       ]
       const webwork = [cols]
       objList.forEach((obj) => {
-        const { objn, description: objdesc, updt, tstd, obsz } = obj
+        const { objn, description: objdesc, updt, obsz } = obj
         const content = []
         obj.oatt.forEach((attrs) => {
           const { attn, description: attrdesc, attt, deci, attr, rtim, aadd } = attrs
           aadd.forEach((item) => {
             const { pref, suff, addr } = item
-            content.push([pref, objn, objdesc, suff, updt, tstd, obsz, attn, attrdesc, attt, deci, attr, rtim, addr])
+            content.push([pref, objn, objdesc, suff, updt, obsz, attn, attrdesc, attt, deci, attr, rtim, addr])
           })
         })
         webwork.push(...content)

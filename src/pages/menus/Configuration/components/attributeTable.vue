@@ -27,7 +27,7 @@
       </vxe-table-column>
       <vxe-table-column field="attt" :width="minWidth" :title="$t('common.type')" />
       <vxe-table-column field="deci" :width="minWidth" :title="$t('configuration.decimal')" />
-      <vxe-table-column field="attr" :width="minWidth" title="RW" />
+      <vxe-table-column field="attr" :width="minWidth" :title="$t('configuration.direction')" />
       <vxe-table-column field="rtim" :width="128" :title="$t('configuration.readTime')" />
       <vxe-table-column :width="250" v-if="showBtn">
         <template slot-scope="scope">
