@@ -13,7 +13,7 @@
           </el-select>
         </el-col>
         <el-col :span="12">
-          <div>{{ northDriverType }}</div>
+          <div>{{ northDriverType ? $t(`configuration.${northDriverType}`) : '' }}</div>
         </el-col>
       </el-row>
       <el-row class="edit-drivers-row" :gutter="20">
@@ -110,7 +110,7 @@
           </el-select>
         </el-col>
         <el-col :span="12">
-          <div>{{ southDriverType }}</div>
+          <div>{{ southDriverType ? $t(`configuration.${southDriverType}`) : '' }}</div>
         </el-col>
       </el-row>
       <el-row class="edit-drivers-row" :gutter="20">

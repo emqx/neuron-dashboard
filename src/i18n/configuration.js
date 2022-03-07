@@ -255,4 +255,12 @@ export default {
     zh: '无读写权限',
     en: 'No Read and Write permissions',
   },
+  'Ethernet drivers': {
+    zh: '以太网驱动',
+    en: 'Ethernet drivers',
+  },
+  'Serial drivers': {
+    zh: '串联驱动',
+    en: 'Serial drivers',
+  },
 }

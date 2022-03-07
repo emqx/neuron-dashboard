@@ -164,7 +164,7 @@ export default {
         const type = (this.currentAttrList.find(({ attn }) => attn === key) || {}).attt || 'word'
         console.log(type)
         data.push({
-          prop: key === 'tstp' ? 'Time' : key,
+          prop: key === 'tstp' ? this.$t('status.time') : key,
           val: this.tableData[0][key],
           writable: this.currentWritableData ? !!this.currentWritableData[key] : false,
           checked: checked ? checked.check : false,
