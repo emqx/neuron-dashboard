@@ -20,11 +20,11 @@
         <template slot-scope="scope">
           <el-button v-if="actn !== 'acknowledge'" type="text" @click="handleClick(scope.row)">
             <!-- acknowledge or enable or disable -->
-            {{ actn }}
+            {{ actnLabel }}
           </el-button>
           <el-button v-else-if="scope.row.amod === 'UNACKALARM'" type="text" @click="handleClick(scope.row)">
             <!-- acknowledge or enable or disable -->
-            {{ actn }}
+            {{ actnLabel }}
           </el-button>
         </template>
       </el-table-column>
@@ -75,10 +75,13 @@ export default {
       return this.$store.state.Status.status.grow || []
     },
     actn() {
-      let res = this.$t('status.acknowledge')
-      res = this.action === 'all_en' ? this.$t('status.disable') : res
-      res = this.action === 'all_dis' ? this.$t('status.enable') : res
+      let res = 'acknowledge'
+      res = this.action === 'all_en' ? 'disable' : res
+      res = this.action === 'all_dis' ? 'enable' : res
       return res
+    },
+    actnLabel() {
+      return this.$t(`status.${this.actn}`)
     },
   },
   created() {

@@ -235,4 +235,8 @@ export default {
     zh: '未确认的警报',
     en: 'UNACK ALARM',
   },
+  time: {
+    zh: '时间',
+    en: 'Time',
+  },
 }

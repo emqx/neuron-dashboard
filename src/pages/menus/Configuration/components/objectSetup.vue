@@ -105,7 +105,9 @@ export default {
       uploadLoading: false,
       exportLoading: false,
       fileList: [],
-      objectSetupFrom: {},
+      objectSetupFrom: {
+        oatt: [],
+      },
       objectSetupFromRules: {
         objn: [
           { required: true, message: 'name is required', trigger: 'blur' },
@@ -113,7 +115,6 @@ export default {
         ],
         obsz: [{ required: true, message: 'size is required', trigger: 'blur' }],
         updt: [{ required: true, message: 'update time is required', trigger: 'blur' }],
-        logt: [{ required: true, message: 'logging time is required', trigger: 'blur' }],
       },
       objectIndexSetupList: [],
       multipleSelection: [],
@@ -156,6 +157,10 @@ export default {
       if (!('logt' in this.objectSetupFrom)) {
         this.objectSetupFrom.logt = 0
       }
+      if (!('tstd' in this.objectSetupFrom)) {
+        this.objectSetupFrom.tstd = 1
+      }
+
       if (length && length === newLength) {
         this.objectSetupFrom.preAndSuff = this.objectIndexSetupList
         if (this.isEdit) {

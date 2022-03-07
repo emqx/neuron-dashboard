@@ -140,4 +140,8 @@ export default {
     zh: '修改成功，请重新登录',
     en: 'Success, please login again',
   },
+  remove: {
+    zh: '删除',
+    en: 'Remove',
+  },
 }

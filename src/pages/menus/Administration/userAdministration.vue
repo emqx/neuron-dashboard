@@ -10,7 +10,9 @@
       <el-table-column prop="name" :label="$t('common.username')" />
       <el-table-column :label="$t('common.actions')" width="280px">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" @click="handleRemove(scope.row)">Remove</el-button>
+          <el-button type="danger" size="mini" @click="handleRemove(scope.row)">
+            {{ $t('administration.remove') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
