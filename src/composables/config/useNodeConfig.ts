@@ -84,8 +84,8 @@ export default (props: Props) => {
   }
 
   const getPluginInfo = async () => {
-    const { data } = await queryPluginConfigInfo()
-    const pluginInfo: PluginInfo = data[pluginMsgIdMap[getNodeMsgById(nodeID.value).plugin_id].name]
+    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(nodeID.value).plugin_id].name)
+    const pluginInfo: PluginInfo = data
     if (!pluginInfo) {
       return
     }

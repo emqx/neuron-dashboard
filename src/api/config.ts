@@ -8,7 +8,7 @@ import {
   GroupData,
   GroupForm,
   NodeForm,
-  AllPluginConfigInfo,
+  PluginInfo,
   PluginForm,
   ResponseDriverListData,
   SubscriptionData,
@@ -103,8 +103,8 @@ export const querySubscription = async (nodeID: number): Promise<Array<Subscript
  * Obtain which fields need to be configured for each plugin
  * And specific information about these fields
  */
-export const queryPluginConfigInfo = (): Promise<AxiosResponse<AllPluginConfigInfo>> => {
-  return http.get('/schema/plugin')
+export const queryPluginConfigInfo = (name: string): Promise<AxiosResponse<PluginInfo>> => {
+  return http.get('/schema', { params: { plugin_name: name } })
 }
 
 export const submitNodeConfig = (nodeID: number, form: Record<string, any>) => {
