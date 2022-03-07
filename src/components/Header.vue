@@ -13,12 +13,6 @@
           <template #dropdown>
             <emqx-dropdown-menu class="header-menu">
               <emqx-dropdown-item>
-                <div>
-                  <i class="iconfont iconrestart"></i>
-                  <span>{{ $t('common.restart') }}</span>
-                </div>
-              </emqx-dropdown-item>
-              <emqx-dropdown-item>
                 <i class="iconfont iconalarm"></i>
                 <span>License</span>
               </emqx-dropdown-item>

@@ -3,7 +3,7 @@
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('config.northAppSetup') }}</h3>
       <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addConfig">{{
-        $t('config.addConfig')
+        $t('config.addApplication')
       }}</emqx-button>
     </div>
     <ul class="setup-list">
