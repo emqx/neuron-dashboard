@@ -22,7 +22,7 @@
             <router-link :to="{ name: 'NorthDriver' }">{{ $t('config.viewAll') }}</router-link>
           </emqx-button>
           <emqx-button size="small" type="primary" @click="showNorthDialog = true">{{
-            $t('config.addConfig')
+            $t('config.addApplication')
           }}</emqx-button>
         </div>
       </div>
@@ -45,7 +45,7 @@
             <router-link :to="{ name: 'SouthDriver' }">{{ $t('config.viewAll') }}</router-link>
           </emqx-button>
           <emqx-button size="small" type="primary" @click="showSouthDialog = true">{{
-            $t('config.addConfig')
+            $t('config.addDevice')
           }}</emqx-button>
         </div>
       </div>

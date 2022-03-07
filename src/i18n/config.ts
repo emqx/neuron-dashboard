@@ -15,9 +15,13 @@ export default {
     zh: '应用名称',
     en: 'Name of Application ',
   },
-  addConfig: {
-    zh: '添加配置',
-    en: 'Add Config',
+  addApplication: {
+    zh: '添加应用',
+    en: 'Add Application',
+  },
+  addDevice: {
+    zh: '添加设备',
+    en: 'Add Device',
   },
   addApp: {
     zh: '添加应用',
