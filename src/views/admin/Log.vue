@@ -31,7 +31,6 @@ import { ref } from 'vue'
 import useLog from '@/composables/admin/useLog'
 import { ElDatePicker } from 'element-plus'
 
-const test = ref()
 const { timeRange, logType, logTypeOptions, tableData, getLogs } = useLog()
 </script>
 

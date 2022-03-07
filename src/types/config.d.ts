@@ -121,14 +121,6 @@ export interface PluginInfo {
   [propName: string]: ParamInfo
 }
 
-interface AllPluginConfigInfo {
-  plugins: Array<string>
-  /**
-   * plugins items
-   */
-  [propName: string]: PluginInfo
-}
-
 export interface GroupForm {
   /**
    * Name

@@ -119,8 +119,8 @@ export default () => {
 
   const getNodePluginInfo = async () => {
     await Promise.all([initMap(), initMsgIdMap()])
-    const { data } = await queryPluginConfigInfo()
-    const plugin: PluginInfo = data[pluginMsgIdMap[getNodeMsgById(nodeID.value).plugin_id].name]
+    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(nodeID.value).plugin_id].name)
+    const plugin: PluginInfo = data
     if (plugin) {
       nodePluginInfo.value = plugin
     }
