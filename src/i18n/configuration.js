@@ -263,4 +263,8 @@ export default {
     zh: '串联驱动',
     en: 'Serial drivers',
   },
+  sameNameObjWarning: {
+    zh: '已存在相同名称的对象，请检查',
+    en: 'An object with the same name already exists, please check',
+  },
 }
