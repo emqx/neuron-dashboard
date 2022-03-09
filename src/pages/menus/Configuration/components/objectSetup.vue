@@ -98,6 +98,7 @@ import _ from 'lodash'
 import { getExcelData, exportExcelData } from '@/utils/excelData'
 export default {
   data() {
+    const _this = this
     return {
       dialogTableVisible: false,
       isDetail: true,
@@ -112,6 +113,16 @@ export default {
         objn: [
           { required: true, message: 'name is required', trigger: 'blur' },
           { max: 30, message: 'max 30', trigger: 'blur' },
+          {
+            validator: (rule, value, callback) => {
+              if (_this.checkDuplicateObjName(value)) {
+                callback(_this.$t('configuration.sameNameObjWarning'))
+              } else {
+                callback()
+              }
+            },
+            trigger: 'blur',
+          },
         ],
         obsz: [{ required: true, message: 'size is required', trigger: 'blur' }],
         updt: [{ required: true, message: 'update time is required', trigger: 'blur' }],
@@ -182,6 +193,16 @@ export default {
           return i
         })
       }
+    },
+    checkDuplicateObjName(name) {
+      const objList = this.$store.state.SetUpData.objectData
+      return objList.some(({ objn }) => objn === name)
+    },
+    checkObjList(objList) {
+      if (objList.some(({ objn }) => this.checkDuplicateObjName(objn))) {
+        return Promise.reject(this.$t('configuration.sameNameObjWarning'))
+      }
+      return Promise.resolve(objList)
     },
     genObjListData(sheets) {
       const objList = _.uniqBy(
@@ -279,6 +300,9 @@ export default {
         .then((res) => {
           const { sheet: sheets } = res[0]
           const objList = this.genObjListData(sheets)
+          return this.checkObjList(objList)
+        })
+        .then((objList) => {
           this.setObjectData(objList)
           this.$refs.upload.clearFiles()
           this.uploadLoading = false
