@@ -64,7 +64,7 @@ axios.interceptors.response.use(
     if ((error.response.status === 401 && !isInLoginPage) || error.response.status === 403) {
       store.commit('LOGOUT')
       router.push({ name: 'Login' })
-    } else {
+    } else if (!error.config._handleErrorSelf) {
       handleError(error)
     }
     return Promise.reject(error)

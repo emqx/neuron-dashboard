@@ -94,6 +94,13 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/admin/Log.vue'),
       },
+      /* License */
+      {
+        path: '/license',
+        name: 'License',
+        meta: { requireAuth: true },
+        component: () => import('@/views/about/License.vue'),
+      },
     ],
   },
   {

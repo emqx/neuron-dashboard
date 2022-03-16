@@ -10,14 +10,14 @@ export default () => {
     maxSize = size
   }
 
-  const readFile = async (file: any) => {
+  const readFile = async (file: any): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.readAsText(file, 'UTF-8')
       reader.onload = function (evt) {
         const content = evt?.target?.result
         if (content) {
-          resolve(content)
+          resolve(content as string)
         } else if (content === '') {
           EmqxMessage.error(t('common.readFileError'))
           reject()
