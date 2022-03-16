@@ -5,7 +5,13 @@
       <div>
         <div class="filter-item">
           <label>{{ $t('admin.timeRange') }}</label>
-          <el-date-picker class="filter-date-picker" v-model="timeRange" type="datetimerange" @change="getLogs" />
+          <el-date-picker
+            class="filter-date-picker"
+            v-model="timeRange"
+            type="datetimerange"
+            @change="getLogs"
+            :clearable="false"
+          />
         </div>
         <div class="filter-item">
           <label>{{ $t('admin.logType') }}</label>
@@ -14,7 +20,7 @@
           </emqx-select>
         </div>
       </div>
-      <emqx-button type="primary">{{ $t('common.submit') }}</emqx-button>
+      <emqx-button type="primary" @click="getLogs">{{ $t('common.submit') }}</emqx-button>
     </div>
     <emqx-table :data="tableData">
       <emqx-table-column :label="$t('admin.log')">
