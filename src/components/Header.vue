@@ -12,7 +12,7 @@
           </span>
           <template #dropdown>
             <emqx-dropdown-menu class="header-menu">
-              <emqx-dropdown-item>
+              <emqx-dropdown-item @click="goLicense">
                 <i class="iconfont iconalarm"></i>
                 <span>License</span>
               </emqx-dropdown-item>
@@ -58,6 +58,10 @@ const router = useRouter()
 const status = computed(() => store.state.status || {})
 
 const user = computed(() => store.state.status || {})
+
+const goLicense = () => {
+  router.push({ name: 'License' })
+}
 
 const logout = async () => {
   try {
