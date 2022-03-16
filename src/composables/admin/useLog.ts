@@ -1,21 +1,35 @@
 import { computed, Ref, ref, WritableComputedRef } from 'vue'
 import { LogType } from '@/types/enums'
 import { queryLog } from '@/api/admin'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { useI18n } from 'vue-i18n'
 
 export default () => {
-  const startTime: Ref<string | undefined> = ref('')
-  const endTime: Ref<string | undefined> = ref('')
+  const startTime: Ref<number | undefined> = ref(new Date(Date.now() - 1000 * 60 * 60 * 24).getTime())
+  const endTime: Ref<number | undefined> = ref(new Date().getTime())
   const logType: Ref<LogType> = ref(LogType.All)
   const logTypeOptions: Array<{ label: string; value: string }> = []
   const tableData: Ref<Array<string>> = ref([])
 
+  const { t } = useI18n()
+
+  const getTimestampFromStr = (str: string | undefined) => {
+    if (!str) {
+      return undefined
+    }
+    return new Date(str).getTime()
+  }
+
   const timeRange: WritableComputedRef<[string | undefined, string | undefined]> = computed({
     get() {
-      return [startTime.value, endTime.value]
+      return [
+        startTime.value ? new Date(startTime.value).toString() : undefined,
+        endTime.value ? new Date(endTime.value).toString() : undefined,
+      ]
     },
     set([start, end]) {
-      startTime.value = start
-      endTime.value = end
+      startTime.value = getTimestampFromStr(start)
+      endTime.value = getTimestampFromStr(end)
     },
   })
 
@@ -31,16 +45,28 @@ export default () => {
     })
   }
 
-  const getTimeStampByDateStr = (date: string): number => parseInt((new Date(date).getTime() / 1000).toString())
-
   const getLogs = async () => {
-    const data = {
-      since: startTime.value ? getTimeStampByDateStr(startTime.value) : undefined,
-      until: endTime.value ? getTimeStampByDateStr(endTime.value) : undefined,
-      level: (logType.value === LogType.All ? '' : logType.value) as '' | LogType,
+    if (!startTime.value || !endTime.value) {
+      EmqxMessage.error(t('admin.timeRangeRequired'))
+      return
     }
-    const { rows } = await queryLog(data)
-    tableData.value = rows
+    const data: {
+      since: number
+      until: number
+      level?: LogType
+      page: number
+      page_size: number
+    } = {
+      since: Math.floor(startTime.value / 1000),
+      until: Math.floor(endTime.value / 1000),
+      page: 1,
+      page_size: 200,
+    }
+    if (logType.value) {
+      data.level = logType.value
+    }
+    const { data: ret } = await queryLog(data)
+    tableData.value = ret.rows
   }
 
   initLogTypeOptions()

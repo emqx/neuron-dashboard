@@ -88,7 +88,7 @@ export enum ParamRequired {
 }
 
 export enum LogType {
-  All = 'all',
+  All = '',
   Trace = 'trace',
   Debug = 'debug',
   Info = 'info',
