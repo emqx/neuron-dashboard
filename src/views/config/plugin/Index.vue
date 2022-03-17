@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { computed, ref, Ref } from 'vue'
 import { ElTabs, ElTabPane } from 'element-plus'
-import { DriverDirection } from '@/types/enums'
+import { DriverDirection, PluginKind } from '@/types/enums'
 import PluginItemCard from './components/PluginItemCard.vue'
 import usePlugin from '@/composables/config/usePlugin'
 import PluginDialog from './components/PluginDialog.vue'
@@ -41,11 +41,17 @@ const currentPlugin: Ref<undefined | CreatedPlugin> = ref(undefined)
 const showDialog = ref(false)
 const ALL_KEY = 'all'
 
+const listNeedShow = computed(() => {
+  return pluginList.value.filter(({ kind }) => {
+    return kind !== PluginKind.Static
+  })
+})
+
 const listToShow = computed(() => {
   if (!filterNodeType.value || filterNodeType.value === ALL_KEY) {
-    return pluginList.value
+    return listNeedShow.value
   }
-  return pluginList.value.filter(({ node_type }) =>
+  return listNeedShow.value.filter(({ node_type }) =>
     filterNodeType.value === DriverDirection.South
       ? node_type === DriverDirection.South
       : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
