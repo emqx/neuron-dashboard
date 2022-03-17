@@ -2,7 +2,7 @@
   <div class="plugin-item-card">
     <div class="plugin-item-card-hd common-flex">
       <p class="plugin-item-name ellipsis">{{ data.name }}</p>
-      <div class="handlers">
+      <div class="handlers" v-if="data.kind === PluginKind.Custom">
         <AComWithDesc :content="$t('common.delete')">
           <i class="iconfont icon icondelete" @click="deletePlugin" />
         </AComWithDesc>
