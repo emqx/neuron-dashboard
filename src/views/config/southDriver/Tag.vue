@@ -30,6 +30,10 @@
               </emqx-dropdown-menu>
             </template>
           </emqx-dropdown>
+          <emqx-button size="small" @click="handleExport" :loading="isExporting">
+            <i class="iconfont icon-import iconsubmit"></i>
+            <span>{{ $t('common.export') }}</span>
+          </emqx-button>
 
           <emqx-button size="small" type="primary" @click="goCreatePage">{{ $t('common.create') }}</emqx-button>
           <emqx-button size="small" type="warning" @click="clearTag">{{ $t('common.clear') }}</emqx-button>
@@ -82,11 +86,13 @@ import useNodeList from '@/composables/config/useNodeList'
 import { useRouter } from 'vue-router'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import useUploadTagList from '@/composables/config/useUploadTagList'
+import useExportTagTable from '@/composables/config/useExportTagTable'
 
 const router = useRouter()
 
 const {
   nodeID,
+  groupName,
   tagList,
   isListLoading,
   allChecked,
@@ -102,6 +108,7 @@ const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
 const { getAttrStrByValue } = useTagAttributeTypeSelect()
 const { getNodeNameById } = useNodeList()
 const { uploadTag } = useUploadTagList()
+const { isExporting, exportTable } = useExportTagTable()
 
 const goCreatePage = () => {
   router.push({ name: 'SouthDriverGroupAddTag' })
@@ -119,6 +126,10 @@ const uploadFile = async (file: File) => {
 
 const downloadTemplate = () => {
   window.open('/template/upload-tag-template.xlsx', '_blank')
+}
+
+const handleExport = () => {
+  exportTable(tagList.value, groupName.value, getNodeNameById(nodeID.value))
 }
 </script>
 

@@ -1,5 +1,6 @@
 import i18n from '@/i18n/index'
 import { ERROR_CODE_ARR } from './constants'
+import { utils as XLSXUtils, writeFile } from 'xlsx'
 
 /**
  * when the value is int, can use this func to create option list
@@ -58,4 +59,19 @@ export const matchObjShape = (obj: Record<string, any>, templateObj: Record<stri
 export const getErrorMsg = (errorCode: number): string => {
   const hasErrorMsg = ERROR_CODE_ARR.includes(errorCode)
   return hasErrorMsg ? i18n.global.t(`error.${errorCode}`) : 'unknown'
+}
+
+export const exportExcelData = (content: Array<any>, fileName: string) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const ws = XLSXUtils.aoa_to_sheet(content)
+      const wb = XLSXUtils.book_new()
+      XLSXUtils.book_append_sheet(wb, ws, 'SheetJS')
+      /* generate file and send to client */
+      writeFile(wb, `${fileName}.xlsx`)
+      resolve(true)
+    } catch (error) {
+      reject(error)
+    }
+  })
 }
