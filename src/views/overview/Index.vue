@@ -3,16 +3,16 @@
     <div class="block">
       <div class="block-hd">
         <h3 class="card-title">Neuron Gateway</h3>
-        <span class="sub-title">{{ $t('config.runningTime') }}: 12</span>
+        <!-- <span class="sub-title">{{ $t('config.runningTime') }}: 12</span> -->
       </div>
-      <emqx-row class="charts-container" :gutter="32">
+      <!-- <emqx-row class="charts-container" :gutter="32">
         <emqx-col :span="16">
           <MessageChart class="chart" />
         </emqx-col>
         <emqx-col :span="8">
           <ConfigDataCard class="chart" />
         </emqx-col>
-      </emqx-row>
+      </emqx-row> -->
     </div>
     <div class="block">
       <div class="block-hd common-flex">
