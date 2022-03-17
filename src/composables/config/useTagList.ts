@@ -76,6 +76,7 @@ export default () => {
 
   return {
     nodeID,
+    groupName,
     tagList,
     isListLoading,
     allChecked,
