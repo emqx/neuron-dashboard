@@ -29,9 +29,23 @@
       </emqx-descriptions>
       <div class="placeholder" v-else>
         <img :src="require('@/assets/images/license.png')" width="400" />
-        <p class="placeholder-text">{{ $t('admin.licensePlaceholder') }}</p>
+        <div class="placeholder-text">
+          <p>{{ $t('admin.licensePlaceholder') }}</p>
+          <p>
+            1.
+            <i18n-t class="payload-desc" keypath="admin.getFreeLicense" tag="span">
+              <a :href="licenseLink" target="_blank">{{ $t('admin.apply') }}</a>
+            </i18n-t>
+          </p>
+          <p>
+            2.
+            <i18n-t class="payload-desc" keypath="admin.buyLicense" tag="span">
+              <a :href="contactLink" target="_blank">{{ $t('admin.contactUs') }}</a>
+            </i18n-t>
+          </p>
+        </div>
         <emqx-upload class="file-upload" :show-file-list="false" :before-upload="handleUpload">
-          <emqx-button size="mini">{{ t('common.uploadFile') }}</emqx-button>
+          <emqx-button size="small" type="primary">{{ t('common.upload') }}</emqx-button>
         </emqx-upload>
       </div>
     </div>
@@ -46,7 +60,7 @@ import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const isDataLoading = ref(false)
 const licenseData: Ref<License | undefined> = ref(undefined)
 
@@ -59,6 +73,10 @@ const pluginsStr = computed(() => {
   }
   return ''
 })
+
+const licenseLink = computed(() => `https://www.emqx.com/${locale.value}/apply-licenses/neuron`)
+
+const contactLink = computed(() => `https://www.emqx.com/${locale.value}/contact?product=neuron`)
 
 const getLicense = async () => {
   try {
@@ -80,6 +98,7 @@ const handleUpload = async (file: any) => {
   } catch (error) {
     console.error(error)
   }
+  return Promise.reject()
 }
 
 getLicense()
@@ -93,5 +112,13 @@ getLicense()
 .placeholder-text {
   color: #bcbcbc;
   margin: 32px 0;
+  > p {
+    margin: 12px;
+    a {
+      margin: 0 2px;
+      text-decoration: none;
+      color: #459bf7;
+    }
+  }
 }
 </style>
