@@ -91,7 +91,7 @@ const getLicense = async () => {
 const { readFile } = useUploadFileAndRead()
 const handleUpload = async (file: any) => {
   try {
-    const content: string = await readFile(file)
+    let content: string = (await readFile(file)) as string
     await uploadLicense(content)
     EmqxMessage.success(t('admin.uploadSuccessful'))
     getLicense()

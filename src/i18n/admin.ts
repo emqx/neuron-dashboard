@@ -71,4 +71,12 @@ export default {
     zh: '上传成功',
     en: 'Upload successful',
   },
+  licenseExpired: {
+    zh: 'License 已过期，请尽快更新 License',
+    en: 'The previous license has expired, please update the license as soon as possible',
+  },
+  licenseExpiredSoon: {
+    zh: 'License 即将过期，请即时更新 License。',
+    en: 'The license is about to expire, please update the license immediately',
+  },
 }

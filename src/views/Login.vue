@@ -35,10 +35,13 @@ import { useI18n } from 'vue-i18n'
 import { login as requestLogin } from '@/api/common'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import useCheckLicense from '@/composables/useCheckLicense'
 
 const router = useRouter()
 const { t } = useI18n()
 const store = useStore()
+
+const { checkLicense } = useCheckLicense()
 
 const formCom = ref()
 const form = reactive({
@@ -71,6 +74,7 @@ const login = async () => {
     router.push({
       name: 'Overview',
     })
+    checkLicense()
   } catch (error) {
     console.error(error)
   } finally {
