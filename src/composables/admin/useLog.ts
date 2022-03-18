@@ -11,6 +11,12 @@ export default () => {
   const logTypeOptions: Array<{ label: string; value: string }> = []
   const tableData: Ref<Array<string>> = ref([])
 
+  const pageController = ref({
+    num: 1,
+    size: 200,
+    totalPageNum: 0,
+  })
+
   const { t } = useI18n()
 
   const getTimestampFromStr = (str: string | undefined) => {
@@ -50,6 +56,7 @@ export default () => {
       EmqxMessage.error(t('admin.timeRangeRequired'))
       return
     }
+    const { size, num } = pageController.value
     const data: {
       since: number
       until: number
@@ -59,14 +66,35 @@ export default () => {
     } = {
       since: Math.floor(startTime.value / 1000),
       until: Math.floor(endTime.value / 1000),
-      page: 1,
-      page_size: 200,
+      page: num - 1,
+      page_size: size,
     }
     if (logType.value) {
       data.level = logType.value
     }
+    tableData.value = []
     const { data: ret } = await queryLog(data)
     tableData.value = ret.rows
+    pageController.value.totalPageNum = ret.page_count
+  }
+
+  const handleSizeChange = (size: number) => {
+    pageController.value = {
+      size,
+      num: 1,
+      totalPageNum: 1,
+    }
+    getLogs()
+  }
+
+  const refreshData = () => {
+    const { size } = pageController.value
+    pageController.value = {
+      size,
+      num: 1,
+      totalPageNum: 1,
+    }
+    getLogs()
   }
 
   initLogTypeOptions()
@@ -76,7 +104,10 @@ export default () => {
     timeRange,
     logType,
     logTypeOptions,
+    pageController,
     tableData,
     getLogs,
+    refreshData,
+    handleSizeChange,
   }
 }

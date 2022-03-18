@@ -9,26 +9,38 @@
             class="filter-date-picker"
             v-model="timeRange"
             type="datetimerange"
-            @change="getLogs"
+            @change="refreshData"
             :clearable="false"
           />
         </div>
         <div class="filter-item">
           <label>{{ $t('admin.logType') }}</label>
-          <emqx-select class="filter-select" v-model="logType" @change="getLogs">
+          <emqx-select class="filter-select" v-model="logType" @change="refreshData">
             <emqx-option v-for="{ value, label } in logTypeOptions" :key="value" :value="value" :label="label" />
           </emqx-select>
         </div>
       </div>
       <emqx-button type="primary" @click="getLogs">{{ $t('common.submit') }}</emqx-button>
     </div>
-    <emqx-table :data="tableData">
-      <emqx-table-column :label="$t('admin.log')">
-        <template #default="{ row }">
-          {{ row }}
-        </template>
-      </emqx-table-column>
-    </emqx-table>
+    <div class="table-container">
+      <emqx-table :data="tableData">
+        <emqx-table-column :label="$t('admin.log')">
+          <template #default="{ row }">
+            {{ row }}
+          </template>
+        </emqx-table-column>
+      </emqx-table>
+    </div>
+    <emqx-pagination
+      hide-on-single-page
+      layout="sizes, prev, pager, next, jumper"
+      v-model:current-page="pageController.num"
+      :page-sizes="[200, 300, 500, 1000]"
+      :page-count="pageController.totalPageNum"
+      :page-size="pageController.size"
+      @current-change="getLogs"
+      @size-change="handleSizeChange"
+    />
   </emqx-card>
 </template>
 
@@ -37,7 +49,8 @@ import { ref } from 'vue'
 import useLog from '@/composables/admin/useLog'
 import { ElDatePicker } from 'element-plus'
 
-const { timeRange, logType, logTypeOptions, tableData, getLogs } = useLog()
+const { timeRange, logType, logTypeOptions, tableData, pageController, getLogs, refreshData, handleSizeChange } =
+  useLog()
 </script>
 
 <style lang="scss">
@@ -56,6 +69,9 @@ const { timeRange, logType, logTypeOptions, tableData, getLogs } = useLog()
   }
   .filter-select {
     width: 220px;
+  }
+  .table-container {
+    margin-bottom: 24px;
   }
 }
 </style>
