@@ -1,5 +1,6 @@
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import { FileType } from '@/types/enums'
 
 export default () => {
   const { t } = useI18n()
@@ -10,10 +11,14 @@ export default () => {
     maxSize = size
   }
 
-  const readFile = async (file: any): Promise<string> => {
+  const readFile = async (file: any, fileType: FileType = FileType.Text): Promise<string | ArrayBuffer> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
-      reader.readAsText(file, 'UTF-8')
+      if (fileType === FileType.Text) {
+        reader.readAsText(file, 'UTF-8')
+      } else {
+        reader.readAsArrayBuffer(file)
+      }
       reader.onload = function (evt) {
         const content = evt?.target?.result
         if (content) {
