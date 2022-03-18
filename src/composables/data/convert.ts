@@ -208,7 +208,7 @@ export const transFloatNumberToHex = (num: number | string, type: TagType.FLOAT 
   exponentPart = fillString(exponentPart, '0', exponentLength, true)
   let rawStr = transBinaryStrToHexStr(`${flagBit}${exponentPart}${mantissaPart}`)
   rawStr = fillString(rawStr, '0', exponentLength, true)
-  return insertString(rawStr, ' ', 2)
+  return rawStr
 }
 
 /**
@@ -228,7 +228,7 @@ export const transNegativeNumberToHex = (
   if (decimalNumComplementStrAdd1.length > uintLengthMap[type] - 1) {
     return num
   }
-  return insertString(transBinaryStrToHexStr(getSignBit(true) + decimalNumComplementStrAdd1), ' ')
+  return transBinaryStrToHexStr(getSignBit(true) + decimalNumComplementStrAdd1)
 }
 
 /**
