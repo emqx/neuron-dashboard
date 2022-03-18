@@ -9,7 +9,7 @@ export const queryLog = (data: {
   level?: LogType
   page: number
   page_size: number
-}): Promise<AxiosResponse<{ error: number; rows: Array<string> }>> => {
+}): Promise<AxiosResponse<{ error: number; rows: Array<string>; page_count: number }>> => {
   return http.get('/log', { params: data })
 }
 
