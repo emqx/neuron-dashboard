@@ -96,3 +96,8 @@ export enum LogType {
   Error = 'error',
   Fatal = 'fatal',
 }
+
+export enum FileType {
+  Text = 'text',
+  Binary = 'binary',
+}

@@ -60,11 +60,12 @@
 import { defineProps, PropType, computed, defineEmits, ref } from 'vue'
 import { ElPopover } from 'element-plus'
 import { ParamInfo } from '@/types/config'
-import { TypeOfPluginParam } from '@/types/enums'
+import { FileType, TypeOfPluginParam } from '@/types/enums'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import { useI18n } from 'vue-i18n'
 import md5 from 'blueimp-md5'
+import { fromByteArray } from 'base64-js'
 
 const { t } = useI18n()
 
@@ -98,8 +99,9 @@ const { setMaxSize, readFile } = useUploadFileAndRead()
 
 const handleUpload = async (file: any) => {
   try {
-    const content = await readFile(file)
-    inputValue.value = content
+    const content = await readFile(file, FileType.Binary)
+    const afterBase64 = fromByteArray(new Uint8Array(content as ArrayBuffer))
+    inputValue.value = afterBase64
   } catch (error) {
     console.error(error)
   }

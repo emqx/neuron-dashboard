@@ -13,6 +13,7 @@
     "@emqx/emqx-ui": "^1.1.4",
     "@vueuse/core": "^4.8.1",
     "axios": "^0.21.4",
+    "base64-js": "^1.5.1",
     "blueimp-md5": "^2.19.0",
     "core-js": "^3.6.5",
     "dateformat": "^5.0.2",
