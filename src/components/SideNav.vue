@@ -47,11 +47,11 @@ export default defineComponent({
     const { t } = useI18n()
     const state = reactive({
       navList: [
-        {
-          to: '/overview',
-          label: t('common.home'),
-          icon: 'iconattributed',
-        },
+        // {
+        //   to: '/overview',
+        //   label: t('common.home'),
+        //   icon: 'iconattributed',
+        // },
         {
           to: '/monitoring/data',
           label: t('data.monitoring'),

@@ -9,15 +9,15 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/overview',
+    redirect: '/configuration/north-driver',
     component: Home,
     children: [
-      {
-        path: '/overview',
-        name: 'Overview',
-        meta: { requireAuth: true },
-        component: () => import('@/views/overview/Index.vue'),
-      },
+      // {
+      //   path: '/overview',
+      //   name: 'Overview',
+      //   meta: { requireAuth: true },
+      //   component: () => import('@/views/overview/Index.vue'),
+      // },
       /* MONITORING */
       {
         path: '/monitoring/data',
