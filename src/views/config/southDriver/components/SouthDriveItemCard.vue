@@ -30,10 +30,10 @@
         <label>{{ $t('config.connectionStatus') }}:</label>
         <span>{{ connectionStatusText }}</span>
       </div>
-      <div class="node-item-info-row">
+      <!-- <div class="node-item-info-row">
         <label>{{ $t('config.runningTime') }}:</label>
         <span>66</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
