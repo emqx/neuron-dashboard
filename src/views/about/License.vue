@@ -9,7 +9,7 @@
           {{ licenseData.license_type }}
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.licenseStatus')">
-          {{ licenseData.valid }}
+          {{ licenseStatus }}
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.effectiveDate')">
           {{ licenseData.valid_since }}
@@ -88,6 +88,23 @@ const getLicense = async () => {
   }
 }
 
+const licenseStatus = computed(() => {
+  if (!licenseData.value) {
+    return ''
+  }
+  const { valid_since, valid_until } = licenseData.value
+  const startTime = new Date(valid_since).getTime()
+  const endTime = new Date(valid_until).getTime()
+  const now = Date.now()
+  if (startTime > now) {
+    return t('admin.notYetValid')
+  }
+  if (now > endTime) {
+    return t('admin.expired')
+  }
+  return t('admin.inEffect')
+})
+
 const { readFile } = useUploadFileAndRead()
 const handleUpload = async (file: any) => {
   try {
@@ -105,6 +122,9 @@ getLicense()
 </script>
 
 <style lang="scss" scoped>
+.license {
+  padding-bottom: 100px;
+}
 .placeholder {
   padding: 48px;
   text-align: center;
