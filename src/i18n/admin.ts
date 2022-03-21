@@ -79,4 +79,16 @@ export default {
     zh: 'License 即将过期，请即时更新 License。',
     en: 'The license is about to expire, please update the license immediately',
   },
+  notYetValid: {
+    zh: '尚未生效',
+    en: 'Not yet valid',
+  },
+  inEffect: {
+    zh: '生效中',
+    en: 'In effect',
+  },
+  expired: {
+    zh: '已过期',
+    en: 'Expired',
+  },
 }
