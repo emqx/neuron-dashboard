@@ -18,6 +18,7 @@
         </emqx-col>
       </emqx-row>
     </ul>
+    <emqx-empty v-if="!isListLoading && southDriverList.length === 0" class="empty" />
   </emqx-card>
   <DriverDialog v-model="showDialog" :type="DriverDirection.South" @submitted="getSouthDriverList" />
 </template>

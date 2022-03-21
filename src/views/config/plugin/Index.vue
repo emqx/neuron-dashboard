@@ -19,6 +19,7 @@
         </emqx-col>
       </emqx-row>
     </ul>
+    <emqx-empty v-if="!isListLoading && listToShow.length === 0" />
   </emqx-card>
   <PluginDialog v-model="showDialog" :plugin="currentPlugin" @submitted="getPluginList" />
 </template>
