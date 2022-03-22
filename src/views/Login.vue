@@ -72,7 +72,7 @@ const login = async () => {
     const { data } = await requestLogin({ name: userName, pass: password })
     store.commit('SET_TOKEN', data.token)
     router.push({
-      name: 'Overview',
+      path: '/',
     })
     checkLicense()
   } catch (error) {
