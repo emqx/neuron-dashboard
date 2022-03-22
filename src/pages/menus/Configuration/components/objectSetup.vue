@@ -196,7 +196,7 @@ export default {
     },
     checkDuplicateObjName(name) {
       const objList = this.$store.state.SetUpData.objectData
-      return objList.some(({ objn }) => objn === name)
+      return !this.isEdit && objList.some(({ objn }) => objn === name)
     },
     checkObjList(objList) {
       if (objList.some(({ objn }) => this.checkDuplicateObjName(objn))) {
