@@ -42,7 +42,7 @@ export enum TagType {
   DOUBLE,
   BOOL,
   BIT,
-  CSTRING,
+  STRING,
 }
 
 export enum TagAttributeType {

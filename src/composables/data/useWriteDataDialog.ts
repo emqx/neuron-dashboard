@@ -64,7 +64,7 @@ export default (props: Props) => {
       props.tag.type !== TagType.BYTE &&
       props.tag.type !== TagType.BOOL &&
       props.tag.type !== TagType.BIT &&
-      props.tag.type !== TagType.CSTRING
+      props.tag.type !== TagType.STRING
     )
   })
 

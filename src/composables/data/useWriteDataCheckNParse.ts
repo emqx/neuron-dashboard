@@ -131,13 +131,13 @@ export default () => {
       [TagType.DOUBLE]: checkFloat.bind(null, value),
       [TagType.BOOL]: checkStrNBool.bind(null),
       [TagType.BIT]: checkBit.bind(null, value),
-      [TagType.CSTRING]: checkStrNBool.bind(null),
+      [TagType.STRING]: checkStrNBool.bind(null),
     }
     return checkMap[type]()
   }
 
   const parseWriteData = (type: TagType, value: string) => {
-    if (type === TagType.BYTE || type === TagType.CSTRING || type === TagType.BOOL) {
+    if (type === TagType.BYTE || type === TagType.STRING || type === TagType.BOOL) {
       return value
     }
     return Number(value)
