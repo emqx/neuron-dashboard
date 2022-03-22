@@ -238,7 +238,7 @@ export default () => {
       type === TagType.BYTE ||
       type === TagType.BOOL ||
       type === TagType.BIT ||
-      type === TagType.CSTRING
+      type === TagType.STRING
     ) {
       return value
     }
