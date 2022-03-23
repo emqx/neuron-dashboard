@@ -260,6 +260,10 @@ export default {
     zh: '请填写 Read interval',
     en: 'Please enter the read interval',
   },
+  readIntervalMinimumError: {
+    zh: 'Read interval 最小值为 100 ms',
+    en: 'The minimum read interval is 100 ms',
+  },
   readIntervalError: {
     zh: '请填写有效数字',
     en: 'Please fill in a valid number',
