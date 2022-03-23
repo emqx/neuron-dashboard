@@ -45,6 +45,12 @@ export default () => {
           return ret
         },
       },
+      {
+        type: 'number',
+        min: 100,
+        message: t('config.readIntervalMinimumError'),
+        trigger: 'blur',
+      },
     ],
   }
 

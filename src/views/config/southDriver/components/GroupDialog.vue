@@ -11,7 +11,7 @@
         <emqx-input v-model="groupForm.name" :disabled="group" />
       </emqx-form-item>
       <emqx-form-item prop="interval" label="Interval" required>
-        <emqx-input v-model="groupForm.interval">
+        <emqx-input v-model.number="groupForm.interval">
           <template #append>ms</template>
         </emqx-input>
       </emqx-form-item>
