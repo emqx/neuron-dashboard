@@ -233,13 +233,13 @@ export default () => {
     if (error) {
       return error
     }
-    if (
-      !showValueByHexadecimal.value ||
-      type === TagType.BYTE ||
-      type === TagType.BOOL ||
-      type === TagType.BIT ||
-      type === TagType.STRING
-    ) {
+    if (!showValueByHexadecimal.value) {
+      if ((type === TagType.DOUBLE || type === TagType.FLOAT) && value === 0) {
+        return '0.0'
+      }
+      return value
+    }
+    if (type === TagType.BYTE || type === TagType.BOOL || type === TagType.BIT || type === TagType.STRING) {
       return value
     }
     const data = await transToHexadecimal(tagData)
