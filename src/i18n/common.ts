@@ -151,6 +151,10 @@ export default {
     zh: '上传',
     en: 'Upload',
   },
+  reUpload: {
+    zh: '重新上传',
+    en: 'Re-upload',
+  },
   uploadSuccess: {
     zh: '上传成功',
     en: 'Upload success!',
