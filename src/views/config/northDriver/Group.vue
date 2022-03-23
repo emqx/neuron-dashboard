@@ -6,7 +6,7 @@
         <p class="driver-name">
           <label>{{ $t('config.appName') }}</label>
           <span>{{ nodeName }}</span>
-          <i class="el-icon-edit icon-edit" :title="$t('common.edit')" @click="editNodeName" />
+          <!-- <i class="el-icon-edit icon-edit" :title="$t('common.edit')" @click="editNodeName" /> -->
         </p>
       </div>
       <div class="btns common-flex">
