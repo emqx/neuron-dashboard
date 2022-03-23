@@ -51,6 +51,10 @@ export default {
     zh: '当前暂无 License，请以下列途径获取 License',
     en: 'There is currently no license, please get the license in the following ways',
   },
+  howToGetTheCertificate: {
+    zh: '证书获取方式',
+    en: 'How to get the certificate',
+  },
   getFreeLicense: {
     zh: '免费{0} License',
     en: '{0} for a license for free.',

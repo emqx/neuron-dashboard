@@ -27,10 +27,11 @@
           {{ pluginsStr }}
         </emqx-descriptions-item>
       </emqx-descriptions>
-      <div class="placeholder" v-else>
-        <img :src="require('@/assets/images/license.png')" width="400" />
-        <div class="placeholder-text">
-          <p>{{ $t('admin.licensePlaceholder') }}</p>
+      <div class="msg" :class="{ 'align-center': !hasLicense }">
+        <img :src="require('@/assets/images/license.png')" width="400" v-if="!hasLicense" />
+        <div class="method-text">
+          <p v-if="!hasLicense">{{ $t('admin.licensePlaceholder') }}</p>
+          <p v-else>{{ $t('admin.howToGetTheCertificate') }}</p>
           <p>
             1.
             <i18n-t class="payload-desc" keypath="admin.getFreeLicense" tag="span">
@@ -45,7 +46,9 @@
           </p>
         </div>
         <emqx-upload class="file-upload" :show-file-list="false" :before-upload="handleUpload">
-          <emqx-button size="small" type="primary">{{ t('common.upload') }}</emqx-button>
+          <emqx-button size="small" type="primary" class="btn-upload">
+            {{ hasLicense ? t('common.reUpload') : t('common.upload') }}
+          </emqx-button>
         </emqx-upload>
       </div>
     </div>
@@ -129,11 +132,16 @@ getLicense()
   padding: 48px;
   text-align: center;
 }
-.placeholder-text {
+.msg.align-center {
+  text-align: center;
+}
+.method-text {
   color: #bcbcbc;
   margin: 32px 0;
   > p {
     margin: 12px;
+    margin-right: 0;
+    margin-left: 0;
     a {
       margin: 0 2px;
       text-decoration: none;
