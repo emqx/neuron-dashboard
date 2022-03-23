@@ -33,6 +33,10 @@
       <label>{{ $t('config.connectionStatus') }}</label>
       <span>{{ connectionStatusText }}</span>
     </div>
+    <div class="node-item-info-row">
+      <label>Plugin: </label>
+      <span>{{ data.plugin }}</span>
+    </div>
   </div>
 </template>
 

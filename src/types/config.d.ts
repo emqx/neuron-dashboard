@@ -50,6 +50,7 @@ export type DriverItemInList = Merge<
   Merge<RawDriverData, DriverStateData>,
   {
     pluginKind: PluginKind
+    plugin: string
   }
 >
 
