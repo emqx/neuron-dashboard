@@ -7,6 +7,7 @@ import { matchObjShape } from '@/utils/utils'
 import { useRoute } from 'vue-router'
 import useAddTag, { useTagTypeSelect, useTagAttributeTypeSelect } from './useAddTag'
 import { TagType } from '@/types/enums'
+import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
 
 export default () => {
   const { fileReader } = useTableFileReader()
@@ -37,7 +38,7 @@ export default () => {
       let startIndex = 2
       const ret = []
       for (const { name, address, attribute, type: typeLabel } of tagList) {
-        const attr = getAttrTotalValueByStr(attribute, ' ')
+        const attr = getAttrTotalValueByStr(attribute, FILLER_IN_TAG_ATTR)
         const type = findTypeValueByLabel(typeLabel)
         if (!type || !attr) {
           EmqxMessage.error(`${t('config.tableRowDataError', { rowNum: startIndex })} ${t('config.errorTableError')}`)

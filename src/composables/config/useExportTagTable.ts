@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { exportExcelData } from '@/utils/utils'
 import { useTagAttributeTypeSelect, useTagTypeSelect } from './useAddTag'
 import { TagData } from '@/types/config'
+import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
 
 export default () => {
   const { t } = useI18n()
@@ -19,7 +20,7 @@ export default () => {
     tagList.forEach((obj) => {
       const { name, address, attribute, type } = obj
       const content = []
-      const attrStr = attribute ? getAttrStrByValue(attribute) : ''
+      const attrStr = attribute ? getAttrStrByValue(attribute, FILLER_IN_TAG_ATTR) : ''
       const typeStr = type ? findLabelByValue(type) : ''
       content.push([name, address, attrStr, typeStr])
       sheets.push(...content)

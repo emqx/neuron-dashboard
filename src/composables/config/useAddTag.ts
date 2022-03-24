@@ -52,10 +52,10 @@ export const useTagAttributeTypeSelect = () => {
   const findLabelByValue = (val: number) => tagAttributeTypeOptList.find(({ value }) => val === value)?.label || ''
   const findValueByLabel = (lab: any) => tagAttributeTypeOptList.find(({ label }) => label === lab)?.value || undefined
 
-  const getAttrStrByValue = (val: number) => {
+  const getAttrStrByValue = (val: number, filler = ', ') => {
     const key = Number(Object.keys(tagAttrValueMap).find((total) => Number(total) === val))
     const valueArr = tagAttrValueMap[key as keyof typeof tagAttrValueMap]
-    return valueArr.map((value) => findLabelByValue(value)).join(', ')
+    return valueArr.map((value) => findLabelByValue(value)).join(filler)
   }
 
   // "Write Subscribe" to 5
