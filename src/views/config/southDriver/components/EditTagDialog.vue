@@ -6,7 +6,7 @@
     :title="$t('config.editTag')"
     :z-index="2000"
   >
-    <TagFormCom ref="formRef" :data="tagData" />
+    <TagFormCom ref="formRef" :data="tagData" :node-plugin-info="pluginMsg" />
     <template #footer>
       <span class="dialog-footer">
         <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
@@ -23,9 +23,12 @@ import { computed, defineProps, defineEmits, PropType, ref, Ref, watch } from 'v
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { ElDialog } from 'element-plus'
 import TagFormCom from './TagForm.vue'
-import { TagData } from '@/types/config'
-import { updateTag } from '@/api/config'
+import { PluginInfo, TagData } from '@/types/config'
+import { queryPluginConfigInfo, updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
+import { useNodeMsgMap } from '@/composables/config/useNodeList'
+import { useGetPluginMsgIdMap } from '@/composables/config/usePlugin'
+import { DriverDirection } from '@/types/enums'
 
 const props = defineProps({
   modelValue: {
@@ -45,6 +48,10 @@ const emit = defineEmits(['update:modelValue', 'submitted'])
 
 const { t } = useI18n()
 
+const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
+const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
+const pluginMsg: Ref<undefined | PluginInfo> = ref(undefined)
+
 const tagData: Ref<TagData> = ref({} as TagData)
 const isSubmitting = ref(false)
 const formRef = ref()
@@ -59,10 +66,19 @@ const showDialog = computed({
 watch(showDialog, (val) => {
   if (val) {
     tagData.value = { ...props.tag }
+    if (!pluginMsg.value) {
+      getPluginInfo()
+    }
   } else {
     formRef.value.resetFields()
   }
 })
+
+const getPluginInfo = async () => {
+  await Promise.all([initMap(), initMsgIdMap()])
+  const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(props.nodeId).plugin_id].name)
+  pluginMsg.value = data
+}
 
 const submit = async () => {
   try {
