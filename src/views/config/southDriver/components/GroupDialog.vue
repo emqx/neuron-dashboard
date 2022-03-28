@@ -3,7 +3,7 @@
     v-model="showDialog"
     :width="500"
     custom-class="common-dialog"
-    :title="!!group ? $t('config.editGroup') : $t('config.createGroup')"
+    :title="!!group ? $t('config.viewGroup') : $t('config.createGroup')"
     :z-index="2000"
   >
     <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
@@ -11,17 +11,22 @@
         <emqx-input v-model="groupForm.name" :disabled="group" />
       </emqx-form-item>
       <emqx-form-item prop="interval" label="Interval" required>
-        <emqx-input v-model.number="groupForm.interval">
+        <emqx-input v-model.number="groupForm.interval" :disabled="group">
           <template #append>ms</template>
         </emqx-input>
       </emqx-form-item>
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
-          {{ group ? $t('common.submit') : $t('common.create') }}
+        <template v-if="!group">
+          <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+            {{ $t('common.create') }}
+          </emqx-button>
+          <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+        </template>
+        <emqx-button v-else type="primary" size="small" @click="showDialog = false" :loading="isSubmitting">
+          {{ $t('common.close') }}
         </emqx-button>
-        <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
       </span>
     </template>
   </el-dialog>
