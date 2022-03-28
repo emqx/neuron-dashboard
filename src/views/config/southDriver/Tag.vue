@@ -41,41 +41,52 @@
         </div>
       </div>
     </div>
-    <emqx-table :data="tagList">
-      <emqx-table-column :width="28">
-        <template #header>
-          <emqx-checkbox v-model="allChecked" />
-        </template>
-        <template #default="{ row }">
-          <emqx-checkbox v-model="row.checked" />
-        </template>
-      </emqx-table-column>
-      <emqx-table-column :label="$t('common.name')" prop="name"></emqx-table-column>
-      <emqx-table-column :label="$t('config.address')" prop="address"></emqx-table-column>
+    <div class="table-container">
+      <emqx-table :data="tagList">
+        <emqx-table-column :width="28">
+          <template #header>
+            <emqx-checkbox v-model="allChecked" />
+          </template>
+          <template #default="{ row }">
+            <emqx-checkbox v-model="row.checked" />
+          </template>
+        </emqx-table-column>
+        <emqx-table-column :label="$t('common.name')" prop="name"></emqx-table-column>
+        <emqx-table-column :label="$t('config.address')" prop="address"></emqx-table-column>
 
-      <emqx-table-column :label="$t('common.type')">
-        <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
-      </emqx-table-column>
-      <emqx-table-column label="RW">
-        <template #default="{ row }">{{ getAttrStrByValue(row.attribute) }}</template>
-      </emqx-table-column>
+        <emqx-table-column :label="$t('common.type')">
+          <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
+        </emqx-table-column>
+        <emqx-table-column label="RW">
+          <template #default="{ row }">{{ getAttrStrByValue(row.attribute) }}</template>
+        </emqx-table-column>
 
-      <emqx-table-column align="right">
-        <template #default="{ row }">
-          <AComWithDesc :content="$t('common.edit')">
-            <i class="el-icon-edit-outline" @click="editTag(row)" />
-          </AComWithDesc>
-          <!-- <AComWithDesc>
-            <i class="iconfont iconalarm" />
-          </AComWithDesc>-->
-          <AComWithDesc :content="$t('common.delete')">
-            <i class="iconfont icondelete" @click="delTag(row)" />
-          </AComWithDesc>
-        </template>
-      </emqx-table-column>
-    </emqx-table>
+        <emqx-table-column align="right">
+          <template #default="{ row }">
+            <AComWithDesc :content="$t('common.edit')">
+              <i class="el-icon-edit-outline" @click="editTag(row)" />
+            </AComWithDesc>
+            <!-- <AComWithDesc>
+              <i class="iconfont iconalarm" />
+            </AComWithDesc>-->
+            <AComWithDesc :content="$t('common.delete')">
+              <i class="iconfont icondelete" @click="delTag(row)" />
+            </AComWithDesc>
+          </template>
+        </emqx-table-column>
+      </emqx-table>
+    </div>
+    <emqx-pagination
+      layout="sizes, prev, pager, next, jumper"
+      v-model:current-page="pageController.pageNum"
+      :page-sizes="[50, 100, 200]"
+      :total="pageController.total"
+      :page-size="pageController.pageSize"
+      @current-change="getAPageTagData"
+      @size-change="handleSizeChange"
+    />
   </emqx-card>
-  <EditTagDialog v-model="showEditDialog" :tag="currentTag" :node-id="nodeID" @submitted="getTagList" />
+  <EditTagDialog v-model="showEditDialog" :tag="currentTag" :node-id="nodeID" @submitted="refreshTable" />
 </template>
 
 <script lang="ts" setup>
@@ -94,11 +105,15 @@ const {
   nodeID,
   groupName,
   tagList,
+  totalData,
+  pageController,
   isListLoading,
   allChecked,
   currentTag,
   showEditDialog,
-  getTagList,
+  getAPageTagData,
+  refreshTable,
+  handleSizeChange,
   editTag,
   delTag,
   clearTag,
@@ -117,7 +132,7 @@ const goCreatePage = () => {
 const uploadFile = async (file: File) => {
   try {
     await uploadTag(file)
-    getTagList()
+    refreshTable()
   } catch (error) {
     console.error(error)
   }
@@ -129,7 +144,7 @@ const downloadTemplate = () => {
 }
 
 const handleExport = () => {
-  exportTable(tagList.value, groupName.value, getNodeNameById(nodeID.value))
+  exportTable(totalData.value, groupName.value, getNodeNameById(nodeID.value))
 }
 </script>
 
@@ -148,5 +163,8 @@ const handleExport = () => {
   .el-dropdown-menu {
     padding: 0;
   }
+}
+.table-container {
+  margin-bottom: 24px;
 }
 </style>
