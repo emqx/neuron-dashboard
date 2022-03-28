@@ -267,4 +267,12 @@ export default {
     zh: '请上传具有内容的文件',
     en: 'Please upload a file with content',
   },
+  close: {
+    zh: '关闭',
+    en: 'Close',
+  },
+  view: {
+    zh: '查看',
+    en: 'View',
+  },
 }

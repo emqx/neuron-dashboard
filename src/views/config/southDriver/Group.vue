@@ -44,8 +44,8 @@
       <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
-          <AComWithDesc :content="$t('common.edit')">
-            <i class="el-icon-edit-outline" @click="editGroup(row)" />
+          <AComWithDesc :content="$t('common.view')">
+            <i class="iconfont icondisplay" @click="editGroup(row)" />
           </AComWithDesc>
           <AComWithDesc :content="$t('config.tagList')">
             <i class="iconfont iconalarm" @click="goTagPage(row)" />

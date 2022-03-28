@@ -75,6 +75,10 @@ export default {
     zh: '编辑 Group',
     en: 'Edit Group',
   },
+  viewGroup: {
+    zh: '查看 Group',
+    en: 'View Group',
+  },
   deviceName: {
     zh: '设备名称',
     en: 'Device Name',
