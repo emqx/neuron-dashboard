@@ -75,3 +75,11 @@ export const exportExcelData = (content: Array<any>, fileName: string) => {
     }
   })
 }
+
+export const jumpToFirstErrorFormItem = (): void => {
+  const el = document.querySelector('.el-form-item.is-error')
+  if (el) {
+    el.scrollIntoView()
+    window.scrollBy(0, -100)
+  }
+}
