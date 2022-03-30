@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
-import { createRandomString } from '@/utils/utils'
+import { createRandomString, jumpToFirstErrorFormItem } from '@/utils/utils'
 import { useNodeMsgMap } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 
@@ -141,8 +141,17 @@ export default () => {
   }
 
   const submit = async () => {
+    let pass = true
     try {
       await Promise.all(tagFormComList.value.map((com: typeof TagFormCom) => com.validate()))
+    } catch (error) {
+      pass = false
+      jumpToFirstErrorFormItem()
+    }
+    if (!pass) {
+      return
+    }
+    try {
       isSubmitting.value = true
       const nodeID = Number(route.params.nodeID)
       const groupName: string = route.params.group as string
