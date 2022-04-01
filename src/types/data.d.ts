@@ -6,7 +6,7 @@ export interface TagDataInMonitoring {
 }
 
 export interface WriteData {
-  node_id: number
+  node_name: string
   group_config_name: string
-  tags: Array<Omit<TagDataInMonitoring, 'error'>>
+  tags: Array<{ name: string; value: number | string }>
 }

@@ -3,11 +3,11 @@ import http from '@/utils/http'
 import { AxiosResponse } from 'axios'
 
 export const getMonitoringData = (
-  nodeID: number,
+  nodeName: string,
   groupName: string,
 ): Promise<AxiosResponse<{ tags: Array<TagDataInMonitoring> }>> => {
   return http.post('/read', {
-    node_id: nodeID,
+    node_name: nodeName,
     group_config_name: groupName,
   })
 }

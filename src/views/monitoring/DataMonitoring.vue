@@ -67,7 +67,13 @@
       @size-change="handleSizeChange"
     />
   </emqx-card>
-  <WriteDialog v-model="showWriteDialog" :group="currentGroup" :tag="currentTag" @updated="getTableData" />
+  <WriteDialog
+    v-model="showWriteDialog"
+    :group="currentGroup"
+    :tag="currentTag"
+    :node-name="currentNodeName"
+    @updated="getTableData"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -86,6 +92,7 @@ const {
   tableData,
   showValueByHexadecimal,
   updated,
+  currentNodeName,
 
   tableEmptyText,
 

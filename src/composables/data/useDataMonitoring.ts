@@ -80,9 +80,16 @@ export default () => {
   const groupList: Ref<Array<GroupData>> = ref([])
 
   let selectedGroup: undefined | { nodeID: number; groupName: string } = undefined
-  const currentGroup = ref({
+  const currentGroup: Ref<{ nodeID: number | string; groupName: string }> = ref({
     nodeID: '',
     groupName: '',
+  })
+  const currentNodeName = computed(() => {
+    if (!currentGroup.value.nodeID) {
+      return ''
+    }
+    const node = nodeList.value.find(({ id }) => id === currentGroup.value.nodeID)
+    return node ? node.name : ''
   })
 
   const pageController = ref({
@@ -92,7 +99,7 @@ export default () => {
   })
   const totalData: Ref<Array<TagDataInTable>> = ref([])
   const showValueByHexadecimal = ref(false)
-  let tagMsgMap: Record<number, any> = {}
+  let tagMsgMap: Record<string, any> = {}
   let pollTimer: undefined | number = undefined
   const updated = ref(Date.now())
   const { tagAttrValueMap } = useTagAttributeTypeSelect()
@@ -157,29 +164,29 @@ export default () => {
       return {}
     }
     const tags = await queryTagList(selectedGroup?.nodeID, selectedGroup.groupName)
-    const tagIdMap: Record<string | number, any> = {}
+    const tagNameMap: Record<string | number, any> = {}
     tags.forEach(
       ({ id, attribute, type, name, address }) =>
-        (tagIdMap[id] = {
+        (tagNameMap[name] = {
           attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
           type,
           tagName: name,
           address,
         }),
     )
-    return Promise.resolve(tagIdMap)
+    return Promise.resolve(tagNameMap)
   }
 
   const getTableData = async () => {
     const { nodeID, groupName } = currentGroup.value
-    if (!nodeID || !groupName) {
+    if (!nodeID || !groupName || !currentNodeName.value) {
       return
     }
     try {
-      const { data } = await getMonitoringData(Number(currentGroup.value.nodeID), currentGroup.value.groupName)
+      const { data } = await getMonitoringData(currentNodeName.value, currentGroup.value.groupName)
       updated.value = Date.now()
       totalData.value = (data.tags || []).map((item) => {
-        const ret = Object.assign(item, tagMsgMap[item.id])
+        const ret = Object.assign(item, tagMsgMap[item.name as string])
         if (!('value' in ret) || ret.value === undefined) {
           ret.value = ''
         }
@@ -271,6 +278,7 @@ export default () => {
     nodeList,
     groupList,
     currentGroup,
+    currentNodeName,
     pageController,
     tableData,
     showValueByHexadecimal,

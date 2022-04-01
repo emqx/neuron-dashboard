@@ -16,11 +16,13 @@ type Props = Readonly<
     modelValue?: unknown
     group?: unknown
     tag?: unknown
+    nodeName?: unknown
   } & {
     modelValue: boolean
   } & {
     group?: Group | undefined
     tag?: TagDataInTable | undefined
+    nodeName?: string | undefined
   }
 >
 
@@ -101,8 +103,9 @@ export default (props: Props) => {
 
   const submit = async () => {
     try {
-      const { nodeID, groupName } = props.group as Group
-      const { id, type } = props.tag as TagDataInTable
+      const { groupName } = props.group as Group
+      const { tagName, type } = props.tag as TagDataInTable
+      const nodeName = props.nodeName as string
       await validate()
       isSubmitting.value = true
 
@@ -111,12 +114,12 @@ export default (props: Props) => {
         : inputValue.value
       const value = parseWriteData(type, trueValue)
       await writeData({
-        node_id: Number(nodeID),
+        node_name: nodeName,
         group_config_name: groupName,
         tags: [
           {
             value,
-            id,
+            name: tagName,
           },
         ],
       })

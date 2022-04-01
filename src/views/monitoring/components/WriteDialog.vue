@@ -53,6 +53,9 @@ const props = defineProps({
   tag: {
     type: Object as PropType<TagDataInTable>,
   },
+  nodeName: {
+    type: String,
+  },
 })
 const emit = defineEmits(['update:modelValue', 'updated'])
 
