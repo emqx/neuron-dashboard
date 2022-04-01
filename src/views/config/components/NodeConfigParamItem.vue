@@ -28,6 +28,9 @@
       <emqx-upload class="file-upload" :show-file-list="false" :before-upload="handleUpload">
         <emqx-button size="mini">{{ t('common.uploadFile') }}</emqx-button>
       </emqx-upload>
+      <emqx-button v-if="inputValue" size="mini" @click="clearFile" type="text">
+        {{ t('config.clearUploadedFile') }}
+      </emqx-button>
       <div class="file-content-preview" v-if="inputValue">
         <label>Content-MD5:</label>
         <span>{{ fileContentPreview(inputValue) }}</span>
@@ -107,6 +110,10 @@ const handleUpload = async (file: any) => {
   }
 }
 
+const clearFile = () => {
+  inputValue.value = ''
+}
+
 const showLabel = () => upperFirstLetter(props.paramInfo?.name || '')
 
 const upperFirstLetter = (str: string) => {
@@ -140,6 +147,10 @@ const fileContentPreview = md5
   }
   .file-content-preview {
     font-size: 12px;
+  }
+  .file-upload {
+    display: inline-block;
+    margin-right: 16px;
   }
 }
 </style>

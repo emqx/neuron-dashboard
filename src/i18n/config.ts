@@ -352,4 +352,8 @@ export default {
     zh: '部分数据上传失败，请检查',
     en: 'Some data upload failed, please check',
   },
+  clearUploadedFile: {
+    zh: '清空已上传文件',
+    en: 'Clear uploaded file',
+  },
 }
