@@ -1,0 +1,83 @@
+/* Divider */
+.el-divider__text {
+  background-color: #f4f9fc;
+  font-weight: 500;
+  color: #96999c;
+}
+
+/* Dropdown */
+.el-dropdown-menu__item {
+  [class^='el-icon-'],
+  [class*=' el-icon-'] {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+}
+.danger.el-dropdown-menu__item:not(.is-disabled):hover,
+.danger.el-dropdown-menu__item:focus {
+  background-color: var(--minor-red-color);
+  color: var(--main-red-color);
+}
+
+/* Tabs */
+.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+  border-bottom-color: #189bfe;
+}
+
+/* Date */
+.el-date-editor--datetimerange.el-input,
+.el-date-editor--datetimerange.el-input__inner {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Table */
+.el-table.emqx-table th {
+  background: #f4f9fc;
+}
+
+.el-table .is-right i {
+  cursor: pointer;
+  font-size: 24px;
+  color: #0d446e;
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+  &:hover {
+    color: #062a63;
+  }
+}
+
+/* Input */
+.emqx-input.normal-disabled {
+  .el-input__inner {
+    background-color: #fff;
+    border: 1px solid #dcdfe6;
+    color: #606266;
+  }
+}
+
+/* Button */
+.emqx-button {
+  line-height: 1;
+  .iconfont {
+    margin-right: 4px;
+    font-size: 14px;
+    vertical-align: top;
+  }
+  .iconfont + span {
+    display: inline-block;
+    height: 14px;
+    font-size: 14px;
+    vertical-align: top;
+    line-height: 1;
+  }
+}
+
+.emqx-button.el-button {
+  border-radius: 4px;
+}
+
+.el-button--small {
+  font-size: 14px;
+}

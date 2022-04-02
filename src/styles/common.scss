@@ -1,0 +1,17 @@
+.common-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.common-inline-block {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.ellipsis {
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

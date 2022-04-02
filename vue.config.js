@@ -1,13 +1,11 @@
-// vue.config.js
 module.exports = {
-  publicPath: '/',
-  assetsDir: 'static',
+  lintOnSave: false,
   productionSourceMap: false,
   devServer: {
     port: 3003,
     proxy: {
-      '/api/v1/': {
-        target: 'http://iot-platform.cloud:6700',
+      '/api': {
+        target: process.env.VUE_APP_HOST,
         changeOrigin: true,
       },
     },
