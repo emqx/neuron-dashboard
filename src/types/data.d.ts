@@ -8,5 +8,6 @@ export interface TagDataInMonitoring {
 export interface WriteData {
   node_name: string
   group_config_name: string
-  tags: Array<{ name: string; value: number | string }>
+  tag_name: string
+  value: string | number
 }

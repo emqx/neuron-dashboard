@@ -116,12 +116,8 @@ export default (props: Props) => {
       await writeData({
         node_name: nodeName,
         group_config_name: groupName,
-        tags: [
-          {
-            value,
-            name: tagName,
-          },
-        ],
+        tag_name: tagName,
+        value,
       })
       EmqxMessage.success(t('common.submitSuccess'))
       return Promise.resolve()
