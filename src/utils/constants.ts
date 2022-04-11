@@ -1,5 +1,9 @@
+import { DriverDirection } from '@/types/enums'
+
 /* Possible node type values for North Driver */
-export const NORTH_DRIVER_NODE_TYPE = [3, 4, 5]
+export const NORTH_DRIVER_NODE_TYPE = [3, DriverDirection.North]
+
+export const SOUTH_DRIVER_NODE_TYPE = [DriverDirection.South, 4]
 
 export const HEXADECIMAL_PREFIX = '0x'
 

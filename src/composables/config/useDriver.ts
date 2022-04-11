@@ -2,9 +2,8 @@ import { computed, WritableComputedRef } from 'vue'
 import { sendCommandToNode } from '@/api/config'
 import { DriverItemInList } from '@/types/config'
 import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
-import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage } from '@emqx/emqx-ui'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
   const { t } = useI18n()
@@ -85,7 +84,7 @@ export const useNodeTypeSelect = () => {
 export const useNodeType = () => {
   const { t } = useI18n()
   const getNodeTypeLabelByValue = (value: 1 | 2 | 3 | 4 | 5) => {
-    if (value === DriverDirection.South) {
+    if (SOUTH_DRIVER_NODE_TYPE.some((val) => val === value)) {
       return t('config.southDevice')
     }
     if (NORTH_DRIVER_NODE_TYPE.some((val) => val === value)) {

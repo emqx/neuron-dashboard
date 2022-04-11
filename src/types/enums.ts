@@ -10,8 +10,10 @@ export enum SystemStatus {
 }
 
 /**
- * infact, the node type value of the north node can be 3, 4, 5
+ * in fact, the node type value of the north node can be 3, 5
  * but we use 5 when add or query node
+ * the node type value of the south node can be 1, 4
+ * but we use 1 when add or query node
  */
 export enum DriverDirection {
   North = 5,
