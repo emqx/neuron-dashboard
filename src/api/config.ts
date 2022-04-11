@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { DriverDirection, NodeOperationCommand } from '@/types/enums'
 import http from '@/utils/http'
-import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import {
   CreatedPlugin,
   RawDriverData,
@@ -38,8 +38,16 @@ export const queryNorthDriverList = async (): Promise<Array<RawDriverData>> => {
 }
 
 export const querySouthDriverList = async (): Promise<Array<RawDriverData>> => {
-  const ret = await queryDriverList(DriverDirection.South as number)
-  return getDataFromResponse(ret)
+  try {
+    const retArr: Array<AxiosResponse<ResponseDriverListData>> = await Promise.all(
+      SOUTH_DRIVER_NODE_TYPE.map((code) => queryDriverList(code)),
+    )
+    return Promise.resolve(
+      retArr.reduce((arr: Array<RawDriverData>, currentData) => arr.concat(getDataFromResponse(currentData)), []),
+    )
+  } catch (error) {
+    return Promise.reject(error)
+  }
 }
 
 export const queryWebDriverList = async (): Promise<Array<RawDriverData>> => {

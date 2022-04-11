@@ -33,7 +33,7 @@ import usePlugin from '@/composables/config/usePlugin'
 import PluginDialog from './components/PluginDialog.vue'
 import { CreatedPlugin } from '@/types/config'
 import { useNodeTypeSelect } from '@/composables/config/useDriver'
-import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 
 const { pluginList, isListLoading, getPluginList } = usePlugin()
 const { nodeTypeList } = useNodeTypeSelect()
@@ -54,7 +54,7 @@ const listToShow = computed(() => {
   }
   return listNeedShow.value.filter(({ node_type }) =>
     filterNodeType.value === DriverDirection.South
-      ? node_type === DriverDirection.South
+      ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
       : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
   )
 })

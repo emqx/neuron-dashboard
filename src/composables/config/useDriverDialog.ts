@@ -4,7 +4,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { addDriver, queryPluginList } from '@/api/config'
 import { CreatedPlugin, NodeForm } from '@/types/config'
-import { NORTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 
 export const usePluginList = (type: DriverDirection) => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])
@@ -14,7 +14,7 @@ export const usePluginList = (type: DriverDirection) => {
     const list = data.plugin_libs || []
     pluginList.value = list.filter(({ node_type }) =>
       type === DriverDirection.South
-        ? node_type === type
+        ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
         : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
     )
   }
