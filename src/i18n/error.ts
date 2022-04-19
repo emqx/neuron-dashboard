@@ -170,4 +170,8 @@ export default {
     zh: '组配置未订阅',
     en: 'Group config not subscribe',
   },
+  [3007]: {
+    zh: '插件标签类型不匹配',
+    en: 'Plugin tag type mismatch',
+  },
 }
