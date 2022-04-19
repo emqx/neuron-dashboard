@@ -7,7 +7,7 @@ import { useGetPluginMsgIdMap } from './usePlugin'
 
 export default (autoLoad = true) => {
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
-  const fillNodeListStatusData = useFillNodeListStatusData()
+  const { fillNodeListStatusData } = useFillNodeListStatusData()
 
   const northDriverList: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
