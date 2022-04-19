@@ -115,7 +115,7 @@ export default (props: Props) => {
       const value = parseWriteData(type, trueValue)
       await writeData({
         node_name: nodeName,
-        group_config_name: groupName,
+        group_name: groupName,
         tag_name: tagName,
         value,
       })
