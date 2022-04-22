@@ -15,10 +15,10 @@
             <i class="icon iconfont"></i>
             <span>{{ $t('common.import') }}</span>
           </emqx-button> -->
-          <emqx-button size="small">
+          <!-- <emqx-button size="small">
             <i class="icon iconfont"></i>
             <span>{{ $t('common.export') }}</span>
-          </emqx-button>
+          </emqx-button> -->
         </div>
         <div class="btn-group">
           <emqx-button size="small" type="primary" @click="addGroup">{{ $t('common.create') }}</emqx-button>
