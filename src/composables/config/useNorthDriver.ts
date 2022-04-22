@@ -1,7 +1,7 @@
 import { queryNorthDriverList } from '@/api/config'
 import { DriverItemInList } from '@/types/config'
 import { PluginKind } from '@/types/enums'
-import { ref, Ref } from 'vue'
+import { ref, Ref, onUnmounted } from 'vue'
 import { useFillNodeListStatusData } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 
@@ -52,6 +52,12 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   if (needRefreshStatus) {
     startTimer()
   }
+
+  onUnmounted(() => {
+    if (refreshStatusTimer) {
+      window.clearInterval(refreshStatusTimer)
+    }
+  })
 
   return {
     northDriverList,
