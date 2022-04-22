@@ -5,12 +5,15 @@ import { ref, Ref } from 'vue'
 import { useFillNodeListStatusData } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 
-export default (autoLoad = true) => {
+export default (autoLoad = true, needRefreshStatus = false) => {
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   const { fillNodeListStatusData } = useFillNodeListStatusData()
 
   const northDriverList: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
+
+  let refreshStatusTimer: undefined | number = undefined
+
   const getNorthDriverList = async () => {
     try {
       isListLoading.value = true
@@ -30,8 +33,24 @@ export default (autoLoad = true) => {
     }
   }
 
+  const startTimer = () => {
+    refreshStatusTimer = window.setInterval(async () => {
+      const driverListAddStatus = await fillNodeListStatusData(northDriverList.value)
+      northDriverList.value = driverListAddStatus.map((item) => {
+        return {
+          ...item,
+          plugin: pluginMsgIdMap[item.plugin_id].name,
+        }
+      })
+    }, 15 * 1000)
+  }
+
   if (autoLoad) {
     getNorthDriverList()
+  }
+
+  if (needRefreshStatus) {
+    startTimer()
   }
 
   return {
