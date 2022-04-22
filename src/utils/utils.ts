@@ -83,3 +83,20 @@ export const jumpToFirstErrorFormItem = (): void => {
     window.scrollBy(0, -100)
   }
 }
+
+export const countBaseURL = () => {
+  const { host, protocol } = window.location
+  let serverAddress = host
+  if (process.env.NODE_ENV !== 'development') {
+    const reg = /(?<ip>(localhost)|((\d|.)+)):(?<port>\d+)/
+    const matchResult = host.match(reg)
+    if (reg.test(host) && matchResult?.groups) {
+      const { ip, port } = matchResult.groups
+      serverAddress = `${ip}:${(Number(port) + 1).toString()}`
+    } else {
+      serverAddress = host
+    }
+  }
+  const baseURL = `${protocol}//${serverAddress}/api/v2`
+  return baseURL
+}
