@@ -42,7 +42,7 @@
           <el-input v-model="AttributeSetupForm.attn" :disabled="isEdit"></el-input>
         </el-form-item>
         <el-form-item :label="$t('common.type')" prop="attn">
-          <el-select v-model="AttributeSetupForm.attt">
+          <el-select v-model="AttributeSetupForm.attt" @change="handleAtttChanged">
             <el-option v-for="item in AttributeTypeList" :key="item.val" :label="item.val" :value="item.val">
             </el-option>
           </el-select>
@@ -299,6 +299,9 @@ export default {
         })
       }
     },
+    handleAtttChanged() {
+      this.AttributeSetupForm.deci = 0
+    },
     ...mapMutations(['setObjectAttribute']),
   },
   computed: {
@@ -320,11 +323,7 @@ export default {
       return currentDriver.attr || []
     },
   },
-  watch: {
-    'AttributeSetupForm.attt'(val) {
-      this.AttributeSetupForm.deci = 0
-    },
-  },
+
   created() {
     this.init()
   },
