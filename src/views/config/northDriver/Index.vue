@@ -32,7 +32,7 @@ import { DriverDirection } from '@/types/enums'
 import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
 import { DriverItemInList } from '@/types/config'
 
-const { northDriverList, isListLoading, getNorthDriverList } = useNorthDriver()
+const { northDriverList, isListLoading, getNorthDriverList } = useNorthDriver(true, true)
 const showDialog = ref(false)
 
 const { toggleNodeStartStopStatus } = useToggleNodeStartStopStatus()

@@ -2,8 +2,6 @@ import axios, { AxiosError } from 'axios'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
-import i18n from '@/i18n/index'
-import { ERROR_CODE_ARR } from './constants'
 import { LOGIN_ROUTE_NAME } from '@/router/routes'
 import { getErrorMsg } from './utils'
 

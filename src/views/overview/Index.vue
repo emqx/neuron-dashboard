@@ -79,7 +79,7 @@ import { MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW } from '@/utils/constants'
 import { DriverDirection } from '@/types/enums'
 import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
 
-const { northDriverList, getNorthDriverList } = useNorthDriver(false)
+const { northDriverList, getNorthDriverList } = useNorthDriver(false, true)
 const { southDriverList, getSouthDriverList } = useSouthDriver(false, true)
 const isLoading = ref(false)
 
