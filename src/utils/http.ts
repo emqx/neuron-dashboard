@@ -3,12 +3,9 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME } from '@/router/routes'
-import { getErrorMsg } from './utils'
+import { countBaseURL, getErrorMsg } from './utils'
 
-const { host, protocol } = window.location
-const serverAddress = host.split(':').length > 1 ? `${host.split(':')[0]}:7001` : host
-const { NODE_ENV } = process.env
-const baseURL = `${protocol}//${NODE_ENV === 'development' ? 'localhost:3003' : serverAddress}/api/v2`
+const baseURL = countBaseURL()
 const option = {
   headers: {
     'Content-Type': 'application/json',
