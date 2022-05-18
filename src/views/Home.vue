@@ -6,8 +6,9 @@
         <side-nav></side-nav>
       </template>
       <template #page-content>
-        <div id="page-content">
+        <div>
           <router-view />
+          <div id="page-content"></div>
         </div>
       </template>
     </emqx-container>
