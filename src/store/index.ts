@@ -8,6 +8,7 @@ interface State {
   chnl: Array<ChnlModel>
   lang: string
   token: string
+  subAppInstances: Record<string, any>
 }
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
@@ -25,6 +26,9 @@ export default createStore<State>({
       chnl: [],
       lang: getDefaultLanguage(),
       token: getToken() ?? '',
+      subAppInstances: {
+        ekuiper: undefined,
+      },
     }
   },
   mutations: {
@@ -48,6 +52,9 @@ export default createStore<State>({
     LOGOUT(state) {
       state.token = ''
       clearToken()
+    },
+    SET_SUB_APP_INSTANCE(state, payload: { key: string; instance: any }) {
+      state.subAppInstances[payload.key] = payload.instance
     },
   },
   getters: {

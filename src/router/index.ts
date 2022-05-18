@@ -1,30 +1,28 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import store from '@/store/index'
-import { loadMicroApp } from 'qiankun'
+import { handleEKuiper, destroyEKuiper, isKuiperPath, isExitEKuiper } from '@/utils/forEKuiper'
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes,
 })
 
-const handleEKuiper = async () => {
-  await new Promise((resolve) => window.setTimeout(resolve, 100))
-  loadMicroApp({
-    name: 'ekuiper',
-    entry: '//localhost:3002',
-    container: '#page-content',
-  })
-}
-
 router.beforeEach((to, from, next) => {
   if (!store.state.token && to.name !== 'Login') {
     next({ name: 'Login' })
   } else if (store.state.token && to.name === 'Login') {
     next('/')
-  } else if (/^\/ekuiper/.test(to.path)) {
+  } else if (isKuiperPath(to.path)) {
+    // TODO: why trigger twice there, find the reason
+    if (to.path === from.path) {
+      return
+    }
     next()
     handleEKuiper()
+  } else if (isExitEKuiper(from.path, to.path)) {
+    destroyEKuiper()
+    next()
   } else {
     next()
   }
