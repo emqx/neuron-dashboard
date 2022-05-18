@@ -97,6 +97,18 @@ export default defineComponent({
             },
           ],
         },
+        {
+          to: '/ekuiper',
+          label: 'eKuiper',
+          icon: 'iconconfig',
+          subMenus: [
+            {
+              to: '/ekuiper/nodes/single-node/rules',
+              // TODO:
+              label: 'Rule',
+            },
+          ],
+        },
       ],
     })
 

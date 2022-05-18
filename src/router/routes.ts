@@ -104,6 +104,10 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    path: '/:ekuiper(.*)*',
+    component: Home,
+  },
+  {
     path: '/login',
     name: LOGIN_ROUTE_NAME,
     component: Login,
