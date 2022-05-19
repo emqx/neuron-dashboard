@@ -14,6 +14,7 @@ import '@/styles/colors.scss'
 import '@/styles/common.scss'
 import '@/assets/fonts/iconfont.css'
 import '@/assets/fonts/iconfont'
+import '@/styles/kuiper.scss'
 import '@/styles/vxe-theme.scss'
 
 createApp(App).use(i18n).use(EmqxUI).use(store).use(router).use(VXETable).mount('#neuron-dashboard')

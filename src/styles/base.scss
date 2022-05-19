@@ -1,5 +1,16 @@
 @import './emqx-ui-variables.scss';
 
+:root {
+  --color-main-bg: #f4f9fc;
+  --color-left-bg: transparent;
+  --color-deep-bg: #fff;
+  --color-header-bg: #f4f9fc;
+  --color-text-title: var(--card-title-color);
+  --color-text-normal: #303133;
+  --color-border-normal: #e2e7ea;
+  --color-border-tab: #e2e7ea;
+}
+
 #neuron-dashboard {
   font-family: 'PingFang SC', 'Source Han Sans CN';
   -webkit-font-smoothing: antialiased;
