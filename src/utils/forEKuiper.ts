@@ -11,6 +11,9 @@ export const handleEKuiper = async () => {
     name: 'ekuiper',
     entry: '//localhost:3002',
     container: '#page-content',
+    props: {
+      lang: store.state.lang,
+    },
   })
   store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: app })
 }
