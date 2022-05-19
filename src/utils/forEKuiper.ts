@@ -2,6 +2,10 @@ import { loadMicroApp } from 'qiankun'
 import store from '@/store/index'
 
 export const handleEKuiper = async () => {
+  // handle the situation that link jumps inside eKuiper
+  if (store.state.subAppInstances.ekuiper) {
+    return
+  }
   await new Promise((resolve) => window.setTimeout(resolve, 100))
   const app = loadMicroApp({
     name: 'ekuiper',
@@ -13,6 +17,7 @@ export const handleEKuiper = async () => {
 
 export const destroyEKuiper = () => {
   store.state.subAppInstances.ekuiper?.unmount()
+  store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: null })
 }
 
 export const isKuiperPath = (toPath: string) => {
