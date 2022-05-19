@@ -107,6 +107,11 @@ export default defineComponent({
               // TODO:
               label: 'Rule',
             },
+            {
+              to: '/ekuiper/nodes/single-node/extension',
+              // TODO:
+              label: 'Extension',
+            },
           ],
         },
       ],
