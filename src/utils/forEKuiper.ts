@@ -13,6 +13,7 @@ export const handleEKuiper = async () => {
     container: '#page-content',
     props: {
       lang: store.state.lang,
+      hideTabInNodePage: true,
     },
   })
   store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: app })

@@ -7,6 +7,7 @@
   }
   .ivu-btn-primary {
     background-color: #189bfe;
+    border-color: #189bfe;
   }
   .ivu-card-bordered {
     border: 1px solid #ebeef5;
@@ -15,5 +16,8 @@
   }
   .ivu-table-wrapper {
     box-shadow: none;
+  }
+  .ivu-layout.main-body {
+    padding: 0;
   }
 }

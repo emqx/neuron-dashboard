@@ -8,7 +8,11 @@
       <template #page-content>
         <div>
           <router-view />
-          <div id="page-content"></div>
+          <!-- For eKuiper -->
+          <emqx-card>
+            <h3 class="card-title">{{ pageTitle }}</h3>
+            <div id="page-content"></div>
+          </emqx-card>
         </div>
       </template>
     </emqx-container>
@@ -19,12 +23,19 @@
 import { defineComponent } from 'vue'
 import Header from '@/components/Header.vue'
 import SideNav from '@/components/SideNav.vue'
+import useEKuiper from '@/composables/ekuiper/useEKuiper'
 
 export default defineComponent({
   name: 'Home',
   components: {
     Header,
     SideNav,
+  },
+  setup() {
+    const { pageTitle } = useEKuiper()
+    return {
+      pageTitle,
+    }
   },
 })
 </script>
