@@ -9,7 +9,7 @@
         <div>
           <router-view />
           <!-- For eKuiper -->
-          <emqx-card>
+          <emqx-card v-if="isKuiperPage">
             <h3 class="card-title">{{ pageTitle }}</h3>
             <div id="page-content"></div>
           </emqx-card>
@@ -20,10 +20,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import Header from '@/components/Header.vue'
 import SideNav from '@/components/SideNav.vue'
 import useEKuiper from '@/composables/ekuiper/useEKuiper'
+import { isKuiperPath } from '@/utils/forEKuiper'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'Home',
@@ -32,8 +34,11 @@ export default defineComponent({
     SideNav,
   },
   setup() {
+    const route = useRoute()
+    const isKuiperPage = computed(() => isKuiperPath(route.path))
     const { pageTitle } = useEKuiper()
     return {
+      isKuiperPage,
       pageTitle,
     }
   },
