@@ -6,17 +6,25 @@ export const handleEKuiper = async () => {
   if (store.state.subAppInstances.ekuiper) {
     return
   }
-  await new Promise((resolve) => window.setTimeout(resolve, 100))
-  const app = loadMicroApp({
-    name: 'ekuiper',
-    entry: '//localhost:3002',
-    container: '#page-content',
-    props: {
-      lang: store.state.lang,
-      hideTabInNodePage: true,
-    },
-  })
-  store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: app })
+  try {
+    store.commit('SET_SUB_APP_LOADING', false)
+    await new Promise((resolve) => window.setTimeout(resolve, 100))
+    const app = loadMicroApp({
+      name: 'ekuiper',
+      entry: '//localhost:3002',
+      container: '#page-content',
+      props: {
+        lang: store.state.lang,
+        hideTabInNodePage: true,
+      },
+    })
+    store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: app })
+    await app.loadPromise
+  } catch (error) {
+    //
+  } finally {
+    store.commit('SET_SUB_APP_LOADING', false)
+  }
 }
 
 export const destroyEKuiper = () => {
