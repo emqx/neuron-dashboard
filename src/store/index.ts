@@ -8,6 +8,7 @@ interface State {
   chnl: Array<ChnlModel>
   lang: string
   token: string
+  isSubAppLoading: boolean
   subAppInstances: Record<string, any>
 }
 
@@ -26,6 +27,7 @@ export default createStore<State>({
       chnl: [],
       lang: getDefaultLanguage(),
       token: getToken() ?? '',
+      isSubAppLoading: false,
       subAppInstances: {
         ekuiper: undefined,
       },
@@ -55,6 +57,9 @@ export default createStore<State>({
     },
     SET_SUB_APP_INSTANCE(state, payload: { key: string; instance: any }) {
       state.subAppInstances[payload.key] = payload.instance
+    },
+    SET_SUB_APP_LOADING(state, payload: boolean) {
+      state.isSubAppLoading = payload
     },
   },
   getters: {
