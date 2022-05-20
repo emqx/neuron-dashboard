@@ -9,9 +9,11 @@
         <div>
           <router-view />
           <!-- For eKuiper -->
-          <emqx-card v-if="isKuiperPage">
+          <emqx-card v-if="isKuiperPage" v-emqx-loading="isSubAppLoading">
             <h3 class="card-title">{{ pageTitle }}</h3>
-            <div id="page-content"></div>
+            <div id="page-content">
+              <div></div>
+            </div>
           </emqx-card>
         </div>
       </template>
@@ -26,6 +28,7 @@ import SideNav from '@/components/SideNav.vue'
 import useEKuiper from '@/composables/ekuiper/useEKuiper'
 import { isKuiperPath } from '@/utils/forEKuiper'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'Home',
@@ -35,10 +38,13 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
+    const store = useStore()
     const isKuiperPage = computed(() => isKuiperPath(route.path))
+    const isSubAppLoading = computed(() => store.state.isSubAppLoading)
     const { pageTitle } = useEKuiper()
     return {
       isKuiperPage,
+      isSubAppLoading,
       pageTitle,
     }
   },
