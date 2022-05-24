@@ -1,22 +1,29 @@
 import { loadMicroApp } from 'qiankun'
 import store from '@/store/index'
 
+const productionEntry = `${window.location.origin}/ekuiper/`
+const kuiperEntry: Record<string, string> = {
+  development: '//localhost:3002/ekuiper/',
+  production: productionEntry,
+}
+const defaultEnv = 'production'
+
 export const handleEKuiper = async () => {
-  // handle the situation that link jumps inside eKuiper
   if (store.state.subAppInstances.ekuiper) {
     return
   }
   try {
     store.commit('SET_SUB_APP_LOADING', false)
     await new Promise((resolve) => window.setTimeout(resolve, 100))
+    const env = process.env.NODE_ENV || defaultEnv
     const app = loadMicroApp({
       name: 'ekuiper',
-      entry: '//localhost:3002',
+      entry: kuiperEntry[env] || productionEntry,
       container: '#page-content',
       props: {
         lang: store.state.lang,
         hideTabBarInNodePage: true,
-        tabsNeedBeHidden: ['extension.plugins'],
+        token: store.state.token,
       },
     })
     store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: app })
