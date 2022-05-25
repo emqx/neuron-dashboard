@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import store from '@/store/index'
-import { handleEKuiper, destroyEKuiper, isKuiperPath, isExitEKuiper } from '@/utils/forEKuiper'
+import { handleEKuiper, isKuiperPath, isExitEKuiper, handleExitEKuiper } from '@/utils/forEKuiper'
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
     next()
     handleEKuiper()
   } else if (isExitEKuiper(from.path, to.path)) {
-    destroyEKuiper()
+    handleExitEKuiper()
     next()
   } else {
     next()
