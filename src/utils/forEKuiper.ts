@@ -35,6 +35,18 @@ export const handleEKuiper = async () => {
   }
 }
 
+const removeAllIViewEle = () => {
+  const elements = Array.from(document.querySelectorAll('body > [class^="ivu"]'))
+  elements.forEach((item) => {
+    item.remove()
+  })
+}
+
+export const handleExitEKuiper = async () => {
+  destroyEKuiper()
+  removeAllIViewEle()
+}
+
 export const destroyEKuiper = () => {
   store.state.subAppInstances.ekuiper?.unmount()
   store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: null })
