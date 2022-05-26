@@ -24,11 +24,9 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import { ElDialog } from 'element-plus'
 import TagFormCom from './TagForm.vue'
 import { PluginInfo, TagData } from '@/types/config'
-import { queryPluginConfigInfo, updateTag } from '@/api/config'
+import { queryNodeMsg, queryPluginConfigInfo, updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
-import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { useGetPluginMsgIdMap } from '@/composables/config/usePlugin'
-import { DriverDirection } from '@/types/enums'
 
 const props = defineProps({
   modelValue: {
@@ -48,7 +46,6 @@ const emit = defineEmits(['update:modelValue', 'submitted'])
 
 const { t } = useI18n()
 
-const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
 const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
 const pluginMsg: Ref<undefined | PluginInfo> = ref(undefined)
 
@@ -75,8 +72,9 @@ watch(showDialog, (val) => {
 })
 
 const getPluginInfo = async () => {
-  await Promise.all([initMap(), initMsgIdMap()])
-  const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(props.nodeId).plugin_id].name)
+  await initMsgIdMap()
+  const { plugin_id } = await queryNodeMsg(props.nodeId)
+  const { data } = await queryPluginConfigInfo(pluginMsgIdMap[plugin_id].name)
   pluginMsg.value = data
 }
 

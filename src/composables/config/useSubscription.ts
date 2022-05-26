@@ -1,4 +1,4 @@
-import { addSubscription, deleteSubscription, queryGroupList, querySubscription } from '@/api/config'
+import { addSubscription, deleteSubscription, queryGroupList, queryNodeMsg, querySubscription } from '@/api/config'
 import { GroupData, SubscriptionData, SubscriptionDataForm } from '@/types/config'
 import { ref, computed, Ref, nextTick } from 'vue'
 import { EmqxMessageBox } from '@emqx/emqx-ui'
@@ -36,7 +36,13 @@ export const useSubscriptionList = () => {
 
   const getSubscriptionList = async () => {
     isListLoading.value = true
-    const list = await querySubscription(nodeID.value)
+    let list = await querySubscription(nodeID.value)
+    list = await Promise.all(
+      list.map(async (item) => {
+        const { name } = await queryNodeMsg(item.src_node_id)
+        return { ...item, src_node_name: name }
+      }),
+    )
     subscriptionList.value = list.map((item) => {
       return Object.assign(item, { checked: false })
     })

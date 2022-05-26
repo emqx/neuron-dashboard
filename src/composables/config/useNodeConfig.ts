@@ -1,5 +1,4 @@
-import { queryNodeConfig, queryPluginConfigInfo, submitNodeConfig } from '@/api/config'
-import { useNodeMsgMap } from '@/composables/config/useNodeList'
+import { queryNodeConfig, queryNodeMsg, queryPluginConfigInfo, submitNodeConfig } from '@/api/config'
 import { ParamInfo, PluginInfo } from '@/types/config'
 import { DriverDirection, TypeOfPluginParam } from '@/types/enums'
 import { computed, onMounted, ref, Ref } from 'vue'
@@ -22,7 +21,6 @@ export default (props: Props) => {
   const route = useRoute()
   const router = useRouter()
 
-  const { initMap, getNodeMsgById } = useNodeMsgMap(props.direction, false)
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   const configForm: Ref<Record<string, any>> = ref({})
   const configuredData: Ref<undefined | Record<string, any>> = ref(undefined)
@@ -33,7 +31,14 @@ export default (props: Props) => {
 
   const nodeID = computed(() => Number(route.params.nodeID))
 
-  const nodeName = computed(() => getNodeMsgById(nodeID.value)?.name)
+  const nodeName = ref('')
+  const pluginID = ref(0)
+
+  const getNodeMsg = async () => {
+    const { name, plugin_id } = await queryNodeMsg(nodeID.value)
+    nodeName.value = name
+    pluginID.value = plugin_id
+  }
 
   const getNodeConfig = async () => {
     try {
@@ -84,7 +89,7 @@ export default (props: Props) => {
   }
 
   const getPluginInfo = async () => {
-    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(nodeID.value).plugin_id].name)
+    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[pluginID.value].name)
     const pluginInfo: PluginInfo = data
     if (!pluginInfo) {
       return
@@ -135,7 +140,8 @@ export default (props: Props) => {
 
   onMounted(async () => {
     isLoading.value = true
-    await Promise.all([initMap(), initMsgIdMap()])
+    await initMsgIdMap()
+    await getNodeMsg()
     await Promise.all([getPluginInfo(), getNodeConfig()])
     fillOutTheFormFromConfiguredData()
     isLoading.value = false

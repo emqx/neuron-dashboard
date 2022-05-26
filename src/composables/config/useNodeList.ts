@@ -1,34 +1,6 @@
 import { queryNodeState, queryNorthDriverList, querySouthDriverList } from '@/api/config'
 import { DriverItemInList, RawDriverData } from '@/types/config'
-import { DriverDirection } from '@/types/enums'
-import { createMapFromArray } from '@/utils/utils'
 import { ref, Ref } from 'vue'
-
-export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
-  const nodeMsgMap: Ref<Record<number, RawDriverData>> = ref({})
-
-  const initMap = async () => {
-    try {
-      const request = direction === DriverDirection.North ? queryNorthDriverList : querySouthDriverList
-      nodeMsgMap.value = createMapFromArray(await request())
-      return Promise.resolve(nodeMsgMap.value)
-    } catch (error) {
-      return Promise.reject(error)
-    }
-  }
-  const getNodeMsgById = (nodeID: number) => {
-    return nodeMsgMap.value[nodeID] || {}
-  }
-
-  if (autoInit) {
-    initMap()
-  }
-
-  return {
-    initMap,
-    getNodeMsgById,
-  }
-}
 
 export const useFillNodeListStatusData = () => {
   const fillNodeListStatusData = async (nodeList: Array<RawDriverData>): Promise<Array<DriverItemInList>> => {

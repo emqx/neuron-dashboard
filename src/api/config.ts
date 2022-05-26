@@ -55,6 +55,19 @@ export const queryWebDriverList = async (): Promise<Array<RawDriverData>> => {
   return getDataFromResponse(ret)
 }
 
+export const queryNodeMsg = async (id: number): Promise<RawDriverData> => {
+  try {
+    const { data } = await http.get('/node', { params: { id } })
+    if (data.nodes && data.nodes[0]) {
+      return data.nodes[0]
+    } else {
+      throw new Error()
+    }
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 export const addDriver = (driverData: NodeForm, direction: DriverDirection) => {
   return http.post('/node', {
     ...driverData,

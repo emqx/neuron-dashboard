@@ -41,10 +41,8 @@
       <emqx-table-column label="No" :width="60">
         <template #default="{ index }">{{ index + 1 }}</template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.groupName')" prop="name"></emqx-table-column>
-      <emqx-table-column :label="$t('config.deviceName')" prop="name">
-        <template #default="{ row }">{{ getSrcNodeMsgById(row.src_node_id).name }}</template>
-      </emqx-table-column>
+      <emqx-table-column :label="$t('config.groupName')" prop="name" />
+      <emqx-table-column :label="$t('config.deviceName')" prop="src_node_name" />
       <emqx-table-column align="right">
         <template #default="{ row }">
           <AComWithDesc :content="$t('config.unsubscribe')">
@@ -59,17 +57,16 @@
     :current-node-id="nodeID"
     @submitted="getSubscriptionList"
   />
-  <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="refreshNodeMsgMap" />
+  <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="getNodeMsg" />
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { useNodeMsgMap } from '@/composables/config/useNodeList'
-import { DriverDirection } from '@/types/enums'
 import { useSubscriptionList } from '@/composables/config/useSubscription'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
 import EditNodeNameDialog from '../components/EditNodeNameDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import { queryNodeMsg } from '@/api/config'
 
 const {
   nodeID,
@@ -81,19 +78,24 @@ const {
   unsubscribeInBulk,
   getSubscriptionList,
 } = useSubscriptionList()
-const { initMap: refreshNodeMsgMap, getNodeMsgById } = useNodeMsgMap(DriverDirection.North)
-const { getNodeMsgById: getSrcNodeMsgById } = useNodeMsgMap(DriverDirection.South)
 const showEditDialog = ref(false)
+
+const nodeName = ref('')
+const pluginID = ref(0)
 
 const currentNode = computed(() => ({
   id: nodeID.value,
   name: nodeName.value,
-  plugin_id: getNodeMsgById(nodeID.value).id,
+  plugin_id: pluginID.value,
 }))
 
 const showAddSubscriptionDialog = ref(false)
 
-const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
+const getNodeMsg = async () => {
+  const { name, plugin_id } = await queryNodeMsg(nodeID.value)
+  nodeName.value = name
+  pluginID.value = plugin_id
+}
 
 const addSubscription = () => {
   showAddSubscriptionDialog.value = true
@@ -102,6 +104,8 @@ const addSubscription = () => {
 const editNodeName = () => {
   showEditDialog.value = true
 }
+
+getNodeMsg()
 </script>
 
 <style lang="scss">

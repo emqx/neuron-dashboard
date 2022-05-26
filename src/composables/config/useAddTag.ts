@@ -1,13 +1,12 @@
-import { addTag, queryPluginConfigInfo } from '@/api/config'
+import { addTag, queryNodeMsg, queryPluginConfigInfo } from '@/api/config'
 import { PluginInfo, TagForm } from '@/types/config'
-import { DriverDirection, TagAttributeType, TagType } from '@/types/enums'
+import { TagAttributeType, TagType } from '@/types/enums'
 import { ref, Ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
 import { createRandomString, jumpToFirstErrorFormItem } from '@/utils/utils'
-import { useNodeMsgMap } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 
 export const useTagTypeSelect = () => {
@@ -112,14 +111,14 @@ export default () => {
   const isSubmitting = ref(false)
 
   const nodeID = computed(() => Number(route.params.nodeID))
-  const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   // Limit the type of tag
   const nodePluginInfo: Ref<PluginInfo> = ref({} as PluginInfo)
 
   const getNodePluginInfo = async () => {
-    await Promise.all([initMap(), initMsgIdMap()])
-    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(nodeID.value).plugin_id].name)
+    await initMsgIdMap()
+    const { plugin_id } = await queryNodeMsg(nodeID.value)
+    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[plugin_id].name)
     const plugin: PluginInfo = data
     if (plugin) {
       nodePluginInfo.value = plugin

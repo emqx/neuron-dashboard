@@ -58,35 +58,41 @@
     </emqx-table>
   </emqx-card>
   <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" :group="currentGroup" />
-  <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="refreshNodeMsgMap" />
+  <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="getNodeMsg" />
 </template>
 
 <script lang="ts" setup>
 import { ref, Ref, computed } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from './components/GroupDialog.vue'
-import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'
 import { useRouter } from 'vue-router'
-import { DriverDirection } from '@/types/enums'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import EditNodeNameDialog from '../components/EditNodeNameDialog.vue'
+import { queryNodeMsg } from '@/api/config'
 
 const router = useRouter()
 const { nodeID, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =
   useGroupList()
 const showGroupDialog = ref(false)
-const { initMap: refreshNodeMsgMap, getNodeMsgById } = useNodeMsgMap(DriverDirection.South)
+
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 
-const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
+const nodeName = ref('')
+const pluginID = ref(0)
 const showEditDialog = ref(false)
 
 const currentNode = computed(() => ({
   id: nodeID.value,
   name: nodeName.value,
-  plugin_id: getNodeMsgById(nodeID.value).id,
+  plugin_id: pluginID.value,
 }))
+
+const getNodeMsg = async () => {
+  const { name, plugin_id } = await queryNodeMsg(nodeID.value)
+  nodeName.value = name
+  pluginID.value = plugin_id
+}
 
 const addGroup = () => {
   currentGroup.value = undefined
@@ -112,6 +118,8 @@ const goTagPage = ({ name }: GroupData) => {
 const editNodeName = () => {
   showEditDialog.value = true
 }
+
+getNodeMsg()
 </script>
 
 <style lang="scss">
