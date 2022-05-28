@@ -4,7 +4,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
-import VXETable from './plugins/vxeTable'
 
 import '@emqx/emqx-ui/lib/styles/index.scss'
 import '@/styles/emqx-ui-variables.scss'
@@ -15,6 +14,5 @@ import '@/styles/common.scss'
 import '@/assets/fonts/iconfont.css'
 import '@/assets/fonts/iconfont'
 import '@/styles/kuiper.scss'
-import '@/styles/vxe-theme.scss'
 
-createApp(App).use(i18n).use(EmqxUI).use(store).use(router).use(VXETable).mount('#neuron-dashboard')
+createApp(App).use(i18n).use(EmqxUI).use(store).use(router).mount('#neuron-dashboard')
