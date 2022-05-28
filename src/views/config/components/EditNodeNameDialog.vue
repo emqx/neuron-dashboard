@@ -2,7 +2,7 @@
   <el-dialog v-model="showDialog" :width="500" custom-class="common-dialog" :title="$t('common.edit')" :z-index="2000">
     <emqx-form ref="formCom" :model="form" :rules="rules" @submit.prevent>
       <emqx-form-item prop="name" :label="$t('common.name')" required>
-        <emqx-input v-model="form.name" />
+        <emqx-input v-model.trim="form.name" />
       </emqx-form-item>
     </emqx-form>
     <template #footer>

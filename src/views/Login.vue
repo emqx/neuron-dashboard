@@ -7,7 +7,7 @@
           <img class="img-logo" src="~@/assets/images/logo.png" alt="neuron-logo" width="141" />
           <emqx-form ref="formCom" :model="form" :rules="rules" @keyup.enter="login">
             <emqx-form-item prop="userName">
-              <emqx-input v-model="form.userName" type="text" :placeholder="$t('common.username')" />
+              <emqx-input v-model.trim="form.userName" type="text" :placeholder="$t('common.username')" />
             </emqx-form-item>
             <emqx-form-item prop="password">
               <emqx-input v-model="form.password" type="password" :placeholder="$t('common.password')" />

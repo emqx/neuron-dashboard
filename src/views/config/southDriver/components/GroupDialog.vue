@@ -8,7 +8,7 @@
   >
     <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
       <emqx-form-item prop="name" :label="$t('config.groupName')" required>
-        <emqx-input v-model="groupForm.name" :disabled="group" />
+        <emqx-input v-model.trim="groupForm.name" :disabled="group" />
       </emqx-form-item>
       <emqx-form-item prop="interval" label="Interval" required>
         <emqx-input v-model.number="groupForm.interval" :disabled="group">
