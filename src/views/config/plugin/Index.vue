@@ -2,9 +2,9 @@
   <emqx-card class="plugin" v-emqx-loading="isListLoading">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('config.pluginManagement') }}</h3>
-      <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addPlugin"
-        >{{ $t('common.add') }} Plugin</emqx-button
-      >
+      <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addPlugin">
+        {{ $t('common.add') }} Plugin
+      </emqx-button>
     </div>
     <div class="filter-bar">
       <emqx-select v-model="filterNodeType" clearable>
@@ -14,7 +14,7 @@
     </div>
     <ul class="setup-list">
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="item in listToShow" :key="item.id" tag="li" class="setup-item">
+        <emqx-col :span="12" v-for="item in listToShow" :key="item.id" tag="li" class="setup-item">
           <PluginItemCard :data="item" @deleted="getPluginList" @edit="editPlugin(item)" />
         </emqx-col>
       </emqx-row>
@@ -84,12 +84,6 @@ const addPlugin = () => {
     .el-icon-circle-close {
       font-size: 16px;
     }
-  }
-  .setup-item {
-    max-width: 33.2%;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 33.2%;
   }
 }
 </style>

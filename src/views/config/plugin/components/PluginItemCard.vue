@@ -1,30 +1,33 @@
 <template>
   <div class="plugin-item-card">
-    <div class="plugin-item-card-hd common-flex">
-      <p class="plugin-item-name ellipsis">{{ data.name }}</p>
-      <div class="handlers" v-if="data.kind === PluginKind.Custom">
-        <AComWithDesc :content="$t('common.delete')">
-          <i class="iconfont icon icondelete" @click="deletePlugin" />
-        </AComWithDesc>
+    <img class="plugin-item-icon" :src="getPluginIcon(data.name)" width="65" height="50" />
+    <div class="plugin-item-info">
+      <div class="plugin-item-card-hd common-flex">
+        <p class="plugin-item-name ellipsis">{{ data.name }}</p>
+        <div class="handlers" v-if="data.kind === PluginKind.Custom">
+          <AComWithDesc :content="$t('common.delete')">
+            <i class="iconfont icon icondelete" @click="deletePlugin" />
+          </AComWithDesc>
+        </div>
       </div>
-    </div>
-    <div class="info-row">
-      <label>{{ $t('config.useFor') }}</label>
-      <span class="ellipsis">{{ getNodeTypeLabelByValue(data.node_type) }}</span>
-    </div>
-    <div class="info-row">
-      <label>{{ $t('config.pluginKind') }}</label>
-      <span class="ellipsis">{{ PluginKind[data.kind] }}</span>
-    </div>
-    <div class="info-row">
-      <label>{{ $t('config.libName') }}</label>
-      <span class="ellipsis">{{ data.lib_name }}</span>
+      <div class="info-row">
+        <label>{{ $t('config.useFor') }}</label>
+        <span class="ellipsis">{{ getNodeTypeLabelByValue(data.node_type) }}</span>
+      </div>
+      <div class="info-row">
+        <label>{{ $t('config.pluginKind') }}</label>
+        <span class="ellipsis">{{ PluginKind[data.kind] }}</span>
+      </div>
+      <div class="info-row">
+        <label>{{ $t('config.libName') }}</label>
+        <span class="ellipsis">{{ data.lib_name }}</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useDeletePlugin } from '@/composables/config/usePlugin'
+import { useDeletePlugin, usePluginIcon } from '@/composables/config/usePlugin'
 import { CreatedPlugin } from '@/types/config'
 import { PluginKind } from '@/types/enums'
 import { defineProps, PropType, defineEmits } from 'vue'
@@ -40,6 +43,7 @@ const props = defineProps({
 const emit = defineEmits(['deleted'])
 const { getNodeTypeLabelByValue } = useNodeType()
 const { delPlugin } = useDeletePlugin()
+const { getPluginIcon } = usePluginIcon()
 const deletePlugin = async () => {
   await delPlugin(props.data)
   emit('deleted')
@@ -48,9 +52,19 @@ const deletePlugin = async () => {
 
 <style lang="scss">
 .plugin-item-card {
-  padding: 24px;
+  display: flex;
+  align-items: center;
+  padding: 16px 24px 16px 16px;
   border-radius: 4px;
   background-color: #f4f9fc;
+  .plugin-item-icon {
+    flex-basis: 60px;
+    flex-grow: 0;
+    margin-right: 16px;
+  }
+  .plugin-item-info {
+    flex-grow: 1;
+  }
   .plugin-item-card-hd {
     margin-bottom: 16px;
     font-size: 16px;
