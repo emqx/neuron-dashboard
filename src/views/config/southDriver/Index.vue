@@ -6,19 +6,31 @@
         {{ $t('config.addDevice') }}
       </emqx-button>
     </div>
-    <ul class="setup-list">
-      <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.id" tag="li" class="setup-item">
-          <SouthDriveItemCard
-            :data="item"
-            @deleted="getSouthDriverList"
-            @updated="getSouthDriverList"
-            @toggle-status="setNodeStartStopStatus(item, $event, index)"
-          />
-        </emqx-col>
-      </emqx-row>
-    </ul>
     <emqx-empty v-if="!isListLoading && southDriverList.length === 0" class="empty" />
+    <div v-else>
+      <ul class="setup-list">
+        <emqx-row :gutter="24">
+          <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.id" tag="li" class="setup-item">
+            <SouthDriveItemCard
+              :data="item"
+              @deleted="getSouthDriverList"
+              @updated="getSouthDriverList"
+              @toggle-status="setNodeStartStopStatus(item, $event, index)"
+            />
+          </emqx-col>
+        </emqx-row>
+      </ul>
+      <emqx-pagination
+        hide-on-single-page
+        layout="total, sizes, prev, pager, next, jumper"
+        v-model:current-page="pageController.pageNum"
+        :page-sizes="[30, 60, 90]"
+        :total="pageController.total"
+        :page-size="pageController.pageSize"
+        @current-change="getAPageTagData"
+        @size-change="handleSizeChange"
+      />
+    </div>
   </emqx-card>
   <DriverDialog v-model="showDialog" :type="DriverDirection.South" @submitted="getSouthDriverList" />
 </template>
@@ -32,7 +44,8 @@ import { DriverDirection } from '@/types/enums'
 import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
 import { DriverItemInList } from '@/types/config'
 
-const { southDriverList, isListLoading, getSouthDriverList } = useSouthDriver(true, true)
+const { pageController, getAPageTagData, handleSizeChange, southDriverList, isListLoading, getSouthDriverList } =
+  useSouthDriver(true, true)
 
 const showDialog = ref(false)
 
