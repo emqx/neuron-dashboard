@@ -2,7 +2,7 @@
   <el-dialog v-model="showDialog" :width="500" custom-class="common-dialog" :title="dialogTitle" :z-index="2000">
     <emqx-form ref="formCom" :model="driverForm" :rules="groupFormRules">
       <emqx-form-item prop="name" :label="$t('common.name')" required>
-        <emqx-input v-model="driverForm.name" :disabled="driver" />
+        <emqx-input v-model.trim="driverForm.name" :disabled="driver" />
       </emqx-form-item>
       <emqx-form-item prop="plugin_name" label="Plugin" required>
         <emqx-select v-model="driverForm.plugin_name" :disabled="driver">

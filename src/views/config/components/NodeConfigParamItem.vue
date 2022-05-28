@@ -17,7 +17,7 @@
     <!-- Number -->
     <emqx-input v-if="paramInfo.type === TypeOfPluginParam.Int" v-model.number="inputValue" />
     <!-- String -->
-    <emqx-input v-else-if="paramInfo.type === TypeOfPluginParam.String" v-model="inputValue" />
+    <emqx-input v-else-if="paramInfo.type === TypeOfPluginParam.String" v-model.trim="inputValue" />
     <!-- Boolean -->
     <emqx-radio-group v-else-if="paramInfo.type === TypeOfPluginParam.Boolean" v-model="inputValue">
       <emqx-radio :label="true">True</emqx-radio>

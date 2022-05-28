@@ -8,7 +8,7 @@
   >
     <emqx-form ref="pluginFormCom" :model="pluginForm" :rules="pluginFormRules" @submit.prevent>
       <emqx-form-item prop="lib_name" :label="$t('config.libName')" required>
-        <emqx-input v-model="pluginForm.lib_name" />
+        <emqx-input v-model.trim="pluginForm.lib_name" />
       </emqx-form-item>
     </emqx-form>
     <template #footer>

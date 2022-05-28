@@ -17,7 +17,7 @@
             </div>
           </div>
         </template>
-        <emqx-input v-if="tag.type !== TagType.BOOL" v-model="inputValue" @blur="validate" />
+        <emqx-input v-if="tag.type !== TagType.BOOL" v-model.trim="inputValue" @blur="validate" />
         <emqx-radio-group v-else v-model="inputValue">
           <emqx-radio :label="true">True</emqx-radio>
           <emqx-radio :label="false">False</emqx-radio>
