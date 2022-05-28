@@ -59,7 +59,7 @@
     </div>
     <emqx-pagination
       hide-on-single-page
-      layout="sizes, prev, pager, next, jumper"
+      layout="total, sizes, prev, pager, next, jumper"
       v-model:current-page="pageController.num"
       :page-sizes="[100, 200, 300, 400, 500]"
       :total="pageController.total"
