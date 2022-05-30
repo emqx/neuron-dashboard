@@ -1,9 +1,11 @@
 <template>
   <div class="plugin-item-card">
-    <img class="plugin-item-icon" :src="getPluginIcon(data.name)" width="65" height="50" />
     <div class="plugin-item-info">
       <div class="plugin-item-card-hd common-flex">
-        <p class="plugin-item-name ellipsis">{{ data.name }}</p>
+        <p class="plugin-item-name ellipsis">
+          <!-- <img class="plugin-item-icon" :src="getPluginIcon(data.name)" height="50" /> -->
+          <span>{{ data.name }}</span>
+        </p>
         <div class="handlers" v-if="data.kind === PluginKind.Custom">
           <AComWithDesc :content="$t('common.delete')">
             <i class="iconfont icon icondelete" @click="deletePlugin" />
@@ -52,14 +54,21 @@ const deletePlugin = async () => {
 
 <style lang="scss">
 .plugin-item-card {
-  display: flex;
-  align-items: center;
-  padding: 16px 24px 16px 16px;
+  // display: flex;
+  // align-items: center;
+  padding: 24px;
   border-radius: 4px;
   background-color: #f4f9fc;
+  // .plugin-item-icon {
+  //   flex-basis: 60px;
+  //   flex-grow: 0;
+  //   margin-right: 16px;
+  // }
+  .plugin-item-name {
+    display: flex;
+    align-items: center;
+  }
   .plugin-item-icon {
-    flex-basis: 60px;
-    flex-grow: 0;
     margin-right: 16px;
   }
   .plugin-item-info {
