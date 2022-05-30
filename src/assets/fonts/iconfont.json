@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "30069144",
+      "name": "kuiper",
+      "font_class": "kuiper",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
       "icon_id": "26113325",
       "name": "idle",
       "font_class": "idle",

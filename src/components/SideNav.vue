@@ -83,6 +83,23 @@ export default defineComponent({
           ],
         },
         {
+          to: '/ekuiper',
+          label: 'eKuiper',
+          icon: 'iconkuiper',
+          subMenus: [
+            {
+              to: '/ekuiper/nodes/single-node/rules',
+              // TODO:
+              label: 'Rule',
+            },
+            {
+              to: '/ekuiper/nodes/single-node/extension',
+              // TODO:
+              label: 'Extension',
+            },
+          ],
+        },
+        {
           to: '/admin',
           label: t('admin.admin'),
           icon: 'iconAdministration1',
@@ -94,23 +111,6 @@ export default defineComponent({
             {
               to: '/admin/log',
               label: t('admin.log'),
-            },
-          ],
-        },
-        {
-          to: '/ekuiper',
-          label: 'eKuiper',
-          icon: 'iconconfig',
-          subMenus: [
-            {
-              to: '/ekuiper/nodes/single-node/rules',
-              // TODO:
-              label: 'Rule',
-            },
-            {
-              to: '/ekuiper/nodes/single-node/extension',
-              // TODO:
-              label: 'Extension',
             },
           ],
         },
