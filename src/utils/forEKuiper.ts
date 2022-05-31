@@ -1,7 +1,7 @@
 import { loadMicroApp } from 'qiankun'
 import store from '@/store/index'
 
-const productionEntry = `//localhost:${Number(location.port) + 2}`
+const productionEntry = `${window.location.origin}/ekuiper/`
 const kuiperEntry: Record<string, string> = {
   development: '//localhost:3002',
   production: productionEntry,
