@@ -1,6 +1,6 @@
 import { ref, Ref, computed, onUnmounted } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import { addSubscription, deleteSubscription, queryGroupList, queryTagList, queryWebDriverList } from '@/api/config'
+import { addSubscription, deleteSubscription, queryGroupList, queryTagList, queryWebDriver } from '@/api/config'
 import { GroupData } from '@/types/config'
 import { getMonitoringData } from '@/api/data'
 import { useI18n } from 'vue-i18n'
@@ -15,8 +15,8 @@ export const useSubscribeForGetMonitoringData = () => {
   let defaultDashboardId: undefined | number = undefined
   const getDefaultDashboardId = async () => {
     try {
-      const data = await queryWebDriverList()
-      defaultDashboardId = data[0]?.id
+      const data = await queryWebDriver()
+      defaultDashboardId = data.id
       if (!defaultDashboardId) {
         throw new Error('Can not find default dashboard')
       }

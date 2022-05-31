@@ -1,7 +1,12 @@
 import { AxiosResponse } from 'axios'
 import { DriverDirection, NodeOperationCommand } from '@/types/enums'
 import http from '@/utils/http'
-import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import {
+  APP_DO_NOT_NEED_SHOW,
+  DASHBOARD_APP_NAME,
+  NORTH_DRIVER_NODE_TYPE,
+  SOUTH_DRIVER_NODE_TYPE,
+} from '@/utils/constants'
 import {
   CreatedPlugin,
   RawDriverData,
@@ -29,9 +34,10 @@ export const queryNorthDriverList = async (): Promise<Array<RawDriverData>> => {
     const retArr: Array<AxiosResponse<ResponseDriverListData>> = await Promise.all(
       NORTH_DRIVER_NODE_TYPE.map((code) => queryDriverList(code)),
     )
-    return Promise.resolve(
-      retArr.reduce((arr: Array<RawDriverData>, currentData) => arr.concat(getDataFromResponse(currentData)), []),
-    )
+    const northList = retArr
+      .reduce((arr: Array<RawDriverData>, currentData) => arr.concat(getDataFromResponse(currentData)), [])
+      .filter((item) => !APP_DO_NOT_NEED_SHOW.includes(item.name))
+    return Promise.resolve(northList)
   } catch (error) {
     return Promise.reject(error)
   }
@@ -50,9 +56,21 @@ export const querySouthDriverList = async (): Promise<Array<RawDriverData>> => {
   }
 }
 
-export const queryWebDriverList = async (): Promise<Array<RawDriverData>> => {
-  const ret = await queryDriverList(DriverDirection.Web as number)
-  return getDataFromResponse(ret)
+export const queryWebDriver = async (): Promise<RawDriverData> => {
+  try {
+    const retArr: Array<AxiosResponse<ResponseDriverListData>> = await Promise.all(
+      NORTH_DRIVER_NODE_TYPE.map((code) => queryDriverList(code)),
+    )
+    const webDriver = retArr
+      .reduce((arr: Array<RawDriverData>, currentData) => arr.concat(getDataFromResponse(currentData)), [])
+      .find((item) => item.name === DASHBOARD_APP_NAME)
+    if (!webDriver) {
+      throw new Error()
+    }
+    return Promise.resolve(webDriver)
+  } catch (error) {
+    return Promise.reject(error)
+  }
 }
 
 export const addDriver = (driverData: NodeForm, direction: DriverDirection) => {

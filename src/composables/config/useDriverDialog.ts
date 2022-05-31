@@ -1,4 +1,4 @@
-import { DriverDirection } from '@/types/enums'
+import { DriverDirection, PluginKind } from '@/types/enums'
 import { ref, Ref, computed, nextTick } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
@@ -12,11 +12,13 @@ export const usePluginList = (type: DriverDirection) => {
   const getPluginList = async () => {
     const { data } = await queryPluginList()
     const list = data.plugin_libs || []
-    pluginList.value = list.filter(({ node_type }) =>
-      type === DriverDirection.South
-        ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
-        : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
-    )
+    pluginList.value = list
+      .filter(({ node_type }) =>
+        type === DriverDirection.South
+          ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
+          : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
+      )
+      .filter(({ kind }) => kind !== PluginKind.Static)
   }
 
   getPluginList()
