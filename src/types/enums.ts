@@ -16,7 +16,7 @@ export enum SystemStatus {
  * but we use 1 when add or query node
  */
 export enum DriverDirection {
-  North = 5,
+  North = 2,
   South = 1,
   Web = 2,
 }

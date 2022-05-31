@@ -1,9 +1,9 @@
 import { DriverDirection } from '@/types/enums'
 
 /* Possible node type values for North Driver */
-export const NORTH_DRIVER_NODE_TYPE = [3, DriverDirection.North]
+export const NORTH_DRIVER_NODE_TYPE = [DriverDirection.North]
 
-export const SOUTH_DRIVER_NODE_TYPE = [DriverDirection.South, 4]
+export const SOUTH_DRIVER_NODE_TYPE = [DriverDirection.South]
 
 export const HEXADECIMAL_PREFIX = '0x'
 
@@ -20,3 +20,6 @@ export const ERROR_CODE_ARR = [
 ]
 
 export const FILLER_IN_TAG_ATTR = ' '
+
+export const DASHBOARD_APP_NAME = 'default-dashboard-adapter'
+export const APP_DO_NOT_NEED_SHOW = [DASHBOARD_APP_NAME, 'default-persist-adapter']
