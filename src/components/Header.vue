@@ -13,8 +13,12 @@
           <template #dropdown>
             <emqx-dropdown-menu class="header-menu">
               <emqx-dropdown-item @click="goLicense">
-                <i class="iconfont iconalarm"></i>
+                <i class="iconfont iconLicense"></i>
                 <span>License</span>
+              </emqx-dropdown-item>
+              <emqx-dropdown-item @click="goLicense">
+                <i class="iconfont iconabout"></i>
+                <span> {{ $t('common.about') }}</span>
               </emqx-dropdown-item>
             </emqx-dropdown-menu>
           </template>
@@ -86,6 +90,10 @@ const logout = async () => {
   .emqx-dropdown-item {
     padding-left: 24px;
     padding-right: 24px;
+  }
+  .emqx-dropdown-item {
+    display: flex;
+    align-items: center;
   }
 }
 .username {

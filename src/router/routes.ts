@@ -101,6 +101,13 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requireAuth: true },
         component: () => import('@/views/about/License.vue'),
       },
+      /* About */
+      {
+        path: '/about',
+        name: 'About',
+        meta: { requireAuth: true },
+        component: () => import('@/views/about/About.vue'),
+      },
     ],
   },
   {

@@ -24,3 +24,7 @@ export const uploadLicense = (license: string): Promise<AxiosResponse<{ error: 0
     license,
   })
 }
+
+export const queryVersion = (): Promise<AxiosResponse<any>> => {
+  return http.get('/version')
+}
