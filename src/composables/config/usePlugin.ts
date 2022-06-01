@@ -104,7 +104,7 @@ export const useDeletePlugin = () => {
 export const usePluginIcon = () => {
   const pluginIconMap: Record<string, string> = {
     ekuiper: require('@/assets/images/plugin-icons/ekuiper.svg'),
-    mqtt: require('@/assets/images/plugin-icons/MQTT.jpg'),
+    mqtt: require('@/assets/images/plugin-icons/MQTT.png'),
     'modbus-tcp': require('@/assets/images/plugin-icons/modbus.svg'),
   }
   const getPluginIcon = (name: string) => pluginIconMap[name] || ''
