@@ -3,7 +3,7 @@
     <div class="plugin-item-info">
       <div class="plugin-item-card-hd common-flex">
         <p class="plugin-item-name ellipsis">
-          <!-- <img class="plugin-item-icon" :src="getPluginIcon(data.name)" height="50" /> -->
+          <img class="plugin-item-icon" :src="getPluginIcon(data.name)" height="36" />
           <span>{{ data.name }}</span>
         </p>
         <div class="handlers" v-if="data.kind === PluginKind.Custom">
@@ -59,11 +59,11 @@ const deletePlugin = async () => {
   padding: 24px;
   border-radius: 4px;
   background-color: #f4f9fc;
-  // .plugin-item-icon {
-  //   flex-basis: 60px;
-  //   flex-grow: 0;
-  //   margin-right: 16px;
-  // }
+  .plugin-item-icon {
+    flex-basis: 60px;
+    flex-grow: 0;
+    margin-right: 16px;
+  }
   .plugin-item-name {
     display: flex;
     align-items: center;
