@@ -1,5 +1,4 @@
 export interface TagDataInMonitoring {
-  id: number
   value: any
   error: number
   name?: null | string

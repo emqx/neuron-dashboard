@@ -27,7 +27,7 @@
         </div>
       </div>
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in showList(northDriverList)" :key="item.id">
+        <emqx-col :span="8" v-for="(item, index) in showList(northDriverList)" :key="item.name">
           <SetupItemCard
             :data="item"
             @deleted="getNorthDriverList"
@@ -50,7 +50,7 @@
         </div>
       </div>
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in showList(southDriverList)" :key="item.id">
+        <emqx-col :span="8" v-for="(item, index) in showList(southDriverList)" :key="item.name">
           <SouthDriveItemCard
             :data="item"
             @deleted="getSouthDriverList"

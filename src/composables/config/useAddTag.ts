@@ -8,7 +8,6 @@ import { useI18n } from 'vue-i18n'
 import TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
 import { createRandomString, jumpToFirstErrorFormItem } from '@/utils/utils'
 import { useNodeMsgMap } from './useNodeList'
-import { useGetPluginMsgIdMap } from './usePlugin'
 
 export const useTagTypeSelect = () => {
   const tagTypeOptList = Object.keys(TagType)
@@ -113,13 +112,12 @@ export default () => {
 
   const node = computed(() => route.params.node.toString())
   const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
-  const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   // Limit the type of tag
   const nodePluginInfo: Ref<PluginInfo> = ref({} as PluginInfo)
 
   const getNodePluginInfo = async () => {
-    await Promise.all([initMap(), initMsgIdMap()])
-    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(node.value).plugin_id].name)
+    await initMap()
+    const { data } = await queryPluginConfigInfo(getNodeMsgById(node.value).plugin)
     const plugin: PluginInfo = data
     if (plugin) {
       nodePluginInfo.value = plugin

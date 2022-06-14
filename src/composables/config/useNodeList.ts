@@ -10,7 +10,7 @@ export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
   const initMap = async () => {
     try {
       const request = direction === DriverDirection.North ? queryNorthDriverList : querySouthDriverList
-      nodeMsgMap.value = createMapFromArray(await request())
+      nodeMsgMap.value = createMapFromArray(await request(), 'name')
       return Promise.resolve(nodeMsgMap.value)
     } catch (error) {
       return Promise.reject(error)

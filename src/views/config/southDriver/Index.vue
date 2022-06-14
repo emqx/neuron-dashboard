@@ -10,7 +10,7 @@
     <div v-else>
       <ul class="setup-list">
         <emqx-row :gutter="24">
-          <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.id" tag="li" class="setup-item">
+          <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.name" tag="li" class="setup-item">
             <SouthDriveItemCard
               :data="item"
               @deleted="getSouthDriverList"

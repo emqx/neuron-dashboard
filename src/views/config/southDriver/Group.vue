@@ -5,7 +5,7 @@
       <div class="bar-left common-flex">
         <p class="driver-name">
           <label>{{ $t('config.deviceName') }}</label>
-          <span>{{ nodeName }}</span>
+          <span>{{ node }}</span>
           <!-- <i class="el-icon-edit icon-edit" :title="$t('common.edit')" @click="editNodeName" /> -->
         </p>
       </div>
@@ -58,34 +58,23 @@
     </emqx-table>
   </emqx-card>
   <GroupDialog v-model="showGroupDialog" :current-node="node" @submitted="getGroupList" :group="currentGroup" />
-  <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="refreshNodeMsgMap" />
 </template>
 
 <script lang="ts" setup>
 import { ref, Ref, computed } from 'vue'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from './components/GroupDialog.vue'
-import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { GroupData, GroupForm } from '@/types/config'
 import { useRouter } from 'vue-router'
-import { DriverDirection } from '@/types/enums'
 import AComWithDesc from '@/components/AComWithDesc.vue'
-import EditNodeNameDialog from '../components/EditNodeNameDialog.vue'
 
 const router = useRouter()
 const { node, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =
   useGroupList()
 const showGroupDialog = ref(false)
-const { initMap: refreshNodeMsgMap, getNodeMsgById } = useNodeMsgMap(DriverDirection.South)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 
-const nodeName = computed(() => getNodeMsgById(node.value).name)
 const showEditDialog = ref(false)
-
-const currentNode = computed(() => ({
-  name: nodeName.value,
-  plugin_id: getNodeMsgById(node.value).id,
-}))
 
 const addGroup = () => {
   currentGroup.value = undefined
@@ -107,10 +96,6 @@ const goTagPage = ({ name }: GroupData) => {
     name: 'SouthDriverGroupTag',
     params: { group: name },
   })
-}
-
-const editNodeName = () => {
-  showEditDialog.value = true
 }
 </script>
 

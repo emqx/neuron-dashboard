@@ -48,7 +48,7 @@ const props = defineProps({
     required: true,
   },
   group: {
-    type: Object as PropType<Group>,
+    type: String,
   },
   tag: {
     type: Object as PropType<TagDataInTable>,

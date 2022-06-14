@@ -20,7 +20,7 @@ type Props = Readonly<
   } & {
     modelValue: boolean
   } & {
-    group?: Group | undefined
+    group?: string | undefined
     tag?: TagDataInTable | undefined
     nodeName?: string | undefined
   }
@@ -103,8 +103,8 @@ export default (props: Props) => {
 
   const submit = async () => {
     try {
-      const { group } = props.group as Group
-      const { tagName, type } = props.tag as TagDataInTable
+      const { group } = props
+      const { name: tagName, type } = props.tag as TagDataInTable
       const nodeName = props.nodeName as string
       await validate()
       isSubmitting.value = true
@@ -115,8 +115,8 @@ export default (props: Props) => {
       const value = parseWriteData(type, trueValue)
       await writeData({
         node: nodeName,
-        group,
-        tag: tagName,
+        group: group as string,
+        tag: tagName as string,
         value,
       })
       EmqxMessage.success(t('common.submitSuccess'))

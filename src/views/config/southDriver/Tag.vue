@@ -10,7 +10,7 @@
       <div class="bar-left">
         <p class="driver-name">
           <label>{{ $t('config.deviceName') }}</label>
-          <span>{{ getNodeNameById(node) }}</span>
+          <span>{{ node }}</span>
         </p>
       </div>
       <div class="btns common-flex">
@@ -94,7 +94,6 @@
 import { useTagAttributeTypeSelect, useTagTypeSelect } from '@/composables/config/useAddTag'
 import EditTagDialog from './components/EditTagDialog.vue'
 import useTagList from '@/composables/config/useTagList'
-import useNodeList from '@/composables/config/useNodeList'
 import { useRouter } from 'vue-router'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import useUploadTagList from '@/composables/config/useUploadTagList'
@@ -122,7 +121,6 @@ const {
 } = useTagList()
 const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
 const { getAttrStrByValue } = useTagAttributeTypeSelect()
-const { getNodeNameById } = useNodeList()
 const { uploadTag } = useUploadTagList()
 const { isExporting, exportTable } = useExportTagTable()
 
@@ -145,7 +143,7 @@ const downloadTemplate = () => {
 }
 
 const handleExport = () => {
-  exportTable(totalData.value, groupName.value, getNodeNameById(node.value))
+  exportTable(totalData.value, groupName.value, node.value)
 }
 </script>
 

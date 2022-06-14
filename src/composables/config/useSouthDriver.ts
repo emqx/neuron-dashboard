@@ -4,7 +4,6 @@ import { NodeLinkState, NodeState } from '@/types/enums'
 import { onUnmounted, ref, Ref } from 'vue'
 import usePaging from '../usePaging'
 import { useFillNodeListStatusData } from './useNodeList'
-import { useGetPluginMsgIdMap } from './usePlugin'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
   const { fillNodeListStatusData } = useFillNodeListStatusData()
@@ -19,19 +18,15 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   })
   const { setTotalData, getAPageData } = usePaging()
 
-  const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
-
   let refreshStatusTimer: undefined | number = undefined
 
   const getSouthDriverList = async () => {
     isListLoading.value = true
     try {
-      await initMsgIdMap()
       const driverList = await querySouthDriverList()
       const totalList = driverList.map((item) => {
         return {
           ...item,
-          plugin: pluginMsgIdMap[item.plugin_id].name,
           running: NodeState.Running,
           link: NodeLinkState.Connected,
         }
@@ -66,13 +61,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
 
   const startTimer = () => {
     refreshStatusTimer = window.setInterval(async () => {
-      const driverListAddStatus = await fillNodeListStatusData(southDriverList.value)
-      southDriverList.value = driverListAddStatus.map((item) => {
-        return {
-          ...item,
-          plugin: pluginMsgIdMap[item.plugin_id].name,
-        }
-      })
+      southDriverList.value = await fillNodeListStatusData(southDriverList.value)
     }, 15 * 1000)
   }
 

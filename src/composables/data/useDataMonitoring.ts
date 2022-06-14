@@ -1,6 +1,5 @@
 import { ref, Ref, computed, onUnmounted } from 'vue'
-import { EmqxMessage } from '@emqx/emqx-ui'
-import { addSubscription, deleteSubscription, queryGroupList, queryTagList, queryWebDriver } from '@/api/config'
+import { queryGroupList, queryTagList } from '@/api/config'
 import { GroupData } from '@/types/config'
 import { getMonitoringData } from '@/api/data'
 import { useI18n } from 'vue-i18n'
@@ -10,58 +9,6 @@ import { useTagAttributeTypeSelect } from '../config/useAddTag'
 import { PluginKind, TagAttributeType, TagType } from '@/types/enums'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
-
-export const useSubscribeForGetMonitoringData = () => {
-  // FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME: delete it
-  let defaultDashboardId: string = ''
-  const getDefaultDashboardId = async () => {
-    try {
-      const data = await queryWebDriver()
-      defaultDashboardId = data.name
-      if (!defaultDashboardId) {
-        throw new Error('Can not find default dashboard')
-      }
-      return Promise.resolve()
-    } catch (error: any) {
-      EmqxMessage.error(error.message)
-      return Promise.reject()
-    }
-  }
-  const initPromise = getDefaultDashboardId()
-
-  const subscribe = async (node: string, groupName: string) => {
-    try {
-      await initPromise
-      await addSubscription({
-        app: defaultDashboardId,
-        driver: node,
-        group: groupName,
-      })
-      return Promise.resolve()
-    } catch (error) {
-      return Promise.reject()
-    }
-  }
-
-  const unsubscribe = async (node: string, groupName: string) => {
-    try {
-      await initPromise
-      await deleteSubscription({
-        app: defaultDashboardId,
-        driver: node,
-        group: groupName,
-      })
-      return Promise.resolve()
-    } catch (error) {
-      return Promise.reject()
-    }
-  }
-
-  return {
-    subscribe,
-    unsubscribe,
-  }
-}
 
 export interface TagDataInTable extends TagDataInMonitoring {
   attribute: Array<number>
@@ -74,8 +21,6 @@ export interface TagDataInTable extends TagDataInMonitoring {
 
 export default () => {
   const { t } = useI18n()
-
-  const { subscribe, unsubscribe } = useSubscribeForGetMonitoringData()
 
   const { southDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
@@ -105,13 +50,7 @@ export default () => {
   const updated = ref(Date.now())
   const { tagAttrValueMap } = useTagAttributeTypeSelect()
   const { transToHexadecimal } = useWriteDataCheckNParse()
-  /**
-   * This variable is that when the monitoring data is obtained,
-   * the request returns the error code 2014,
-   * and the count starts when the subscription is re-subscribed.
-   * If the re-subscription reaches 3 times,
-   * the re-subscription is stopped to prevent unlimited sending of requests.
-   */
+
   const reSubCount: { groupName: undefined | string; lastTimestamp: number; count: number } = {
     groupName: undefined,
     lastTimestamp: 0,
@@ -126,16 +65,8 @@ export default () => {
     return paginate(totalData.value, pageController.value.size, pageController.value.num)
   })
 
-  const unsubscribeCurrentGroup = () => {
-    if (selectedGroup) {
-      return unsubscribe(selectedGroup.node, selectedGroup.groupName)
-    }
-    return Promise.resolve()
-  }
-
   const selectedNodeChanged = async () => {
     currentGroup.value.groupName = ''
-    await unsubscribeCurrentGroup()
     selectedGroup = undefined
     const data = await queryGroupList(currentGroup.value.node.toString())
     groupList.value = data
@@ -155,7 +86,6 @@ export default () => {
     if (canReSubAndRequest) {
       reSubCount.count += 1
       reSubCount.lastTimestamp = Date.now()
-      await subscribe(node, currentGroupName)
       getTableData()
     }
   }
@@ -167,7 +97,7 @@ export default () => {
     const tags = await queryTagList(selectedGroup?.node, selectedGroup.groupName)
     const tagNameMap: Record<string | number, any> = {}
     tags.forEach(
-      ({ id, attribute, type, name, address }) =>
+      ({ attribute, type, name, address }) =>
         (tagNameMap[name] = {
           attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
           type,
@@ -223,9 +153,7 @@ export default () => {
       return
     }
 
-    await unsubscribeCurrentGroup()
     selectedGroup = { node, groupName }
-    await subscribe(node, groupName)
     tagMsgMap = await getTagDetail()
     initPageController()
     getTableData()
@@ -265,15 +193,10 @@ export default () => {
   }
 
   onUnmounted(() => {
-    unsubscribeCurrentGroup()
     if (pollTimer) {
       window.clearInterval(pollTimer)
     }
   })
-
-  window.onbeforeunload = function () {
-    unsubscribeCurrentGroup()
-  }
 
   return {
     nodeList,

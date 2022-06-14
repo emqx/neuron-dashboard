@@ -44,12 +44,10 @@ export const useSubscriptionList = () => {
   }
 
   const getGroupDataExpectChecked = ({ checked, ...groupData }: SubscriptionDataInTable) => {
-    debugger
     return { ...groupData, node }
   }
 
   const unsubscribe = async (confirmText: string, data: SubscriptionDataInTable | Array<SubscriptionDataInTable>) => {
-    debugger
     try {
       await EmqxMessageBox.confirm(confirmText, t('common.operateConfirm'))
       if (Array.isArray(data)) {

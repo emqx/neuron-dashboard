@@ -14,7 +14,6 @@ export interface CreatedPlugin extends PluginForm {
   kind: PluginKind | null
   node_type: DriverDirection | null
   name: string
-  id: number
 }
 
 export interface NodeForm {
@@ -36,8 +35,7 @@ export interface SubscriptionData extends SubscriptionDataForm {
 
 export interface RawDriverData {
   name: string
-  id: number
-  plugin_id: number
+  plugin: string
 }
 
 export interface DriverStateData {
@@ -145,5 +143,4 @@ export interface TagForm {
 
 export interface TagData extends TagForm {
   group: string
-  id: number
 }

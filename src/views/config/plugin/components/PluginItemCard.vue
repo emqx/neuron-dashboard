@@ -6,9 +6,7 @@
           <!-- <img class="plugin-item-icon" :src="getPluginIcon(data.name)" height="36" /> -->
           <span>{{ data.name }}</span>
         </p>
-        <!-- FIXME:FIXME:FIXME:FIXME:FIXME: -->
-        <div class="handlers">
-        <!-- <div class="handlers" v-if="data.kind === PluginKind.Custom"> -->
+        <div class="handlers" v-if="data.kind === PluginKind.Custom">
           <AComWithDesc :content="$t('common.delete')">
             <i class="iconfont icon icondelete" @click="deletePlugin" />
           </AComWithDesc>
