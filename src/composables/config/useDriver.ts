@@ -48,7 +48,7 @@ export const useNodeStartStopStatus = () => {
 export const useToggleNodeStartStopStatus = () => {
   const toggleNodeStartStopStatus = async (node: DriverItemInList, status: boolean) => {
     try {
-      await sendCommandToNode(node.id, status ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
+      await sendCommandToNode(node.name, status ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
       return Promise.resolve(true)
     } catch (error: any) {
       /* 

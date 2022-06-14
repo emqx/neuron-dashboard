@@ -81,12 +81,12 @@ const goGroupPage = () => {
   router.push({
     name: 'NorthDriverGroup',
     params: {
-      nodeID: props.data?.id,
+      node: props.data?.name,
     },
   })
 }
 
-const goNodeConfig = () => router.push({ name: 'NorthDriverConfig', params: { nodeID: props.data.id } })
+const goNodeConfig = () => router.push({ name: 'NorthDriverConfig', params: { node: props.data.name } })
 
 const { delDriver } = useDeleteDriver()
 const deleteDriver = async () => {

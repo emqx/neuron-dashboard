@@ -18,7 +18,7 @@ export const useSubscriptionList = () => {
 
   const isListLoading = ref(false)
   const subscriptionList: Ref<Array<SubscriptionDataInTable>> = ref([])
-  const nodeID = computed(() => parseInt(route.params.nodeID as string))
+  const node = computed(() => route.params.node.toString())
 
   const allChecked = computed({
     get() {
@@ -36,16 +36,20 @@ export const useSubscriptionList = () => {
 
   const getSubscriptionList = async () => {
     isListLoading.value = true
-    const list = await querySubscription(nodeID.value)
+    const list = await querySubscription(node.value)
     subscriptionList.value = list.map((item) => {
       return Object.assign(item, { checked: false })
     })
     isListLoading.value = false
   }
 
-  const getGroupDataExpectChecked = ({ checked, ...groupData }: SubscriptionDataInTable) => groupData
+  const getGroupDataExpectChecked = ({ checked, ...groupData }: SubscriptionDataInTable) => {
+    debugger
+    return { ...groupData, node }
+  }
 
   const unsubscribe = async (confirmText: string, data: SubscriptionDataInTable | Array<SubscriptionDataInTable>) => {
+    debugger
     try {
       await EmqxMessageBox.confirm(confirmText, t('common.operateConfirm'))
       if (Array.isArray(data)) {
@@ -74,7 +78,7 @@ export const useSubscriptionList = () => {
   getSubscriptionList()
 
   return {
-    nodeID,
+    node,
     subscriptionList,
     isListLoading,
     allChecked,
@@ -88,21 +92,21 @@ export const useSubscriptionList = () => {
 
 type AddSubscriptionProps = Readonly<{
   modelValue: boolean
-  currentNodeId: number
+  currentNode: string
 }>
 
 export const useAddSubscription = (props: AddSubscriptionProps) => {
   const { t } = useI18n()
 
   const createRawSubscriptionForm = (): SubscriptionDataForm => ({
-    dst_node_id: null,
-    src_node_id: null,
-    name: '',
+    app: null,
+    driver: null,
+    group: '',
   })
 
   const formCom = ref()
   const rules = {
-    src_node_id: [{ required: true, message: t('config.southDeviceRequired') }],
+    driver: [{ required: true, message: t('config.southDeviceRequired') }],
     name: [{ required: true, message: createCommonErrorMessage('select', ' group') }],
   }
   const subscriptionForm: Ref<SubscriptionDataForm> = ref(createRawSubscriptionForm())
@@ -111,8 +115,8 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
   const groupList: Ref<Array<GroupData>> = ref([])
 
   const selectedNodeChanged = async () => {
-    subscriptionForm.value.name = ''
-    const data = await queryGroupList(Number(subscriptionForm.value.src_node_id))
+    subscriptionForm.value.group = ''
+    const data = await queryGroupList(subscriptionForm.value.driver as string)
     groupList.value = data
   }
 
@@ -126,7 +130,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
-      const data = { ...subscriptionForm.value, dst_node_id: props.currentNodeId }
+      const data = { ...subscriptionForm.value, app: props.currentNode }
       await addSubscription(data as SubscriptionData)
       EmqxMessage.success(t('common.submitSuccess'))
       return Promise.resolve()

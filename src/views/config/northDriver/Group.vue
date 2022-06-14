@@ -41,9 +41,9 @@
       <emqx-table-column label="No" :width="60">
         <template #default="{ index }">{{ index + 1 }}</template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.groupName')" prop="name"></emqx-table-column>
+      <emqx-table-column :label="$t('config.groupName')" prop="group"></emqx-table-column>
       <emqx-table-column :label="$t('config.deviceName')" prop="name">
-        <template #default="{ row }">{{ getSrcNodeMsgById(row.src_node_id).name }}</template>
+        <template #default="{ row }">{{ row.driver }}</template>
       </emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
@@ -54,11 +54,7 @@
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
-  <AddSubscriptionDialog
-    v-model="showAddSubscriptionDialog"
-    :current-node-id="nodeID"
-    @submitted="getSubscriptionList"
-  />
+  <AddSubscriptionDialog v-model="showAddSubscriptionDialog" :current-node="node" @submitted="getSubscriptionList" />
   <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="refreshNodeMsgMap" />
 </template>
 
@@ -72,7 +68,7 @@ import EditNodeNameDialog from '../components/EditNodeNameDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const {
-  nodeID,
+  node,
   subscriptionList,
   isListLoading,
   allChecked,
@@ -86,14 +82,13 @@ const { getNodeMsgById: getSrcNodeMsgById } = useNodeMsgMap(DriverDirection.Sout
 const showEditDialog = ref(false)
 
 const currentNode = computed(() => ({
-  id: nodeID.value,
   name: nodeName.value,
-  plugin_id: getNodeMsgById(nodeID.value).id,
+  plugin_id: getNodeMsgById(node.value).id,
 }))
 
 const showAddSubscriptionDialog = ref(false)
 
-const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
+const nodeName = computed(() => getNodeMsgById(node.value).name)
 
 const addSubscription = () => {
   showAddSubscriptionDialog.value = true

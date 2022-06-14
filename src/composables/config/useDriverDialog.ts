@@ -11,7 +11,7 @@ export const usePluginList = (type: DriverDirection) => {
 
   const getPluginList = async () => {
     const { data } = await queryPluginList()
-    const list = data.plugin_libs || []
+    const list = data.plugins || []
     pluginList.value = list
       .filter(({ node_type }) =>
         type === DriverDirection.South
@@ -28,10 +28,9 @@ export const usePluginList = (type: DriverDirection) => {
   }
 }
 
-const createRawDriverForm = (type: DriverDirection): NodeForm => ({
-  type,
+const createRawDriverForm = (): NodeForm => ({
   name: '',
-  plugin_name: '',
+  plugin: '',
 })
 
 export default (type: DriverDirection) => {
@@ -39,25 +38,25 @@ export default (type: DriverDirection) => {
   const { pluginList } = usePluginList(type)
 
   const formCom = ref()
-  const driverForm: Ref<NodeForm> = ref(createRawDriverForm(type))
+  const driverForm: Ref<NodeForm> = ref(createRawDriverForm())
   const isSubmitting = ref(false)
   const groupFormRules = {
     name: [{ required: true, message: t('config.nameRequired') }],
-    plugin_name: [{ required: true, message: t('config.pluginRequired') }],
+    plugin: [{ required: true, message: t('config.pluginRequired') }],
   }
 
   const dialogTitle = computed(() => (type === DriverDirection.North ? t('config.addApp') : t('config.newDevice')))
 
   const initForm = async () => {
     formCom.value.resetField()
-    driverForm.value = createRawDriverForm(type)
+    driverForm.value = createRawDriverForm()
   }
 
   const submitData = async () => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
-      await addDriver(driverForm.value, type)
+      await addDriver(driverForm.value)
       EmqxMessage.success(t('common.createSuccess'))
     } catch (error) {
       return Promise.reject()

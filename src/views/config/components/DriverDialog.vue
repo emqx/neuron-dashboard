@@ -4,8 +4,8 @@
       <emqx-form-item prop="name" :label="$t('common.name')" required>
         <emqx-input v-model.trim="driverForm.name" :disabled="driver" />
       </emqx-form-item>
-      <emqx-form-item prop="plugin_name" label="Plugin" required>
-        <emqx-select v-model="driverForm.plugin_name" :disabled="driver">
+      <emqx-form-item prop="plugin" label="Plugin" required>
+        <emqx-select v-model="driverForm.plugin" :disabled="driver">
           <emqx-option v-for="item in pluginList" :key="item.name" :value="item.name" :label="item.name" />
         </emqx-select>
       </emqx-form-item>

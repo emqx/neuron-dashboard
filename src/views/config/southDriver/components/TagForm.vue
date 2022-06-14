@@ -3,7 +3,7 @@
     <emqx-row :gutter="28">
       <emqx-col :span="12">
         <emqx-form-item :label="$t('config.tagName')" prop="name" required>
-          <emqx-input v-model.trim="form.name" />
+          <emqx-input v-model.trim="form.name" :disabled="edit" />
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
@@ -49,6 +49,10 @@ const props = defineProps({
   },
   nodePluginInfo: {
     type: Object as PropType<PluginInfo>,
+  },
+  edit: {
+    type: Boolean,
+    default: false,
   },
 })
 const emit = defineEmits(['update:modelValue'])

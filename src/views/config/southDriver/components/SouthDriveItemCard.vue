@@ -83,7 +83,7 @@ const goGroupPage = () => {
   router.push({
     name: 'SouthDriverGroup',
     params: {
-      nodeID: props.data.id,
+      node: props.data.name,
     },
   })
 }
@@ -93,7 +93,7 @@ const deleteDriver = async () => {
   await delDriver(props.data)
   emit('deleted')
 }
-const goNodeConfig = () => router.push({ name: 'SouthDriverConfig', params: { nodeID: props.data.id } })
+const goNodeConfig = () => router.push({ name: 'SouthDriverConfig', params: { node: props.data.name } })
 </script>
 
 <style lang="scss">

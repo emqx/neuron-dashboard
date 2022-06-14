@@ -6,7 +6,7 @@
     :title="$t('config.editTag')"
     :z-index="2000"
   >
-    <TagFormCom ref="formRef" :data="tagData" :node-plugin-info="pluginMsg" />
+    <TagFormCom ref="formRef" :data="tagData" :node-plugin-info="pluginMsg" edit />
     <template #footer>
       <span class="dialog-footer">
         <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
@@ -39,8 +39,12 @@ const props = defineProps({
     type: Object as PropType<TagData>,
     required: true,
   },
-  nodeId: {
-    type: Number,
+  node: {
+    type: String,
+    required: true,
+  },
+  group: {
+    type: String,
     required: true,
   },
 })
@@ -76,7 +80,7 @@ watch(showDialog, (val) => {
 
 const getPluginInfo = async () => {
   await Promise.all([initMap(), initMsgIdMap()])
-  const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(props.nodeId).plugin_id].name)
+  const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(props.node).plugin_id].name)
   pluginMsg.value = data
 }
 
@@ -84,8 +88,7 @@ const submit = async () => {
   try {
     await formRef.value.validate()
     isSubmitting.value = true
-    const { group_config_name, ...tagForm } = tagData.value
-    await updateTag(props.nodeId, group_config_name, tagForm)
+    await updateTag(props.node, props.group, tagData.value)
     showDialog.value = false
     EmqxMessage.success(t('common.submitSuccess'))
     emit('submitted')

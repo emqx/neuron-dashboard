@@ -3,10 +3,12 @@
     <div class="plugin-item-info">
       <div class="plugin-item-card-hd common-flex">
         <p class="plugin-item-name ellipsis">
-          <img class="plugin-item-icon" :src="getPluginIcon(data.name)" height="36" />
+          <!-- <img class="plugin-item-icon" :src="getPluginIcon(data.name)" height="36" /> -->
           <span>{{ data.name }}</span>
         </p>
-        <div class="handlers" v-if="data.kind === PluginKind.Custom">
+        <!-- FIXME:FIXME:FIXME:FIXME:FIXME: -->
+        <div class="handlers">
+        <!-- <div class="handlers" v-if="data.kind === PluginKind.Custom"> -->
           <AComWithDesc :content="$t('common.delete')">
             <i class="iconfont icon icondelete" @click="deletePlugin" />
           </AComWithDesc>
@@ -22,7 +24,7 @@
       </div>
       <div class="info-row">
         <label>{{ $t('config.libName') }}</label>
-        <span class="ellipsis">{{ data.lib_name }}</span>
+        <span class="ellipsis">{{ data.library }}</span>
       </div>
     </div>
   </div>

@@ -73,10 +73,10 @@ export default () => {
       if (!checkTagListInTableFile(tagList)) {
         return
       }
-      const nodeID = Number(route.params.nodeID)
+      const node = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags = await handleTagListInTableFile(tagList)
-      const ret = await addTag({ tags, node_id: nodeID, group_config_name: groupName })
+      const ret = await addTag({ tags, node, group: groupName })
       if (ret.status !== 200) {
         EmqxMessage.warning(t('config.partialUploadFailed'))
       } else {

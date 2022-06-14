@@ -12,11 +12,12 @@ import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 
 export const useSubscribeForGetMonitoringData = () => {
-  let defaultDashboardId: undefined | number = undefined
+  // FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME: delete it
+  let defaultDashboardId: string = ''
   const getDefaultDashboardId = async () => {
     try {
       const data = await queryWebDriver()
-      defaultDashboardId = data.id
+      defaultDashboardId = data.name
       if (!defaultDashboardId) {
         throw new Error('Can not find default dashboard')
       }
@@ -28,13 +29,13 @@ export const useSubscribeForGetMonitoringData = () => {
   }
   const initPromise = getDefaultDashboardId()
 
-  const subscribe = async (nodeID: number, groupName: string) => {
+  const subscribe = async (node: string, groupName: string) => {
     try {
       await initPromise
       await addSubscription({
-        dst_node_id: defaultDashboardId as number,
-        src_node_id: nodeID,
-        name: groupName,
+        app: defaultDashboardId,
+        driver: node,
+        group: groupName,
       })
       return Promise.resolve()
     } catch (error) {
@@ -42,13 +43,13 @@ export const useSubscribeForGetMonitoringData = () => {
     }
   }
 
-  const unsubscribe = async (nodeID: number, groupName: string) => {
+  const unsubscribe = async (node: string, groupName: string) => {
     try {
       await initPromise
       await deleteSubscription({
-        dst_node_id: defaultDashboardId as number,
-        src_node_id: nodeID,
-        name: groupName,
+        app: defaultDashboardId,
+        driver: node,
+        group: groupName,
       })
       return Promise.resolve()
     } catch (error) {
@@ -79,16 +80,16 @@ export default () => {
   const { southDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
-  let selectedGroup: undefined | { nodeID: number; groupName: string } = undefined
-  const currentGroup: Ref<{ nodeID: number | string; groupName: string }> = ref({
-    nodeID: '',
+  let selectedGroup: undefined | { node: string; groupName: string } = undefined
+  const currentGroup: Ref<{ node: string | string; groupName: string }> = ref({
+    node: '',
     groupName: '',
   })
   const currentNodeName = computed(() => {
-    if (!currentGroup.value.nodeID) {
+    if (!currentGroup.value.node) {
       return ''
     }
-    const node = nodeList.value.find(({ id }) => id === currentGroup.value.nodeID)
+    const node = nodeList.value.find(({ name }) => name === currentGroup.value.node)
     return node ? node.name : ''
   })
 
@@ -118,7 +119,7 @@ export default () => {
   }
 
   const tableEmptyText = computed(() =>
-    !currentGroup.value.nodeID || !currentGroup.value.groupName ? t('data.selectGroupTip') : t('common.emptyData'),
+    !currentGroup.value.node || !currentGroup.value.groupName ? t('data.selectGroupTip') : t('common.emptyData'),
   )
 
   const tableData = computed(() => {
@@ -127,7 +128,7 @@ export default () => {
 
   const unsubscribeCurrentGroup = () => {
     if (selectedGroup) {
-      return unsubscribe(selectedGroup.nodeID, selectedGroup.groupName)
+      return unsubscribe(selectedGroup.node, selectedGroup.groupName)
     }
     return Promise.resolve()
   }
@@ -136,13 +137,13 @@ export default () => {
     currentGroup.value.groupName = ''
     await unsubscribeCurrentGroup()
     selectedGroup = undefined
-    const data = await queryGroupList(Number(currentGroup.value.nodeID))
+    const data = await queryGroupList(currentGroup.value.node.toString())
     groupList.value = data
   }
 
   const reSubAfterReturnError = async () => {
     const { groupName, lastTimestamp, count } = reSubCount
-    const { nodeID, groupName: currentGroupName } = currentGroup.value
+    const { node, groupName: currentGroupName } = currentGroup.value
     let canReSubAndRequest = false
     if (Date.now() - lastTimestamp < 500 && groupName === currentGroupName && count < 3) {
       canReSubAndRequest = true
@@ -154,16 +155,16 @@ export default () => {
     if (canReSubAndRequest) {
       reSubCount.count += 1
       reSubCount.lastTimestamp = Date.now()
-      await subscribe(Number(nodeID), currentGroupName)
+      await subscribe(node, currentGroupName)
       getTableData()
     }
   }
 
   const getTagDetail = async () => {
-    if (!selectedGroup?.nodeID || !selectedGroup.groupName) {
+    if (!selectedGroup?.node || !selectedGroup.groupName) {
       return {}
     }
-    const tags = await queryTagList(selectedGroup?.nodeID, selectedGroup.groupName)
+    const tags = await queryTagList(selectedGroup?.node, selectedGroup.groupName)
     const tagNameMap: Record<string | number, any> = {}
     tags.forEach(
       ({ id, attribute, type, name, address }) =>
@@ -178,8 +179,8 @@ export default () => {
   }
 
   const getTableData = async () => {
-    const { nodeID, groupName } = currentGroup.value
-    if (!nodeID || !groupName || !currentNodeName.value) {
+    const { node, groupName } = currentGroup.value
+    if (!node || !groupName || !currentNodeName.value) {
       return
     }
     try {
@@ -217,14 +218,14 @@ export default () => {
   }
 
   const selectedGroupChanged = async () => {
-    const { nodeID, groupName } = currentGroup.value
-    if (!nodeID || !groupName) {
+    const { node, groupName } = currentGroup.value
+    if (!node || !groupName) {
       return
     }
 
     await unsubscribeCurrentGroup()
-    selectedGroup = { nodeID: Number(nodeID), groupName }
-    await subscribe(Number(nodeID), groupName)
+    selectedGroup = { node, groupName }
+    await subscribe(node, groupName)
     tagMsgMap = await getTagDetail()
     initPageController()
     getTableData()
