@@ -12,7 +12,7 @@
         <div>
           <label>{{ $t('config.southDevice') }}</label>
           <emqx-select v-model="currentGroup.node" @change="selectedNodeChanged" filterable>
-            <emqx-option v-for="item in nodeList" :key="item.id" :value="item.id" :label="item.name" />
+            <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
           </emqx-select>
         </div>
         <div>
@@ -69,7 +69,7 @@
   </emqx-card>
   <WriteDialog
     v-model="showWriteDialog"
-    :group="currentGroup"
+    :group="currentGroup.groupName"
     :tag="currentTag"
     :node-name="currentNodeName"
     @updated="getTableData"

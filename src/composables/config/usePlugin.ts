@@ -27,12 +27,12 @@ export default () => {
 }
 
 export const useGetPluginMsgIdMap = () => {
-  const pluginMsgIdMap: Record<number, CreatedPlugin> = {}
+  const pluginMsgIdMap: Record<string, CreatedPlugin> = {}
   const initMsgIdMap = async () => {
     try {
       const { data } = await queryPluginList()
       ;(data.plugins || []).forEach((item) => {
-        pluginMsgIdMap[item.id] = item
+        pluginMsgIdMap[item.name] = item
       })
       return Promise.resolve(pluginMsgIdMap)
     } catch (error) {

@@ -27,7 +27,6 @@ import { PluginInfo, TagData } from '@/types/config'
 import { queryPluginConfigInfo, updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
-import { useGetPluginMsgIdMap } from '@/composables/config/usePlugin'
 import { DriverDirection } from '@/types/enums'
 
 const props = defineProps({
@@ -53,7 +52,6 @@ const emit = defineEmits(['update:modelValue', 'submitted'])
 const { t } = useI18n()
 
 const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
-const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
 const pluginMsg: Ref<undefined | PluginInfo> = ref(undefined)
 
 const tagData: Ref<TagData> = ref({} as TagData)
@@ -79,8 +77,8 @@ watch(showDialog, (val) => {
 })
 
 const getPluginInfo = async () => {
-  await Promise.all([initMap(), initMsgIdMap()])
-  const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(props.node).plugin_id].name)
+  await initMap()
+  const { data } = await queryPluginConfigInfo(getNodeMsgById(props.node).plugin)
   pluginMsg.value = data
 }
 

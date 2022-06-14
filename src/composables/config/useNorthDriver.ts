@@ -21,8 +21,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       northDriverList.value = await fillNodeListStatusData(
         northDriverListData.map((item) =>
           Object.assign(item, {
-            pluginKind: pluginMsgIdMap[item.plugin_id]?.kind as PluginKind,
-            plugin: pluginMsgIdMap[item.plugin_id]?.name,
+            pluginKind: pluginMsgIdMap[item.plugin]?.kind as PluginKind,
           }),
         ),
       )
@@ -35,13 +34,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
 
   const startTimer = () => {
     refreshStatusTimer = window.setInterval(async () => {
-      const driverListAddStatus = await fillNodeListStatusData(northDriverList.value)
-      northDriverList.value = driverListAddStatus.map((item) => {
-        return {
-          ...item,
-          plugin: pluginMsgIdMap[item.plugin_id].name,
-        }
-      })
+      northDriverList.value = await fillNodeListStatusData(northDriverList.value)
     }, 15 * 1000)
   }
 

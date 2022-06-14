@@ -5,7 +5,7 @@
       <div class="bar-left common-flex">
         <p class="driver-name">
           <label>{{ $t('config.appName') }}</label>
-          <span>{{ nodeName }}</span>
+          <span>{{ node }}</span>
           <!-- <i class="el-icon-edit icon-edit" :title="$t('common.edit')" @click="editNodeName" /> -->
         </p>
       </div>
@@ -55,16 +55,12 @@
     </emqx-table>
   </emqx-card>
   <AddSubscriptionDialog v-model="showAddSubscriptionDialog" :current-node="node" @submitted="getSubscriptionList" />
-  <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="refreshNodeMsgMap" />
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { useNodeMsgMap } from '@/composables/config/useNodeList'
-import { DriverDirection } from '@/types/enums'
+import { ref } from 'vue'
 import { useSubscriptionList } from '@/composables/config/useSubscription'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
-import EditNodeNameDialog from '../components/EditNodeNameDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const {
@@ -77,25 +73,11 @@ const {
   unsubscribeInBulk,
   getSubscriptionList,
 } = useSubscriptionList()
-const { initMap: refreshNodeMsgMap, getNodeMsgById } = useNodeMsgMap(DriverDirection.North)
-const { getNodeMsgById: getSrcNodeMsgById } = useNodeMsgMap(DriverDirection.South)
-const showEditDialog = ref(false)
-
-const currentNode = computed(() => ({
-  name: nodeName.value,
-  plugin_id: getNodeMsgById(node.value).id,
-}))
 
 const showAddSubscriptionDialog = ref(false)
 
-const nodeName = computed(() => getNodeMsgById(node.value).name)
-
 const addSubscription = () => {
   showAddSubscriptionDialog.value = true
-}
-
-const editNodeName = () => {
-  showEditDialog.value = true
 }
 </script>
 
