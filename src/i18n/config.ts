@@ -356,4 +356,8 @@ export default {
     zh: '清空已上传文件',
     en: 'Clear uploaded file',
   },
+  tagPartAddedFailedPopup: {
+    zh: '部分 tag 添加失败，错误原因：{0}。 已过滤掉添加成功的 tag，请检查后再次尝试添加',
+    en: 'Some tags failed to be added, the reason for the error: {0}, the successfully added tags have been filtered out, please check and try to add again',
+  },
 }

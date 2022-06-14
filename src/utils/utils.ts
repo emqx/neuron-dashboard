@@ -1,6 +1,7 @@
 import i18n from '@/i18n/index'
 import { ERROR_CODE_ARR } from './constants'
 import { utils as XLSXUtils, writeFile } from 'xlsx'
+import { EmqxMessage } from '@emqx/emqx-ui'
 
 /**
  * when the value is int, can use this func to create option list
@@ -99,4 +100,8 @@ export const countBaseURL = () => {
   }
   const baseURL = `${protocol}//${serverAddress}/api/v2`
   return baseURL
+}
+
+export const popUpErrorMessage = (error: number) => {
+  EmqxMessage.error(`Error (code: ${error}): ${getErrorMsg(error)}`)
 }

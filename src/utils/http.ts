@@ -3,7 +3,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME } from '@/router/routes'
-import { countBaseURL, getErrorMsg } from './utils'
+import { countBaseURL, popUpErrorMessage } from './utils'
 
 const baseURL = countBaseURL()
 const option = {
@@ -17,10 +17,6 @@ const option = {
 }
 
 Object.assign(axios.defaults, option)
-
-const popUpErrorMessage = (error: number) => {
-  EmqxMessage.error(`Error (code: ${error}): ${getErrorMsg(error)}`)
-}
 
 export const handleError = (error: AxiosError) => {
   const { response } = error

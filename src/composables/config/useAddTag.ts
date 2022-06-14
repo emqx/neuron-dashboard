@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
-import { createRandomString, jumpToFirstErrorFormItem } from '@/utils/utils'
+import { createRandomString, getErrorMsg, jumpToFirstErrorFormItem, popUpErrorMessage } from '@/utils/utils'
 import { useNodeMsgMap } from './useNodeList'
 
 export const useTagTypeSelect = () => {
@@ -138,6 +138,15 @@ export default () => {
     tagList.value.splice(index, 1)
   }
 
+  const handlePartialSuc = (errIndex: number, errorNum: number) => {
+    if (errIndex === 0) {
+      popUpErrorMessage(errorNum)
+      return
+    }
+    EmqxMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
+    tagList.value = tagList.value.slice(errIndex)
+  }
+
   const submit = async () => {
     let pass = true
     try {
@@ -154,12 +163,14 @@ export default () => {
       const node = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags = tagList.value.map(({ name, address, attribute, type }) => ({ name, address, attribute, type }))
-      const res = await addTag({ tags, node, group: groupName })
-      if (res.status === 200) {
+      const { data } = await addTag({ tags, node, group: groupName })
+      if (data.error === 0) {
         EmqxMessage.success(t('common.createSuccess'))
         router.push({
           name: 'SouthDriverGroupTag',
         })
+      } else if (data.error !== 0 && data.index !== undefined) {
+        handlePartialSuc(data.index, data.error)
       }
     } catch (error) {
       console.error(error)
