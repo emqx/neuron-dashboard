@@ -7,8 +7,8 @@ export const getMonitoringData = (
   groupName: string,
 ): Promise<AxiosResponse<{ tags: Array<TagDataInMonitoring> }>> => {
   return http.post('/read', {
-    node_name: nodeName,
-    group_name: groupName,
+    node: nodeName,
+    group: groupName,
   })
 }
 

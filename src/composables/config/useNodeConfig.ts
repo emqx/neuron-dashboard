@@ -31,13 +31,13 @@ export default (props: Props) => {
   const formCom = ref()
   const isSubmitting = ref(false)
 
-  const nodeID = computed(() => Number(route.params.nodeID))
+  const node = computed(() => route.params.node.toString())
 
-  const nodeName = computed(() => getNodeMsgById(nodeID.value)?.name)
+  const nodeName = computed(() => getNodeMsgById(node.value)?.name)
 
   const getNodeConfig = async () => {
     try {
-      const { data } = await queryNodeConfig(nodeID.value)
+      const { data } = await queryNodeConfig(node.value)
       if (data && data?.params && typeof data.params === 'object') {
         configuredData.value = data.params
       }
@@ -84,7 +84,7 @@ export default (props: Props) => {
   }
 
   const getPluginInfo = async () => {
-    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(nodeID.value).plugin_id].name)
+    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(node.value).plugin_id].name)
     const pluginInfo: PluginInfo = data
     if (!pluginInfo) {
       return
@@ -123,7 +123,7 @@ export default (props: Props) => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
-      await submitNodeConfig(nodeID.value, configForm.value)
+      await submitNodeConfig(node.value, configForm.value)
       EmqxMessage.success(t('common.submitSuccess'))
       router.back()
     } catch (error) {

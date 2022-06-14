@@ -5,10 +5,10 @@ import { DriverItemInList } from '@/types/config'
 
 export default () => {
   const { t } = useI18n()
-  const delDriver = async ({ id }: DriverItemInList) => {
+  const delDriver = async ({ name }: DriverItemInList) => {
     try {
       await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete'), type: 'warning' })
-      await deleteDriver(id)
+      await deleteDriver(name)
       EmqxMessage.success(t('common.operateSuccessfully'))
       return Promise.resolve()
     } catch (error) {

@@ -23,7 +23,7 @@ export default () => {
     total: 0,
   })
 
-  const nodeID = computed(() => Number(route.params.nodeID))
+  const node = computed(() => route.params.node.toString())
   const groupName = computed(() => route.params.group as string)
   const allChecked = computed({
     get() {
@@ -46,7 +46,7 @@ export default () => {
 
   const getTagList = async () => {
     isListLoading.value = true
-    const data = await queryTagList(nodeID.value, groupName.value)
+    const data = await queryTagList(node.value, groupName.value)
     setTotalData(data.map((item) => Object.assign(item, { checked: false })))
     getAPageTagData()
     isListLoading.value = false
@@ -71,9 +71,9 @@ export default () => {
 
   const deleteTagList = async (list: Array<TagDataInTable>) => {
     await deleteTag({
-      node_id: nodeID.value,
-      group_config_name: groupName.value,
-      ids: list.map(({ id }) => id),
+      node: node.value,
+      group: groupName.value,
+      tags: list.map(({ name }) => name),
     })
     EmqxMessage.success(t('common.operateSuccessfully'))
     refreshTable()
@@ -102,7 +102,7 @@ export default () => {
   getTagList()
 
   return {
-    nodeID,
+    node,
     groupName,
     tagList,
     totalData,

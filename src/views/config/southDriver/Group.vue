@@ -57,7 +57,7 @@
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
-  <GroupDialog v-model="showGroupDialog" :current-node="nodeID" @submitted="getGroupList" :group="currentGroup" />
+  <GroupDialog v-model="showGroupDialog" :current-node="node" @submitted="getGroupList" :group="currentGroup" />
   <EditNodeNameDialog v-model="showEditDialog" :node="currentNode" @updated="refreshNodeMsgMap" />
 </template>
 
@@ -73,19 +73,18 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import EditNodeNameDialog from '../components/EditNodeNameDialog.vue'
 
 const router = useRouter()
-const { nodeID, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =
+const { node, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =
   useGroupList()
 const showGroupDialog = ref(false)
 const { initMap: refreshNodeMsgMap, getNodeMsgById } = useNodeMsgMap(DriverDirection.South)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 
-const nodeName = computed(() => getNodeMsgById(nodeID.value).name)
+const nodeName = computed(() => getNodeMsgById(node.value).name)
 const showEditDialog = ref(false)
 
 const currentNode = computed(() => ({
-  id: nodeID.value,
   name: nodeName.value,
-  plugin_id: getNodeMsgById(nodeID.value).id,
+  plugin_id: getNodeMsgById(node.value).id,
 }))
 
 const addGroup = () => {
@@ -93,11 +92,12 @@ const addGroup = () => {
   showGroupDialog.value = true
 }
 
-const editGroup = ({ name, interval }: GroupData) => {
+const editGroup = ({ name, interval, group }: GroupData) => {
   currentGroup.value = {
     interval,
     name,
-    node_id: nodeID.value,
+    node: node.value,
+    group,
   }
   showGroupDialog.value = true
 }

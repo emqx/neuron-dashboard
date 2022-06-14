@@ -73,27 +73,24 @@ export const queryWebDriver = async (): Promise<RawDriverData> => {
   }
 }
 
-export const addDriver = (driverData: NodeForm, direction: DriverDirection) => {
-  return http.post('/node', {
-    ...driverData,
-    node_type: direction,
-  })
+export const addDriver = (driverData: NodeForm) => {
+  return http.post('/node', driverData)
 }
 
-export const deleteDriver = (id: number) => {
-  return http.delete('/node', { data: { id } })
+export const deleteDriver = (node: string) => {
+  return http.delete('/node', { data: { name: node } })
 }
 
 export const updateDriver = (data: { id: number; name: string }) => {
   return http.put('/node', data)
 }
 
-export const sendCommandToNode = (nodeID: number, command: NodeOperationCommand) => {
-  return http.post('/node/ctl', { id: nodeID, cmd: command })
+export const sendCommandToNode = (nodeName: string, command: NodeOperationCommand) => {
+  return http.post('/node/ctl', { node: nodeName, cmd: command })
 }
 
-export const queryNodeState = (nodeID: number) => {
-  return http.get('/node/state', { params: { node_id: nodeID } })
+export const queryNodeState = (nodeName: string) => {
+  return http.get('/node/state', { params: { node: nodeName } })
 }
 
 /* NORTH APP */
@@ -105,20 +102,18 @@ export const deleteSubscription = (data: SubscriptionData) => {
   return http.delete('/subscribe', { data })
 }
 
-export const querySubscription = async (nodeID: number): Promise<Array<SubscriptionData>> => {
+export const querySubscription = async (node: string): Promise<Array<SubscriptionData>> => {
   try {
-    const { data }: AxiosResponse<{ groups: Array<{ node_id: number; group_config_name: string }> }> = await http.get(
-      '/subscribe',
-      {
-        params: { node_id: nodeID },
-      },
-    )
+    const { data }: AxiosResponse<{ groups: Array<{ driver: string; group: string }> }> = await http.get('/subscribe', {
+      params: { app: node },
+    })
     return Promise.resolve(
-      (data.groups || []).map(({ node_id, group_config_name }) => ({
-        dst_node_id: nodeID,
-        src_node_id: node_id,
-        name: group_config_name,
-      })),
+      (data.groups || []).map((item) => {
+        return {
+          ...item,
+          app: node,
+        }
+      }),
     )
   } catch (error) {
     return Promise.reject(error)
@@ -133,82 +128,77 @@ export const queryPluginConfigInfo = (name: string): Promise<AxiosResponse<Plugi
   return http.get('/schema', { params: { plugin_name: name } })
 }
 
-export const submitNodeConfig = (nodeID: number, form: Record<string, any>) => {
+export const submitNodeConfig = (node: string, form: Record<string, any>) => {
   return http.post('/node/setting', {
-    node_id: nodeID,
+    node: node,
     params: form,
   })
 }
 
-export const queryNodeConfig = (nodeID: number) => {
-  return http.get('/node/setting', { params: { node_id: nodeID } })
+export const queryNodeConfig = (node: string) => {
+  return http.get('/node/setting', { params: { node: node } })
 }
 
 /* GROUP */
 
-export const queryGroupList = async (nodeID: number): Promise<Array<GroupData>> => {
-  const { data }: AxiosResponse<{ error: number; group_configs: Array<GroupData> }> = await http.get('/gconfig', {
-    params: { node_id: nodeID },
+export const queryGroupList = async (node: string): Promise<Array<GroupData>> => {
+  const { data }: AxiosResponse<{ error: number; groups: Array<GroupData> }> = await http.get('/group', {
+    params: { node: node },
   })
-  return Promise.resolve(data?.group_configs || [])
+  return Promise.resolve((data?.groups || []).map((item) => ({ ...item, group: item.name })))
 }
 
-export const deleteGroup = async (nodeID: number, groupName: string): Promise<AxiosResponse> => {
-  return http.delete('/gconfig', {
-    data: { node_id: nodeID, name: groupName },
+export const deleteGroup = async (node: string, groupName: string): Promise<AxiosResponse> => {
+  return http.delete('/group', {
+    data: { node: node, group: groupName },
   })
 }
 
 export const addGroup = async (data: GroupForm): Promise<AxiosResponse> => {
-  const { name, interval, node_id } = data
-  return http.post('/gconfig', {
-    name,
-    node_id,
+  const { group, interval, node } = data
+  return http.post('/group', {
+    group,
+    node,
     interval: Number(interval),
-    dst_node_id: 1,
   })
 }
 
 export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
-  const { name, interval, node_id } = data
-  return http.put('/gconfig', {
-    name,
-    node_id,
+  const { group, interval, node } = data
+  return http.put('/group', {
+    group,
+    node,
     interval: Number(interval),
-    dst_node_id: 1,
+    app: 1,
   })
 }
 
 /* TAG */
 
-export const queryTagList = async (nodeID: number, groupName: string): Promise<Array<TagData>> => {
-  const { data } = await http.get('/tags', { params: { node_id: nodeID, group_config_name: groupName } })
+export const queryTagList = async (node: string, groupName: string): Promise<Array<TagData>> => {
+  const { data } = await http.get('/tags', { params: { node: node, group: groupName } })
   return Promise.resolve(data.tags || [])
 }
 
-export const addTag = (data: { node_id: number; group_config_name: string; tags: Array<TagForm> }) => {
+export const addTag = (data: { node: string; group: string; tags: Array<TagForm> }) => {
   return http.post('/tags', data)
 }
 
-export const deleteTag = (data: {
-  node_id: number
-  group_config_name: string
-  ids: Array<number>
-}): Promise<AxiosResponse> => {
+export const deleteTag = (data: { node: string; group: string; tags: Array<string> }): Promise<AxiosResponse> => {
   return http.delete('/tags', { data })
 }
 
-export const updateTag = (nodeID: number, group_config_name: string, tag: TagForm) => {
+export const updateTag = (node: string, group: string, tag: TagForm) => {
   return http.put('/tags', {
-    node_id: nodeID,
-    group_config_name,
+    node,
+    group,
     tags: [tag],
   })
 }
 
 /* PLUGIN */
 
-export const queryPluginList = (): Promise<AxiosResponse<{ plugin_libs: Array<CreatedPlugin> }>> => {
+export const queryPluginList = (): Promise<AxiosResponse<{ plugins: Array<CreatedPlugin> }>> => {
   return http.get('/plugin')
 }
 
@@ -220,6 +210,6 @@ export const updatePlugin = (data: PluginForm) => {
   return http.put('/plugin', data)
 }
 
-export const deletePlugin = (id: number) => {
-  return http.delete('/plugin', { data: { id } })
+export const deletePlugin = (pluginName: string) => {
+  return http.delete('/plugin', { data: { plugin: pluginName } })
 }

@@ -7,8 +7,8 @@
     :z-index="2000"
   >
     <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
-      <emqx-form-item prop="name" :label="$t('config.groupName')" required>
-        <emqx-input v-model.trim="groupForm.name" :disabled="group" />
+      <emqx-form-item prop="group" :label="$t('config.groupName')" required>
+        <emqx-input v-model.trim="groupForm.group" :disabled="group" />
       </emqx-form-item>
       <emqx-form-item prop="interval" label="Interval" required>
         <emqx-input v-model.number="groupForm.interval" :disabled="group">
@@ -45,7 +45,7 @@ const props = defineProps({
     required: true,
   },
   currentNode: {
-    type: Number,
+    type: String,
   },
   group: {
     type: Object as PropType<GroupForm>,
@@ -69,7 +69,7 @@ watch(showDialog, async (val) => {
     if (props.group) {
       groupForm.value = props.group
     } else if (props.currentNode) {
-      groupForm.value.node_id = props.currentNode
+      groupForm.value.node = props.currentNode
     }
   }
 })

@@ -36,12 +36,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/northDriver/Index.vue'),
       },
       {
-        path: '/configuration/north-driver/:nodeID',
+        path: '/configuration/north-driver/:node',
         name: 'NorthDriverGroup',
         component: () => import('@/views/config/northDriver/Group.vue'),
       },
       {
-        path: '/configuration/north-driver/config/:nodeID',
+        path: '/configuration/north-driver/config/:node',
         name: 'NorthDriverConfig',
         component: () => import('@/views/config/NodeConfig.vue'),
         props: {
@@ -54,12 +54,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/config/southDriver/Index.vue'),
       },
       {
-        path: '/configuration/south-driver/:nodeID',
+        path: '/configuration/south-driver/:node',
         name: 'SouthDriverGroup',
         component: () => import('@/views/config/southDriver/Group.vue'),
       },
       {
-        path: '/configuration/south-driver/config/:nodeID',
+        path: '/configuration/south-driver/config/:node',
         name: 'SouthDriverConfig',
         component: () => import('@/views/config/NodeConfig.vue'),
         props: {
@@ -67,12 +67,12 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: '/configuration/south-driver/:nodeID/:group',
+        path: '/configuration/south-driver/:node/:group',
         name: 'SouthDriverGroupTag',
         component: () => import('@/views/config/southDriver/Tag.vue'),
       },
       {
-        path: '/configuration/south-driver/:nodeID/:group/add',
+        path: '/configuration/south-driver/:node/:group/add',
         name: 'SouthDriverGroupAddTag',
         component: () => import('@/views/config/southDriver/AddTag.vue'),
       },

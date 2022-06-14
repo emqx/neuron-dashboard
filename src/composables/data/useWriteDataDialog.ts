@@ -7,8 +7,8 @@ import { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import { TagType } from '@/types/enums'
 
 export interface Group {
-  nodeID: string
-  groupName: string
+  node: string
+  group: string
 }
 
 type Props = Readonly<
@@ -103,7 +103,7 @@ export default (props: Props) => {
 
   const submit = async () => {
     try {
-      const { groupName } = props.group as Group
+      const { group } = props.group as Group
       const { tagName, type } = props.tag as TagDataInTable
       const nodeName = props.nodeName as string
       await validate()
@@ -114,9 +114,9 @@ export default (props: Props) => {
         : inputValue.value
       const value = parseWriteData(type, trueValue)
       await writeData({
-        node_name: nodeName,
-        group_name: groupName,
-        tag_name: tagName,
+        node: nodeName,
+        group,
+        tag: tagName,
         value,
       })
       EmqxMessage.success(t('common.submitSuccess'))

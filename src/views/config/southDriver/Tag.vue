@@ -10,7 +10,7 @@
       <div class="bar-left">
         <p class="driver-name">
           <label>{{ $t('config.deviceName') }}</label>
-          <span>{{ getNodeNameById(nodeID) }}</span>
+          <span>{{ getNodeNameById(node) }}</span>
         </p>
       </div>
       <div class="btns common-flex">
@@ -87,7 +87,7 @@
       @size-change="handleSizeChange"
     />
   </emqx-card>
-  <EditTagDialog v-model="showEditDialog" :tag="currentTag" :node-id="nodeID" @submitted="refreshTable" />
+  <EditTagDialog v-model="showEditDialog" :tag="currentTag" :node="node" @submitted="refreshTable" :group="groupName" />
 </template>
 
 <script lang="ts" setup>
@@ -103,7 +103,7 @@ import useExportTagTable from '@/composables/config/useExportTagTable'
 const router = useRouter()
 
 const {
-  nodeID,
+  node,
   groupName,
   tagList,
   totalData,
@@ -145,7 +145,7 @@ const downloadTemplate = () => {
 }
 
 const handleExport = () => {
-  exportTable(totalData.value, groupName.value, getNodeNameById(nodeID.value))
+  exportTable(totalData.value, groupName.value, getNodeNameById(node.value))
 }
 </script>
 

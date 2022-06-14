@@ -111,7 +111,7 @@ export default () => {
   const tagList: Ref<Array<TagForm>> = ref([createRawTagForm()])
   const isSubmitting = ref(false)
 
-  const nodeID = computed(() => Number(route.params.nodeID))
+  const node = computed(() => route.params.node.toString())
   const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   // Limit the type of tag
@@ -119,7 +119,7 @@ export default () => {
 
   const getNodePluginInfo = async () => {
     await Promise.all([initMap(), initMsgIdMap()])
-    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(nodeID.value).plugin_id].name)
+    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[getNodeMsgById(node.value).plugin_id].name)
     const plugin: PluginInfo = data
     if (plugin) {
       nodePluginInfo.value = plugin
@@ -153,10 +153,10 @@ export default () => {
     }
     try {
       isSubmitting.value = true
-      const nodeID = Number(route.params.nodeID)
+      const node = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags = tagList.value.map(({ name, address, attribute, type }) => ({ name, address, attribute, type }))
-      const res = await addTag({ tags, node_id: nodeID, group_config_name: groupName })
+      const res = await addTag({ tags, node, group: groupName })
       if (res.status === 200) {
         EmqxMessage.success(t('common.createSuccess'))
         router.push({

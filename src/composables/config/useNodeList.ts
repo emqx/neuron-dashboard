@@ -5,7 +5,7 @@ import { createMapFromArray } from '@/utils/utils'
 import { ref, Ref } from 'vue'
 
 export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
-  const nodeMsgMap: Ref<Record<number, RawDriverData>> = ref({})
+  const nodeMsgMap: Ref<Record<string, RawDriverData>> = ref({})
 
   const initMap = async () => {
     try {
@@ -16,8 +16,8 @@ export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
       return Promise.reject(error)
     }
   }
-  const getNodeMsgById = (nodeID: number) => {
-    return nodeMsgMap.value[nodeID] || {}
+  const getNodeMsgById = (node: string) => {
+    return nodeMsgMap.value[node] || {}
   }
 
   if (autoInit) {
@@ -34,7 +34,7 @@ export const useFillNodeListStatusData = () => {
   const fillNodeListStatusData = async (nodeList: Array<RawDriverData>): Promise<Array<DriverItemInList>> => {
     return Promise.all(
       nodeList.map(async (item) => {
-        const { data } = await queryNodeState(item.id)
+        const { data } = await queryNodeState(item.name)
         return Promise.resolve(Object.assign(item, data))
       }),
     )
@@ -55,8 +55,8 @@ export default () => {
     nodeList.value = ret.reduce((pre, curr) => pre.concat(curr), [])
   }
 
-  const getNodeNameById = (nodeID: number) => {
-    return nodeList.value.find(({ id }) => id === nodeID)?.name || ''
+  const getNodeNameById = (node: string) => {
+    return nodeList.value.find(({ name }) => name === node)?.name || ''
   }
 
   getNodeList()

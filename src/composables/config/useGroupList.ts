@@ -15,7 +15,7 @@ export default () => {
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
-  const nodeID = computed(() => parseInt(route.params.nodeID as string))
+  const node = computed(() => route.params.node.toString())
   const allChecked = computed({
     get() {
       if (groupList.value.length === 0) {
@@ -32,20 +32,20 @@ export default () => {
 
   const getGroupList = async () => {
     isListLoading.value = true
-    const data = await queryGroupList(nodeID.value)
+    const data = await queryGroupList(node.value)
     groupList.value = data.map((item) => Object.assign(item, { checked: false }))
     isListLoading.value = false
   }
 
   const delGroup = async ({ name }: GroupDataInTable) => {
     await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete') })
-    await deleteGroup(nodeID.value, name)
+    await deleteGroup(node.value, name)
     EmqxMessage.success(t('common.operateSuccessfully'))
     getGroupList()
   }
 
   const delGroupList = async (list: Array<GroupDataInTable>) => {
-    await Promise.all(list.map(({ name }) => deleteGroup(nodeID.value, name)))
+    await Promise.all(list.map(({ name }) => deleteGroup(node.value, name)))
     EmqxMessage.success(t('common.operateSuccessfully'))
     getGroupList()
   }
@@ -63,7 +63,7 @@ export default () => {
   getGroupList()
 
   return {
-    nodeID,
+    node,
     groupList,
     isListLoading,
     allChecked,

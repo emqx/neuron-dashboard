@@ -3,7 +3,7 @@ import store from '@/store/index'
 
 const productionEntry = `${window.location.origin}/ekuiper/`
 const kuiperEntry: Record<string, string> = {
-  development: '//localhost:3002',
+  development: '//localhost:3002/ekuiper/',
   production: productionEntry,
 }
 const defaultEnv = 'production'

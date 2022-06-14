@@ -7,7 +7,7 @@ import { DriverDirection, NodeLinkState, NodeState, ParamRequired, PluginKind, T
 type Parm = Array<{ vars: string; pars: string }>
 
 export interface PluginForm {
-  lib_name: string
+  library: string
 }
 
 export interface CreatedPlugin extends PluginForm {
@@ -18,21 +18,20 @@ export interface CreatedPlugin extends PluginForm {
 }
 
 export interface NodeForm {
-  type: DriverDirection
   name: string
-  plugin_name: string
+  plugin: string
 }
 
 export interface SubscriptionDataForm {
-  dst_node_id: number | null
-  src_node_id: number | null
-  name: string
+  app: string | null
+  driver: string | null
+  group: string
 }
 
 export interface SubscriptionData extends SubscriptionDataForm {
-  dst_node_id: number
-  src_node_id: number
-  name: string
+  app: string
+  driver: string
+  group: string
 }
 
 export interface RawDriverData {
@@ -126,14 +125,15 @@ export interface GroupForm {
   /**
    * Name
    */
-  name: string
+  group: string
   interval: number | null
-  node_id: number | null
+  node: string | null
 }
 
-export interface GroupData extends Omit<GroupForm, 'node_id'> {
+export interface GroupData extends Omit<GroupForm, 'node'> {
   pipe_count: number
   tag_count: number
+  name: string
 }
 
 export interface TagForm {
@@ -144,6 +144,6 @@ export interface TagForm {
 }
 
 export interface TagData extends TagForm {
-  group_config_name: string
+  group: string
   id: number
 }

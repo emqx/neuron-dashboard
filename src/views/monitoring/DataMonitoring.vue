@@ -11,7 +11,7 @@
       <div class="target-select">
         <div>
           <label>{{ $t('config.southDevice') }}</label>
-          <emqx-select v-model="currentGroup.nodeID" @change="selectedNodeChanged" filterable>
+          <emqx-select v-model="currentGroup.node" @change="selectedNodeChanged" filterable>
             <emqx-option v-for="item in nodeList" :key="item.id" :value="item.id" :label="item.name" />
           </emqx-select>
         </div>

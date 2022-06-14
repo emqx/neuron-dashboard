@@ -13,7 +13,7 @@ export default () => {
   const getPluginList = async () => {
     isListLoading.value = true
     const { data } = await queryPluginList()
-    pluginList.value = data.plugin_libs || []
+    pluginList.value = data.plugins || []
     isListLoading.value = false
   }
 
@@ -31,7 +31,7 @@ export const useGetPluginMsgIdMap = () => {
   const initMsgIdMap = async () => {
     try {
       const { data } = await queryPluginList()
-      ;(data.plugin_libs || []).forEach((item) => {
+      ;(data.plugins || []).forEach((item) => {
         pluginMsgIdMap[item.id] = item
       })
       return Promise.resolve(pluginMsgIdMap)
@@ -45,13 +45,13 @@ export const useGetPluginMsgIdMap = () => {
 
 export const useAddPlugin = () => {
   const createRawPluginForm = (): PluginForm => ({
-    lib_name: '',
+    library: '',
   })
   const { t } = useI18n()
   const pluginForm = ref(createRawPluginForm())
   const pluginFormCom = ref()
   const pluginFormRules = {
-    lib_name: [
+    library: [
       {
         required: true,
         message: createCommonErrorMessage('input', t('config.libName')),
@@ -86,10 +86,10 @@ export const useAddPlugin = () => {
 
 export const useDeletePlugin = () => {
   const { t } = useI18n()
-  const delPlugin = async ({ id }: CreatedPlugin) => {
+  const delPlugin = async ({ name }: CreatedPlugin) => {
     try {
       await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete'), type: 'warning' })
-      await deletePlugin(id)
+      await deletePlugin(name)
       EmqxMessage.success(t('common.operateSuccessfully'))
       return Promise.resolve()
     } catch (error) {
