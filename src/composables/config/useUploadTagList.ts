@@ -3,7 +3,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import { addTag } from '@/api/config'
 import { TagForm } from '@/types/config'
 import { useI18n } from 'vue-i18n'
-import { matchObjShape } from '@/utils/utils'
+import { getErrorMsg, matchObjShape, popUpErrorMessage } from '@/utils/utils'
 import { useRoute } from 'vue-router'
 import useAddTag, { useTagTypeSelect, useTagAttributeTypeSelect } from './useAddTag'
 import { TagType } from '@/types/enums'
@@ -67,6 +67,15 @@ export default () => {
     })
   }
 
+  const handlePartialSuc = (errIndex: number, errorNum: number) => {
+    if (errIndex === 0) {
+      popUpErrorMessage(errorNum)
+    } else {
+      EmqxMessage.error(t('config.partialUploadFailed', { reason: getErrorMsg(errorNum), errorRow: errIndex + 1 + 1 }))
+    }
+    return
+  }
+
   const uploadTag = async (file: File) => {
     try {
       const data = await fileReader(file)
@@ -77,12 +86,13 @@ export default () => {
       const node = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags = await handleTagListInTableFile(tagList)
-      const ret = await addTag({ tags, node, group: groupName })
-      if (ret.status !== 200) {
-        EmqxMessage.warning(t('config.partialUploadFailed'))
-      } else {
+      const { data: res } = await addTag({ tags, node, group: groupName })
+      if (res.error === 0) {
         EmqxMessage.success(t('config.uploadSuc'))
+      } else if (res.error !== 0 && res.index !== undefined) {
+        handlePartialSuc(res.index, res.error)
       }
+      return Promise.resolve()
     } catch (error) {
       console.error(error)
     }
