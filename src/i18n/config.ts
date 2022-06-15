@@ -349,8 +349,8 @@ export default {
     en: 'The type of the tag that can be added by the current device plugin is {typesStr}, please try to upload after adjusting the table data',
   },
   partialUploadFailed: {
-    zh: '部分数据上传失败，请检查',
-    en: 'Some data upload failed, please check',
+    zh: '自第 {errorRow} 行开始的数据上传失败，失败原因：{reason}；请手动删除掉第 {errorRow} 行前的数据并检查后再次尝试上传',
+    en: 'Data upload from line {errorRow} failed, failure reason: {reason}; please manually delete the data before line {errorRow} and check and try uploading again',
   },
   clearUploadedFile: {
     zh: '清空已上传文件',
