@@ -23,7 +23,7 @@ export default {
     en: 'Decoding token error',
   },
   [1006]: {
-    zh: '过期的令牌',
+    zh: '过期令牌',
     en: 'Expired token',
   },
   [1007]: {
@@ -31,7 +31,7 @@ export default {
     en: 'Validate token error',
   },
   [1008]: {
-    zh: '无效令牌',
+    zh: '令牌无效',
     en: 'Invalid token',
   },
   [1009]: {
@@ -43,7 +43,7 @@ export default {
     en: 'Node type invalid',
   },
   [2002]: {
-    zh: '节点已存在',
+    zh: '节点存在',
     en: 'Node exist',
   },
   [2003]: {
@@ -79,7 +79,7 @@ export default {
     en: 'Group config not exist',
   },
   [2102]: {
-    zh: '组配置正在使用',
+    zh: '正在使用的组配置',
     en: 'Group config in use',
   },
   [2103]: {
@@ -107,68 +107,44 @@ export default {
     en: 'Tag address format invalid',
   },
   [2301]: {
-    zh: '找不到库',
+    zh: '找不到图书馆',
     en: 'Library not found',
   },
   [2302]: {
-    zh: '库信息无效',
+    zh: '图书馆信息无效',
     en: 'Library info invalid',
   },
   [2303]: {
     zh: '库名冲突',
     en: 'Library name conflict',
   },
-  [2400]: {
-    zh: '未找到 License',
-    en: 'License not found',
-  },
-  [2401]: {
-    zh: 'License 文件错误',
-    en: 'License file bad',
-  },
-  [2402]: {
-    zh: 'License 过期',
-    en: 'License expired',
-  },
-  [2403]: {
-    zh: 'License 插件已禁用',
-    en: 'License plugin disabled',
-  },
-  [2404]: {
-    zh: '已达到 License 最大节点数',
-    en: 'License max number of nodes reached',
-  },
-  [2405]: {
-    zh: '已达到 License 最大节点标签数',
-    en: 'License max number of node tags reached',
-  },
   [3000]: {
-    zh: '读取失败',
-    en: 'Read failure',
+    zh: '插件读取失败',
+    en: 'Plugin read failure',
   },
   [3001]: {
-    zh: '写入失败',
-    en: 'Write failure',
+    zh: '插件写入失败',
+    en: 'Plugin write failure',
   },
   [3002]: {
-    zh: '断开连接',
-    en: 'Disconnected',
+    zh: '插件断开连接',
+    en: 'Plugin disconnected',
   },
   [3003]: {
-    zh: '标签不允许读取',
-    en: 'Tag not allow read',
+    zh: '插件标签不允许读取',
+    en: 'Plugin tag not allow read',
   },
   [3004]: {
-    zh: '标签不允许写入',
-    en: 'Tag not allow write',
+    zh: '插件标签不允许写入',
+    en: 'Plugin tag not allow write',
   },
   [3005]: {
-    zh: '标签不存在',
-    en: 'Tag not exist',
+    zh: '插件标签不存在',
+    en: 'Plugin tag not exist',
   },
   [3006]: {
-    zh: '组配置未订阅',
-    en: 'Group config not subscribe',
+    zh: '插件组配置未订阅',
+    en: 'Plugin group config not subscribe',
   },
   [3007]: {
     zh: '插件标签类型不匹配',
