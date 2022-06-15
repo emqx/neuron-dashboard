@@ -60,6 +60,7 @@
         <emqx-table-column label="RW">
           <template #default="{ row }">{{ getAttrStrByValue(row.attribute) }}</template>
         </emqx-table-column>
+        <emqx-table-column :label="$t('config.desc')" prop="description" />
 
         <emqx-table-column align="right">
           <template #default="{ row }">

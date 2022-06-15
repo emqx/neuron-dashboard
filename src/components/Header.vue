@@ -7,7 +7,7 @@
       <div>
         <emqx-dropdown>
           <span class="el-dropdown-link">
-            {{ $t('common.about') }}
+            {{ $t('common.systemInformation') }}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <template #dropdown>

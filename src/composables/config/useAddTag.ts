@@ -104,10 +104,11 @@ export default () => {
     type: null,
     // for the key when use v-for
     id: createRandomString(6),
+    description: '',
   })
 
   const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])
-  const tagList: Ref<Array<TagForm>> = ref([createRawTagForm()])
+  const tagList: Ref<Array<TagFormItem>> = ref([createRawTagForm()])
   const isSubmitting = ref(false)
 
   const node = computed(() => route.params.node.toString())
@@ -162,7 +163,7 @@ export default () => {
       isSubmitting.value = true
       const node = route.params.node.toString()
       const groupName: string = route.params.group as string
-      const tags = tagList.value.map(({ name, address, attribute, type }) => ({ name, address, attribute, type }))
+      const tags = tagList.value.map(({ id, ...tagData }) => tagData)
       const { data } = await addTag({ tags, node, group: groupName })
       if (data.error === 0) {
         EmqxMessage.success(t('common.createSuccess'))

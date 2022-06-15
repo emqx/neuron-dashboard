@@ -139,6 +139,7 @@ export interface TagForm {
   address: string
   attribute: number | undefined
   type: number | null
+  description: string
 }
 
 export interface TagData extends TagForm {

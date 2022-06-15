@@ -275,4 +275,8 @@ export default {
     zh: '查看',
     en: 'View',
   },
+  systemInformation: {
+    zh: '系统信息',
+    en: 'System Information',
+  },
 }
