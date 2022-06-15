@@ -16,7 +16,7 @@
                 <i class="iconfont iconLicense"></i>
                 <span>License</span>
               </emqx-dropdown-item>
-              <emqx-dropdown-item @click="goLicense">
+              <emqx-dropdown-item @click="goAbout">
                 <i class="iconfont iconabout"></i>
                 <span> {{ $t('common.about') }}</span>
               </emqx-dropdown-item>
@@ -65,6 +65,10 @@ const user = computed(() => store.state.status || {})
 
 const goLicense = () => {
   router.push({ name: 'License' })
+}
+
+const goAbout = () => {
+  router.push({ name: 'About' })
 }
 
 const logout = async () => {
