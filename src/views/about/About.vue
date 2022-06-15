@@ -1,9 +1,18 @@
 <template>
-  <emqx-card v-emqx-loading="isDataLoading">
+  <emqx-card class="about" v-emqx-loading="isDataLoading">
     <div class="card-hd-with-btn">
-      <h3 class="card-title">License</h3>
+      <h3 class="card-title">{{ $t('common.about') }}</h3>
     </div>
-    <div class="license"></div>
+    <div>
+      <emqx-descriptions :column="1">
+        <emqx-descriptions-item :label="$t('admin.version')">
+          {{ versionData.version }}
+        </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.builtDate')">
+          {{ versionData.build_date }}
+        </emqx-descriptions-item>
+      </emqx-descriptions>
+    </div>
   </emqx-card>
 </template>
 
@@ -13,37 +22,31 @@ import { License } from '@/types/admin'
 import { queryVersion } from '@/api/admin'
 import { useI18n } from 'vue-i18n'
 
-const version = ref('')
+const versionData = ref({
+  version: '',
+  build_date: '',
+})
+const isDataLoading = ref(false)
 const getVersion = async () => {
-  const data = await queryVersion()
+  try {
+    isDataLoading.value = true
+    const { data } = await queryVersion()
+    versionData.value = data
+  } catch (error) {
+    //
+  } finally {
+    isDataLoading.value = false
+  }
 }
 
 getVersion()
 </script>
 
 <style lang="scss" scoped>
-.license {
-  padding-bottom: 100px;
-}
-.placeholder {
-  padding: 48px;
-  text-align: center;
-}
-.msg.align-center {
-  text-align: center;
-}
-.method-text {
-  color: #bcbcbc;
-  margin: 32px 0;
-  > p {
-    margin: 12px;
-    margin-right: 0;
-    margin-left: 0;
-    a {
-      margin: 0 2px;
-      text-decoration: none;
-      color: #459bf7;
-    }
+.about {
+  min-height: 300px;
+  .card-hd-with-btn {
+    margin-bottom: 60px;
   }
 }
 </style>

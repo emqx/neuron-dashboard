@@ -95,4 +95,12 @@ export default {
     zh: '已过期',
     en: 'Expired',
   },
+  version: {
+    zh: '版本',
+    en: 'Version',
+  },
+  builtDate: {
+    zh: '项目构建日期',
+    en: 'Built date',
+  },
 }
