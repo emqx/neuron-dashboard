@@ -37,7 +37,7 @@ export default () => {
     return new Promise((resolve, reject) => {
       let startIndex = 2
       const ret = []
-      for (const { name, address, attribute, type: typeLabel } of tagList) {
+      for (const { name, address, attribute, type: typeLabel, description } of tagList) {
         const attr = getAttrTotalValueByStr(attribute, FILLER_IN_TAG_ATTR)
         const type = findTypeValueByLabel(typeLabel)
         if (!type || !attr) {
@@ -59,6 +59,7 @@ export default () => {
           address: address.toString(),
           attribute: attr,
           type,
+          description: description.toString(),
         })
         startIndex += 1
       }

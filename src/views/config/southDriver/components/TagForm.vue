@@ -28,6 +28,11 @@
           </emqx-select>
         </emqx-form-item>
       </emqx-col>
+      <emqx-col :span="12">
+        <emqx-form-item :label="$t('config.desc')">
+          <emqx-input v-model.trim="form.description" />
+        </emqx-form-item>
+      </emqx-col>
     </emqx-row>
   </emqx-form>
 </template>
