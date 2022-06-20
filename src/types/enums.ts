@@ -31,20 +31,20 @@ export enum TypeOfPluginParam {
 }
 
 export enum TagType {
-  BYTE = 2,
-  INT8,
-  INT16,
-  INT32,
-  INT64,
+  INT8 = 1,
   UINT8,
+  INT16,
   UINT16,
+  INT32,
   UINT32,
+  INT64,
   UINT64,
   FLOAT,
   DOUBLE,
-  BOOL,
   BIT,
+  BOOL,
   STRING,
+  BYTE,
 }
 
 export enum TagAttributeType {
