@@ -84,18 +84,16 @@ export default defineComponent({
         },
         {
           to: '/ekuiper',
-          label: 'eKuiper',
+          label: t('ekuiper.streamProcessing'),
           icon: 'iconkuiper',
           subMenus: [
             {
               to: '/ekuiper/nodes/single-node/rules',
-              // TODO:
-              label: 'Rule',
+              label: t('ekuiper.rule'),
             },
             {
               to: '/ekuiper/nodes/single-node/extension',
-              // TODO:
-              label: 'Extension',
+              label: t('ekuiper.extension'),
             },
           ],
         },
