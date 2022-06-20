@@ -118,12 +118,17 @@ label {
   .nav-item {
     min-width: auto;
     margin-bottom: 12px;
+
     &.is-active {
       .nav-label,
       .nav-icon {
         color: #fff;
       }
     }
+  }
+  .nav-label {
+    display: block;
+    padding-right: 20px;
   }
   .nav-item-content {
     display: flex;
