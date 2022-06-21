@@ -50,6 +50,8 @@
             <span v-else class="has-error"> Error({{ row.error }}): {{ getErrorMsg(row.error) }} </span>
           </template>
         </emqx-table-column>
+        <emqx-table-column :label="$t('config.desc')" prop="description" />
+
         <emqx-table-column width="300" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
             <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
