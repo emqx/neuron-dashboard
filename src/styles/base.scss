@@ -126,6 +126,13 @@ label {
       }
     }
   }
+  .iconstream {
+    flex-shrink: 0;
+    background-image: url('~@/assets/images/stream.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
   .nav-label {
     display: block;
     padding-right: 20px;
@@ -149,6 +156,7 @@ label {
       vertical-align: top;
       padding-top: (48px - 20px) / 2;
       padding-bottom: (48px - 20px) / 2;
+      padding-right: 20px;
       font-size: 14px;
       color: $--regular-text;
       font-weight: 500;
