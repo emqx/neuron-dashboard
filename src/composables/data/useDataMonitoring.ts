@@ -17,6 +17,7 @@ export interface TagDataInTable extends TagDataInMonitoring {
   valueToShow: string
   address: string
   error: number
+  description: string
 }
 
 export default () => {
@@ -97,12 +98,13 @@ export default () => {
     const tags = await queryTagList(selectedGroup?.node, selectedGroup.groupName)
     const tagNameMap: Record<string | number, any> = {}
     tags.forEach(
-      ({ attribute, type, name, address }) =>
+      ({ attribute, type, name, address, description }) =>
         (tagNameMap[name] = {
           attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
           type,
           tagName: name,
           address,
+          description,
         }),
     )
     return Promise.resolve(tagNameMap)
