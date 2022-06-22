@@ -53,7 +53,6 @@ export default defineComponent({
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { logout as requestLogout } from '@/api/common'
 import { useRouter } from 'vue-router'
 
 const store = useStore()
@@ -73,7 +72,6 @@ const goAbout = () => {
 
 const logout = async () => {
   try {
-    await requestLogout()
     store.commit('LOGOUT')
     router.push({
       name: 'Login',
