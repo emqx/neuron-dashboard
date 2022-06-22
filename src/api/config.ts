@@ -136,8 +136,19 @@ export const submitNodeConfig = (node: string, form: Record<string, any>) => {
   })
 }
 
-export const queryNodeConfig = (node: string) => {
-  return http.get('/node/setting', { params: { node: node } })
+export const queryNodeConfig = async (node: string) => {
+  try {
+    const data = await http.get('/node/setting', {
+      params: { node: node },
+      _handleCustomError: true,
+    } as AxiosRequestConfig)
+    return Promise.resolve(data)
+  } catch (error: any) {
+    if (error.status === 200) {
+      return Promise.resolve(error)
+    }
+    return Promise.reject(error)
+  }
 }
 
 /* GROUP */
