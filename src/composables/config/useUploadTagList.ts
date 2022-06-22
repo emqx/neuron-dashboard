@@ -23,7 +23,8 @@ export default () => {
       EmqxMessage.warning(t('config.validTableError'))
       return false
     }
-    const { id, ...templateTag } = createRawTagForm()
+    // description is not required
+    const { id, description, ...templateTag } = createRawTagForm()
     if (!matchObjShape(data[0], templateTag)) {
       EmqxMessage.warning(t('config.errorTableError'))
       return false
@@ -37,7 +38,7 @@ export default () => {
     return new Promise((resolve, reject) => {
       let startIndex = 2
       const ret = []
-      for (const { name, address, attribute, type: typeLabel, description } of tagList) {
+      for (const { name, address, attribute, type: typeLabel, description = '' } of tagList) {
         const attr = getAttrTotalValueByStr(attribute, FILLER_IN_TAG_ATTR)
         const type = findTypeValueByLabel(typeLabel)
         if (!type || !attr) {
