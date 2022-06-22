@@ -118,6 +118,30 @@ export default {
     zh: '库名冲突',
     en: 'Library name conflict',
   },
+  [2400]: {
+    zh: 'license 未找到',
+    en: 'License not found',
+  },
+  [2401]: {
+    zh: 'license 无效',
+    en: 'License invalid',
+  },
+  [2402]: {
+    zh: 'license 过期',
+    en: 'License expired',
+  },
+  [2403]: {
+    zh: 'license 未启用插件',
+    en: 'Plugin disabled by license',
+  },
+  [2404]: {
+    zh: '达到 license 授权的最大节点数',
+    en: 'Reach licensed max number of nodes',
+  },
+  [2405]: {
+    zh: '达到 license 授权的节点最大点位数',
+    en: 'Reach licensed max number of tags per node',
+  },
   [3000]: {
     zh: '插件读取失败',
     en: 'Plugin read failure',
