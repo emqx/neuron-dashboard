@@ -164,17 +164,16 @@ export default () => {
       const node = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags = tagList.value.map(({ id, ...tagData }) => tagData)
-      const { data } = await addTag({ tags, node, group: groupName })
-      if (data.error === 0) {
-        EmqxMessage.success(t('common.createSuccess'))
-        router.push({
-          name: 'SouthDriverGroupTag',
-        })
-      } else if (data.error !== 0 && data.index !== undefined) {
+      await addTag({ tags, node, group: groupName })
+      EmqxMessage.success(t('common.createSuccess'))
+      router.push({
+        name: 'SouthDriverGroupTag',
+      })
+    } catch (error: any) {
+      const { data = {} } = error
+      if (data.error !== 0 && data.index !== undefined) {
         handlePartialSuc(data.index, data.error)
       }
-    } catch (error) {
-      console.error(error)
     } finally {
       isSubmitting.value = false
     }

@@ -86,15 +86,14 @@ export default () => {
       const node = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags = await handleTagListInTableFile(tagList)
-      const { data: res } = await addTag({ tags, node, group: groupName })
-      if (res.error === 0) {
-        EmqxMessage.success(t('config.uploadSuc'))
-      } else if (res.error !== 0 && res.index !== undefined) {
-        handlePartialSuc(res.index, res.error)
-      }
+      await addTag({ tags, node, group: groupName })
+      EmqxMessage.success(t('config.uploadSuc'))
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
+      const { data = {} } = error
+      handlePartialSuc(data.index, data.error)
       console.error(error)
+      return Promise.reject()
     }
   }
   return {

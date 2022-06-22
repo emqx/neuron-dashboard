@@ -46,6 +46,11 @@ axios.interceptors.response.use(
   (response) => {
     if (response.status !== 200) {
       popUpErrorMessage(response.data.error)
+    } else if (response.data?.error) {
+      if (!(response.config as any)._handleCustomError) {
+        popUpErrorMessage(response.data.error)
+      }
+      return Promise.reject(response)
     }
     return response
   },

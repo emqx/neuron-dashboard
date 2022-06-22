@@ -15,14 +15,14 @@ export default () => {
   const { findLabelByValue } = useTagTypeSelect()
 
   const genExcelSheets = (tagList: Array<TagData>) => {
-    const cols = ['name', 'address', 'attribute', 'type']
+    const cols = ['name', 'address', 'attribute', 'type', 'description']
     const sheets: Array<any> = [cols]
     tagList.forEach((obj) => {
-      const { name, address, attribute, type } = obj
+      const { name, address, attribute, type, description } = obj
       const content = []
       const attrStr = attribute ? getAttrStrByValue(attribute, FILLER_IN_TAG_ATTR) : ''
       const typeStr = type ? findLabelByValue(type) : ''
-      content.push([name, address, attrStr, typeStr])
+      content.push([name, address, attrStr, typeStr, description])
       sheets.push(...content)
     })
     return sheets

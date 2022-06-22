@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { DriverDirection, NodeOperationCommand } from '@/types/enums'
 import http from '@/utils/http'
 import {
@@ -182,7 +182,7 @@ export const queryTagList = async (node: string, groupName: string): Promise<Arr
 }
 
 export const addTag = (data: { node: string; group: string; tags: Array<TagForm> }) => {
-  return http.post('/tags', data)
+  return http.post('/tags', data, { _handleCustomError: true } as AxiosRequestConfig)
 }
 
 export const deleteTag = (data: { node: string; group: string; tags: Array<string> }): Promise<AxiosResponse> => {
