@@ -47,79 +47,87 @@ export default {
     en: 'Is busy',
   },
   [2002]: {
-    zh: 'node 已存在',
+    zh: 'Node 已存在',
     en: 'Node exist',
   },
   [2003]: {
-    zh: 'node 不存在',
+    zh: 'Node 不存在',
     en: 'Node not exist',
   },
   [2004]: {
-    zh: 'node 设置无效',
+    zh: 'Node 设置无效',
     en: 'Node setting invalid',
   },
   [2005]: {
-    zh: 'node 设置未找到',
+    zh: 'Node 设置未找到',
     en: 'Node setting not found',
   },
   [2006]: {
-    zh: 'node 未准备好',
+    zh: 'Node 未准备好',
     en: 'Node not ready',
   },
   [2007]: {
-    zh: 'node 正在运行',
+    zh: 'Node 正在运行',
     en: 'Node is running',
   },
   [2008]: {
-    zh: 'node 未运行',
+    zh: 'Node 未运行',
     en: 'Node not running',
   },
   [2009]: {
-    zh: 'node 已停止',
+    zh: 'Node 已停止',
     en: 'Node is stopped',
   },
+  [2010]: {
+    zh: 'Node 名称过长',
+    en: 'Node name too long',
+  },
   [2101]: {
-    zh: 'group 已经被订阅',
+    zh: 'Group 已经被订阅',
     en: 'Group already subscribed',
   },
   [2102]: {
-    zh: 'group 未被订阅',
+    zh: 'Group 未被订阅',
     en: 'Group not subscribe',
   },
   [2103]: {
-    zh: 'group 不允许',
+    zh: 'Group 不允许',
     en: 'Group not allow',
   },
   [2104]: {
-    zh: 'group 已存在',
+    zh: 'Group 已存在',
     en: 'Group exist',
   },
   [2105]: {
-    zh: 'group 参数无效',
+    zh: 'Group 参数无效',
     en: 'Group parameter invalid',
   },
   [2106]: {
-    zh: 'group 不存在',
+    zh: 'Group 不存在',
     en: 'Group not exist',
   },
+  [2107]: {
+    zh: 'Group 名称过长',
+    en: 'Group name too long',
+  },
   [2201]: {
-    zh: 'tag 不存在',
+    zh: 'Tag 不存在',
     en: 'Tag not exist',
   },
   [2202]: {
-    zh: 'tag 名称冲突',
+    zh: 'Tag 名称冲突',
     en: 'Tag name conflict',
   },
   [2203]: {
-    zh: 'tag 属性不支持',
+    zh: 'Tag 属性不支持',
     en: 'Tag attribute not support',
   },
   [2204]: {
-    zh: 'tag 类型不支持',
+    zh: 'Tag 类型不支持',
     en: 'Tag type not support',
   },
   [2205]: {
-    zh: 'tag 地址格式无效',
+    zh: 'Tag 地址格式无效',
     en: 'Tag address format invalid',
   },
   [2301]: {
@@ -147,19 +155,19 @@ export default {
     en: 'Library system not allow del',
   },
   [2400]: {
-    zh: 'license 未找到',
+    zh: 'License 未找到',
     en: 'License not found',
   },
   [2401]: {
-    zh: 'license 无效',
+    zh: 'License 无效',
     en: 'License invalid',
   },
   [2402]: {
-    zh: 'license 过期',
+    zh: 'License 过期',
     en: 'License expired',
   },
   [2403]: {
-    zh: 'license 未启用插件',
+    zh: 'License 未启用插件',
     en: 'Plugin disabled by license',
   },
   [2404]: {
@@ -193,5 +201,9 @@ export default {
   [3007]: {
     zh: '插件 tag 类型不匹配',
     en: 'Plugin tag type mismatch',
+  },
+  [3008]: {
+    zh: '插件 tag 过期',
+    en: 'Plugin tag expired',
   },
 }
