@@ -130,6 +130,18 @@ export default {
     zh: 'Tag 地址格式无效',
     en: 'Tag address format invalid',
   },
+  [2206]: {
+    zh: 'Tag 名称过长',
+    en: 'Tag name too long',
+  },
+  [2207]: {
+    zh: 'Tag 地址过长',
+    en: 'Tag address too long',
+  },
+  [2208]: {
+    zh: 'Tag 描述过长',
+    en: 'Tag description too long',
+  },
   [2301]: {
     zh: '库未找到',
     en: 'Library not found',
