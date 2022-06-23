@@ -26,9 +26,12 @@
 
     <div class="table-container">
       <emqx-table :data="tableData" :empty-text="tableEmptyText">
-        <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="180"></emqx-table-column>
-        <emqx-table-column prop="address" :label="$t('config.address')" min-width="180"></emqx-table-column>
-        <emqx-table-column prop="valueToShow" min-width="180">
+        <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="100"></emqx-table-column>
+        <emqx-table-column prop="address" :label="$t('config.address')" min-width="100"></emqx-table-column>
+        <emqx-table-column :label="$t('common.type')" width="90">
+          <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
+        </emqx-table-column>
+        <emqx-table-column prop="valueToShow" min-width="100">
           <template #header>
             <div class="value-column-hd">
               <span>{{ $t('data.value') }}</span>
@@ -50,9 +53,9 @@
             <span v-else class="has-error"> Error({{ row.error }}): {{ getErrorMsg(row.error) }} </span>
           </template>
         </emqx-table-column>
-        <emqx-table-column :label="$t('config.desc')" prop="description" />
+        <emqx-table-column :label="$t('config.desc')" prop="description" min-width="100" />
 
-        <emqx-table-column width="300" :label="$t('common.oper')" align="right">
+        <emqx-table-column width="100" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
             <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
           </template>
@@ -85,6 +88,7 @@ import useDataMonitoring, { TagDataInTable } from '@/composables/data/useDataMon
 import dateformat from 'dateformat'
 import WriteDialog from './components/WriteDialog.vue'
 import { getErrorMsg } from '@/utils/utils'
+import { useTagTypeSelect } from '@/composables/config/useAddTag'
 
 const {
   nodeList,
@@ -105,6 +109,7 @@ const {
   selectedNodeChanged,
   selectedGroupChanged,
 } = useDataMonitoring()
+const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
 const showWriteDialog = ref(false)
 const currentTag: Ref<undefined | TagDataInTable> = ref(undefined)
 
