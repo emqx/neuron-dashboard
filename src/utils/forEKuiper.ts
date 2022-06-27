@@ -1,11 +1,7 @@
 import { loadMicroApp } from 'qiankun'
 import store from '@/store/index'
 
-const productionEntry = `${window.location.origin}/ekuiper/`
-const kuiperEntry: Record<string, string> = {
-  development: '//localhost:3002/ekuiper/',
-  production: productionEntry,
-}
+const kuiperEntry = `${window.location.origin}/ekuiper/`
 const defaultEnv = 'production'
 
 export const handleEKuiper = async () => {
@@ -18,7 +14,7 @@ export const handleEKuiper = async () => {
     const env = process.env.NODE_ENV || defaultEnv
     const app = loadMicroApp({
       name: 'ekuiper',
-      entry: kuiperEntry[env] || productionEntry,
+      entry: kuiperEntry,
       container: '#page-content',
       props: {
         lang: store.state.lang,
