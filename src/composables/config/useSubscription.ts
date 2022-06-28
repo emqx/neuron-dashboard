@@ -109,7 +109,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
   }
   const subscriptionForm: Ref<SubscriptionDataForm> = ref(createRawSubscriptionForm())
   const isSubmitting = ref(false)
-  const { southDriverList: deviceList } = useSouthDriver()
+  const { totalSouthDriverList: deviceList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
   const selectedNodeChanged = async () => {

@@ -23,7 +23,7 @@ export interface TagDataInTable extends TagDataInMonitoring {
 export default () => {
   const { t } = useI18n()
 
-  const { southDriverList: nodeList } = useSouthDriver()
+  const { totalSouthDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
   let selectedGroup: undefined | { node: string; groupName: string } = undefined

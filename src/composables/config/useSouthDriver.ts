@@ -1,5 +1,5 @@
 import { querySouthDriverList } from '@/api/config'
-import { DriverItemInList } from '@/types/config'
+import { DriverItemInList, RawDriverData } from '@/types/config'
 import { NodeLinkState, NodeState } from '@/types/enums'
 import { onUnmounted, ref, Ref } from 'vue'
 import usePaging from '../usePaging'
@@ -8,6 +8,9 @@ import { useFillNodeListStatusData } from './useNodeList'
 export default (autoLoad = true, needRefreshStatus = false) => {
   const { fillNodeListStatusData } = useFillNodeListStatusData()
 
+  // before pagination and without status data, for select
+  const totalSouthDriverList: Ref<Array<RawDriverData>> = ref([])
+  // after pagination, for show in list page
   const southDriverList: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
 
@@ -31,6 +34,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
           link: NodeLinkState.Connected,
         }
       })
+      totalSouthDriverList.value = totalList
       setTotalData(totalList)
       await getAPageTagData()
     } catch (error) {
@@ -83,6 +87,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     pageController,
     getAPageTagData,
     handleSizeChange,
+    totalSouthDriverList,
     southDriverList,
     isListLoading,
     getSouthDriverList,
