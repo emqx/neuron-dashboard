@@ -40,7 +40,7 @@ const props = defineProps({
     required: true,
   },
   currentNode: {
-    type: Number,
+    type: String,
     required: true,
   },
 })
