@@ -1,10 +1,10 @@
-import useTableFileReader, { SheetItem } from '@/composables/useTableFileReader'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import useTableFileReader, { SheetItem } from '@/composables/useTableFileReader'
 import { addTag } from '@/api/config'
 import { TagForm } from '@/types/config'
-import { useI18n } from 'vue-i18n'
 import { getErrorMsg, matchObjShape, popUpErrorMessage } from '@/utils/utils'
-import { useRoute } from 'vue-router'
 import useAddTag, { useTagTypeSelect, useTagAttributeTypeSelect } from './useAddTag'
 import { TagType } from '@/types/enums'
 import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
@@ -34,39 +34,39 @@ export default () => {
 
   const checkTagType = (type: TagType) => nodePluginInfo.value?.tag_type?.some((item) => item === type) || true
 
-  const handleTagListInTableFile = async (tagList: Array<Record<string, any>>): Promise<Array<TagForm>> => {
-    return new Promise((resolve, reject) => {
-      let startIndex = 2
-      const ret = []
-      for (const { name, address, attribute, type: typeLabel, description = '' } of tagList) {
-        const attr = getAttrTotalValueByStr(attribute, FILLER_IN_TAG_ATTR)
-        const type = findTypeValueByLabel(typeLabel)
-        if (!type || !attr) {
-          EmqxMessage.error(`${t('config.tableRowDataError', { rowNum: startIndex })} ${t('config.errorTableError')}`)
-          reject()
-          break
-        }
-        if (!checkTagType(type)) {
-          EmqxMessage.error(
-            t('config.tagTypeError', {
-              typesStr: nodePluginInfo.value.tag_type.map((item) => findTypeLabelByValue(item)).join(', '),
-            }),
-          )
-          reject()
-          break
-        }
-        ret.push({
-          name: name.toString(),
-          address: address.toString(),
-          attribute: attr,
-          type,
-          description: description.toString(),
-        })
-        startIndex += 1
+  const handleTagListInTableFile = async (tagList: Array<Record<string, any>>): Promise<Array<TagForm>> => new Promise((resolve, reject) => {
+    let startIndex = 2
+    const ret = []
+    for (const {
+      name, address, attribute, type: typeLabel, description = '',
+    } of tagList) {
+      const attr = getAttrTotalValueByStr(attribute, FILLER_IN_TAG_ATTR)
+      const type = findTypeValueByLabel(typeLabel)
+      if (!type || !attr) {
+        EmqxMessage.error(`${t('config.tableRowDataError', { rowNum: startIndex })} ${t('config.errorTableError')}`)
+        reject()
+        break
       }
-      resolve(ret)
-    })
-  }
+      if (!checkTagType(type)) {
+        EmqxMessage.error(
+          t('config.tagTypeError', {
+            typesStr: nodePluginInfo.value.tag_type.map((item) => findTypeLabelByValue(item)).join(', '),
+          }),
+        )
+        reject()
+        break
+      }
+      ret.push({
+        name: name.toString(),
+        address: address.toString(),
+        attribute: attr,
+        type,
+        description: description.toString(),
+      })
+      startIndex += 1
+    }
+    resolve(ret)
+  })
 
   const handlePartialSuc = (errIndex: number, errorNum: number) => {
     if (errIndex === 0) {
@@ -74,7 +74,6 @@ export default () => {
     } else {
       EmqxMessage.error(t('config.partialUploadFailed', { reason: getErrorMsg(errorNum), errorRow: errIndex + 1 + 1 }))
     }
-    return
   }
 
   const uploadTag = async (file: File) => {

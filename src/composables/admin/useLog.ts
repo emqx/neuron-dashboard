@@ -1,8 +1,10 @@
-import { computed, Ref, ref, WritableComputedRef } from 'vue'
-import { LogType } from '@/types/enums'
-import { queryLog } from '@/api/admin'
+import {
+  computed, Ref, ref, WritableComputedRef,
+} from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
+import { LogType } from '@/types/enums'
+import { queryLog } from '@/api/admin'
 
 export default () => {
   const startTime: Ref<number | undefined> = ref(new Date(Date.now() - 1000 * 60 * 60 * 24).getTime())

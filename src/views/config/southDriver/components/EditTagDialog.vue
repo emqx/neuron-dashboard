@@ -9,7 +9,7 @@
     <TagFormCom ref="formRef" :data="tagData" :node-plugin-info="pluginMsg" edit />
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
+        <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">{{
           $t('common.submit')
         }}</emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
@@ -19,13 +19,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, PropType, ref, Ref, watch } from 'vue'
+import {
+  computed, defineProps, defineEmits, PropType, ref, Ref, watch,
+} from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { ElDialog } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import TagFormCom from './TagForm.vue'
 import { PluginInfo, TagData } from '@/types/config'
 import { queryPluginConfigInfo, updateTag } from '@/api/config'
-import { useI18n } from 'vue-i18n'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { DriverDirection } from '@/types/enums'
 

@@ -6,7 +6,7 @@
           <!-- <img class="plugin-item-icon" :src="getPluginIcon(data.name)" height="36" /> -->
           <span>{{ data.name }}</span>
         </p>
-        <div class="handlers" v-if="data.kind === PluginKind.Custom">
+        <div v-if="data.kind === PluginKind.Custom" class="handlers">
           <AComWithDesc :content="$t('common.delete')">
             <i class="iconfont icon icondelete" @click="deletePlugin" />
           </AComWithDesc>
@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts" setup>
+import { defineProps, PropType, defineEmits } from 'vue'
 import { useDeletePlugin, usePluginIcon } from '@/composables/config/usePlugin'
 import { CreatedPlugin } from '@/types/config'
 import { PluginKind } from '@/types/enums'
-import { defineProps, PropType, defineEmits } from 'vue'
 import { useNodeType } from '@/composables/config/useDriver'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 

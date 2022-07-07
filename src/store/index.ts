@@ -1,5 +1,5 @@
-import { Status, ObjdModel, ChnlModel } from '@/types/neuron'
 import { createStore } from 'vuex'
+import { Status, ObjdModel, ChnlModel } from '@/types/neuron'
 import { getToken, setToken, clearToken } from '@/utils/user'
 
 interface State {

@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="overview" v-emqx-loading="isLoading">
+  <emqx-card v-emqx-loading="isLoading" class="overview">
     <div class="block">
       <div class="block-hd">
         <h3 class="card-title">Neuron Gateway</h3>
@@ -27,7 +27,7 @@
         </div>
       </div>
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in showList(northDriverList)" :key="item.name">
+        <emqx-col v-for="(item, index) in showList(northDriverList)" :key="item.name" :span="8">
           <SetupItemCard
             :data="item"
             @deleted="getNorthDriverList"
@@ -50,7 +50,7 @@
         </div>
       </div>
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in showList(southDriverList)" :key="item.name">
+        <emqx-col v-for="(item, index) in showList(southDriverList)" :key="item.name" :span="8">
           <SouthDriveItemCard
             :data="item"
             @deleted="getSouthDriverList"
@@ -69,8 +69,8 @@
 import { onMounted, ref } from 'vue'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
-import MessageChart from './components/MessageChart.vue'
-import ConfigDataCard from './components/ConfigDataCard.vue'
+// import MessageChart from './components/MessageChart.vue'
+// import ConfigDataCard from './components/ConfigDataCard.vue'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
 import { DriverItemInList } from '@/types/config'
 import SetupItemCard from '@/views/config/northDriver/components/SetupItemCard.vue'

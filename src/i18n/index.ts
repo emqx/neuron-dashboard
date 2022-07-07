@@ -1,8 +1,8 @@
-import { Language } from '@/types/locale'
 import { createI18n } from 'vue-i18n'
 import locale from 'element-plus/lib/locale'
 import zhLang from 'element-plus/lib/locale/lang/zh-cn'
 import enLang from 'element-plus/lib/locale/lang/en'
+import { Language } from '@/types/locale'
 import store from '@/store'
 
 const LangModules = ['data', 'common', 'config', 'admin', 'error', 'ekuiper']

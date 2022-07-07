@@ -6,16 +6,16 @@
         <div class="filter-item">
           <label>{{ $t('admin.timeRange') }}</label>
           <el-date-picker
-            class="filter-date-picker"
             v-model="timeRange"
+            class="filter-date-picker"
             type="datetimerange"
-            @change="refreshData"
             :clearable="false"
+            @change="refreshData"
           />
         </div>
         <div class="filter-item">
           <label>{{ $t('admin.logType') }}</label>
-          <emqx-select class="filter-select" v-model="logType" @change="refreshData">
+          <emqx-select v-model="logType" class="filter-select" @change="refreshData">
             <emqx-option v-for="{ value, label } in logTypeOptions" :key="value" :value="value" :label="label" />
           </emqx-select>
         </div>
@@ -32,9 +32,9 @@
       </emqx-table>
     </div>
     <emqx-pagination
+      v-model:current-page="pageController.num"
       hide-on-single-page
       layout="total, sizes, prev, pager, next, jumper"
-      v-model:current-page="pageController.num"
       :page-sizes="[200, 300, 500, 1000]"
       :page-count="pageController.totalPageNum"
       :page-size="pageController.size"
@@ -45,12 +45,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+// import { ElDatePicker } from 'element-plus'
 import useLog from '@/composables/admin/useLog'
-import { ElDatePicker } from 'element-plus'
 
-const { timeRange, logType, logTypeOptions, tableData, pageController, getLogs, refreshData, handleSizeChange } =
-  useLog()
+const {
+  timeRange, logType, logTypeOptions, tableData, pageController, getLogs, refreshData, handleSizeChange,
+} = useLog()
 </script>
 
 <style lang="scss">

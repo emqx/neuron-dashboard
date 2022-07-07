@@ -2,9 +2,9 @@
   <div class="login-page">
     <div class="container">
       <emqx-card shadow="never">
-        <img class="img-login" src="~@/assets/images/img-login.png" />
+        <img class="img-login" src="~@/assets/images/img-login.png">
         <div class="login-main">
-          <img class="img-logo" src="~@/assets/images/logo.png" alt="neuron-logo" width="141" />
+          <img class="img-logo" src="~@/assets/images/logo.png" alt="neuron-logo" width="141">
           <emqx-form ref="formCom" :model="form" :rules="rules" @keyup.enter="login">
             <emqx-form-item prop="userName">
               <emqx-input v-model.trim="form.userName" type="text" :placeholder="$t('common.username')" />
@@ -21,21 +21,20 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, reactive, ref } from 'vue'
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { login as requestLogin } from '@/api/common'
 import { createCommonErrorMessage } from '@/utils/utils'
-import { defineComponent, reactive } from 'vue'
+import useCheckLicense from '@/composables/useCheckLicense'
 
 export default defineComponent({
   name: 'Login',
 })
-</script>
-
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { login as requestLogin } from '@/api/common'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import useCheckLicense from '@/composables/useCheckLicense'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -136,7 +135,7 @@ const login = async () => {
   .emqx-form-item {
     margin-bottom: 30px;
   }
-  /* 
+  /*
     给的页面里面，除了license，用户管理和关于之外，其他的都已经写了
     license，用户管理和关于还没有相关接口，如果有相关接口了很快就可以写完
   */

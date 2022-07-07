@@ -8,7 +8,7 @@
   >
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
       <emqx-form-item prop="driver" :label="$t('config.southDevice')">
-        <emqx-select v-model="subscriptionForm.driver" @change="selectedNodeChanged" filterable>
+        <emqx-select v-model="subscriptionForm.driver" filterable @change="selectedNodeChanged">
           <emqx-option v-for="{ name } in deviceList" :key="name" :value="name" :label="name" />
         </emqx-select>
       </emqx-form-item>
@@ -20,7 +20,7 @@
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
+        <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">{{
           $t('common.submit')
         }}</emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
@@ -30,9 +30,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, watch } from 'vue'
-import { useAddSubscription } from '@/composables/config/useSubscription'
+import {
+  computed, defineProps, defineEmits, watch,
+} from 'vue'
 import { ElDialog } from 'element-plus'
+import { useAddSubscription } from '@/composables/config/useSubscription'
 
 const props = defineProps({
   modelValue: {

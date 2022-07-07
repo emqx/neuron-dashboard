@@ -1,5 +1,7 @@
 import { Merge } from 'type-fest'
-import { DriverDirection, NodeLinkState, NodeState, ParamRequired, PluginKind, TypeOfPluginParam } from './enums'
+import {
+  DriverDirection, NodeLinkState, NodeState, ParamRequired, PluginKind, TypeOfPluginParam,
+} from './enums'
 
 /**
  * Params get from API

@@ -1,9 +1,9 @@
-import { deleteTag, queryTagList } from '@/api/config'
-import { TagData, TagForm } from '@/types/config'
 import { Ref, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
+import { TagData, TagForm } from '@/types/config'
+import { deleteTag, queryTagList } from '@/api/config'
 import usePaging from '@/composables/usePaging'
 
 interface TagDataInTable extends TagData {

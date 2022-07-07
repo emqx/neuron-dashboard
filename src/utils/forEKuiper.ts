@@ -49,10 +49,6 @@ export const destroyEKuiper = () => {
   store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: null })
 }
 
-export const isKuiperPath = (toPath: string) => {
-  return /^\/ekuiper/.test(toPath)
-}
+export const isKuiperPath = (toPath: string) => /^\/ekuiper/.test(toPath)
 
-export const isExitEKuiper = (fromPath: string, toPath: string) => {
-  return isKuiperPath(fromPath) && !isKuiperPath(toPath)
-}
+export const isExitEKuiper = (fromPath: string, toPath: string) => isKuiperPath(fromPath) && !isKuiperPath(toPath)

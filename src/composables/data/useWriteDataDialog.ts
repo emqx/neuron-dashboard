@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue'
-import { writeData } from '@/api/data'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import useWriteDataCheckNParse, { WriteDataErrorCode } from '@/composables/data/useWriteDataCheckNParse'
 import { useI18n } from 'vue-i18n'
+import { writeData } from '@/api/data'
+import useWriteDataCheckNParse, { WriteDataErrorCode } from '@/composables/data/useWriteDataCheckNParse'
 import { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import { TagType } from '@/types/enums'
 
@@ -57,18 +57,17 @@ export default (props: Props) => {
   const isUseHexadecimal = ref(false)
   const isSubmitting = ref(false)
 
-  const { checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal } =
-    useWriteDataCheckNParse()
+  const {
+    checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal,
+  } = useWriteDataCheckNParse()
 
-  const showToggleHexadecimalSwitch = computed(() => {
-    return (
-      props.tag?.type &&
-      props.tag.type !== TagType.BYTE &&
-      props.tag.type !== TagType.BOOL &&
-      props.tag.type !== TagType.BIT &&
-      props.tag.type !== TagType.STRING
-    )
-  })
+  const showToggleHexadecimalSwitch = computed(() => (
+    props.tag?.type
+      && props.tag.type !== TagType.BYTE
+      && props.tag.type !== TagType.BOOL
+      && props.tag.type !== TagType.BIT
+      && props.tag.type !== TagType.STRING
+  ))
 
   const handleIsUseHexadecimalChanged = async () => {
     if (isUseHexadecimal.value) {

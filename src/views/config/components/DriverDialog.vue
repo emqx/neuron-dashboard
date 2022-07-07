@@ -12,7 +12,7 @@
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+        <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">
           {{ $t('common.create') }}
         </emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
@@ -22,7 +22,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineEmits, defineProps, PropType, watch } from 'vue'
+import {
+  computed, defineEmits, defineProps, PropType, watch,
+} from 'vue'
 import { ElDialog } from 'element-plus'
 import useDriverDialog from '@/composables/config/useDriverDialog'
 import { DriverDirection } from '@/types/enums'

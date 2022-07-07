@@ -1,18 +1,22 @@
 <template>
-  <div class="message-chart" ref="chartEl"></div>
+  <div ref="chartEl" class="message-chart" />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive, watchEffect, watch } from 'vue'
+import {
+  ref, onMounted, reactive,
+} from 'vue'
 import * as echarts from 'echarts/core'
 import { LineChart } from 'echarts/charts'
-import { AxisPointerComponent, LegendComponent, TooltipComponent, GridComponent } from 'echarts/components'
+import {
+  AxisPointerComponent, LegendComponent, TooltipComponent, GridComponent,
+} from 'echarts/components'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
-import useResizeChart from '@/composables/useResizeChart'
 
 import { useI18n } from 'vue-i18n'
 import dateFormat from 'dateformat'
+import useResizeChart from '@/composables/useResizeChart'
 
 echarts.use([
   AxisPointerComponent,
@@ -77,7 +81,7 @@ const southData = mockYData()
 const northData = mockYData()
 
 const chartEl = ref()
-let chartInstance = undefined
+let chartInstance
 const option = reactive({
   backgroundColor: new echarts.graphic.LinearGradient(0.8, 0.2, 0, 0, [
     { offset: 0, color: 'rgba(34, 52, 106, 1)' },

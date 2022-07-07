@@ -36,8 +36,8 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import DeviceConnectionChart from './DeviceConnectionChart.vue'
 import { ElProgress } from 'element-plus'
+import DeviceConnectionChart from './DeviceConnectionChart.vue'
 
 const count = reactive({
   northTotal: 44,

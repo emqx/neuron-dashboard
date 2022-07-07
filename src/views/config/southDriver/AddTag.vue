@@ -8,12 +8,11 @@
         <div class="tag-item-hd common-flex">
           <p class="tag-item-index">No: {{ index }}</p>
           <emqx-button
+            v-if="!(index === 0 && tagList.length === 1)"
             type="danger"
             size="mini"
-            v-if="!(index === 0 && tagList.length === 1)"
             @click="deleteTagItem(index)"
-            >{{ $t('common.delete') }}</emqx-button
-          >
+          >{{ $t('common.delete') }}</emqx-button>
         </div>
         <emqx-card shadow="none">
           <TagForm :ref="setFormRef" :data="item" :node-plugin-info="nodePluginInfo" />
@@ -25,7 +24,7 @@
       <span>{{ $t('common.add') }}</span>
     </emqx-button>
     <emqx-card shadow="none" class="add-tag-ft">
-      <emqx-button type="primary" @click="submit" :disabled="tagList.length === 0" :loading="isSubmitting">{{
+      <emqx-button type="primary" :disabled="tagList.length === 0" :loading="isSubmitting" @click="submit">{{
         $t('common.create')
       }}</emqx-button>
       <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
@@ -37,7 +36,9 @@
 import TagForm from './components/TagForm.vue'
 import useAddTag from '@/composables/config/useAddTag'
 
-const { nodePluginInfo, tagList, isSubmitting, addTagItem, deleteTagItem, setFormRef, cancel, submit } = useAddTag()
+const {
+  nodePluginInfo, tagList, isSubmitting, addTagItem, deleteTagItem, setFormRef, cancel, submit,
+} = useAddTag()
 </script>
 
 <style lang="scss">

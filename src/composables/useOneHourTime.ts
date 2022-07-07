@@ -2,7 +2,7 @@ import { ref, Ref } from '@vue/reactivity'
 
 export default function useOneHourTime(): {
   oneHourRange: Ref<number[]>
-} {
+  } {
   const oneHourRange: Ref<number[]> = ref([])
   const date = new Date()
   const now = date.getTime()

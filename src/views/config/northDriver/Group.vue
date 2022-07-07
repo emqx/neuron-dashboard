@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="north-driver-group" v-emqx-loading="isListLoading">
+  <emqx-card v-emqx-loading="isListLoading" class="north-driver-group">
     <h3 class="card-title">{{ $t('config.groupList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left common-flex">
@@ -41,7 +41,7 @@
       <emqx-table-column label="No" :width="60">
         <template #default="{ index }">{{ index + 1 }}</template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.groupName')" prop="group"></emqx-table-column>
+      <emqx-table-column :label="$t('config.groupName')" prop="group" />
       <emqx-table-column :label="$t('config.deviceName')" prop="name">
         <template #default="{ row }">{{ row.driver }}</template>
       </emqx-table-column>

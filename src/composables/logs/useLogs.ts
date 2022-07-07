@@ -13,7 +13,7 @@ export default function useLogs(): {
   hasnext: Ref<boolean>
   handleNextClick: HandleFunction
   handlePrevClick: HandleFunction
-} {
+  } {
   const page = ref(1)
   const offset = ref(0)
   const hasnext = ref(false)

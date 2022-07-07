@@ -3,7 +3,7 @@
     <Header />
     <emqx-container normal fixed-nav class="body" :page-min-width="1250">
       <template #nav>
-        <side-nav></side-nav>
+        <side-nav />
       </template>
       <template #page-content>
         <div>
@@ -12,7 +12,7 @@
           <emqx-card v-if="isKuiperPage" v-emqx-loading="isSubAppLoading">
             <h3 class="card-title">{{ pageTitle }}</h3>
             <div id="page-content">
-              <div></div>
+              <div />
             </div>
           </emqx-card>
         </div>
@@ -23,12 +23,12 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import Header from '@/components/Header.vue'
 import SideNav from '@/components/SideNav.vue'
 import useEKuiper from '@/composables/ekuiper/useEKuiper'
 import { isKuiperPath } from '@/utils/forEKuiper'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'Home',

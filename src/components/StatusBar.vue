@@ -3,23 +3,23 @@
     <el-divider content-position="left">{{ $t('common.systemStatus') }}</el-divider>
     <template v-if="status">
       <div :class="[status.comm === 'UP' ? 'green' : 'red', 'status-item']">
-        <i class="iconfont iconcomm-down1"></i>
+        <i class="iconfont iconcomm-down1" />
         COMM {{ status.comm || '' }}
       </div>
       <div class="mach status-item">
-        <i class="iconfont iconmanu"></i>
+        <i class="iconfont iconmanu" />
         {{ status.mach || '' }}
       </div>
       <div :class="[status.mode === 'ACTIVE' ? 'green' : status.mach === 'STANDBY' ? 'yellow' : 'red', 'status-item']">
-        <i class="iconfont iconstanndby"></i>
+        <i class="iconfont iconstanndby" />
         {{ status.mode || '' }}
       </div>
       <div :class="[status.mqcn === 'MQDISCONNECT' ? 'red' : 'green', 'status-item']">
-        <i class="iconfont iconmqdisconnect"></i>
+        <i class="iconfont iconmqdisconnect" />
         {{ status.mqcn || 'MQDISCONNECT' }}
       </div>
       <div :class="[galm === 'NO ALARM' ? 'green' : 'red', 'status-item']">
-        <i class="iconfont iconalarm"></i>
+        <i class="iconfont iconalarm" />
         {{ galm }}
       </div>
     </template>
@@ -38,9 +38,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    const status = computed(() => {
-      return store.state.status
-    })
+    const status = computed(() => store.state.status)
     const galm = computed(() => {
       let res = ''
       switch (status.value.galm) {

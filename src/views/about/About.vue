@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="about" v-emqx-loading="isDataLoading">
+  <emqx-card v-emqx-loading="isDataLoading" class="about">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('common.about') }}</h3>
     </div>
@@ -18,9 +18,8 @@
 
 <script setup lang="ts">
 import { ref, Ref, computed } from 'vue'
-import { License } from '@/types/admin'
+// import { License } from '@/types/admin'
 import { queryVersion } from '@/api/admin'
-import { useI18n } from 'vue-i18n'
 
 const versionData = ref({
   version: '',

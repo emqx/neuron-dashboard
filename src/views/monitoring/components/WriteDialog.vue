@@ -26,7 +26,7 @@
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submitData" :loading="isSubmitting">{{
+        <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submitData">{{
           $t('common.submit')
         }}</emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
@@ -36,7 +36,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, PropType, watch, ref } from 'vue'
+import {
+  computed, defineProps, defineEmits, PropType, watch, ref,
+} from 'vue'
 import { ElDialog } from 'element-plus'
 import { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import { TagType } from '@/types/enums'

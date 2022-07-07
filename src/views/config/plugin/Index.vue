@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="plugin" v-emqx-loading="isListLoading">
+  <emqx-card v-emqx-loading="isListLoading" class="plugin">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('config.pluginManagement') }}</h3>
       <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addPlugin">
@@ -9,12 +9,18 @@
     <div class="filter-bar">
       <emqx-select v-model="filterNodeType" clearable>
         <emqx-option v-for="item in nodeTypeList" :key="item.value" :value="item.value" :label="item.label" />
-        <emqx-option :value="ALL_KEY" :label="$t('config.all')"></emqx-option>
+        <emqx-option :value="ALL_KEY" :label="$t('config.all')" />
       </emqx-select>
     </div>
     <ul class="setup-list">
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="item in listToShow" :key="item.name" tag="li" class="setup-item">
+        <emqx-col
+          v-for="item in listToShow"
+          :key="item.name"
+          :span="8"
+          tag="li"
+          class="setup-item"
+        >
           <PluginItemCard :data="item" @deleted="getPluginList" @edit="editPlugin(item)" />
         </emqx-col>
       </emqx-row>
@@ -42,21 +48,15 @@ const currentPlugin: Ref<undefined | CreatedPlugin> = ref(undefined)
 const showDialog = ref(false)
 const ALL_KEY = 'all'
 
-const listNeedShow = computed(() => {
-  return pluginList.value.filter(({ kind }) => {
-    return kind !== PluginKind.Static
-  })
-})
+const listNeedShow = computed(() => pluginList.value.filter(({ kind }) => kind !== PluginKind.Static))
 
 const listToShow = computed(() => {
   if (!filterNodeType.value || filterNodeType.value === ALL_KEY) {
     return listNeedShow.value
   }
-  return listNeedShow.value.filter(({ node_type }) =>
-    filterNodeType.value === DriverDirection.South
-      ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
-      : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
-  )
+  return listNeedShow.value.filter(({ node_type }) => (filterNodeType.value === DriverDirection.South
+    ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
+    : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)))
 })
 
 const addPlugin = () => {

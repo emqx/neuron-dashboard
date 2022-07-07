@@ -1,7 +1,9 @@
-import { DriverDirection, PluginKind } from '@/types/enums'
-import { ref, Ref, computed, nextTick } from 'vue'
+import {
+  ref, Ref, computed, nextTick,
+} from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
+import { DriverDirection, PluginKind } from '@/types/enums'
 import { addDriver, queryPluginList } from '@/api/config'
 import { CreatedPlugin, NodeForm } from '@/types/config'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
@@ -13,11 +15,9 @@ export const usePluginList = (type: DriverDirection) => {
     const { data } = await queryPluginList()
     const list = data.plugins || []
     pluginList.value = list
-      .filter(({ node_type }) =>
-        type === DriverDirection.South
-          ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
-          : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
-      )
+      .filter(({ node_type }) => (type === DriverDirection.South
+        ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
+        : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)))
       .filter(({ kind }) => kind !== PluginKind.Static)
   }
 

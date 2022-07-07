@@ -1,10 +1,12 @@
 import { ref, Ref } from 'vue'
-import { PluginKind } from '@/types/enums'
-import { addPlugin, deletePlugin, queryPluginList, updatePlugin } from '@/api/config'
-import { CreatedPlugin, PluginForm } from '@/types/config'
-import { createCommonErrorMessage, createOptionListFromEnum } from '@/utils/utils'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
+import { PluginKind } from '@/types/enums'
+import {
+  addPlugin, deletePlugin, queryPluginList, updatePlugin,
+} from '@/api/config'
+import { CreatedPlugin, PluginForm } from '@/types/config'
+import { createCommonErrorMessage, createOptionListFromEnum } from '@/utils/utils'
 
 export default () => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])
@@ -30,8 +32,8 @@ export const useGetPluginMsgIdMap = () => {
   const pluginMsgIdMap: Record<string, CreatedPlugin> = {}
   const initMsgIdMap = async () => {
     try {
-      const { data } = await queryPluginList()
-      ;(data.plugins || []).forEach((item) => {
+      const { data } = await queryPluginList();
+      (data.plugins || []).forEach((item) => {
         pluginMsgIdMap[item.name] = item
       })
       return Promise.resolve(pluginMsgIdMap)

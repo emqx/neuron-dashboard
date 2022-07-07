@@ -18,7 +18,7 @@
           <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
             <emqx-upload class="uploader-tag" :before-upload="uploadFile" :show-file-list="false" action="placeholder">
               <emqx-button size="small">
-                <i class="iconfont icon-import icondownload"></i>
+                <i class="iconfont icon-import icondownload" />
                 <span>{{ $t('common.import') }}</span>
               </emqx-button>
             </emqx-upload>
@@ -30,8 +30,8 @@
               </emqx-dropdown-menu>
             </template>
           </emqx-dropdown>
-          <emqx-button size="small" @click="handleExport" :loading="isExporting">
-            <i class="iconfont icon-import iconsubmit"></i>
+          <emqx-button size="small" :loading="isExporting" @click="handleExport">
+            <i class="iconfont icon-import iconsubmit" />
             <span>{{ $t('common.export') }}</span>
           </emqx-button>
 
@@ -51,8 +51,8 @@
             <emqx-checkbox v-model="row.checked" />
           </template>
         </emqx-table-column>
-        <emqx-table-column :label="$t('common.name')" prop="name"></emqx-table-column>
-        <emqx-table-column :label="$t('config.address')" prop="address"></emqx-table-column>
+        <emqx-table-column :label="$t('common.name')" prop="name" />
+        <emqx-table-column :label="$t('config.address')" prop="address" />
 
         <emqx-table-column :label="$t('common.type')">
           <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
@@ -78,9 +78,9 @@
       </emqx-table>
     </div>
     <emqx-pagination
+      v-model:current-page="pageController.pageNum"
       hide-on-single-page
       layout="total, sizes, prev, pager, next, jumper"
-      v-model:current-page="pageController.pageNum"
       :page-sizes="[50, 100, 200]"
       :total="pageController.total"
       :page-size="pageController.pageSize"
@@ -88,14 +88,20 @@
       @size-change="handleSizeChange"
     />
   </emqx-card>
-  <EditTagDialog v-model="showEditDialog" :tag="currentTag" :node="node" @submitted="refreshTable" :group="groupName" />
+  <EditTagDialog
+    v-model="showEditDialog"
+    :tag="currentTag"
+    :node="node"
+    :group="groupName"
+    @submitted="refreshTable"
+  />
 </template>
 
 <script lang="ts" setup>
+import { useRouter } from 'vue-router'
 import { useTagAttributeTypeSelect, useTagTypeSelect } from '@/composables/config/useAddTag'
 import EditTagDialog from './components/EditTagDialog.vue'
 import useTagList from '@/composables/config/useTagList'
-import { useRouter } from 'vue-router'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import useUploadTagList from '@/composables/config/useUploadTagList'
 import useExportTagTable from '@/composables/config/useExportTagTable'

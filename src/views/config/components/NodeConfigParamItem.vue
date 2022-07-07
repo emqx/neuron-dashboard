@@ -24,14 +24,14 @@
       <emqx-radio :label="false">False</emqx-radio>
     </emqx-radio-group>
     <!-- File -->
-    <div class="file-param" v-else-if="paramInfo.type === TypeOfPluginParam.File">
+    <div v-else-if="paramInfo.type === TypeOfPluginParam.File" class="file-param">
       <emqx-upload class="file-upload" :show-file-list="false" :before-upload="handleUpload">
         <emqx-button size="mini">{{ t('common.uploadFile') }}</emqx-button>
       </emqx-upload>
-      <emqx-button v-if="inputValue" size="mini" @click="clearFile" type="text">
+      <emqx-button v-if="inputValue" size="mini" type="text" @click="clearFile">
         {{ t('config.clearUploadedFile') }}
       </emqx-button>
-      <div class="file-content-preview" v-if="inputValue">
+      <div v-if="inputValue" class="file-content-preview">
         <label>Content-MD5:</label>
         <span>{{ fileContentPreview(inputValue) }}</span>
       </div>
@@ -60,15 +60,17 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType, computed, defineEmits, ref } from 'vue'
+import {
+  defineProps, PropType, computed, defineEmits, ref,
+} from 'vue'
 import { ElPopover } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+import md5 from 'blueimp-md5'
+import { fromByteArray } from 'base64-js'
 import { ParamInfo } from '@/types/config'
 import { FileType, TypeOfPluginParam } from '@/types/enums'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
-import { useI18n } from 'vue-i18n'
-import md5 from 'blueimp-md5'
-import { fromByteArray } from 'base64-js'
 
 const { t } = useI18n()
 

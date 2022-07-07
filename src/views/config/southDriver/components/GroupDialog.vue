@@ -19,12 +19,12 @@
     <template #footer>
       <span class="dialog-footer">
         <template v-if="!group">
-          <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+          <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">
             {{ $t('common.create') }}
           </emqx-button>
           <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
         </template>
-        <emqx-button v-else type="primary" size="small" @click="showDialog = false" :loading="isSubmitting">
+        <emqx-button v-else type="primary" size="small" :loading="isSubmitting" @click="showDialog = false">
           {{ $t('common.close') }}
         </emqx-button>
       </span>
@@ -33,7 +33,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, ref, watch, nextTick, PropType } from 'vue'
+import {
+  computed, defineProps, defineEmits, ref, watch, nextTick, PropType,
+} from 'vue'
 import { ElDialog } from 'element-plus'
 import useAddGroup from '@/composables/config/useAddGroup'
 import { GroupForm } from '@/types/config'
@@ -52,7 +54,9 @@ const props = defineProps({
   },
 })
 
-const { formCom, groupForm, nodeList, isSubmitting, groupFormRules, resetFields, submitForm, initForm } = useAddGroup()
+const {
+  formCom, groupForm, nodeList, isSubmitting, groupFormRules, resetFields, submitForm, initForm,
+} = useAddGroup()
 
 const showDialog = computed({
   get: () => props.modelValue,
@@ -65,12 +69,10 @@ watch(showDialog, async (val) => {
   if (!val) {
     resetFields()
     initForm()
-  } else {
-    if (props.group) {
-      groupForm.value = props.group
-    } else if (props.currentNode) {
-      groupForm.value.node = props.currentNode
-    }
+  } else if (props.group) {
+    groupForm.value = props.group
+  } else if (props.currentNode) {
+    groupForm.value.node = props.currentNode
   }
 })
 

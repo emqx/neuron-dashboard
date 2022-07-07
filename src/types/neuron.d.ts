@@ -50,7 +50,7 @@ export interface ObjdModel extends NeuronData {
 }
 
 export interface ChnlData extends NeuronData {
-  chnl: Array<ChnlModel> //channel data
+  chnl: Array<ChnlModel> // channel data
 }
 export interface ObjdData extends NeuronData {
   objd: Array<ObjdModel>

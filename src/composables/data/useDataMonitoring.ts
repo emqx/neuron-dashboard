@@ -1,8 +1,10 @@
-import { ref, Ref, computed, onUnmounted } from 'vue'
+import {
+  ref, Ref, computed, onUnmounted,
+} from 'vue'
+import { useI18n } from 'vue-i18n'
 import { queryGroupList, queryTagList } from '@/api/config'
 import { GroupData } from '@/types/config'
 import { getMonitoringData } from '@/api/data'
-import { useI18n } from 'vue-i18n'
 import { TagDataInMonitoring } from '@/types/data'
 import { paginate } from '@/utils/utils'
 import { useTagAttributeTypeSelect } from '../config/useAddTag'
@@ -26,7 +28,7 @@ export default () => {
   const { totalSouthDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
-  let selectedGroup: undefined | { node: string; groupName: string } = undefined
+  let selectedGroup: undefined | { node: string; groupName: string }
   const currentGroup: Ref<{ node: string | string; groupName: string }> = ref({
     node: '',
     groupName: '',
@@ -47,7 +49,7 @@ export default () => {
   const totalData: Ref<Array<TagDataInTable>> = ref([])
   const showValueByHexadecimal = ref(false)
   let tagMsgMap: Record<string, any> = {}
-  let pollTimer: undefined | number = undefined
+  let pollTimer: undefined | number
   const updated = ref(Date.now())
   const { tagAttrValueMap } = useTagAttributeTypeSelect()
   const { transToHexadecimal } = useWriteDataCheckNParse()
@@ -58,13 +60,9 @@ export default () => {
     count: 0,
   }
 
-  const tableEmptyText = computed(() =>
-    !currentGroup.value.node || !currentGroup.value.groupName ? t('data.selectGroupTip') : t('common.emptyData'),
-  )
+  const tableEmptyText = computed(() => (!currentGroup.value.node || !currentGroup.value.groupName ? t('data.selectGroupTip') : t('common.emptyData')))
 
-  const tableData = computed(() => {
-    return paginate(totalData.value, pageController.value.size, pageController.value.num)
-  })
+  const tableData = computed(() => paginate(totalData.value, pageController.value.size, pageController.value.num))
 
   const selectedNodeChanged = async () => {
     currentGroup.value.groupName = ''
@@ -98,14 +96,15 @@ export default () => {
     const tags = await queryTagList(selectedGroup?.node, selectedGroup.groupName)
     const tagNameMap: Record<string | number, any> = {}
     tags.forEach(
-      ({ attribute, type, name, address, description }) =>
-        (tagNameMap[name] = {
-          attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
-          type,
-          tagName: name,
-          address,
-          description,
-        }),
+      ({
+        attribute, type, name, address, description,
+      }) => (tagNameMap[name] = {
+        attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
+        type,
+        tagName: name,
+        address,
+        description,
+      }),
     )
     return Promise.resolve(tagNameMap)
   }
@@ -190,9 +189,7 @@ export default () => {
     })
   }
 
-  const canWrite = (item: TagDataInTable) => {
-    return item.attribute && item.attribute.some((item) => item === TagAttributeType.Write)
-  }
+  const canWrite = (item: TagDataInTable) => item.attribute && item.attribute.some((item) => item === TagAttributeType.Write)
 
   onUnmounted(() => {
     if (pollTimer) {

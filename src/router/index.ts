@@ -1,7 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import store from '@/store/index'
-import { handleEKuiper, isKuiperPath, isExitEKuiper, handleExitEKuiper } from '@/utils/forEKuiper'
+import {
+  handleEKuiper, isKuiperPath, isExitEKuiper, handleExitEKuiper,
+} from '@/utils/forEKuiper'
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),

@@ -1,20 +1,19 @@
 <template>
   <ElTooltip placement="top" :content="content">
-    <slot></slot>
+    <slot />
   </ElTooltip>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'AComWithDesc',
-})
+import { defineComponent, defineProps } from 'vue'
 </script>
 
 <script lang="ts" setup>
 import { ElTooltip } from 'element-plus'
-import { defineProps } from 'vue'
+
+export default defineComponent({
+  name: 'AComWithDesc',
+})
 
 const props = defineProps({
   content: {

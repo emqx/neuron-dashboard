@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartEl" class="device-connection-chart"></div>
+  <div ref="chartEl" class="device-connection-chart" />
 </template>
 
 <script setup lang="ts">
@@ -40,9 +40,11 @@ const mockYData = (length = 27) => {
 }
 
 const chartEl = ref()
-let chartInstance = undefined
+let chartInstance
 const options = reactive({
-  grid: { top: 0, bottom: 0, left: 0, right: 0 },
+  grid: {
+    top: 0, bottom: 0, left: 0, right: 0,
+  },
   tooltip: {
     trigger: 'axis',
     axisPointer: {

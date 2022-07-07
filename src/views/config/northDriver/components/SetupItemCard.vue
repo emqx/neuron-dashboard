@@ -4,7 +4,7 @@
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <AComWithDesc :content="$t('config.appConfig')">
-          <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
+          <i class="iconfont iconsetting" @click.stop="goNodeConfig" />
         </AComWithDesc>
         <AComWithDesc :content="$t('common.delete')">
           <i
@@ -41,21 +41,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'SetupItemCard',
-})
+import {
+  defineComponent, PropType, defineEmits, defineProps, computed,
+} from 'vue'
 </script>
 
 <script lang="ts" setup>
-import { DriverItemInList } from '@/types/config'
-import { PropType, defineEmits, defineProps, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { DriverItemInList } from '@/types/config'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
 import { PluginKind } from '@/types/enums'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+
+export default defineComponent({
+  name: 'SetupItemCard',
+})
 
 const emit = defineEmits(['deleted', 'updated', 'toggleStatus'])
 const router = useRouter()

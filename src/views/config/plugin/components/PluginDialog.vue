@@ -13,7 +13,7 @@
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+        <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">
           {{ $t('common.create') }}
         </emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
@@ -23,7 +23,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, PropType, watch, nextTick } from 'vue'
+import {
+  computed, defineProps, defineEmits, PropType, watch, nextTick,
+} from 'vue'
 import { ElDialog } from 'element-plus'
 import { useAddPlugin } from '@/composables/config/usePlugin'
 import { CreatedPlugin } from '@/types/config'
@@ -51,7 +53,9 @@ watch(showDialog, async (val) => {
   }
 })
 
-const { pluginForm, pluginFormCom, pluginFormRules, isSubmitting, createRawPluginForm, submitData } = useAddPlugin()
+const {
+  pluginForm, pluginFormCom, pluginFormRules, isSubmitting, createRawPluginForm, submitData,
+} = useAddPlugin()
 const submit = async () => {
   await submitData()
   showDialog.value = false

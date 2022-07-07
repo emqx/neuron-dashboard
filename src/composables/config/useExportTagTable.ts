@@ -18,7 +18,9 @@ export default () => {
     const cols = ['name', 'address', 'attribute', 'type', 'description']
     const sheets: Array<any> = [cols]
     tagList.forEach((obj) => {
-      const { name, address, attribute, type, description } = obj
+      const {
+        name, address, attribute, type, description,
+      } = obj
       const content = []
       const attrStr = attribute ? getAttrStrByValue(attribute, FILLER_IN_TAG_ATTR) : ''
       const typeStr = type ? findLabelByValue(type) : ''

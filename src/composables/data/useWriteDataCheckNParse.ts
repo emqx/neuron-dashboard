@@ -1,4 +1,4 @@
-/* 
+/*
 BYTE	    2   Hexadecimal string
 
 INT8	    3   -128 to 127
@@ -40,18 +40,14 @@ export enum WriteDataErrorCode {
 }
 
 export default () => {
-  const createIntTypeRange = (bitsNum: number): RangeObj => {
-    return {
-      MIN: -Math.pow(2, bitsNum - 1),
-      MAX: Math.pow(2, bitsNum - 1) - 1,
-    }
-  }
-  const createUIntTypeRange = (bitsNum: number): RangeObj => {
-    return {
-      MIN: 0,
-      MAX: Math.pow(2, bitsNum) - 1,
-    }
-  }
+  const createIntTypeRange = (bitsNum: number): RangeObj => ({
+    MIN: -(2 ** (bitsNum - 1)),
+    MAX: 2 ** (bitsNum - 1) - 1,
+  })
+  const createUIntTypeRange = (bitsNum: number): RangeObj => ({
+    MIN: 0,
+    MAX: 2 ** bitsNum - 1,
+  })
 
   interface RangeObj {
     MIN: number
@@ -68,21 +64,19 @@ export default () => {
   const UINT32_RANGE = createUIntTypeRange(32)
   const UINT64_RANGE = createUIntTypeRange(64)
 
-  const checkByte = (value: string): Promise<boolean | Error> =>
-    /^0(x|X)[0-9a-f]+$/.test(value.replace(/\s/g, ''))
-      ? Promise.resolve(true)
-      : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
+  const checkByte = (value: string): Promise<boolean | Error> => (/^0(x|X)[0-9a-f]+$/.test(value.replace(/\s/g, ''))
+    ? Promise.resolve(true)
+    : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString())))
 
-  const checkBit = (value: string): Promise<boolean | Error> =>
-    /^[0-9a-f]+$/.test(value)
-      ? Promise.resolve(true)
-      : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
+  const checkBit = (value: string): Promise<boolean | Error> => (/^[0-9a-f]+$/.test(value)
+    ? Promise.resolve(true)
+    : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString())))
 
   const checkIsInt = (value: string): boolean => /^-?\d+$/.test(value)
   const checkLessThanMinimumSafeNumber = (value: string) => Number(value) < Number.MIN_SAFE_INTEGER
   const checkGreaterThanMaximumSafeNumber = (value: string): boolean => Number(value) > Number.MAX_SAFE_INTEGER
   const checkInt = (rangeObj: RangeObj, value: string): Promise<Error | boolean> => {
-    let errorCode: undefined | WriteDataErrorCode = undefined
+    let errorCode: undefined | WriteDataErrorCode
     if (!checkIsInt(value)) {
       errorCode = WriteDataErrorCode.FormattingError
     } else if (checkLessThanMinimumSafeNumber(value)) {
@@ -142,23 +136,19 @@ export default () => {
     }
     return Number(value)
   }
-  const checkWriteData = async (type: number, value: string): Promise<boolean | Error> => {
-    return check(type, value)
-  }
+  const checkWriteData = async (type: number, value: string): Promise<boolean | Error> => check(type, value)
 
   const checkHexadecimal = (value: string) => {
-    const str =
-      value.slice(0, HEXADECIMAL_PREFIX.length).toLowerCase() === HEXADECIMAL_PREFIX
-        ? value
-        : HEXADECIMAL_PREFIX + value
+    const str = value.slice(0, HEXADECIMAL_PREFIX.length).toLowerCase() === HEXADECIMAL_PREFIX
+      ? value
+      : HEXADECIMAL_PREFIX + value
     return checkByte(str)
   }
   const transToDecimal = async (tagData: TagDataInTable) => {
     const { value, type } = tagData
-    const str =
-      value.slice(0, HEXADECIMAL_PREFIX.length).toLowerCase() === HEXADECIMAL_PREFIX
-        ? value
-        : HEXADECIMAL_PREFIX + value
+    const str = value.slice(0, HEXADECIMAL_PREFIX.length).toLowerCase() === HEXADECIMAL_PREFIX
+      ? value
+      : HEXADECIMAL_PREFIX + value
     try {
       await checkByte(str)
       const hexStr = value.slice(HEXADECIMAL_PREFIX.length)
@@ -181,8 +171,8 @@ export default () => {
         return HEXADECIMAL_PREFIX + transFloatNumberToHex(value, type)
       }
       if (
-        value < 0 &&
-        (type === TagType.UINT8 || type === TagType.UINT16 || type === TagType.UINT32 || type === TagType.UINT64)
+        value < 0
+        && (type === TagType.UINT8 || type === TagType.UINT16 || type === TagType.UINT32 || type === TagType.UINT64)
       ) {
         return HEXADECIMAL_PREFIX + transNegativeNumberToHex(value, type)
       }
@@ -191,5 +181,7 @@ export default () => {
       return value
     }
   }
-  return { checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal }
+  return {
+    checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal,
+  }
 }

@@ -8,7 +8,13 @@
     </div>
     <ul class="setup-list">
       <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in northDriverList" :key="item.name" tag="li" class="setup-item">
+        <emqx-col
+          v-for="(item, index) in northDriverList"
+          :key="item.name"
+          :span="8"
+          tag="li"
+          class="setup-item"
+        >
           <SetupItemCard
             :data="item"
             @deleted="getNorthDriverList"
@@ -24,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref } from 'vue'
+import { ref } from 'vue'
 import SetupItemCard from './components/SetupItemCard.vue'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'

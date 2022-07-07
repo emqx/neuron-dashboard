@@ -4,10 +4,10 @@
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <AComWithDesc :content="$t('config.deviceConfig')">
-          <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
+          <i class="iconfont iconsetting" @click.stop="goNodeConfig" />
         </AComWithDesc>
         <AComWithDesc :content="$t('common.delete')">
-          <i class="iconfont icondelete" @click.stop="deleteDriver"></i>
+          <i class="iconfont icondelete" @click.stop="deleteDriver" />
         </AComWithDesc>
       </div>
     </div>
@@ -43,20 +43,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {
+  defineComponent, PropType, defineEmits, defineProps, computed,
+} from 'vue'
+</script>
+
+<script lang="ts" setup>
+import { useRouter } from 'vue-router'
+import { DriverItemInList } from '@/types/config'
+import useDeleteDriver from '@/composables/config/useDeleteDriver'
+import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 
 export default defineComponent({
   name: 'SouthDriveItemCard',
 })
-</script>
-
-<script lang="ts" setup>
-import { PropType, defineEmits, defineProps, computed } from 'vue'
-import { DriverItemInList } from '@/types/config'
-import { useRouter } from 'vue-router'
-import useDeleteDriver from '@/composables/config/useDeleteDriver'
-import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
-import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const props = defineProps({
   data: {

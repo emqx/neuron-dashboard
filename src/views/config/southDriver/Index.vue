@@ -10,7 +10,13 @@
     <div v-else>
       <ul class="setup-list">
         <emqx-row :gutter="24">
-          <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.name" tag="li" class="setup-item">
+          <emqx-col
+            v-for="(item, index) in southDriverList"
+            :key="item.name"
+            :span="8"
+            tag="li"
+            class="setup-item"
+          >
             <SouthDriveItemCard
               :data="item"
               @deleted="getSouthDriverList"
@@ -21,9 +27,9 @@
         </emqx-row>
       </ul>
       <emqx-pagination
+        v-model:current-page="pageController.pageNum"
         hide-on-single-page
         layout="total, sizes, prev, pager, next, jumper"
-        v-model:current-page="pageController.pageNum"
         :page-sizes="[30, 60, 90]"
         :total="pageController.total"
         :page-size="pageController.pageSize"
@@ -44,8 +50,9 @@ import { DriverDirection } from '@/types/enums'
 import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
 import { DriverItemInList } from '@/types/config'
 
-const { pageController, getAPageTagData, handleSizeChange, southDriverList, isListLoading, getSouthDriverList } =
-  useSouthDriver(true, true)
+const {
+  pageController, getAPageTagData, handleSizeChange, southDriverList, isListLoading, getSouthDriverList,
+} = useSouthDriver(true, true)
 
 const showDialog = ref(false)
 

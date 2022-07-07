@@ -1,8 +1,8 @@
+import { Ref, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { NumberParamInfo, ParamInfo, StringParamInfo } from '@/types/config'
 import { ParamRequired, TypeOfPluginParam } from '@/types/enums'
 import { createCommonErrorMessage } from '@/utils/utils'
-import { Ref, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 type Props = Readonly<{
   paramKey: string
@@ -26,7 +26,7 @@ export default (props: Props) => {
         const { valid } = props.paramInfo as NumberParamInfo
         if (Number.isNaN(Number(value)) || Number(value) > valid.max || Number(value) < valid.min) {
           ret.push(
-            new Error(t('config.numberErrorPrefix') + valid.min + '-' + valid.max + t('config.numberErrorSuffix')),
+            new Error(`${t('config.numberErrorPrefix') + valid.min}-${valid.max}${t('config.numberErrorSuffix')}`),
           )
         }
         return ret

@@ -1,7 +1,7 @@
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { License } from '@/types/admin'
 import { LogType } from '@/types/enums'
 import http from '@/utils/http'
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export const queryLog = (data: {
   since: number
@@ -9,22 +9,14 @@ export const queryLog = (data: {
   level?: LogType
   page: number
   page_size: number
-}): Promise<AxiosResponse<{ error: number; rows: Array<string>; page_count: number }>> => {
-  return http.get('/log', { params: data })
-}
+}): Promise<AxiosResponse<{ error: number; rows: Array<string>; page_count: number }>> => http.get('/log', { params: data })
 
-export const queryLicense = (): Promise<AxiosResponse<License & { error: number }>> => {
-  return http.get('/license', {
-    _handleErrorSelf: true,
-  } as AxiosRequestConfig)
-}
+export const queryLicense = (): Promise<AxiosResponse<License & { error: number }>> => http.get('/license', {
+  _handleErrorSelf: true,
+} as AxiosRequestConfig)
 
-export const uploadLicense = (license: string): Promise<AxiosResponse<{ error: 0 }>> => {
-  return http.post('/license', {
-    license,
-  })
-}
+export const uploadLicense = (license: string): Promise<AxiosResponse<{ error: 0 }>> => http.post('/license', {
+  license,
+})
 
-export const queryVersion = (): Promise<AxiosResponse<any>> => {
-  return http.get('/version')
-}
+export const queryVersion = (): Promise<AxiosResponse<any>> => http.get('/version')

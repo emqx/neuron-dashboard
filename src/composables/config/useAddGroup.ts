@@ -1,9 +1,9 @@
 import { ref } from 'vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { useI18n } from 'vue-i18n'
 import { GroupForm } from '@/types/config'
 import useNodeList from './useNodeList'
 import { addGroup, updateGroup } from '@/api/config'
-import { EmqxMessage } from '@emqx/emqx-ui'
-import { useI18n } from 'vue-i18n'
 
 export default () => {
   const createRawForm = (): GroupForm => ({

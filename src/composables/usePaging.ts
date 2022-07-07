@@ -26,8 +26,7 @@ export default (): {
   getAPageData: (
     pageMeta: PageMeta,
     filters?: Array<FilterItem>,
-    sortFrom?: SortFrom | undefined,
-  ) => {
+    sortFrom?: SortFrom | undefined,) => {
     data: ListData
     meta: {
       total: number
@@ -40,7 +39,7 @@ export default (): {
   // Use the following six variables to do a cache-like operation to reduce computational overhead
   let latestFiltersString = ''
   const listAfterFilter: Ref<ListData> = ref([])
-  let latestSortFromString: string | undefined = undefined
+  let latestSortFromString: string | undefined
   const listAfterFilterNSort: Ref<ListData> = ref([])
   let currentPageSize = DEFAULT_PAGE_SIZE
   const currentChunks: Ref<Array<ListData>> = ref([])
@@ -57,9 +56,7 @@ export default (): {
     if (filters.length === 0) {
       listAfterFilter.value = totalData.value
     } else {
-      listAfterFilter.value = totalData.value.filter((item) =>
-        filters.every(({ key, value }) => item[key]?.indexOf && item[key].indexOf(value) > -1),
-      )
+      listAfterFilter.value = totalData.value.filter((item) => filters.every(({ key, value }) => item[key]?.indexOf && item[key].indexOf(value) > -1))
     }
   }
 

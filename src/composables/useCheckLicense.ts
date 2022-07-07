@@ -1,6 +1,6 @@
-import { queryLicense } from '@/api/admin'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
+import { queryLicense } from '@/api/admin'
 
 export default () => {
   const { t } = useI18n()

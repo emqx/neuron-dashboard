@@ -2,8 +2,8 @@ import { nextTick, onMounted, onUnmounted } from '@vue/runtime-core'
 import { EChartsType } from 'echarts/core'
 
 export default () => {
-  let chart: undefined | EChartsType = undefined
-  let timer: undefined | number = undefined
+  let chart: undefined | EChartsType
+  let timer: undefined | number
 
   const setEChartInstance = (chartInstance: EChartsType) => {
     chart = chartInstance

@@ -1,0 +1,5 @@
+src/config
+src/assets
+vue.config.js
+mock/
+dist

@@ -1,7 +1,7 @@
+import { onUnmounted, ref, Ref } from 'vue'
 import { querySouthDriverList } from '@/api/config'
 import { DriverItemInList, RawDriverData } from '@/types/config'
 import { NodeLinkState, NodeState } from '@/types/enums'
-import { onUnmounted, ref, Ref } from 'vue'
 import usePaging from '../usePaging'
 import { useFillNodeListStatusData } from './useNodeList'
 
@@ -21,19 +21,17 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   })
   const { setTotalData, getAPageData } = usePaging()
 
-  let refreshStatusTimer: undefined | number = undefined
+  let refreshStatusTimer: undefined | number
 
   const getSouthDriverList = async () => {
     isListLoading.value = true
     try {
       const driverList = await querySouthDriverList()
-      const totalList = driverList.map((item) => {
-        return {
-          ...item,
-          running: NodeState.Running,
-          link: NodeLinkState.Connected,
-        }
-      })
+      const totalList = driverList.map((item) => ({
+        ...item,
+        running: NodeState.Running,
+        link: NodeLinkState.Connected,
+      }))
       totalSouthDriverList.value = totalList
       setTotalData(totalList)
       await getAPageTagData()

@@ -7,7 +7,7 @@
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+        <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">
           {{ $t('common.submit') }}
         </emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
@@ -17,19 +17,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {
+  defineComponent, computed, defineProps, defineEmits, ref, watch, PropType,
+} from 'vue'
+</script>
+
+<script lang="ts" setup>
+import { ElDialog } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { updateDriver } from '@/api/config'
 
 export default defineComponent({
   name: 'EditNodeNameDialog',
 })
-</script>
-
-<script lang="ts" setup>
-import { computed, defineProps, defineEmits, ref, watch, PropType } from 'vue'
-import { ElDialog } from 'element-plus'
-import { useI18n } from 'vue-i18n'
-import { updateDriver } from '@/api/config'
-import { EmqxMessage } from '@emqx/emqx-ui'
 
 const { t } = useI18n()
 const props = defineProps({

@@ -1,9 +1,11 @@
 import { computed, WritableComputedRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { sendCommandToNode } from '@/api/config'
 import { DriverItemInList } from '@/types/config'
-import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
+import {
+  DriverDirection, NodeLinkState, NodeOperationCommand, NodeState,
+} from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-import { useI18n } from 'vue-i18n'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
   const { t } = useI18n()
@@ -51,7 +53,7 @@ export const useToggleNodeStartStopStatus = () => {
       await sendCommandToNode(node.name, status ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
       return Promise.resolve(true)
     } catch (error: any) {
-      /* 
+      /*
         Demand from the backend
         If an error is reported in 2011, Node is running, set the button to green;
         If error 2013 is reported, Node is stop, turn the button to gray.
@@ -59,7 +61,7 @@ export const useToggleNodeStartStopStatus = () => {
       const errorCode = error?.response?.data?.error
       if (errorCode === 2011) {
         return Promise.resolve({ ...node, running: NodeState.Running })
-      } else if (errorCode === 2013) {
+      } if (errorCode === 2013) {
         return Promise.resolve({ ...node, running: NodeState.Stopped })
       }
       return Promise.reject(error)

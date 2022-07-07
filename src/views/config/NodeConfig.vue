@@ -1,5 +1,5 @@
 <template>
-  <div class="node-config" v-emqx-loading="isLoading">
+  <div v-emqx-loading="isLoading" class="node-config">
     <emqx-card shadow="none" class="node-config-bd">
       <h3 class="card-title">
         {{ $t(direction === DriverDirection.North ? 'config.appConfig' : 'config.deviceConfig') }}
@@ -27,11 +27,11 @@
       <template v-if="!isLoading && fieldList.length === 0">
         <div class="empty-placeholder">
           <emqx-empty :description="$t('config.noConfigInfoDesc')" />
-          <emqx-button @click="cancel" size="small">{{ $t('common.back') }}</emqx-button>
+          <emqx-button size="small" @click="cancel">{{ $t('common.back') }}</emqx-button>
         </div>
       </template>
     </emqx-card>
-    <emqx-card shadow="none" class="node-config-ft" v-if="!isLoading && fieldList.length > 0">
+    <emqx-card v-if="!isLoading && fieldList.length > 0" shadow="none" class="node-config-ft">
       <emqx-button type="primary" :loading="isSubmitting" @click="submit">{{ $t('common.submit') }}</emqx-button>
       <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
     </emqx-card>
@@ -51,8 +51,9 @@ const props = defineProps({
   },
 })
 
-const { nodeName, configForm, fieldList, isLoading, formCom, isSubmitting, shouldFieldShow, submit, cancel } =
-  useNodeConfig(props)
+const {
+  nodeName, configForm, fieldList, isLoading, formCom, isSubmitting, shouldFieldShow, submit, cancel,
+} = useNodeConfig(props)
 </script>
 
 <style lang="scss">

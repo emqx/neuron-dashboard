@@ -1,12 +1,14 @@
+import {
+  computed, onMounted, ref, Ref,
+} from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { useI18n } from 'vue-i18n'
 import { queryNodeConfig, queryPluginConfigInfo, submitNodeConfig } from '@/api/config'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { ParamInfo, PluginInfo } from '@/types/config'
 import { DriverDirection, TypeOfPluginParam } from '@/types/enums'
-import { computed, onMounted, ref, Ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { useGetPluginMsgIdMap } from './usePlugin'
-import { EmqxMessage } from '@emqx/emqx-ui'
-import { useI18n } from 'vue-i18n'
 
 interface Field {
   key: string
@@ -75,12 +77,10 @@ export default (props: Props) => {
   const createFieldListFormPluginInfo = (info: PluginInfo) => {
     // TODO: delete params after api changed
     const { params, tag_type, ...fields } = info
-    return Object.keys(fields).map((key) => {
-      return {
-        key,
-        info: fields[key],
-      }
-    })
+    return Object.keys(fields).map((key) => ({
+      key,
+      info: fields[key],
+    }))
   }
 
   const getPluginInfo = async () => {
@@ -94,11 +94,9 @@ export default (props: Props) => {
     fieldList.value = createFieldListFormPluginInfo(pluginInfo)
   }
 
-  const keysToString = (obj: Record<string, any> | undefined) => {
-    return Object.keys(obj ?? {})
-      .sort()
-      .join(',')
-  }
+  const keysToString = (obj: Record<string, any> | undefined) => Object.keys(obj ?? {})
+    .sort()
+    .join(',')
 
   const fillOutTheFormFromConfiguredData = () => {
     const configFormKeysString = keysToString(configForm.value)

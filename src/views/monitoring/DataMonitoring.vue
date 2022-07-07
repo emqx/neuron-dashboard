@@ -11,13 +11,13 @@
       <div class="target-select">
         <div>
           <label>{{ $t('config.southDevice') }}</label>
-          <emqx-select v-model="currentGroup.node" @change="selectedNodeChanged" filterable>
+          <emqx-select v-model="currentGroup.node" filterable @change="selectedNodeChanged">
             <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
           </emqx-select>
         </div>
         <div>
           <label>{{ $t('config.groupName') }}</label>
-          <emqx-select v-model="currentGroup.groupName" @change="selectedGroupChanged" filterable>
+          <emqx-select v-model="currentGroup.groupName" filterable @change="selectedGroupChanged">
             <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
           </emqx-select>
         </div>
@@ -26,8 +26,8 @@
 
     <div class="table-container">
       <emqx-table :data="tableData" :empty-text="tableEmptyText">
-        <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="100"></emqx-table-column>
-        <emqx-table-column prop="address" :label="$t('config.address')" min-width="100"></emqx-table-column>
+        <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="100" />
+        <emqx-table-column prop="address" :label="$t('config.address')" min-width="100" />
         <emqx-table-column :label="$t('common.type')" width="90">
           <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
         </emqx-table-column>
@@ -41,8 +41,8 @@
                 </template>
                 <label class="hexadecimal-label">{{ $t('data.displayTheValueInHexadecimal') }}</label>
                 <emqx-switch
-                  size="mini"
                   v-model="showValueByHexadecimal"
+                  size="mini"
                   @change="handleShowValueByHexadecimalChanged"
                 />
               </el-popover>
@@ -57,15 +57,15 @@
 
         <emqx-table-column width="100" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
-            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
+            <emqx-button v-if="canWrite(row)" type="text" @click="writeData(row)">Write</emqx-button>
           </template>
         </emqx-table-column>
       </emqx-table>
     </div>
     <emqx-pagination
+      v-model:current-page="pageController.num"
       hide-on-single-page
       layout="total, sizes, prev, pager, next, jumper"
-      v-model:current-page="pageController.num"
       :page-sizes="[100, 200, 300, 400, 500]"
       :total="pageController.total"
       :page-size="pageController.size"
@@ -84,8 +84,8 @@
 <script lang="ts" setup>
 import { ref, Ref } from 'vue'
 import { ElPopover } from 'element-plus'
-import useDataMonitoring, { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import dateformat from 'dateformat'
+import useDataMonitoring, { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import WriteDialog from './components/WriteDialog.vue'
 import { getErrorMsg } from '@/utils/utils'
 import { useTagTypeSelect } from '@/composables/config/useAddTag'

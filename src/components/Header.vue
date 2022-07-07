@@ -1,23 +1,23 @@
 <template>
   <emqx-header class="header">
     <template #title>
-      <img src="../assets/images/logo.png" alt="neuron-logo" width="141" />
+      <img src="../assets/images/logo.png" alt="neuron-logo" width="141">
     </template>
-    <template v-slot:right>
+    <template #right>
       <div>
         <emqx-dropdown>
           <span class="el-dropdown-link">
             {{ $t('common.systemInformation') }}
-            <i class="el-icon-arrow-down el-icon--right"></i>
+            <i class="el-icon-arrow-down el-icon--right" />
           </span>
           <template #dropdown>
             <emqx-dropdown-menu class="header-menu">
               <emqx-dropdown-item @click="goLicense">
-                <i class="iconfont iconLicense"></i>
+                <i class="iconfont iconLicense" />
                 <span>License</span>
               </emqx-dropdown-item>
               <emqx-dropdown-item @click="goAbout">
-                <i class="iconfont iconabout"></i>
+                <i class="iconfont iconabout" />
                 <span> {{ $t('common.about') }}</span>
               </emqx-dropdown-item>
             </emqx-dropdown-menu>
@@ -27,9 +27,9 @@
         <emqx-dropdown>
           <span class="el-dropdown-link">
             <span class="user-bg">
-              <i class="iconfont iconAdministration1"></i>
+              <i class="iconfont iconAdministration1" />
             </span>
-            <i class="el-icon-arrow-down el-icon--right"></i>
+            <i class="el-icon-arrow-down el-icon--right" />
           </span>
           <template #dropdown>
             <emqx-dropdown-menu class="header-menu">
@@ -43,17 +43,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+</script>
+
+<script lang="ts" setup>
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Header',
 })
-</script>
-
-<script lang="ts" setup>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 
 const store = useStore()
 const router = useRouter()

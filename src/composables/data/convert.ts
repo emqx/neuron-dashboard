@@ -36,9 +36,7 @@ const chunkStrFromEnd = (str: string, chunkSize: number) => {
 /**
  * aabbccdd => aa bb cc dd
  */
-const insertString = (str: string, joiner: string, splitLength = 2) => {
-  return chunkStrFromEnd(str, splitLength).join(joiner)
-}
+const insertString = (str: string, joiner: string, splitLength = 2) => chunkStrFromEnd(str, splitLength).join(joiner)
 
 /**
  * count: 01 + 10 = 11
@@ -49,11 +47,11 @@ const addBinary = (str1: string, str2: string) => {
   let binaryStr2 = str2
 
   while (binaryStr1.length < binaryStr2.length) {
-    binaryStr1 = '0' + binaryStr1
+    binaryStr1 = `0${binaryStr1}`
   }
 
   while (binaryStr2.length < binaryStr1.length) {
-    binaryStr2 = '0' + binaryStr2
+    binaryStr2 = `0${binaryStr2}`
   }
 
   let addOne = 0
@@ -115,10 +113,9 @@ const getComplement = (str: string) => {
 /**
  * because toString(2) has the problem of loss of precision when the number is too large
  */
-const transHexStrToBinaryStr = (str: string) =>
-  Array.from(str)
-    .map((item) => fillString(parseInt(item, 16).toString(2), '0', 4, true))
-    .join('')
+const transHexStrToBinaryStr = (str: string) => Array.from(str)
+  .map((item) => fillString(parseInt(item, 16).toString(2), '0', 4, true))
+  .join('')
 
 /**
  * '1010' => 'a5'
@@ -131,9 +128,7 @@ const transA4DigitBinaryNumberStrToHexStr = (str: string) => {
     return
   }
   return Array.from(str)
-    .reduce((count, num, index) => {
-      return count + parseInt(num) * Math.pow(2, 4 - 1 - index)
-    }, 0)
+    .reduce((count, num, index) => count + parseInt(num) * 2 ** (4 - 1 - index), 0)
     .toString(16)
 }
 
@@ -164,7 +159,7 @@ export const transFloatNumberToHex = (num: number | string, type: TagType.FLOAT 
 
   const { totalLength, exponentLength } = floatMsgMap[type]
   const mantissaLength = totalLength - exponentLength - 1
-  const exponentBaseNum = Math.pow(2, exponentLength - 1) - 1
+  const exponentBaseNum = 2 ** (exponentLength - 1) - 1
 
   if (inputNum === 0) {
     return new Array(totalLength / 4).fill('0').join('')
@@ -185,7 +180,7 @@ export const transFloatNumberToHex = (num: number | string, type: TagType.FLOAT 
   let binaryString = numPart.toString(2)
   if (binaryString >= '1') {
     if (binaryString.indexOf('.') === -1) {
-      binaryString = binaryString + '.0'
+      binaryString += '.0'
     }
     numForAddToExponent = binaryString.indexOf('.') - 1
   } else {
@@ -234,9 +229,7 @@ export const transNegativeNumberToHex = (
 /**
  * common base conversion
  */
-export const transPositiveIntegerToHex = (value: string) => {
-  return Number(value).toString(16)
-}
+export const transPositiveIntegerToHex = (value: string) => Number(value).toString(16)
 
 /**
  * For float & double
@@ -253,7 +246,7 @@ export const transFloatHexToDecimalNum = (hexStr: string, type: TagType.FLOAT | 
 
   const { totalLength, exponentLength } = floatMsgMap[type]
   const hexStrLength = totalLength / 4
-  const exponentBaseNum = Math.pow(2, exponentLength - 1) - 1
+  const exponentBaseNum = 2 ** (exponentLength - 1) - 1
 
   if (hex.length > hexStrLength || isNaN(parseInt(hex, 16))) {
     return new Error('hex error')
@@ -270,27 +263,25 @@ export const transFloatHexToDecimalNum = (hexStr: string, type: TagType.FLOAT | 
   const exponentPartBinaryStr = binaryStr.substring(1, exponentLength + 1)
   const numExponentPartNeedToSub = parseInt(exponentPartBinaryStr, 2) - exponentBaseNum
   let mantissaPartBinaryStr = binaryStr.substring(exponentLength + 1)
-  mantissaPartBinaryStr = '1' + mantissaPartBinaryStr
+  mantissaPartBinaryStr = `1${mantissaPartBinaryStr}`
   let totalBinaryStrWithPoint = ''
   if (numExponentPartNeedToSub >= 0) {
     // the number bigger than 1
-    totalBinaryStrWithPoint =
-      mantissaPartBinaryStr.substring(0, numExponentPartNeedToSub + 1) +
-      '.' +
-      mantissaPartBinaryStr.substring(numExponentPartNeedToSub + 1)
+    totalBinaryStrWithPoint = `${mantissaPartBinaryStr.substring(0, numExponentPartNeedToSub + 1)
+    }.${
+      mantissaPartBinaryStr.substring(numExponentPartNeedToSub + 1)}`
   } else {
-    totalBinaryStrWithPoint =
-      '0.' + fillString(mantissaPartBinaryStr, '0', mantissaPartBinaryStr.length - numExponentPartNeedToSub - 1, true)
+    totalBinaryStrWithPoint = `0.${fillString(mantissaPartBinaryStr, '0', mantissaPartBinaryStr.length - numExponentPartNeedToSub - 1, true)}`
   }
 
   if (totalBinaryStrWithPoint.indexOf('.') == -1) {
-    totalBinaryStrWithPoint = totalBinaryStrWithPoint + '.0'
+    totalBinaryStrWithPoint += '.0'
   }
   const [exponentPart, mantissaPart] = totalBinaryStrWithPoint.split('.')
   const exponentPartNum = parseInt(exponentPart, 2)
   let mantissaPartNum = 0
   for (let i = 0; i < mantissaPart.length; i++) {
-    mantissaPartNum += parseFloat(mantissaPart.charAt(i)) * Math.pow(2, -(i + 1))
+    mantissaPartNum += parseFloat(mantissaPart.charAt(i)) * 2 ** -(i + 1)
   }
   let totalNumPart = exponentPartNum + mantissaPartNum
   if (flagBit === 1) {
@@ -318,8 +309,7 @@ export const transUintHexToDecimalNum = (
   binaryStr = fillString(binaryStr, '0', binaryLength, true)
   const flagBit = Number(binaryStr.substring(0, 1))
   if (flagBit === 1) {
-    binaryStr =
-      getComplement(fillString((parseInt(binaryStr.substring(1), 2) - 1).toString(2), '0', binaryLength, true)) || ''
+    binaryStr = getComplement(fillString((parseInt(binaryStr.substring(1), 2) - 1).toString(2), '0', binaryLength, true)) || ''
     return -parseInt(binaryStr.substring(1), 2)
   }
   return parseInt(binaryStr, 2)
@@ -328,6 +318,4 @@ export const transUintHexToDecimalNum = (
 /**
  * For int
  */
-export const transIntHexToDecimalNum = (intHex: string) => {
-  return parseInt(intHex, 16)
-}
+export const transIntHexToDecimalNum = (intHex: string) => parseInt(intHex, 16)

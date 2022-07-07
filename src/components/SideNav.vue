@@ -1,24 +1,30 @@
 <template>
   <emqx-menu class="el-menu-vertical-demo side-nav" router :default-active="actvieMenu">
     <template v-for="(nav, index) in navList">
-      <emqx-menu-item class="nav-item" v-if="!nav.subMenus" style="padding-left: 0" :key="index" :index="nav.to">
+      <emqx-menu-item
+        v-if="!nav.subMenus"
+        :key="index"
+        class="nav-item"
+        style="padding-left: 0"
+        :index="nav.to"
+      >
         <div class="nav-item-content">
-          <i class="nav-icon iconfont" :class="nav.icon"></i>
+          <i class="nav-icon iconfont" :class="nav.icon" />
           <span class="nav-label ellipsis">{{ nav.label }}</span>
         </div>
       </emqx-menu-item>
       <emqx-submenu v-else :key="nav.to" :index="nav.to">
         <template #title>
           <div class="nav-item-content">
-            <i class="nav-icon iconfont" :class="nav.icon"></i>
+            <i class="nav-icon iconfont" :class="nav.icon" />
             <span class="nav-label ellipsis">{{ nav.label }}</span>
           </div>
         </template>
         <div class="sub-menu-list">
           <emqx-menu-item
-            class="nav-item"
             v-for="(subMenuItem, index) in nav.subMenus"
             :key="index"
+            class="nav-item"
             :index="subMenuItem.to"
           >
             <div class="nav-item-content">
@@ -33,7 +39,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from 'vue'
+import {
+  computed, defineComponent, reactive, toRefs,
+} from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import StatusBar from './StatusBar.vue'
@@ -125,7 +133,7 @@ export default defineComponent({
         return ret
       }
       ret = firstLevelRoutePathArr.find((item) => currentPath.match(item))
-      return ret ? ret : ''
+      return ret || ''
     })
 
     const countRoutePath = () => {

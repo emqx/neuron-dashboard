@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="group" v-emqx-loading="isListLoading">
+  <emqx-card v-emqx-loading="isListLoading" class="group">
     <h3 class="card-title">{{ $t('config.groupList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left common-flex">
@@ -39,9 +39,9 @@
       <emqx-table-column label="No" :width="60">
         <template #default="{ index }">{{ index + 1 }}</template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.groupName')" prop="name"></emqx-table-column>
-      <emqx-table-column label="Tag Count" prop="tag_count"></emqx-table-column>
-      <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
+      <emqx-table-column :label="$t('config.groupName')" prop="name" />
+      <emqx-table-column label="Tag Count" prop="tag_count" />
+      <emqx-table-column label="Interval" prop="interval" />
       <emqx-table-column align="right">
         <template #default="{ row }">
           <AComWithDesc :content="$t('common.view')">
@@ -57,20 +57,21 @@
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
-  <GroupDialog v-model="showGroupDialog" :current-node="node" @submitted="getGroupList" :group="currentGroup" />
+  <GroupDialog v-model="showGroupDialog" :current-node="node" :group="currentGroup" @submitted="getGroupList" />
 </template>
 
 <script lang="ts" setup>
 import { ref, Ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import useGroupList from '@/composables/config/useGroupList'
 import GroupDialog from './components/GroupDialog.vue'
 import { GroupData, GroupForm } from '@/types/config'
-import { useRouter } from 'vue-router'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const router = useRouter()
-const { node, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =
-  useGroupList()
+const {
+  node, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup,
+} = useGroupList()
 const showGroupDialog = ref(false)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 

@@ -38,12 +38,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineExpose } from 'vue'
+import {
+  ref, defineExpose, computed, defineProps, PropType, defineEmits, WritableComputedRef,
+} from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useTagTypeSelect } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
 import { PluginInfo, TagForm } from '@/types/config'
-import { computed, defineProps, PropType, defineEmits, WritableComputedRef } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { TagType } from '@/types/enums'
 
 const { t } = useI18n()
@@ -73,9 +74,7 @@ const tagTypeOptListAfterFilter = computed(() => {
   if (!props?.nodePluginInfo?.tag_type) {
     return tagTypeOptList
   }
-  return tagTypeOptList.filter((tagType) =>
-    (props.nodePluginInfo as PluginInfo).tag_type.some((canSelectTagType) => canSelectTagType === tagType.value),
-  )
+  return tagTypeOptList.filter((tagType) => (props.nodePluginInfo as PluginInfo).tag_type.some((canSelectTagType) => canSelectTagType === tagType.value))
 })
 
 const form: WritableComputedRef<TagForm> = computed({
@@ -113,9 +112,7 @@ const validate = () => {
   return formCom.value.validate()
 }
 
-const resetFields = () => {
-  return formCom.value.resetField()
-}
+const resetFields = () => formCom.value.resetField()
 
 defineExpose({
   validate,

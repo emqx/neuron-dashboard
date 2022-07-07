@@ -4,7 +4,7 @@
       <h3 class="card-title">License</h3>
     </div>
     <div class="license">
-      <emqx-descriptions :column="1" v-if="hasLicense">
+      <emqx-descriptions v-if="hasLicense" :column="1">
         <emqx-descriptions-item :label="$t('admin.licenseType')">
           {{ licenseData.license_type }}
         </emqx-descriptions-item>
@@ -28,7 +28,7 @@
         </emqx-descriptions-item>
       </emqx-descriptions>
       <div class="msg" :class="{ 'align-center': !hasLicense }">
-        <img :src="require('@/assets/images/license.png')" width="400" v-if="!hasLicense" />
+        <img v-if="!hasLicense" :src="require('@/assets/images/license.png')" width="400">
         <div class="method-text">
           <p v-if="!hasLicense">{{ $t('admin.licensePlaceholder') }}</p>
           <p v-else>{{ $t('admin.howToGetTheCertificate') }}</p>
@@ -57,11 +57,11 @@
 
 <script setup lang="ts">
 import { ref, Ref, computed } from 'vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { useI18n } from 'vue-i18n'
 import { License } from '@/types/admin'
 import { queryLicense, uploadLicense } from '@/api/admin'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
-import { EmqxMessage } from '@emqx/emqx-ui'
-import { useI18n } from 'vue-i18n'
 
 const { t, locale } = useI18n()
 const isDataLoading = ref(false)
@@ -111,7 +111,7 @@ const licenseStatus = computed(() => {
 const { readFile } = useUploadFileAndRead()
 const handleUpload = async (file: any) => {
   try {
-    let content: string = (await readFile(file)) as string
+    const content: string = (await readFile(file)) as string
     await uploadLicense(content)
     EmqxMessage.success(t('admin.uploadSuccessful'))
     getLicense()
