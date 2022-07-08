@@ -20,22 +20,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
-</script>
-
 <script lang="ts" setup>
+import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { login as requestLogin } from '@/api/common'
 import { createCommonErrorMessage } from '@/utils/utils'
 import useCheckLicense from '@/composables/useCheckLicense'
-
-export default defineComponent({
-  name: 'Login',
-})
-
 const router = useRouter()
 const { t } = useI18n()
 const store = useStore()
@@ -45,7 +37,7 @@ const { checkLicense } = useCheckLicense()
 const formCom = ref()
 const form = reactive({
   userName: '',
-  password: '',
+  password: ''
 })
 const rules = {
   userName: [
@@ -80,6 +72,13 @@ const login = async () => {
     isLoading.value = false
   }
 }
+</script>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  name: 'Login',
+})
 </script>
 
 <style lang="scss">

@@ -9,15 +9,20 @@ module.exports = {
     'plugin:vue/vue3-essential',
     'airbnb-base',
     'plugin:vue/vue3-recommended',
+    'eslint:recommended',
   ],
-  plugins: ['@typescript-eslint', 'vue'],
+  plugins: ['vue', '@typescript-eslint'],
   rules: {
+    'import/extensions': 0,
+    // 'import/extensions': ['error', 'always', {
+    //   js: 'never',
+    //   vue: 'never',
+    // }],
     semi: 0,
     'max-len': 0,
     // 'prettier/prettier': 'error',
     'no-console': 'off',
     'no-debugger': 'off',
-    'import/extensions': 0,
     'vue/max-attributes-per-line': [
       'error',
       {
@@ -47,7 +52,15 @@ module.exports = {
     camelcase: 'off',
   },
   parserOptions: {
-    // parser: 'babel-eslint',
-    parser: '@typescript-eslint/parser',
+    parser: 'babel-eslint',
+    sourceType: 'module',
+    // parser: '@typescript-eslint/parser',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.vue'],
+      },
+    },
   },
 }

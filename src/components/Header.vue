@@ -42,17 +42,10 @@
   </emqx-header>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
-</script>
-
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-
-export default defineComponent({
-  name: 'Header',
-})
 
 const store = useStore()
 const router = useRouter()
@@ -79,6 +72,14 @@ const logout = async () => {
     console.error(error)
   }
 }
+</script>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  name: 'Header',
+})
+
 </script>
 
 <style lang="scss">
