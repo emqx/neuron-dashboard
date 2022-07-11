@@ -20,22 +20,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { createCommonErrorMessage } from '@/utils/utils'
-import { defineComponent, reactive } from 'vue'
-
-export default defineComponent({
-  name: 'Login',
-})
-</script>
-
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { login as requestLogin } from '@/api/common'
+import useCheckLicense from '@/composables/useCheckLicense'
+import { createCommonErrorMessage } from '@/utils/utils'
+import { reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import useCheckLicense from '@/composables/useCheckLicense'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -136,7 +128,7 @@ const login = async () => {
   .emqx-form-item {
     margin-bottom: 30px;
   }
-  /* 
+  /*
     给的页面里面，除了license，用户管理和关于之外，其他的都已经写了
     license，用户管理和关于还没有相关接口，如果有相关接口了很快就可以写完
   */

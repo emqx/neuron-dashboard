@@ -82,9 +82,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref } from 'vue'
+import type { Ref } from 'vue'
+import { ref } from 'vue'
 import { ElPopover } from 'element-plus'
-import useDataMonitoring, { TagDataInTable } from '@/composables/data/useDataMonitoring'
+import type { TagDataInTable } from '@/composables/data/useDataMonitoring'
+import useDataMonitoring from '@/composables/data/useDataMonitoring'
 import dateformat from 'dateformat'
 import WriteDialog from './components/WriteDialog.vue'
 import { getErrorMsg } from '@/utils/utils'

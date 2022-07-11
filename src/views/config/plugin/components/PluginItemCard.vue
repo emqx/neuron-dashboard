@@ -18,7 +18,7 @@
       </div>
       <div class="info-row">
         <label>{{ $t('config.pluginKind') }}</label>
-        <span class="ellipsis">{{ PluginKind[data.kind] }}</span>
+        <span class="ellipsis">{{ data.kind ? PluginKind[data.kind] : '-' }}</span>
       </div>
       <div class="info-row">
         <label>{{ $t('config.libName') }}</label>
@@ -29,12 +29,13 @@
 </template>
 
 <script lang="ts" setup>
-import { useDeletePlugin, usePluginIcon } from '@/composables/config/usePlugin'
-import { CreatedPlugin } from '@/types/config'
-import { PluginKind } from '@/types/enums'
-import { defineProps, PropType, defineEmits } from 'vue'
-import { useNodeType } from '@/composables/config/useDriver'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import { useNodeType } from '@/composables/config/useDriver'
+import { useDeletePlugin } from '@/composables/config/usePlugin'
+import type { CreatedPlugin } from '@/types/config'
+import { PluginKind } from '@/types/enums'
+import type { PropType } from 'vue'
+import { defineEmits, defineProps } from 'vue'
 
 const props = defineProps({
   data: {
@@ -45,7 +46,6 @@ const props = defineProps({
 const emit = defineEmits(['deleted'])
 const { getNodeTypeLabelByValue } = useNodeType()
 const { delPlugin } = useDeletePlugin()
-const { getPluginIcon } = usePluginIcon()
 const deletePlugin = async () => {
   await delPlugin(props.data)
   emit('deleted')

@@ -1,4 +1,5 @@
-import { computed, Ref, ref, WritableComputedRef } from 'vue'
+import type { Ref, WritableComputedRef } from 'vue'
+import { computed, ref } from 'vue'
 import { LogType } from '@/types/enums'
 import { queryLog } from '@/api/admin'
 import { EmqxMessage } from '@emqx/emqx-ui'

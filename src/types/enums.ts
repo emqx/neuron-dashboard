@@ -18,6 +18,7 @@ export enum SystemStatus {
 export enum DriverDirection {
   North = 2,
   South = 1,
+  // now seem useless
   Web = 2,
 }
 

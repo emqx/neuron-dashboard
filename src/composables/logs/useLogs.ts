@@ -1,4 +1,5 @@
-import { reactive, Ref, ref } from '@vue/reactivity'
+import type { Ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 interface PageMap {
   [key: number]: number

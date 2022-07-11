@@ -66,18 +66,16 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
-import MessageChart from './components/MessageChart.vue'
-import ConfigDataCard from './components/ConfigDataCard.vue'
+import type { DriverItemInList } from '@/types/config'
+import { DriverDirection } from '@/types/enums'
+import { MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW } from '@/utils/constants'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
-import { DriverItemInList } from '@/types/config'
 import SetupItemCard from '@/views/config/northDriver/components/SetupItemCard.vue'
 import SouthDriveItemCard from '@/views/config/southDriver/components/SouthDriveItemCard.vue'
-import { MAX_NUM_IN_A_ROW_ON_THE_OVERVIEW } from '@/utils/constants'
-import { DriverDirection } from '@/types/enums'
-import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
+import { onMounted, ref } from 'vue'
 
 const { northDriverList, getNorthDriverList } = useNorthDriver(false, true)
 const { southDriverList, getSouthDriverList } = useSouthDriver(false, true)

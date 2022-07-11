@@ -20,9 +20,9 @@
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
-          $t('common.submit')
-        }}</emqx-button>
+        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+          {{ $t('common.submit') }}
+        </emqx-button>
         <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
       </span>
     </template>

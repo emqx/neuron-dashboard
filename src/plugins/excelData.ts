@@ -11,7 +11,7 @@ const parseFileDataToArray = (data: ArrayBuffer): ParsedTableData => {
   rawTableData.SheetNames.forEach((sheetName) => {
     ret.push({
       sheetName,
-      sheet: XLSX.utils.sheet_to_json(rawTableData.Sheets[sheetName])
+      sheet: XLSX.utils.sheet_to_json(rawTableData.Sheets[sheetName]),
     })
   })
   return ret

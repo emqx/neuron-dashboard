@@ -1,8 +1,9 @@
 import { queryNodeState, queryNorthDriverList, querySouthDriverList } from '@/api/config'
-import { DriverItemInList, RawDriverData } from '@/types/config'
+import type { DriverItemInList, RawDriverData } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import { createMapFromArray } from '@/utils/utils'
-import { ref, Ref } from 'vue'
+import type { Ref } from 'vue'
+import { ref } from 'vue'
 
 export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
   const nodeMsgMap: Ref<Record<string, RawDriverData>> = ref({})

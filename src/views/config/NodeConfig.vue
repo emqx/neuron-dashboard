@@ -39,9 +39,10 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType } from 'vue'
+import type { PropType } from 'vue'
+import { defineProps } from 'vue'
 import useNodeConfig from '@/composables/config/useNodeConfig'
-import { DriverDirection } from '@/types/enums'
+import type { DriverDirection } from '@/types/enums'
 import NodeConfigParamItem from './components/NodeConfigParamItem.vue'
 
 const props = defineProps({

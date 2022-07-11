@@ -1,11 +1,11 @@
 import { addSubscription, deleteSubscription, queryGroupList, querySubscription } from '@/api/config'
-import { GroupData, SubscriptionData, SubscriptionDataForm } from '@/types/config'
-import { ref, computed, Ref, nextTick } from 'vue'
-import { EmqxMessageBox } from '@emqx/emqx-ui'
+import type { GroupData, SubscriptionData, SubscriptionDataForm } from '@/types/config'
+import type { Ref } from 'vue'
+import { ref, computed, nextTick } from 'vue'
+import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import useSouthDriver from './useSouthDriver'
-import { EmqxMessage } from '@emqx/emqx-ui'
 import { createCommonErrorMessage } from '@/utils/utils'
 
 interface SubscriptionDataInTable extends SubscriptionData {

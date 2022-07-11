@@ -1,6 +1,6 @@
-import { TagDataInMonitoring, WriteData } from '@/types/data'
+import type { TagDataInMonitoring, WriteData } from '@/types/data'
 import http from '@/utils/http'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
 export const getMonitoringData = (
   nodeName: string,

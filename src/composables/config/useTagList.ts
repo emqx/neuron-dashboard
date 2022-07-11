@@ -1,6 +1,7 @@
 import { deleteTag, queryTagList } from '@/api/config'
-import { TagData, TagForm } from '@/types/config'
-import { Ref, ref, computed } from 'vue'
+import type { TagData, TagForm } from '@/types/config'
+import type { Ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
@@ -44,18 +45,18 @@ export default () => {
 
   const { totalData, setTotalData, getAPageData } = usePaging()
 
+  const getAPageTagData = () => {
+    const { data, meta } = getAPageData(pageController.value)
+    tagList.value = data
+    pageController.value.total = meta.total
+  }
+
   const getTagList = async () => {
     isListLoading.value = true
     const data = await queryTagList(node.value, groupName.value)
     setTotalData(data.map((item) => Object.assign(item, { checked: false })))
     getAPageTagData()
     isListLoading.value = false
-  }
-
-  const getAPageTagData = () => {
-    const { data, meta } = getAPageData(pageController.value)
-    tagList.value = data
-    pageController.value.total = meta.total
   }
 
   const refreshTable = () => {

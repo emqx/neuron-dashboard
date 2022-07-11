@@ -29,7 +29,7 @@ import {
   transUintHexToDecimalNum,
   transIntHexToDecimalNum,
 } from './convert'
-import { TagDataInTable } from './useDataMonitoring'
+import type { TagDataInTable } from './useDataMonitoring'
 
 export enum WriteDataErrorCode {
   FormattingError = 1,
@@ -39,23 +39,23 @@ export enum WriteDataErrorCode {
   GreaterThanMaxSafeInteger,
 }
 
+interface RangeObj {
+  MIN: number
+  MAX: number
+}
+
 export default () => {
   const createIntTypeRange = (bitsNum: number): RangeObj => {
     return {
-      MIN: -Math.pow(2, bitsNum - 1),
-      MAX: Math.pow(2, bitsNum - 1) - 1,
+      MIN: -(2 ** (bitsNum - 1)),
+      MAX: 2 ** (bitsNum - 1) - 1,
     }
   }
   const createUIntTypeRange = (bitsNum: number): RangeObj => {
     return {
       MIN: 0,
-      MAX: Math.pow(2, bitsNum) - 1,
+      MAX: 2 ** bitsNum - 1,
     }
-  }
-
-  interface RangeObj {
-    MIN: number
-    MAX: number
   }
 
   const INT8_RANGE = createIntTypeRange(8)
@@ -82,7 +82,7 @@ export default () => {
   const checkLessThanMinimumSafeNumber = (value: string) => Number(value) < Number.MIN_SAFE_INTEGER
   const checkGreaterThanMaximumSafeNumber = (value: string): boolean => Number(value) > Number.MAX_SAFE_INTEGER
   const checkInt = (rangeObj: RangeObj, value: string): Promise<Error | boolean> => {
-    let errorCode: undefined | WriteDataErrorCode = undefined
+    let errorCode: undefined | WriteDataErrorCode
     if (!checkIsInt(value)) {
       errorCode = WriteDataErrorCode.FormattingError
     } else if (checkLessThanMinimumSafeNumber(value)) {

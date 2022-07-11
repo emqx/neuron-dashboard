@@ -36,11 +36,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, PropType, watch, ref } from 'vue'
-import { ElDialog } from 'element-plus'
-import { TagDataInTable } from '@/composables/data/useDataMonitoring'
+import type { TagDataInTable } from '@/composables/data/useDataMonitoring'
+import useWriteDataDialog from '@/composables/data/useWriteDataDialog'
 import { TagType } from '@/types/enums'
-import useWriteDataDialog, { Group } from '@/composables/data/useWriteDataDialog'
+import { ElDialog } from 'element-plus'
+import type { PropType } from 'vue'
+import { computed, defineEmits, defineProps, watch } from 'vue'
 
 const props = defineProps({
   modelValue: {

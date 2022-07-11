@@ -1,10 +1,10 @@
-import { ref, Ref } from 'vue'
-import { PluginKind } from '@/types/enums'
-import { addPlugin, deletePlugin, queryPluginList, updatePlugin } from '@/api/config'
-import { CreatedPlugin, PluginForm } from '@/types/config'
-import { createCommonErrorMessage, createOptionListFromEnum } from '@/utils/utils'
-import { useI18n } from 'vue-i18n'
+import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
+import type { CreatedPlugin, PluginForm } from '@/types/config'
+import { createCommonErrorMessage } from '@/utils/utils'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
+import type { Ref } from 'vue'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export default () => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])

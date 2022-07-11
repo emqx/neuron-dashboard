@@ -40,22 +40,15 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'SetupItemCard',
-})
-</script>
-
 <script lang="ts" setup>
-import { DriverItemInList } from '@/types/config'
-import { PropType, defineEmits, defineProps, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
 import { PluginKind } from '@/types/enums'
-import AComWithDesc from '@/components/AComWithDesc.vue'
+import type { PropType } from 'vue'
+import { computed, defineEmits, defineProps } from 'vue'
+import { useRouter } from 'vue-router'
+import type { DriverItemInList } from '@/types/config'
 
 const emit = defineEmits(['deleted', 'updated', 'toggleStatus'])
 const router = useRouter()

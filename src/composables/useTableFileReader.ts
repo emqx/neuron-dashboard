@@ -18,7 +18,7 @@ export default () => {
           })
           wb.SheetNames.forEach((sheetName) => {
             result.push({
-              sheetName: sheetName,
+              sheetName,
               sheet: utils.sheet_to_json(wb.Sheets[sheetName]),
             })
           })

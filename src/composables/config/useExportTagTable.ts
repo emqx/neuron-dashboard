@@ -3,7 +3,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { exportExcelData } from '@/utils/utils'
 import { useTagAttributeTypeSelect, useTagTypeSelect } from './useAddTag'
-import { TagData } from '@/types/config'
+import type { TagData } from '@/types/config'
 import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
 
 export default () => {

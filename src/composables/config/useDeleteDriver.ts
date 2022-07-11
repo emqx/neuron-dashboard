@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
 import { deleteDriver } from '@/api/config'
-import { DriverItemInList } from '@/types/config'
+import type { DriverItemInList } from '@/types/config'
 
 export default () => {
   const { t } = useI18n()

@@ -1,8 +1,8 @@
-import { computed, WritableComputedRef } from 'vue'
 import { sendCommandToNode } from '@/api/config'
-import { DriverItemInList } from '@/types/config'
+import type { DriverItemInList } from '@/types/config'
 import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
@@ -59,7 +59,8 @@ export const useToggleNodeStartStopStatus = () => {
       const errorCode = error?.response?.data?.error
       if (errorCode === 2011) {
         return Promise.resolve({ ...node, running: NodeState.Running })
-      } else if (errorCode === 2013) {
+      }
+      if (errorCode === 2013) {
         return Promise.resolve({ ...node, running: NodeState.Stopped })
       }
       return Promise.reject(error)
@@ -83,7 +84,7 @@ export const useNodeTypeSelect = () => {
 
 export const useNodeType = () => {
   const { t } = useI18n()
-  const getNodeTypeLabelByValue = (value: 1 | 2 | 3 | 4 | 5) => {
+  const getNodeTypeLabelByValue = (value: 1 | 2 | null) => {
     if (SOUTH_DRIVER_NODE_TYPE.some((val) => val === value)) {
       return t('config.southDevice')
     }

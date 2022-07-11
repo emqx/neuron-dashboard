@@ -1,5 +1,5 @@
-import { Merge } from 'type-fest'
-import { DriverDirection, NodeLinkState, NodeState, ParamRequired, PluginKind, TypeOfPluginParam } from './enums'
+import type { Merge } from 'type-fest'
+import type { DriverDirection, NodeLinkState, NodeState, ParamRequired, PluginKind, TypeOfPluginParam } from './enums'
 
 /**
  * Params get from API
@@ -14,6 +14,7 @@ export interface CreatedPlugin extends PluginForm {
   kind: PluginKind | null
   node_type: DriverDirection | null
   name: string
+  description: string
 }
 
 export interface NodeForm {

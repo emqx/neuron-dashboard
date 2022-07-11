@@ -42,25 +42,12 @@
   </emqx-header>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'Header',
-})
-</script>
-
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 const store = useStore()
 const router = useRouter()
-
-const status = computed(() => store.state.status || {})
-
-const user = computed(() => store.state.status || {})
 
 const goLicense = () => {
   router.push({ name: 'License' })
@@ -73,9 +60,7 @@ const goAbout = () => {
 const logout = async () => {
   try {
     store.commit('LOGOUT')
-    router.push({
-      name: 'Login',
-    })
+    router.push({ name: 'Login' })
   } catch (error) {
     console.error(error)
   }

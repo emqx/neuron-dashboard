@@ -1,4 +1,4 @@
-import { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import { DriverDirection } from '@/types/enums'
@@ -23,11 +23,6 @@ const routes: Array<RouteRecordRaw> = [
         path: '/monitoring/data',
         name: 'DataMonitoring',
         component: () => import('@/views/monitoring/DataMonitoring.vue'),
-      },
-      {
-        path: '/monitoring/log',
-        name: 'Log',
-        component: () => import('@/views/monitoring/Log.vue'),
       },
       /* CONFIG */
       {

@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { GroupForm } from '@/types/config'
+import type { GroupForm } from '@/types/config'
 import useNodeList from './useNodeList'
 import { addGroup, updateGroup } from '@/api/config'
 import { EmqxMessage } from '@emqx/emqx-ui'

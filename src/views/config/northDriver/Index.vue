@@ -24,13 +24,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref } from 'vue'
-import SetupItemCard from './components/SetupItemCard.vue'
-import useNorthDriver from '@/composables/config/useNorthDriver'
-import DriverDialog from '@/views/config/components/DriverDialog.vue'
-import { DriverDirection } from '@/types/enums'
 import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
-import { DriverItemInList } from '@/types/config'
+import useNorthDriver from '@/composables/config/useNorthDriver'
+import type { DriverItemInList } from '@/types/config'
+import { DriverDirection } from '@/types/enums'
+import DriverDialog from '@/views/config/components/DriverDialog.vue'
+import { ref } from 'vue'
+import SetupItemCard from './components/SetupItemCard.vue'
 
 const { northDriverList, isListLoading, getNorthDriverList } = useNorthDriver(true, true)
 const showDialog = ref(false)

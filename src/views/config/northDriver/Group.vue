@@ -21,9 +21,9 @@
           </emqx-button> -->
         </div>
         <div class="btn-group">
-          <emqx-button size="small" type="primary" @click="addSubscription">{{
-            $t('config.addSubscription')
-          }}</emqx-button>
+          <emqx-button size="small" type="primary" @click="addSubscription">
+            {{ $t('config.addSubscription') }}
+          </emqx-button>
           <emqx-button size="small" type="warning" @click="clearSubscription">{{ $t('common.clear') }}</emqx-button>
           <emqx-button size="small" type="danger" @click="unsubscribeInBulk">{{ $t('common.delete') }}</emqx-button>
         </div>

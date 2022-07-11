@@ -1,10 +1,11 @@
-import { DriverDirection, PluginKind } from '@/types/enums'
-import { ref, Ref, computed, nextTick } from 'vue'
-import { EmqxMessage } from '@emqx/emqx-ui'
-import { useI18n } from 'vue-i18n'
 import { addDriver, queryPluginList } from '@/api/config'
-import { CreatedPlugin, NodeForm } from '@/types/config'
+import type { CreatedPlugin, NodeForm } from '@/types/config'
+import { DriverDirection, PluginKind } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import type { Ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export const usePluginList = (type: DriverDirection) => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])

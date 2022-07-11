@@ -1,5 +1,5 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { DriverDirection, NodeOperationCommand } from '@/types/enums'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { NodeOperationCommand } from '@/types/enums'
 import http from '@/utils/http'
 import {
   APP_DO_NOT_NEED_SHOW,
@@ -7,7 +7,7 @@ import {
   NORTH_DRIVER_NODE_TYPE,
   SOUTH_DRIVER_NODE_TYPE,
 } from '@/utils/constants'
-import {
+import type {
   CreatedPlugin,
   RawDriverData,
   GroupData,
@@ -131,7 +131,7 @@ export const queryPluginConfigInfo = (name: string): Promise<AxiosResponse<Plugi
 
 export const submitNodeConfig = (node: string, form: Record<string, any>) => {
   return http.post('/node/setting', {
-    node: node,
+    node,
     params: form,
   })
 }
@@ -139,7 +139,7 @@ export const submitNodeConfig = (node: string, form: Record<string, any>) => {
 export const queryNodeConfig = async (node: string) => {
   try {
     const data = await http.get('/node/setting', {
-      params: { node: node },
+      params: { node },
       _handleCustomError: true,
     } as AxiosRequestConfig)
     return Promise.resolve(data)
@@ -155,14 +155,14 @@ export const queryNodeConfig = async (node: string) => {
 
 export const queryGroupList = async (node: string): Promise<Array<GroupData>> => {
   const { data }: AxiosResponse<{ error: number; groups: Array<GroupData> }> = await http.get('/group', {
-    params: { node: node },
+    params: { node },
   })
   return Promise.resolve((data?.groups || []).map((item) => ({ ...item, group: item.name })))
 }
 
 export const deleteGroup = async (node: string, groupName: string): Promise<AxiosResponse> => {
   return http.delete('/group', {
-    data: { node: node, group: groupName },
+    data: { node, group: groupName },
   })
 }
 
@@ -188,7 +188,7 @@ export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
 /* TAG */
 
 export const queryTagList = async (node: string, groupName: string): Promise<Array<TagData>> => {
-  const { data } = await http.get('/tags', { params: { node: node, group: groupName } })
+  const { data } = await http.get('/tags', { params: { node, group: groupName } })
   return Promise.resolve(data.tags || [])
 }
 
