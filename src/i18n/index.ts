@@ -1,4 +1,4 @@
-import { Language } from '@/types/locale'
+import type { Language } from '@/types/locale'
 import { createI18n } from 'vue-i18n'
 import locale from 'element-plus/lib/locale'
 import zhLang from 'element-plus/lib/locale/lang/zh-cn'

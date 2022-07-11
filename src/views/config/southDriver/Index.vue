@@ -36,13 +36,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref } from 'vue'
-import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
-import useSouthDriver from '@/composables/config/useSouthDriver'
-import DriverDialog from '@/views/config/components/DriverDialog.vue'
-import { DriverDirection } from '@/types/enums'
 import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
-import { DriverItemInList } from '@/types/config'
+import useSouthDriver from '@/composables/config/useSouthDriver'
+import type { DriverItemInList } from '@/types/config'
+import { DriverDirection } from '@/types/enums'
+import DriverDialog from '@/views/config/components/DriverDialog.vue'
+import { ref } from 'vue'
+import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
 
 const { pageController, getAPageTagData, handleSizeChange, southDriverList, isListLoading, getSouthDriverList } =
   useSouthDriver(true, true)

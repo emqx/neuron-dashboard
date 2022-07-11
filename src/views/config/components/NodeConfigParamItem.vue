@@ -60,15 +60,16 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType, computed, defineEmits, ref } from 'vue'
-import { ElPopover } from 'element-plus'
-import { ParamInfo } from '@/types/config'
-import { FileType, TypeOfPluginParam } from '@/types/enums'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
-import { useI18n } from 'vue-i18n'
-import md5 from 'blueimp-md5'
+import type { ParamInfo } from '@/types/config'
+import { FileType, TypeOfPluginParam } from '@/types/enums'
 import { fromByteArray } from 'base64-js'
+import md5 from 'blueimp-md5'
+import { ElPopover } from 'element-plus'
+import type { PropType } from 'vue'
+import { computed, defineEmits, defineProps } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 

@@ -3,7 +3,7 @@ import { writeData } from '@/api/data'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import useWriteDataCheckNParse, { WriteDataErrorCode } from '@/composables/data/useWriteDataCheckNParse'
 import { useI18n } from 'vue-i18n'
-import { TagDataInTable } from '@/composables/data/useDataMonitoring'
+import type { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import { TagType } from '@/types/enums'
 
 export interface Group {

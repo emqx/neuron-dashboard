@@ -42,21 +42,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'SouthDriveItemCard',
-})
-</script>
-
 <script lang="ts" setup>
-import { PropType, defineEmits, defineProps, computed } from 'vue'
-import { DriverItemInList } from '@/types/config'
-import { useRouter } from 'vue-router'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
-import AComWithDesc from '@/components/AComWithDesc.vue'
+import type { PropType } from 'vue'
+import { computed, defineEmits, defineProps } from 'vue'
+import { useRouter } from 'vue-router'
+import type { DriverItemInList } from '@/types/config'
 
 const props = defineProps({
   data: {

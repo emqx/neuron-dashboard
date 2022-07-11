@@ -1,14 +1,15 @@
-import { ref, Ref, computed, onUnmounted } from 'vue'
 import { queryGroupList, queryTagList } from '@/api/config'
-import { GroupData } from '@/types/config'
 import { getMonitoringData } from '@/api/data'
-import { useI18n } from 'vue-i18n'
-import { TagDataInMonitoring } from '@/types/data'
-import { paginate } from '@/utils/utils'
-import { useTagAttributeTypeSelect } from '../config/useAddTag'
-import { PluginKind, TagAttributeType, TagType } from '@/types/enums'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
+import type { GroupData } from '@/types/config'
+import type { TagDataInMonitoring } from '@/types/data'
+import { TagAttributeType, TagType } from '@/types/enums'
+import { paginate } from '@/utils/utils'
+import type { Ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useTagAttributeTypeSelect } from '../config/useAddTag'
 
 export interface TagDataInTable extends TagDataInMonitoring {
   attribute: Array<number>
@@ -26,7 +27,7 @@ export default () => {
   const { totalSouthDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
-  let selectedGroup: undefined | { node: string; groupName: string } = undefined
+  let selectedGroup: undefined | { node: string; groupName: string }
   const currentGroup: Ref<{ node: string | string; groupName: string }> = ref({
     node: '',
     groupName: '',
@@ -47,7 +48,7 @@ export default () => {
   const totalData: Ref<Array<TagDataInTable>> = ref([])
   const showValueByHexadecimal = ref(false)
   let tagMsgMap: Record<string, any> = {}
-  let pollTimer: undefined | number = undefined
+  let pollTimer: undefined | number
   const updated = ref(Date.now())
   const { tagAttrValueMap } = useTagAttributeTypeSelect()
   const { transToHexadecimal } = useWriteDataCheckNParse()
@@ -97,16 +98,15 @@ export default () => {
     }
     const tags = await queryTagList(selectedGroup?.node, selectedGroup.groupName)
     const tagNameMap: Record<string | number, any> = {}
-    tags.forEach(
-      ({ attribute, type, name, address, description }) =>
-        (tagNameMap[name] = {
-          attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
-          type,
-          tagName: name,
-          address,
-          description,
-        }),
-    )
+    tags.forEach(({ attribute, type, name, address, description }) => {
+      tagNameMap[name] = {
+        attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
+        type,
+        tagName: name,
+        address,
+        description,
+      }
+    })
     return Promise.resolve(tagNameMap)
   }
 
@@ -191,7 +191,7 @@ export default () => {
   }
 
   const canWrite = (item: TagDataInTable) => {
-    return item.attribute && item.attribute.some((item) => item === TagAttributeType.Write)
+    return item.attribute && item.attribute.some((attr) => attr === TagAttributeType.Write)
   }
 
   onUnmounted(() => {

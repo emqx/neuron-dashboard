@@ -17,10 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref, computed } from 'vue'
-import { License } from '@/types/admin'
 import { queryVersion } from '@/api/admin'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const versionData = ref({
   version: '',

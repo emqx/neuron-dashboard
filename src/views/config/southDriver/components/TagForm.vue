@@ -38,13 +38,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineExpose } from 'vue'
+import type { PropType, WritableComputedRef } from 'vue'
+import { ref, defineExpose, computed, defineProps, defineEmits } from 'vue'
 import { useTagTypeSelect } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
-import { PluginInfo, TagForm } from '@/types/config'
-import { computed, defineProps, PropType, defineEmits, WritableComputedRef } from 'vue'
+import type { PluginInfo, TagForm } from '@/types/config'
 import { useI18n } from 'vue-i18n'
-import { TagType } from '@/types/enums'
+import type { TagType } from '@/types/enums'
 
 const { t } = useI18n()
 const props = defineProps({

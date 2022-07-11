@@ -56,8 +56,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref, computed } from 'vue'
-import { License } from '@/types/admin'
+import type { Ref } from 'vue'
+import { ref, computed } from 'vue'
+import type { License } from '@/types/admin'
 import { queryLicense, uploadLicense } from '@/api/admin'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import { EmqxMessage } from '@emqx/emqx-ui'
@@ -111,7 +112,7 @@ const licenseStatus = computed(() => {
 const { readFile } = useUploadFileAndRead()
 const handleUpload = async (file: any) => {
   try {
-    let content: string = (await readFile(file)) as string
+    const content: string = (await readFile(file)) as string
     await uploadLicense(content)
     EmqxMessage.success(t('admin.uploadSuccessful'))
     getLicense()

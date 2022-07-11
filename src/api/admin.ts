@@ -1,7 +1,7 @@
-import { License } from '@/types/admin'
-import { LogType } from '@/types/enums'
+import type { License } from '@/types/admin'
+import type { LogType } from '@/types/enums'
 import http from '@/utils/http'
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export const queryLog = (data: {
   since: number

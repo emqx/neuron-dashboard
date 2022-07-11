@@ -1,4 +1,5 @@
-import { ref, Ref } from 'vue'
+import type { Ref } from 'vue'
+import { ref } from 'vue'
 import { orderBy, chunk } from 'lodash'
 
 type ListData = Array<any>
@@ -40,7 +41,7 @@ export default (): {
   // Use the following six variables to do a cache-like operation to reduce computational overhead
   let latestFiltersString = ''
   const listAfterFilter: Ref<ListData> = ref([])
-  let latestSortFromString: string | undefined = undefined
+  let latestSortFromString: string | undefined
   const listAfterFilterNSort: Ref<ListData> = ref([])
   let currentPageSize = DEFAULT_PAGE_SIZE
   const currentChunks: Ref<Array<ListData>> = ref([])

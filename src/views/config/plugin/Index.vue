@@ -25,15 +25,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, Ref } from 'vue'
-import { ElTabs, ElTabPane } from 'element-plus'
-import { DriverDirection, PluginKind } from '@/types/enums'
-import PluginItemCard from './components/PluginItemCard.vue'
-import usePlugin from '@/composables/config/usePlugin'
-import PluginDialog from './components/PluginDialog.vue'
-import { CreatedPlugin } from '@/types/config'
 import { useNodeTypeSelect } from '@/composables/config/useDriver'
+import usePlugin from '@/composables/config/usePlugin'
+import type { CreatedPlugin } from '@/types/config'
+import { DriverDirection, PluginKind } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import type { Ref } from 'vue'
+import { computed, ref } from 'vue'
+import PluginDialog from './components/PluginDialog.vue'
+import PluginItemCard from './components/PluginItemCard.vue'
 
 const { pluginList, isListLoading, getPluginList } = usePlugin()
 const { nodeTypeList } = useNodeTypeSelect()

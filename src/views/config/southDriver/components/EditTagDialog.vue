@@ -19,11 +19,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, PropType, ref, Ref, watch } from 'vue'
+import type { PropType, Ref } from 'vue'
+import { computed, defineProps, defineEmits, ref, watch } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { ElDialog } from 'element-plus'
 import TagFormCom from './TagForm.vue'
-import { PluginInfo, TagData } from '@/types/config'
+import type { PluginInfo, TagData } from '@/types/config'
 import { queryPluginConfigInfo, updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'

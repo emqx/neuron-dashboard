@@ -1,13 +1,13 @@
-import useTableFileReader, { SheetItem } from '@/composables/useTableFileReader'
-import { EmqxMessage } from '@emqx/emqx-ui'
 import { addTag } from '@/api/config'
-import { TagForm } from '@/types/config'
-import { useI18n } from 'vue-i18n'
-import { getErrorMsg, matchObjShape, popUpErrorMessage } from '@/utils/utils'
-import { useRoute } from 'vue-router'
-import useAddTag, { useTagTypeSelect, useTagAttributeTypeSelect } from './useAddTag'
-import { TagType } from '@/types/enums'
+import useTableFileReader from '@/composables/useTableFileReader'
+import type { TagForm } from '@/types/config'
+import type { TagType } from '@/types/enums'
 import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
+import { getErrorMsg, matchObjShape, popUpErrorMessage } from '@/utils/utils'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import useAddTag, { useTagAttributeTypeSelect, useTagTypeSelect } from './useAddTag'
 
 export default () => {
   const { fileReader } = useTableFileReader()
@@ -74,7 +74,6 @@ export default () => {
     } else {
       EmqxMessage.error(t('config.partialUploadFailed', { reason: getErrorMsg(errorNum), errorRow: errIndex + 1 + 1 }))
     }
-    return
   }
 
   const uploadTag = async (file: File) => {

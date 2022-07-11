@@ -16,16 +16,9 @@
   </el-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'EditNodeNameDialog',
-})
-</script>
-
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, ref, watch, PropType } from 'vue'
+import type { PropType } from 'vue'
+import { computed, defineProps, defineEmits, ref, watch } from 'vue'
 import { ElDialog } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { updateDriver } from '@/api/config'

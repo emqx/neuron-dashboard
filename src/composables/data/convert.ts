@@ -49,15 +49,15 @@ const addBinary = (str1: string, str2: string) => {
   let binaryStr2 = str2
 
   while (binaryStr1.length < binaryStr2.length) {
-    binaryStr1 = '0' + binaryStr1
+    binaryStr1 = `0${binaryStr1}`
   }
 
   while (binaryStr2.length < binaryStr1.length) {
-    binaryStr2 = '0' + binaryStr2
+    binaryStr2 = `0${binaryStr2}`
   }
 
   let addOne = 0
-  for (let i = binaryStr1.length - 1; i >= 0; i--) {
+  for (let i = binaryStr1.length - 1; i >= 0; i -= 1) {
     const curA = +binaryStr1.charAt(i)
     const curB = +binaryStr2.charAt(i)
     const sum = curA + curB + addOne
@@ -80,12 +80,12 @@ const addBinary = (str1: string, str2: string) => {
  * 101 -> 0101 or 101 -> 1010
  */
 const fillString = (str: string, filler: string, length: number, isFillFront: boolean) => {
-  if (str == '' || filler.length != 1 || length <= str.length) {
+  if (str === '' || filler.length !== 1 || length <= str.length) {
     return str
   }
   let ret = str
   const l = str.length
-  for (let i = 0; i < length - l; i++) {
+  for (let i = 0; i < length - l; i += 1) {
     if (isFillFront) {
       ret = filler + ret
     } else {
@@ -132,7 +132,7 @@ const transA4DigitBinaryNumberStrToHexStr = (str: string) => {
   }
   return Array.from(str)
     .reduce((count, num, index) => {
-      return count + parseInt(num) * Math.pow(2, 4 - 1 - index)
+      return count + parseInt(num, 10) * 2 ** (4 - 1 - index)
     }, 0)
     .toString(16)
 }
@@ -164,7 +164,7 @@ export const transFloatNumberToHex = (num: number | string, type: TagType.FLOAT 
 
   const { totalLength, exponentLength } = floatMsgMap[type]
   const mantissaLength = totalLength - exponentLength - 1
-  const exponentBaseNum = Math.pow(2, exponentLength - 1) - 1
+  const exponentBaseNum = 2 ** (exponentLength - 1) - 1
 
   if (inputNum === 0) {
     return new Array(totalLength / 4).fill('0').join('')
@@ -185,7 +185,7 @@ export const transFloatNumberToHex = (num: number | string, type: TagType.FLOAT 
   let binaryString = numPart.toString(2)
   if (binaryString >= '1') {
     if (binaryString.indexOf('.') === -1) {
-      binaryString = binaryString + '.0'
+      binaryString += '.0'
     }
     numForAddToExponent = binaryString.indexOf('.') - 1
   } else {
@@ -253,9 +253,9 @@ export const transFloatHexToDecimalNum = (hexStr: string, type: TagType.FLOAT | 
 
   const { totalLength, exponentLength } = floatMsgMap[type]
   const hexStrLength = totalLength / 4
-  const exponentBaseNum = Math.pow(2, exponentLength - 1) - 1
+  const exponentBaseNum = 2 ** (exponentLength - 1) - 1
 
-  if (hex.length > hexStrLength || isNaN(parseInt(hex, 16))) {
+  if (hex.length > hexStrLength || Number.isNaN(parseInt(hex, 16))) {
     return new Error('hex error')
   }
 
@@ -270,27 +270,31 @@ export const transFloatHexToDecimalNum = (hexStr: string, type: TagType.FLOAT | 
   const exponentPartBinaryStr = binaryStr.substring(1, exponentLength + 1)
   const numExponentPartNeedToSub = parseInt(exponentPartBinaryStr, 2) - exponentBaseNum
   let mantissaPartBinaryStr = binaryStr.substring(exponentLength + 1)
-  mantissaPartBinaryStr = '1' + mantissaPartBinaryStr
+  mantissaPartBinaryStr = `1${mantissaPartBinaryStr}`
   let totalBinaryStrWithPoint = ''
   if (numExponentPartNeedToSub >= 0) {
     // the number bigger than 1
-    totalBinaryStrWithPoint =
-      mantissaPartBinaryStr.substring(0, numExponentPartNeedToSub + 1) +
-      '.' +
-      mantissaPartBinaryStr.substring(numExponentPartNeedToSub + 1)
+    totalBinaryStrWithPoint = `${mantissaPartBinaryStr.substring(
+      0,
+      numExponentPartNeedToSub + 1,
+    )}.${mantissaPartBinaryStr.substring(numExponentPartNeedToSub + 1)}`
   } else {
-    totalBinaryStrWithPoint =
-      '0.' + fillString(mantissaPartBinaryStr, '0', mantissaPartBinaryStr.length - numExponentPartNeedToSub - 1, true)
+    totalBinaryStrWithPoint = `0.${fillString(
+      mantissaPartBinaryStr,
+      '0',
+      mantissaPartBinaryStr.length - numExponentPartNeedToSub - 1,
+      true,
+    )}`
   }
 
-  if (totalBinaryStrWithPoint.indexOf('.') == -1) {
-    totalBinaryStrWithPoint = totalBinaryStrWithPoint + '.0'
+  if (totalBinaryStrWithPoint.indexOf('.') === -1) {
+    totalBinaryStrWithPoint += '.0'
   }
   const [exponentPart, mantissaPart] = totalBinaryStrWithPoint.split('.')
   const exponentPartNum = parseInt(exponentPart, 2)
   let mantissaPartNum = 0
-  for (let i = 0; i < mantissaPart.length; i++) {
-    mantissaPartNum += parseFloat(mantissaPart.charAt(i)) * Math.pow(2, -(i + 1))
+  for (let i = 0; i < mantissaPart.length; i += 1) {
+    mantissaPartNum += parseFloat(mantissaPart.charAt(i)) * 2 ** -(i + 1)
   }
   let totalNumPart = exponentPartNum + mantissaPartNum
   if (flagBit === 1) {

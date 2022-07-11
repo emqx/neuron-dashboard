@@ -33,10 +33,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, ref, watch, nextTick, PropType } from 'vue'
+import type { PropType } from 'vue'
+import { computed, defineProps, defineEmits, ref, watch, nextTick } from 'vue'
 import { ElDialog } from 'element-plus'
 import useAddGroup from '@/composables/config/useAddGroup'
-import { GroupForm } from '@/types/config'
+import type { GroupForm } from '@/types/config'
 
 const emit = defineEmits(['update:modelValue', 'submitted'])
 const props = defineProps({
@@ -65,12 +66,10 @@ watch(showDialog, async (val) => {
   if (!val) {
     resetFields()
     initForm()
-  } else {
-    if (props.group) {
-      groupForm.value = props.group
-    } else if (props.currentNode) {
-      groupForm.value.node = props.currentNode
-    }
+  } else if (props.group) {
+    groupForm.value = props.group
+  } else if (props.currentNode) {
+    groupForm.value.node = props.currentNode
   }
 })
 

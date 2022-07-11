@@ -1,11 +1,12 @@
 import { addTag, queryPluginConfigInfo } from '@/api/config'
-import { PluginInfo, TagForm } from '@/types/config'
+import type { PluginInfo, TagForm } from '@/types/config'
 import { DriverDirection, TagAttributeType, TagType } from '@/types/enums'
-import { ref, Ref, computed } from 'vue'
+import type { Ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
-import TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
+import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
 import { createRandomString, getErrorMsg, jumpToFirstErrorFormItem, popUpErrorMessage } from '@/utils/utils'
 import { useNodeMsgMap } from './useNodeList'
 
@@ -39,13 +40,13 @@ export const useTagAttributeTypeSelect = () => {
   // 1, 2, 4
   // Possible values are 1, 2, 3, 4, 5, 6, 7
   const tagAttrValueMap = {
-    [1]: [1],
-    [2]: [2],
-    [3]: [1, 2],
-    [4]: [4],
-    [5]: [1, 4],
-    [6]: [2, 4],
-    [7]: [1, 2, 4],
+    1: [1],
+    2: [2],
+    3: [1, 2],
+    4: [4],
+    5: [1, 4],
+    6: [2, 4],
+    7: [1, 2, 4],
   }
 
   const findLabelByValue = (val: number) => tagAttributeTypeOptList.find(({ value }) => val === value)?.label || ''
@@ -161,10 +162,10 @@ export default () => {
     }
     try {
       isSubmitting.value = true
-      const node = route.params.node.toString()
+      const nodeName = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags = tagList.value.map(({ id, ...tagData }) => tagData)
-      await addTag({ tags, node, group: groupName })
+      await addTag({ tags, node: nodeName, group: groupName })
       EmqxMessage.success(t('common.createSuccess'))
       router.push({
         name: 'SouthDriverGroupTag',

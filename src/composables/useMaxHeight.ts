@@ -1,4 +1,5 @@
-import { computed, ComputedRef } from '@vue/runtime-core'
+import type { ComputedRef } from 'vue'
+import { computed } from 'vue'
 
 export default function useMaxHeight(): {
   maxTableHeight: ComputedRef<number>

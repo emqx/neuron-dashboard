@@ -22,10 +22,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineEmits, defineProps, PropType, watch } from 'vue'
+import type { PropType } from 'vue'
+import { computed, defineEmits, defineProps, watch } from 'vue'
 import { ElDialog } from 'element-plus'
 import useDriverDialog from '@/composables/config/useDriverDialog'
-import { DriverDirection } from '@/types/enums'
+import type { DriverDirection } from '@/types/enums'
 
 const props = defineProps({
   modelValue: {
@@ -41,16 +42,8 @@ const props = defineProps({
   },
 })
 
-const {
-  dialogTitle,
-  pluginList,
-  formCom,
-  driverForm,
-  isSubmitting,
-  groupFormRules,
-  initForm,
-  submitData,
-} = useDriverDialog(props.type)
+const { dialogTitle, pluginList, formCom, driverForm, isSubmitting, groupFormRules, initForm, submitData } =
+  useDriverDialog(props.type)
 
 const emit = defineEmits(['update:modelValue', 'submitted'])
 

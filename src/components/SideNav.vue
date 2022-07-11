@@ -34,9 +34,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, toRefs } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import StatusBar from './StatusBar.vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'SideNav',
@@ -125,16 +124,18 @@ export default defineComponent({
         return ret
       }
       ret = firstLevelRoutePathArr.find((item) => currentPath.match(item))
-      return ret ? ret : ''
+      return ret || ''
     })
 
     const countRoutePath = () => {
       state.navList.forEach((menu) => {
         if (menu.subMenus) {
           menu.subMenus.forEach((item) => {
-            item.to.match(/^\/[^/]+\/[^/]+/)
-              ? secondLevelRoutePathArr.push(item.to)
-              : firstLevelRoutePathArr.push(item.to)
+            if (item.to.match(/^\/[^/]+\/[^/]+/)) {
+              secondLevelRoutePathArr.push(item.to)
+            } else {
+              firstLevelRoutePathArr.push(item.to)
+            }
           })
         } else {
           firstLevelRoutePathArr.push(menu.to)

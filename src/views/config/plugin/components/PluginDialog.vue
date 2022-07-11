@@ -23,10 +23,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, PropType, watch, nextTick } from 'vue'
-import { ElDialog } from 'element-plus'
 import { useAddPlugin } from '@/composables/config/usePlugin'
-import { CreatedPlugin } from '@/types/config'
+import { ElDialog } from 'element-plus'
+import { computed, defineEmits, defineProps, nextTick, watch } from 'vue'
 
 const props = defineProps({
   modelValue: {

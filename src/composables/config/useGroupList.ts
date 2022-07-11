@@ -1,8 +1,9 @@
-import { ref, computed, Ref } from 'vue'
+import type { Ref } from 'vue'
+import { ref, computed } from 'vue'
 import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
 import { queryGroupList, deleteGroup } from '@/api/config'
 import { useRoute } from 'vue-router'
-import { GroupData } from '@/types/config'
+import type { GroupData } from '@/types/config'
 import { useI18n } from 'vue-i18n'
 
 interface GroupDataInTable extends GroupData {

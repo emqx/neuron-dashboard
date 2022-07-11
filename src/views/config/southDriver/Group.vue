@@ -61,12 +61,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref, computed } from 'vue'
-import useGroupList from '@/composables/config/useGroupList'
-import GroupDialog from './components/GroupDialog.vue'
-import { GroupData, GroupForm } from '@/types/config'
-import { useRouter } from 'vue-router'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import useGroupList from '@/composables/config/useGroupList'
+import type { GroupData, GroupForm } from '@/types/config'
+import type { Ref } from 'vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import GroupDialog from './components/GroupDialog.vue'
 
 const router = useRouter()
 const { node, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =

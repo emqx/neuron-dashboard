@@ -1,9 +1,9 @@
-import { nextTick, onMounted, onUnmounted } from '@vue/runtime-core'
-import { EChartsType } from 'echarts/core'
+import { onMounted, onUnmounted } from 'vue'
+import type { EChartsType } from 'echarts/core'
 
 export default () => {
-  let chart: undefined | EChartsType = undefined
-  let timer: undefined | number = undefined
+  let chart: undefined | EChartsType
+  let timer: undefined | number
 
   const setEChartInstance = (chartInstance: EChartsType) => {
     chart = chartInstance
@@ -14,7 +14,9 @@ export default () => {
       window.clearTimeout(timer)
     }
     timer = window.setTimeout(() => {
-      chart?.resize()
+      if (chart?.resize) {
+        chart.resize()
+      }
     }, 100)
   }
 
