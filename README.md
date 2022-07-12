@@ -1,4 +1,4 @@
-# neuron-dashboard-src
+# Neuron Dashboard
 
 ## Project setup
 ```
