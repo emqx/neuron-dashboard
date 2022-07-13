@@ -7,6 +7,7 @@
       </template>
       <template #page-content>
         <div>
+          <Breadcrumb />
           <router-view />
           <!-- For eKuiper -->
           <emqx-card v-if="isKuiperPage" v-emqx-loading="isSubAppLoading">
@@ -29,12 +30,14 @@ import useEKuiper from '@/composables/ekuiper/useEKuiper'
 import { isKuiperPath } from '@/utils/forEKuiper'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+import Breadcrumb from '@/components/Breadcrumb.vue'
 
 export default defineComponent({
   name: 'Home',
   components: {
     Header,
     SideNav,
+    Breadcrumb,
   },
   setup() {
     const route = useRoute()

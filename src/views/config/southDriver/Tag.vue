@@ -1,9 +1,4 @@
 <template>
-  <emqx-breadcrumb separator="/">
-    <emqx-breadcrumb-item :to="{ name: 'SouthDriver' }">{{ $t('config.southDeviceManagement') }}</emqx-breadcrumb-item>
-    <emqx-breadcrumb-item :to="{ name: 'SouthDriverGroup' }">{{ $t('config.groupList') }}</emqx-breadcrumb-item>
-    <emqx-breadcrumb-item>{{ $t('config.tagList') }}</emqx-breadcrumb-item>
-  </emqx-breadcrumb>
   <emqx-card v-emqx-loading="isListLoading" class="tag-page">
     <h3 class="card-title">{{ $t('config.tagList') }}</h3>
     <div class="card-bar-under-title common-flex">

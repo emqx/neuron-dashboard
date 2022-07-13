@@ -1,4 +1,12 @@
 export default {
+  device: {
+    zh: '设备',
+    en: 'Device',
+  },
+  list: {
+    zh: '列表',
+    en: 'List',
+  },
   system: {
     zh: '系统',
     en: 'System',
