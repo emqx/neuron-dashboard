@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "dev:pc": "export VUE_APP_HOST=http://localhost:7001 && yarn serve",
+    "dev:pc": "export VUE_APP_HOST=http://localhost:7003 && yarn serve",
     "dev:server": "export VUE_APP_HOST=ws://iot-platform.cloud:6170 && yarn serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
