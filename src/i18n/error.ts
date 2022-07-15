@@ -215,7 +215,99 @@ export default {
     en: 'Plugin tag type mismatch',
   },
   3008: {
-    zh: '插件 tag 过期',
-    en: 'Plugin tag expired',
+    zh: '插件 tag 值失效',
+    en: 'Plugin tag value expired',
+  },
+  3009: {
+    zh: '插件协议解析失败',
+    en: 'Plugin protocol decode failure',
+  },
+  3010: {
+    zh: '插件未运行',
+    en: 'Plugin not running',
+  },
+  3011: {
+    zh: '插件 tag 未就绪',
+    en: 'Plugin tag not ready',
+  },
+  3012: {
+    zh: '插件报文乱序',
+    en: 'Plugin packet out of order',
+  },
+  10101: {
+    zh: '硬件错误',
+    en: 'S7comm hardware error',
+  },
+  10103: {
+    zh: '对象无访问权限',
+    en: 'S7comm accessing the object not allowed',
+  },
+  10105: {
+    zh: '无效地址',
+    en: 'S7comm invalid address',
+  },
+  10106: {
+    zh: '数据类型不支持',
+    en: 'S7comm data type not supported',
+  },
+  10107: {
+    zh: '数据类型不一致',
+    en: 'S7comm data type inconsistent',
+  },
+  10110: {
+    zh: '对象不存在',
+    en: 'S7comm object not exist',
+  },
+  10150: {
+    zh: 'COTP 连接断开',
+    en: 'S7comm cotp disconnected',
+  },
+  10151: {
+    zh: 'S7 连接断开',
+    en: 'S7comm disconnected',
+  },
+  10200: {
+    zh: '设备不存在',
+    en: 'Knx no devices',
+  },
+  10400: {
+    zh: '无效地址',
+    en: 'Nona11 invalid address',
+  },
+  10500: {
+    zh: 'Fins 连接断开',
+    en: 'Fins disconnected',
+  },
+  10501: {
+    zh: 'Fins 错误',
+    en: 'Fins error',
+  },
+  10502: {
+    zh: '第一个地址处于无效区域',
+    en: 'Fins first address in inaccessible area',
+  },
+  10503: {
+    zh: '最后一个字超出范围',
+    en: 'Fins end of word exceed range',
+  },
+  10504: {
+    zh: '无效的数据大小',
+    en: 'Fins invalid size of data',
+  },
+  10505: {
+    zh: '响应块太长',
+    en: 'Fins response too long',
+  },
+  10506: {
+    zh: '数据受保护',
+    en: 'Fins data is protected',
+  },
+  10507: {
+    zh: '区域只读',
+    en: 'Fins area read-only',
+  },
+  10508: {
+    zh: ' 数据不可更改',
+    en: 'Fins data cannot change',
   },
 }
