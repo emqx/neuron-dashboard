@@ -1,13 +1,11 @@
 <template>
   <div class="node-config" v-emqx-loading="isLoading">
     <emqx-card shadow="none" class="node-config-bd">
-      <h3 class="card-title">
-        {{ $t(direction === DriverDirection.North ? 'config.appConfig' : 'config.deviceConfig') }}
-      </h3>
+      <h3 class="card-title">{{ cardTitle }}</h3>
       <div class="bar-left common-flex">
         <p class="driver-name">
-          <label>{{ $t(direction === DriverDirection.North ? 'config.appName' : 'config.deviceName') }}</label>
-          <span>{{ nodeName }}</span>
+          <label>{{ labelForNodeName }}</label>
+          <span>{{ node }}</span>
         </p>
       </div>
       <emqx-row>
@@ -40,10 +38,11 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
 import useNodeConfig from '@/composables/config/useNodeConfig'
-import type { DriverDirection } from '@/types/enums'
+import { DriverDirection } from '@/types/enums'
 import NodeConfigParamItem from './components/NodeConfigParamItem.vue'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   direction: {
@@ -51,8 +50,15 @@ const props = defineProps({
     required: true,
   },
 })
+const { t } = useI18n()
+const cardTitle = computed(() =>
+  t(props.direction === DriverDirection.North ? 'config.appConfig' : 'config.deviceConfig'),
+)
+const labelForNodeName = computed(() =>
+  t(props.direction === DriverDirection.North ? 'config.appName' : 'config.deviceName'),
+)
 
-const { nodeName, configForm, fieldList, isLoading, formCom, isSubmitting, shouldFieldShow, submit, cancel } =
+const { node, configForm, fieldList, isLoading, formCom, isSubmitting, shouldFieldShow, submit, cancel } =
   useNodeConfig(props)
 </script>
 
