@@ -17,6 +17,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import store from '@/store'
+import i18n from '../../i18n/index'
+// import { useI18n } from 'vue-i18n'
+
+// const { locale } = useI18n()
 
 const langOptionList = [
   {
@@ -33,9 +37,10 @@ const lang = computed({
   get() {
     return store.state.lang
   },
-  set(val) {
+  set(val: string) {
     store.commit('SET_LANG', val)
-    location.reload()
+    i18n.global.locale.value = val
+    // locale.value = val
   },
 })
 </script>
