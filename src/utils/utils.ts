@@ -19,17 +19,17 @@ const firstLowerCase = ([first, ...rest]: string) => first.toLowerCase() + rest.
 
 export const createCommonErrorMessage = (type: 'input' | 'select', target: string) => {
   const {
-    global: { tc },
+    global: { t },
   } = i18n
   const local = i18n.global.locale
+
   let targetStr = target
-  if (local === 'en') {
+  if (local.value === 'en') {
     targetStr = firstLowerCase(targetStr)
   }
-  if (type === 'input') {
-    return tc('common.inputRequired') + targetStr
-  }
-  return tc('common.selectRequired') + targetStr
+  const prefixText: string = type === 'input' ? t('common.inputRequired') : t('common.selectRequired')
+  const res = `${prefixText}${targetStr}`
+  return res
 }
 
 export const paginate = (data: Array<any>, pageSize: number, pageNumber: number) => {
