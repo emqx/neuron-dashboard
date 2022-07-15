@@ -105,10 +105,10 @@ export default defineComponent({
               to: '/admin/account-settings',
               label: t('common.accountSettings'),
             },
-            {
-              to: '/admin/log',
-              label: t('admin.log'),
-            },
+            // {
+            //   to: '/admin/log',
+            //   label: t('admin.log'),
+            // },
           ],
         },
       ],

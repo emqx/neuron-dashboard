@@ -148,12 +148,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: 'common.accountSettings', requireAuth: true, hiddenBreadcrumb: true },
         component: () => import('@/views/admin/AccountSetting.vue'),
       },
-      {
-        path: 'log',
-        name: 'AdminLog',
-        meta: { title: 'admin.log', requireAuth: true, hiddenBreadcrumb: true },
-        component: () => import('@/views/admin/Log.vue'),
-      },
+      // {
+      //   path: 'log',
+      //   name: 'AdminLog',
+      //   meta: { title: 'admin.log', requireAuth: true, hiddenBreadcrumb: true },
+      //   component: () => import('@/views/admin/Log.vue'),
+      // },
     ],
   },
   /* License */
