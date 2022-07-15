@@ -35,8 +35,6 @@ export default (props: Props) => {
 
   const node = computed(() => route.params.node.toString())
 
-  const nodeName = computed(() => getNodeMsgById(node.value)?.name)
-
   const getNodeConfig = async () => {
     try {
       const { data } = await queryNodeConfig(node.value)
@@ -145,7 +143,7 @@ export default (props: Props) => {
   })
 
   return {
-    nodeName,
+    node,
     configForm,
     fieldList,
     isLoading,

@@ -56,7 +56,6 @@ module.exports = {
         props: false,
       },
     ],
-    ignoreDestructuring: 'error',
     camelcase: 'off',
     'arrow-body-style': ['off', 'never'],
     'object-curly-newline': 0,
