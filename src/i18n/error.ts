@@ -307,7 +307,27 @@ export default {
     en: 'Fins area read-only',
   },
   10508: {
-    zh: ' 数据不可更改',
+    zh: '数据不可更改',
     en: 'Fins data cannot change',
+  },
+  10001: {
+    zh: 'Opcua tag 不存在',
+    en: 'Opcua tag does not exist',
+  },
+  10002: {
+    zh: 'Opcua 连接配置错误',
+    en: 'Opcua connection configuration error',
+  },
+  10003: {
+    zh: 'Opcua 访问超时',
+    en: 'Opcua access timeout',
+  },
+  10004: {
+    zh: 'Opcua tag 不可读',
+    en: 'Opcua tag is not readable',
+  },
+  10005: {
+    zh: 'Opcua tag 不可写',
+    en: 'Opcua tag is not writable',
   },
 }
