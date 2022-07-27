@@ -159,7 +159,7 @@ const routes: Array<RouteRecordRaw> = [
   /* License */
   {
     path: '/license',
-    name: 'License',
+    name: 'LicensePage',
     meta: { title: 'License' },
     component: Home,
     children: [
@@ -174,7 +174,7 @@ const routes: Array<RouteRecordRaw> = [
   /* About */
   {
     path: '/about',
-    name: 'About',
+    name: 'AboutPage',
     meta: { title: 'common.about' },
     component: Home,
     children: [
