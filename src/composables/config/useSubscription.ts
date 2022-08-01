@@ -34,6 +34,11 @@ export const useSubscriptionList = () => {
     },
   })
 
+  const subCheckedList = computed(() => {
+    const checked_list = subscriptionList.value.filter((item) => item.checked)
+    return checked_list
+  })
+
   const getSubscriptionList = async () => {
     isListLoading.value = true
     const list = await querySubscription(node.value)
@@ -67,17 +72,14 @@ export const useSubscriptionList = () => {
 
   const clearSubscription = () => unsubscribe(t('config.clearSubscriptionConfirm'), subscriptionList.value)
 
-  const unsubscribeInBulk = () =>
-    unsubscribe(
-      t('config.unsubscribeInBulkConfirm'),
-      subscriptionList.value.filter((item) => item.checked),
-    )
+  const unsubscribeInBulk = () => unsubscribe(t('config.unsubscribeInBulkConfirm'), subCheckedList.value)
 
   getSubscriptionList()
 
   return {
     node,
     subscriptionList,
+    subCheckedList,
     isListLoading,
     allChecked,
 

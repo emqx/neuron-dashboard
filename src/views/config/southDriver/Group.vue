@@ -22,8 +22,12 @@
         </div>
         <div class="btn-group">
           <emqx-button size="small" type="primary" @click="addGroup">{{ $t('common.create') }}</emqx-button>
-          <emqx-button size="small" type="warning" @click="clearGroup">{{ $t('common.clear') }}</emqx-button>
-          <emqx-button size="small" type="danger" @click="batchDeleteGroup">{{ $t('common.delete') }}</emqx-button>
+          <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
+            $t('common.clear')
+          }}</emqx-button>
+          <emqx-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
+            $t('common.delete')
+          }}</emqx-button>
         </div>
       </div>
     </div>
@@ -70,8 +74,17 @@ import { useRouter } from 'vue-router'
 import GroupDialog from './components/GroupDialog.vue'
 
 const router = useRouter()
-const { node, groupList, isListLoading, allChecked, getGroupList, clearGroup, delGroup, batchDeleteGroup } =
-  useGroupList()
+const {
+  node,
+  groupList,
+  groupCheckedList,
+  isListLoading,
+  allChecked,
+  getGroupList,
+  clearGroup,
+  delGroup,
+  batchDeleteGroup,
+} = useGroupList()
 const showGroupDialog = ref(false)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 

@@ -31,6 +31,11 @@ export default () => {
     },
   })
 
+  const groupCheckedList = computed(() => {
+    const checked_list = groupList.value.filter(({ checked }) => checked)
+    return checked_list
+  })
+
   const getGroupList = async () => {
     isListLoading.value = true
     const data = await queryGroupList(node.value)
@@ -58,7 +63,7 @@ export default () => {
 
   const batchDeleteGroup = async () => {
     await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete') })
-    delGroupList(groupList.value.filter(({ checked }) => checked))
+    delGroupList(groupCheckedList.value)
   }
 
   getGroupList()
@@ -66,6 +71,7 @@ export default () => {
   return {
     node,
     groupList,
+    groupCheckedList,
     isListLoading,
     allChecked,
     clearGroup,
