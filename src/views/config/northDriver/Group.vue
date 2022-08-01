@@ -24,8 +24,12 @@
           <emqx-button size="small" type="primary" @click="addSubscription">
             {{ $t('config.addSubscription') }}
           </emqx-button>
-          <emqx-button size="small" type="warning" @click="clearSubscription">{{ $t('common.clear') }}</emqx-button>
-          <emqx-button size="small" type="danger" @click="unsubscribeInBulk">{{ $t('common.delete') }}</emqx-button>
+          <emqx-button size="small" type="warning" :disabled="!subscriptionList.length" @click="clearSubscription">{{
+            $t('common.clear')
+          }}</emqx-button>
+          <emqx-button size="small" type="danger" :disabled="!subCheckedList.length" @click="unsubscribeInBulk">{{
+            $t('common.delete')
+          }}</emqx-button>
         </div>
       </div>
     </div>
@@ -66,6 +70,7 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 const {
   node,
   subscriptionList,
+  subCheckedList,
   isListLoading,
   allChecked,
   unsubscribeGroup,
