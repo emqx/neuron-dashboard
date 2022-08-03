@@ -24,6 +24,10 @@
         <label>{{ $t('config.libName') }}</label>
         <span class="ellipsis">{{ data.library }}</span>
       </div>
+      <div class="info-row">
+        <label>{{ $t('config.desc') }}</label>
+        <EllipsisTooltip :text="data.description"></EllipsisTooltip>
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +40,7 @@ import type { CreatedPlugin } from '@/types/config'
 import { PluginKind } from '@/types/enums'
 import type { PropType } from 'vue'
 import { defineEmits, defineProps } from 'vue'
+import EllipsisTooltip from '@/components/EllipsisTooltip.vue'
 
 const props = defineProps({
   data: {
@@ -54,8 +59,6 @@ const deletePlugin = async () => {
 
 <style lang="scss">
 .plugin-item-card {
-  // display: flex;
-  // align-items: center;
   padding: 24px;
   border-radius: 4px;
   background-color: #f4f9fc;
