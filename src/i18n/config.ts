@@ -324,6 +324,10 @@ export default {
     zh: '个字符',
     en: ' characters',
   },
+  validHostError: {
+    zh: '请输入有效的 host',
+    en: 'Please enter a valid host',
+  },
   validTableError: {
     zh: '请上传具有有效数据的表格',
     en: 'Please upload a form with valid data',

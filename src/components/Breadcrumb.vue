@@ -46,29 +46,34 @@ const getBreadcrumbs = () => {
     state.levelList = []
     return
   }
-  const new_matched = matched.filter((item: any) => item.meta && item.meta.title)
+  const newMatched = matched.filter((item: any) => item.meta && item.meta.title)
 
   const current_route = {
-    ...new_matched[new_matched.length - 1],
+    ...newMatched[newMatched.length - 1],
     fullPath,
   }
-  new_matched[new_matched.length - 1] = current_route
+  newMatched[newMatched.length - 1] = current_route
 
   const formMatched = state.levelList // last time matched
 
-  if (formMatched?.length && new_matched?.length && formMatched[0].name === new_matched[0].name) {
+  const formMatchedL = formMatched?.length
+  const newMatchedL = newMatched?.length
+  if (formMatchedL && newMatchedL && formMatched[0].name === newMatched[0].name) {
     // same parent node
-    if (formMatched.length < new_matched.length) {
+    if (formMatchedL < newMatchedL) {
       // into new page
       formMatched.push(current_route)
+      state.levelList = formMatched
+    } else if (formMatchedL === newMatchedL) {
+      formMatched[formMatched.length - 1] = current_route
       state.levelList = formMatched
     } else {
       // go back
       const i = formMatched.findIndex((item) => item.name === current_route.name)
-      state.levelList = formMatched.slice(0, i + 1)
+      state.levelList = i > -1 ? formMatched.slice(0, i + 1) : formMatched
     }
   } else {
-    state.levelList = new_matched
+    state.levelList = newMatched
   }
 }
 

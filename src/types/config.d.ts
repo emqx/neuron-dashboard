@@ -80,6 +80,7 @@ export interface StringParamInfo extends ParamBaseInfo {
   type: TypeOfPluginParam.String
   default?: string
   valid: {
+    regex: string
     length: number
   }
 }
