@@ -53,6 +53,20 @@ export default (props: Props) => {
         return ret
       },
     },
+    {
+      validator(rule: unknown, value: string) {
+        const ret = []
+        const { valid } = props.paramInfo as StringParamInfo
+        if (valid?.regex) {
+          const regex = valid.regex.slice(1, valid.regex.length - 1)
+          const newRegex = new RegExp(regex)
+          if (!newRegex.test(value)) {
+            ret.push(new Error(`${t('config.validHostError')}`))
+          }
+        }
+        return ret
+      },
+    },
   ]
 
   const createSelectParamRules = () => ({
