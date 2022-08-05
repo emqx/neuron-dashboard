@@ -1,6 +1,12 @@
 <template>
   <div @mouseenter="visibilityChange($event)">
-    <el-tooltip :content="tooltipContent" :disabled="!tooltipVisible" effect="dark" :placement="placement">
+    <el-tooltip
+      :content="tooltipContent"
+      :disabled="!tooltipVisible"
+      effect="dark"
+      :placement="placement"
+      popper-class="tooltip-popper"
+    >
       <span class="tooltip-wrap">
         <slot>
           <span ref="textRef" :class="className" class="text">{{ text }}</span>
@@ -60,5 +66,10 @@ const visibilityChange = (event: any) => {
 }
 span.text {
   white-space: initial;
+}
+</style>
+<style lang="scss">
+.tooltip-popper {
+  max-width: 400px !important;
 }
 </style>

@@ -111,8 +111,13 @@ interface MapParamInfo extends ParamBaseInfo {
 
 export type ParamInfo = NumberParamInfo | StringParamInfo | BoolParamInfo | MapParamInfo | FileParamInfo
 
+interface TagRegex {
+  type: number
+  regex: string
+}
 export interface PluginInfo {
   tag_type: Array<TagType>
+  tag_regex: Array<TagRegex>
   // TODO: delete params after api changed
   params: Array<string>
   /**
