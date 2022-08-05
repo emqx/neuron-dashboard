@@ -7,18 +7,13 @@
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
-        <emqx-form-item label="Address" prop="address" required>
-          <emqx-input v-model.trim="form.address" />
-        </emqx-form-item>
-      </emqx-col>
-      <emqx-col :span="12">
         <emqx-form-item label="Attribute" prop="attribute" required>
           <TagAttributeSelect v-model="form.attribute" />
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
         <emqx-form-item label="Type" prop="type" required>
-          <emqx-select v-model="form.type">
+          <emqx-select v-model="form.type" @change="changeType">
             <emqx-option
               v-for="item in tagTypeOptListAfterFilter"
               :key="item.value"
@@ -26,6 +21,11 @@
               :label="item.label"
             />
           </emqx-select>
+        </emqx-form-item>
+      </emqx-col>
+      <emqx-col :span="12">
+        <emqx-form-item label="Address" prop="address" required>
+          <emqx-input v-model.trim="form.address" />
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
@@ -42,7 +42,7 @@ import type { PropType, WritableComputedRef } from 'vue'
 import { ref, defineExpose, computed, defineProps, defineEmits } from 'vue'
 import { useTagTypeSelect } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
-import type { PluginInfo, TagForm } from '@/types/config'
+import type { PluginInfo, TagForm, TagRegex } from '@/types/config'
 import { useI18n } from 'vue-i18n'
 import type { TagType } from '@/types/enums'
 
@@ -65,16 +65,22 @@ const emit = defineEmits(['update:modelValue'])
 const formCom = ref()
 const { tagTypeOptList } = useTagTypeSelect()
 
+const tagRegex = computed(() => {
+  return props?.nodePluginInfo?.tag_regex
+})
+
 /**
  * The available tag types are restricted by
  * the plug-in type bound to the current node.
  */
 const tagTypeOptListAfterFilter = computed(() => {
-  if (!props?.nodePluginInfo?.tag_type) {
+  if (!tagRegex.value) {
     return tagTypeOptList
   }
   return tagTypeOptList.filter((tagType) =>
-    (props.nodePluginInfo as PluginInfo).tag_type.some((canSelectTagType) => canSelectTagType === tagType.value),
+    (props.nodePluginInfo as PluginInfo).tag_regex.some(
+      (canSelectTagType: TagRegex) => canSelectTagType.type === tagType.value,
+    ),
   )
 })
 
@@ -87,9 +93,33 @@ const form: WritableComputedRef<TagForm> = computed({
   },
 })
 
+// valid address
+const validAddress = (rule: any, value: string, callback: any) => {
+  const cuurentType = form.value.type
+  const curentTagRegex = tagRegex.value?.find((item: TagRegex) => item.type === Number(cuurentType))
+  if (!curentTagRegex) {
+    callback()
+    return
+  }
+  const regex = curentTagRegex?.regex ? new RegExp(curentTagRegex.regex) : null
+  if (!regex) {
+    callback()
+    return
+  }
+
+  if (!regex.test(value)) {
+    callback(new Error(`${t('config.tagAddressValid')}`))
+  } else {
+    callback()
+  }
+}
+
 const rules = {
   name: [{ required: true, message: t('config.tagNameRequired') }],
-  address: [{ required: true, message: t('config.tagAddressRequired') }],
+  address: [
+    { required: true, message: t('config.tagAddressRequired') },
+    { validator: validAddress, trigger: ['blur', 'change'] },
+  ],
   attribute: [
     { required: true, message: t('config.tagAttributeRequired') },
     {
@@ -102,6 +132,11 @@ const rules = {
     },
   ],
   type: [{ required: true, message: t('config.tagTypeRequired') }],
+}
+
+// validate address when change tag type
+const changeType = (type: string) => {
+  formCom.value.form.validateField('address')
 }
 
 const validate = () => {

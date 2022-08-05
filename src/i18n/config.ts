@@ -284,6 +284,10 @@ export default {
     zh: '请填写 Tag 地址',
     en: 'Please enter the tag address',
   },
+  tagAddressValid: {
+    zh: '请填写有效的 Tag 地址',
+    en: 'Please enter the valid tag address',
+  },
   tagAttributeRequired: {
     zh: '请选择 Tag 属性',
     en: 'Please select tag attribute',
