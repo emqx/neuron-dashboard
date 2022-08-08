@@ -90,8 +90,15 @@ export const sendCommandToNode = (nodeName: string, command: NodeOperationComman
   return http.post('/node/ctl', { node: nodeName, cmd: command })
 }
 
-export const queryNodeState = (nodeName: string) => {
-  return http.get('/node/state', { params: { node: nodeName } })
+export const queryNodeState = (nodeName?: string) => {
+  const params = nodeName
+    ? {
+        params: {
+          node: nodeName,
+        },
+      }
+    : {}
+  return http.get('/node/state', params)
 }
 
 /* NORTH APP */

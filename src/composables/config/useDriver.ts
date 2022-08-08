@@ -51,7 +51,7 @@ export const useToggleNodeStartStopStatus = () => {
       await sendCommandToNode(node.name, status ? NodeOperationCommand.Start : NodeOperationCommand.Stop)
       return Promise.resolve(true)
     } catch (error: any) {
-      /* 
+      /*
         Demand from the backend
         If an error is reported in 2011, Node is running, set the button to green;
         If error 2013 is reported, Node is stop, turn the button to gray.
