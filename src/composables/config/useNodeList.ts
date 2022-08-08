@@ -1,5 +1,5 @@
 import { queryNodeState, queryNorthDriverList, querySouthDriverList } from '@/api/config'
-import type { DriverItemInList, RawDriverData } from '@/types/config'
+import type { DriverItemInList, RawDriverData, DriverStateData, DriverAllStatusData } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import { createMapFromArray } from '@/utils/utils'
 import type { Ref } from 'vue'
@@ -32,11 +32,28 @@ export const useNodeMsgMap = (direction: DriverDirection, autoInit = true) => {
 }
 
 export const useFillNodeListStatusData = () => {
+  const mapStatusList = (list: Array<DriverAllStatusData>) => {
+    let newList = new Map()
+    if (list?.length) {
+      newList = new Map(list.map((value: any) => [value.node, value]))
+    }
+    return newList
+  }
+
   const fillNodeListStatusData = async (nodeList: Array<RawDriverData>): Promise<Array<DriverItemInList>> => {
+    // get all status
+    const { data } = await queryNodeState()
+    const allStatus = mapStatusList(data?.states)
+
     return Promise.all(
       nodeList.map(async (item) => {
-        const { data } = await queryNodeState(item.name)
-        return Promise.resolve(Object.assign(item, data))
+        const itemStatus = allStatus.get(item.name)
+        const itemStatusData: DriverStateData = {
+          running: !itemStatus ? 1 : itemStatus.running,
+          link: !itemStatus ? 0 : itemStatus.link,
+        }
+        const node = Object.assign(item, itemStatusData)
+        return Promise.resolve(node)
       }),
     )
   }

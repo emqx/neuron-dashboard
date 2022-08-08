@@ -44,10 +44,16 @@ export interface DriverStateData {
   link: NodeLinkState
 }
 
+export interface DriverAllStatusData {
+  node: string
+  running: NodeState
+  link: NodeLinkState
+}
+
 export type DriverItemInList = Merge<
   Merge<RawDriverData, DriverStateData>,
   {
-    pluginKind: PluginKind
+    pluginKind?: PluginKind
     plugin: string
   }
 >
