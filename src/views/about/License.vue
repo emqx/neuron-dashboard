@@ -45,7 +45,7 @@
             </i18n-t>
           </p>
         </div>
-        <emqx-upload class="file-upload" :show-file-list="false" :before-upload="handleUpload">
+        <emqx-upload action="" class="file-upload" :show-file-list="false" :before-upload="handleUpload">
           <emqx-button size="small" type="primary" class="btn-upload">
             {{ hasLicense ? t('common.reUpload') : t('common.upload') }}
           </emqx-button>
@@ -111,6 +111,12 @@ const licenseStatus = computed(() => {
 
 const { readFile } = useUploadFileAndRead()
 const handleUpload = async (file: any) => {
+  const nameStrings = file.name.split('.')
+  const type = nameStrings[nameStrings.length - 1]
+  if (type !== 'lic') {
+    EmqxMessage.warning(t('admin.uploadFileTypeError'))
+    return false
+  }
   try {
     const content: string = (await readFile(file)) as string
     await uploadLicense(content)
