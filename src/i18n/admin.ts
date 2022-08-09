@@ -75,6 +75,10 @@ export default {
     zh: '上传成功',
     en: 'Upload successful',
   },
+  uploadFileTypeError: {
+    zh: `请上传 '.lic' 类型文件`,
+    en: `Please upload '.lic' type file`,
+  },
   licenseExpired: {
     zh: 'License 已过期，请尽快更新 License',
     en: 'The previous license has expired, please update the license as soon as possible',

@@ -41,6 +41,7 @@ export const useFillNodeListStatusData = () => {
   }
 
   const fillNodeListStatusData = async (nodeList: Array<RawDriverData>): Promise<Array<DriverItemInList>> => {
+    if (!nodeList?.length) return []
     // get all status
     const { data } = await queryNodeState()
     const allStatus = mapStatusList(data?.states)
