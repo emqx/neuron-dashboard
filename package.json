@@ -5,8 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "dev:pc": "export VUE_APP_HOST=http://localhost:7003 && yarn serve",
+    "dev:norules": "export VUE_APP_HOST=http://localhost:7003 && export VUE_APP_SHOW_EKUIPER=false && yarn serve",
     "dev:server": "export VUE_APP_HOST=ws://iot-platform.cloud:6170 && yarn serve",
     "build": "vue-cli-service build",
+    "build:norules": "VUE_APP_SHOW_EKUIPER=false vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
