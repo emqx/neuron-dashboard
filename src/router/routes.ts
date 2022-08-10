@@ -156,6 +156,7 @@ const routes: Array<RouteRecordRaw> = [
       // },
     ],
   },
+
   /* License */
   {
     path: '/license',
@@ -186,15 +187,17 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
-
-  {
-    path: '/:ekuiper(.*)*',
-    component: Home,
-  },
   {
     path: '/login',
     name: LOGIN_ROUTE_NAME,
     component: Login,
+  },
+]
+
+export const ekuiperRoute: Array<RouteRecordRaw> = [
+  {
+    path: '/:ekuiper(.*)*',
+    component: Home,
   },
 ]
 

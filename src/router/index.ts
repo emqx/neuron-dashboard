@@ -1,11 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import routes from './routes'
+import routes, { ekuiperRoute } from './routes'
 import store from '@/store/index'
 import { handleEKuiper, isKuiperPath, isExitEKuiper, handleExitEKuiper } from '@/utils/forEKuiper'
+import { isShowEkuiper } from '@/config/index'
+
+const routers = isShowEkuiper ? routes.concat(ekuiperRoute) : routes
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
-  routes,
+  routes: routers,
 })
 
 router.beforeEach((to, from, next) => {

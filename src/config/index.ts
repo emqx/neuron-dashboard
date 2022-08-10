@@ -134,3 +134,5 @@ export const UserLevels = [
     key: 7,
   },
 ]
+
+export const isShowEkuiper = true
