@@ -135,4 +135,4 @@ export const UserLevels = [
   },
 ]
 
-export const isShowEkuiper = process.env.VUE_APP_SHOW_EKUIPER === 'false' ? false : !false // default: true
+export const isShowEkuiper = !(process.env.VUE_APP_SHOW_EKUIPER === 'false')
