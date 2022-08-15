@@ -28,6 +28,19 @@
           <emqx-input v-model.trim="form.address" />
         </emqx-form-item>
       </emqx-col>
+
+      <emqx-col :span="12">
+        <emqx-form-item label="Precision" prop="precision">
+          <emqx-input-number v-model="form.precision" :min="0" :max="17" controls-position="right" />
+        </emqx-form-item>
+      </emqx-col>
+
+      <emqx-col :span="12">
+        <emqx-form-item label="Decimal" prop="decimal">
+          <emqx-input-number v-model="form.decimal" :precision="2" :step="0.1" :min="0" controls-position="right" />
+        </emqx-form-item>
+      </emqx-col>
+
       <emqx-col :span="12">
         <emqx-form-item :label="$t('config.desc')">
           <emqx-input v-model.trim="form.description" />

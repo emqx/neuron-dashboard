@@ -153,6 +153,8 @@ export interface TagForm {
   attribute: number | undefined
   type: number | null
   description: string
+  precision?: number
+  decimal?: number
 }
 
 export interface TagData extends TagForm {
