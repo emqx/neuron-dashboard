@@ -81,7 +81,7 @@ export enum NodeState {
 
 export enum NodeLinkState {
   Disconnected,
-  Connecting,
+  // Connecting,
   Connected,
 }
 
