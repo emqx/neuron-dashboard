@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
 
 function resolve(dir) {
@@ -10,11 +11,11 @@ module.exports = {
   devServer: {
     port: 3003,
     proxy: {
-      '/eKuiper/api': {
+      '/api/v2/ekuiper': {
         target: 'http://localhost:9081',
         changeOrigin: true,
         pathRewrite: {
-          '/eKuiper/api': '/',
+          '/api/v2/ekuiper': '/',
         },
       },
       '/api': {
