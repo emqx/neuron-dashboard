@@ -40,7 +40,7 @@ export const createRandomString = (length = 6): string => {
   const libLetters = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
   const libLettersLength = libLetters.length
   let ret = ''
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < length; i += 1) {
     ret += libLetters.charAt(Math.floor(Math.random() * libLettersLength))
   }
   return ret
@@ -87,20 +87,12 @@ export const jumpToFirstErrorFormItem = (): void => {
 }
 
 export const countBaseURL = () => {
-  const { host, protocol } = window.location
-  let serverAddress = host
-  if (process.env.NODE_ENV !== 'development') {
-    const reg = /(?<ip>(localhost)|((\d|.)+)):(?<port>\d+)/
-    const matchResult = host.match(reg)
-    if (reg.test(host) && matchResult?.groups) {
-      const { ip, port } = matchResult.groups
-      serverAddress = `${ip}:${(Number(port) + 1).toString()}`
-    } else {
-      serverAddress = host
-    }
+  if (process.env.NODE_ENV === 'development') {
+    return '/api/v2'
   }
-  const baseURL = `${protocol}//${serverAddress}/api/v2`
-  return baseURL
+  const { hostname, port, protocol, origin } = window.location
+  const serverURL = port ? `${protocol}//${hostname}:${(Number(port) + 1).toString()}` : origin
+  return `${serverURL}/api/v2`
 }
 
 export const popUpErrorMessage = (error: number) => {
