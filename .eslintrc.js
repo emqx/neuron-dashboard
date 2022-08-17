@@ -78,6 +78,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'error',
     'import/no-dynamic-require': 'off',
   },
+  ignorePatterns: ['dist', '/public/ekuiper'],
   // parserOptions: {
   //   parser: 'babel-eslint',
   // },
