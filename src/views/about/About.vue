@@ -11,13 +11,16 @@
         <emqx-descriptions-item :label="$t('admin.builtDate')">
           {{ versionData.build_date }}
         </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.hwToken')">
+          {{ hwToken }}
+        </emqx-descriptions-item>
       </emqx-descriptions>
     </div>
   </emqx-card>
 </template>
 
 <script setup lang="ts">
-import { queryVersion } from '@/api/admin'
+import { queryVersion, queryHardwareToken } from '@/api/admin'
 import { ref } from 'vue'
 
 const versionData = ref({
@@ -25,19 +28,27 @@ const versionData = ref({
   build_date: '',
 })
 const isDataLoading = ref(false)
+const hwToken = ref('')
+
 const getVersion = async () => {
   try {
     isDataLoading.value = true
     const { data } = await queryVersion()
     versionData.value = data
-  } catch (error) {
-    //
   } finally {
     isDataLoading.value = false
   }
 }
 
+const getHWToken = () => {
+  queryHardwareToken().then((res) => {
+    const { token } = res.data
+    hwToken.value = token
+  })
+}
+
 getVersion()
+getHWToken()
 </script>
 
 <style lang="scss" scoped>

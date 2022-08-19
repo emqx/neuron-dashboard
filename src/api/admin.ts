@@ -28,3 +28,6 @@ export const uploadLicense = (license: string): Promise<AxiosResponse<{ error: 0
 export const queryVersion = (): Promise<AxiosResponse<any>> => {
   return http.get('/version')
 }
+export const queryHardwareToken = (): Promise<AxiosResponse<any>> => {
+  return http.get('/hwtoken')
+}
