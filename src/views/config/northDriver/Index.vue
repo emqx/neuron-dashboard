@@ -24,21 +24,27 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import type { DriverItemInList } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
-import { ref } from 'vue'
 import SetupItemCard from './components/SetupItemCard.vue'
+import { EmqxMessage } from '@emqx/emqx-ui'
 
+const { t } = useI18n()
 const { northDriverList, isListLoading, getNorthDriverList } = useNorthDriver(true, true)
 const showDialog = ref(false)
 
 const { toggleNodeStartStopStatus } = useToggleNodeStartStopStatus()
+
 const setNodeStartStopStatus = async (node: DriverItemInList, status: boolean, nodeIndex: number) => {
   try {
     const ret = await toggleNodeStartStopStatus(node, status)
+    const message = status ? t('config.runSuc') : t('config.stopSuc')
+    EmqxMessage.success(message)
     if (typeof ret === 'object') {
       northDriverList.value.splice(nodeIndex, 1, ret)
     } else {

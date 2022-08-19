@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useGetPluginMsgIdMap } from './usePlugin'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
+import { cloneDeep } from 'lodash'
 
 interface Field {
   key: string
@@ -27,6 +28,7 @@ export default (props: Props) => {
   const { initMap, getNodeMsgById } = useNodeMsgMap(props.direction, false)
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   const configForm: Ref<Record<string, any>> = ref({})
+  const defaultConfigData: Ref<Record<string, any>> = ref({})
   const configuredData: Ref<undefined | Record<string, any>> = ref(undefined)
   const fieldList: Ref<Array<Field>> = ref([])
   const isLoading = ref(false)
@@ -85,13 +87,18 @@ export default (props: Props) => {
 
   const getPluginInfo = async () => {
     const pluginName = getNodeMsgById(node.value).plugin
-    const { data } = await queryPluginConfigInfo(pluginMsgIdMap[pluginName].name)
-    const pluginInfo: PluginInfo = data
-    if (!pluginInfo) {
-      return
+    const pluginMsgName = pluginMsgIdMap[pluginName]?.name
+    if (pluginMsgName) {
+      const { data } = await queryPluginConfigInfo(pluginMsgName)
+      const pluginInfo: PluginInfo = data
+      if (!pluginInfo) {
+        return
+      }
+      const pluginInitInfo = initFormFromPluginInfo(pluginInfo)
+      configForm.value = pluginInitInfo
+      defaultConfigData.value = cloneDeep(pluginInitInfo)
+      fieldList.value = createFieldListFormPluginInfo(pluginInfo)
     }
-    configForm.value = initFormFromPluginInfo(pluginInfo)
-    fieldList.value = createFieldListFormPluginInfo(pluginInfo)
   }
 
   const keysToString = (obj: Record<string, any> | undefined) => {
@@ -134,6 +141,10 @@ export default (props: Props) => {
     }
   }
 
+  const reset = () => {
+    configForm.value = cloneDeep(defaultConfigData.value)
+  }
+
   onMounted(async () => {
     isLoading.value = true
     await Promise.all([initMap(), initMsgIdMap()])
@@ -152,5 +163,6 @@ export default (props: Props) => {
     shouldFieldShow,
     submit,
     cancel,
+    reset,
   }
 }

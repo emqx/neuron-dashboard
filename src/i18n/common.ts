@@ -287,4 +287,8 @@ export default {
     zh: '系统信息',
     en: 'System Information',
   },
+  reset: {
+    zh: '重置',
+    en: 'Reset',
+  },
 }

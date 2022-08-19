@@ -372,4 +372,12 @@ export default {
     zh: '描述',
     en: 'Description',
   },
+  stopSuc: {
+    zh: '停止成功',
+    en: 'Stop successfully',
+  },
+  runSuc: {
+    zh: '运行成功',
+    en: 'Run successfully',
+  },
 }

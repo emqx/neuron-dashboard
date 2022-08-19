@@ -32,6 +32,7 @@
     <emqx-card shadow="none" class="node-config-ft" v-if="!isLoading && fieldList.length > 0">
       <emqx-button type="primary" :loading="isSubmitting" @click="submit">{{ $t('common.submit') }}</emqx-button>
       <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
+      <emqx-button @click.stop="reset">{{ $t('common.reset') }}</emqx-button>
     </emqx-card>
   </div>
 </template>
@@ -58,7 +59,7 @@ const labelForNodeName = computed(() =>
   t(props.direction === DriverDirection.North ? 'config.appName' : 'config.deviceName'),
 )
 
-const { node, configForm, fieldList, isLoading, formCom, isSubmitting, shouldFieldShow, submit, cancel } =
+const { node, configForm, fieldList, isLoading, formCom, isSubmitting, shouldFieldShow, submit, cancel, reset } =
   useNodeConfig(props)
 </script>
 
