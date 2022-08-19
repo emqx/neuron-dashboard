@@ -29,6 +29,7 @@ export const useDriverStatus = (props: { data: DriverItemInList }) => {
   const statusIcon = computed(() => statusIconClassMap[props.data.running])
   const statusText = computed(() => statusTextMap[props.data.running] || '-')
   const connectionStatusText = computed(() => connectionStatusTextMap[props.data.link])
+
   return {
     statusIconClassMap,
     statusIcon,
