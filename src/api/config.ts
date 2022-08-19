@@ -188,7 +188,6 @@ export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
     group,
     node,
     interval: Number(interval),
-    app: 1,
   })
 }
 

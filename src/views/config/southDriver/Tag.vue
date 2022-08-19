@@ -31,8 +31,12 @@
           </emqx-button>
 
           <emqx-button size="small" type="primary" @click="goCreatePage">{{ $t('common.create') }}</emqx-button>
-          <emqx-button size="small" type="warning" @click="clearTag">{{ $t('common.clear') }}</emqx-button>
-          <emqx-button size="small" type="danger" @click="batchDeleteTag">{{ $t('common.delete') }}</emqx-button>
+          <emqx-button size="small" type="warning" :disabled="!tagList.length" @click="clearTag">{{
+            $t('common.clear')
+          }}</emqx-button>
+          <emqx-button size="small" type="danger" :disabled="!tagCheckedList.length" @click="batchDeleteTag">{{
+            $t('common.delete')
+          }}</emqx-button>
         </div>
       </div>
     </div>
@@ -101,6 +105,7 @@ const {
   node,
   groupName,
   tagList,
+  tagCheckedList,
   totalData,
   pageController,
   isListLoading,

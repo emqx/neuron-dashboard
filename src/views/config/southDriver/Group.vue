@@ -48,8 +48,8 @@
       <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
       <emqx-table-column align="right">
         <template #default="{ row }">
-          <AComWithDesc :content="$t('common.view')">
-            <i class="iconfont icondisplay" @click="editGroup(row)" />
+          <AComWithDesc :content="$t('common.edit')">
+            <i class="el-icon-edit-outline" @click="operatorGroup(row, true)" />
           </AComWithDesc>
           <AComWithDesc :content="$t('config.tagList')">
             <i class="iconfont iconalarm" @click="goTagPage(row)" />
@@ -61,7 +61,13 @@
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
-  <GroupDialog v-model="showGroupDialog" :current-node="node" @submitted="getGroupList" :group="currentGroup" />
+  <GroupDialog
+    v-model="showGroupDialog"
+    :current-node="node"
+    :group="currentGroup"
+    :is-edit="isEditGroup"
+    @submitted="getGroupList"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -85,17 +91,19 @@ const {
   delGroup,
   batchDeleteGroup,
 } = useGroupList()
-const showGroupDialog = ref(false)
-const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 
-const showEditDialog = ref(false)
+const showGroupDialog = ref(false)
+const isEditGroup = ref(false)
+const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
 
 const addGroup = () => {
   currentGroup.value = undefined
   showGroupDialog.value = true
 }
 
-const editGroup = ({ name, interval, group }: GroupData) => {
+// view | edit group
+const operatorGroup = ({ name, interval, group }: GroupData, isEdit?: boolean) => {
+  isEditGroup.value = !!isEdit
   currentGroup.value = {
     interval,
     name,
