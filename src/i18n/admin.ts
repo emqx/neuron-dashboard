@@ -107,4 +107,8 @@ export default {
     zh: '项目构建日期',
     en: 'Built date',
   },
+  hwToken: {
+    zh: '硬件标志',
+    en: 'Hardware Token',
+  },
 }
