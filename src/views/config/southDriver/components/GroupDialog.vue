@@ -3,7 +3,7 @@
     v-model="showDialog"
     :width="500"
     custom-class="common-dialog"
-    :title="!!group ? $t('config.viewGroup') : $t('config.createGroup')"
+    :title="$t(`${dialogTitle}`)"
     :z-index="2000"
   >
     <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
@@ -11,19 +11,23 @@
         <emqx-input v-model.trim="groupForm.group" :disabled="group" />
       </emqx-form-item>
       <emqx-form-item prop="interval" label="Interval" required>
-        <emqx-input v-model.number="groupForm.interval" :disabled="group">
+        <emqx-input v-model.number="groupForm.interval" :disabled="group && !isEdit">
           <template #append>ms</template>
         </emqx-input>
       </emqx-form-item>
     </emqx-form>
     <template #footer>
       <span class="dialog-footer">
-        <template v-if="!group">
-          <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
-            {{ $t('common.create') }}
+        <!-- create | edit -->
+        <template v-if="!group || (group && isEdit)">
+          <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">
+            {{ $t(`${confirmBtnText}`) }}
           </emqx-button>
-          <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+          <emqx-button v-if="!group || (group && isEdit)" size="small" @click="showDialog = false">
+            {{ $t('common.cancel') }}
+          </emqx-button>
         </template>
+        <!-- view -->
         <emqx-button v-else type="primary" size="small" @click="showDialog = false" :loading="isSubmitting">
           {{ $t('common.close') }}
         </emqx-button>
@@ -34,7 +38,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import { computed, defineProps, defineEmits, ref, watch, nextTick } from 'vue'
+import { computed, defineProps, defineEmits, watch } from 'vue'
 import { ElDialog } from 'element-plus'
 import useAddGroup from '@/composables/config/useAddGroup'
 import type { GroupForm } from '@/types/config'
@@ -51,15 +55,25 @@ const props = defineProps({
   group: {
     type: Object as PropType<GroupForm>,
   },
+  isEdit: { type: Boolean, deafult: false },
 })
 
-const { formCom, groupForm, nodeList, isSubmitting, groupFormRules, resetFields, submitForm, initForm } = useAddGroup()
+const { formCom, groupForm, isSubmitting, groupFormRules, resetFields, submitForm, initForm } = useAddGroup()
 
 const showDialog = computed({
   get: () => props.modelValue,
   set: (val: boolean) => {
     emit('update:modelValue', val)
   },
+})
+
+const dialogTitle = computed(() => {
+  if (!props.group) return 'config.createGroup'
+  const title = props.isEdit ? 'config.editGroup' : 'config.viewGroup'
+  return title
+})
+const confirmBtnText = computed(() => {
+  return !props.group ? 'common.create' : 'common.submit'
 })
 
 watch(showDialog, async (val) => {

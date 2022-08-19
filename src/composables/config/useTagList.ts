@@ -26,6 +26,7 @@ export default () => {
 
   const node = computed(() => route.params.node.toString())
   const groupName = computed(() => route.params.group as string)
+
   const allChecked = computed({
     get() {
       if (tagList.value.length === 0) {
@@ -38,6 +39,11 @@ export default () => {
         item.checked = val
       })
     },
+  })
+
+  const tagCheckedList = computed(() => {
+    const checked_list = tagList.value.filter(({ checked }) => checked)
+    return checked_list
   })
 
   const currentTag: Ref<TagForm> = ref({} as TagForm)
@@ -106,6 +112,7 @@ export default () => {
     node,
     groupName,
     tagList,
+    tagCheckedList,
     totalData,
     pageController,
     isListLoading,
