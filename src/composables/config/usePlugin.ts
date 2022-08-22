@@ -32,7 +32,7 @@ export default () => {
       [/^knx[\s\S]*$/, PluginType.KNXnetIP],
       [/^bacnet[\s\S]*$/, PluginType.BACnetIP],
       [/^dlt645[\s\S]*$/, PluginType.DLT6452007],
-      [/^nona11[\s\S]*$/, PluginType.NoA11],
+      [/^nona11[\s\S]*$/, currentLang.value === 'zh' ? PluginType.zhNoA11 : PluginType.enNoA11],
     ])
     const typeKV = [...types].filter(([key, value]) => key.test(`${pluginName}`))
     const res = typeKV.length ? typeKV[0][1].toLocaleLowerCase().replace(/\s+/g, '-') : ''

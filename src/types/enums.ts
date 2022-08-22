@@ -116,5 +116,6 @@ export enum PluginType {
   BACnetIP = 'BACnet IP',
   DLT6452007 = 'DL T645-2007',
   SparkplugB = 'Sparkplug B',
-  NoA11 = '非 A11',
+  zhNoA11 = '非 A11',
+  enNoA11 = 'Non A11',
 }
