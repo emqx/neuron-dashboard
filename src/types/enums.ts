@@ -103,3 +103,18 @@ export enum FileType {
   Text = 'text',
   Binary = 'binary',
 }
+
+export enum PluginType {
+  MQTT = 'MQTT',
+  Modbus = 'Modbus',
+  OPCUA = 'OPC UA',
+  SiemensS7ISOTCP = 'Siemens S7 ISOTCP',
+  OmronFinsOnTCP = 'OMRON FINS on TCP',
+  MitsubishiMelsecQE71 = 'Mitsubishi MELSEC-Q E71',
+  IEC608705104 = 'IEC 60870-5-104',
+  KNXnetIP = 'KNXnet IP',
+  BACnetIP = 'BACnet IP',
+  DLT6452007 = 'DL T645-2007',
+  SparkplugB = 'Sparkplug B',
+  NoA11 = '非 A11',
+}

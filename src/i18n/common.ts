@@ -291,4 +291,8 @@ export default {
     zh: '重置',
     en: 'Reset',
   },
+  document: {
+    zh: '文档',
+    en: 'Document',
+  },
 }

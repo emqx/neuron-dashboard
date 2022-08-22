@@ -15,6 +15,7 @@ export interface CreatedPlugin extends PluginForm {
   node_type: DriverDirection | null
   name: string
   description: string
+  doc_link?: string
 }
 
 export interface NodeForm {
