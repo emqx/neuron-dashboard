@@ -26,7 +26,6 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-// import { ElTabs, ElTabPane } from 'element-plus'
 import { useNodeTypeSelect } from '@/composables/config/useDriver'
 import usePlugin from '@/composables/config/usePlugin'
 import type { CreatedPlugin } from '@/types/config'

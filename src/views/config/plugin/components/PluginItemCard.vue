@@ -6,8 +6,13 @@
           <!-- <img class="plugin-item-icon" :src="getPluginIcon(data.name)" height="36" /> -->
           <span>{{ data.name }}</span>
         </p>
-        <div class="handlers" v-if="data.kind === PluginKind.Custom">
-          <AComWithDesc :content="$t('common.delete')">
+        <div class="handlers">
+          <AComWithDesc v-if="data.doc_link" :content="$t('common.document')">
+            <a :href="data.doc_link" target="_blank" class="icon-plugin-link icon">
+              <i class="el-icon-document" />
+            </a>
+          </AComWithDesc>
+          <AComWithDesc v-if="data.kind === PluginKind.Custom" :content="$t('common.delete')">
             <i class="iconfont icon icondelete" @click="deletePlugin" />
           </AComWithDesc>
         </div>
@@ -58,6 +63,8 @@ const deletePlugin = async () => {
 </script>
 
 <style lang="scss">
+@import '~@/styles/mixins.scss';
+
 .plugin-item-card {
   padding: 24px;
   border-radius: 4px;
@@ -83,6 +90,7 @@ const deletePlugin = async () => {
   }
   .handlers {
     flex-shrink: 0;
+    @include display-flex();
   }
   .icon {
     font-size: 20px;
@@ -91,6 +99,9 @@ const deletePlugin = async () => {
     &:not(:last-child) {
       margin-right: 8px;
     }
+  }
+  .icon-plugin-link {
+    font-size: 15px;
   }
   .info-row {
     display: flex;

@@ -1,19 +1,61 @@
-import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
-import type { CreatedPlugin, PluginForm } from '@/types/config'
-import { createCommonErrorMessage } from '@/utils/utils'
-import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
+import { ref, computed } from 'vue'
 import type { Ref } from 'vue'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
+import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
+import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
+import { createCommonErrorMessage } from '@/utils/utils'
+import { PluginType } from '@/types/enums'
+import type { CreatedPlugin, PluginForm } from '@/types/config'
 
 export default () => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])
   const isListLoading = ref(false)
+  const $store = useStore()
+
+  // zh | en
+  const currentLang = computed(() => {
+    return $store.state.lang
+  })
+
+  const pluginTypeMapping = computed(() => (pluginName: string) => {
+    if (!pluginName) return ''
+    const types = new Map([
+      [/^mqtt[\s\S]*$/, PluginType.MQTT],
+      [/^sparkplugb[\s\S]*$/, PluginType.SparkplugB],
+      [/^modbus[\s\S]*$/, PluginType.Modbus],
+      [/^opcua[\s\S]*$/, PluginType.OPCUA],
+      [/^s7comm[\s\S]*$/, PluginType.SiemensS7ISOTCP],
+      [/^fins[\s\S]*$/, PluginType.OmronFinsOnTCP],
+      [/^qna3e[\s\S]*$/, PluginType.MitsubishiMelsecQE71],
+      [/^iec104[\s\S]*$/, PluginType.IEC608705104],
+      [/^knx[\s\S]*$/, PluginType.KNXnetIP],
+      [/^bacnet[\s\S]*$/, PluginType.BACnetIP],
+      [/^dlt645[\s\S]*$/, PluginType.DLT6452007],
+      [/^nona11[\s\S]*$/, PluginType.NoA11],
+    ])
+    const typeKV = [...types].filter(([key, value]) => key.test(`${pluginName}`))
+    const res = typeKV.length ? typeKV[0][1].toLocaleLowerCase().replace(/\s+/g, '-') : ''
+    return res
+  })
+
+  const pluginLinkURL = computed(() => (pluginName: string) => {
+    const pluginType = pluginTypeMapping.value(pluginName)
+    const pluginlink = `https://neugates.io/docs/${currentLang.value}/latest/module-plugins/module-driver.html#${pluginType}`
+    return pluginType ? pluginlink : ''
+  })
 
   const getPluginList = async () => {
     isListLoading.value = true
     const { data } = await queryPluginList()
-    pluginList.value = data.plugins || []
+    pluginList.value = data.plugins.length
+      ? data.plugins.map((item) => {
+          return {
+            ...item,
+            doc_link: pluginLinkURL.value(item.name),
+          }
+        })
+      : []
     isListLoading.value = false
   }
 
