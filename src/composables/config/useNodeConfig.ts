@@ -50,9 +50,20 @@ export default (props: Props) => {
   }
 
   const createInitValue = (param: ParamInfo) => {
-    if (param.default !== undefined) {
-      return param.default
+    const defaultValue = param.default
+    if (defaultValue !== undefined) {
+      let newDefaultValue = defaultValue
+      const reg = /\$\{node-name\}/
+      /**
+       * if the default value contains ${node-name},
+       * change the default value of ${node-name} to curent node name
+       *  */
+      if (typeof defaultValue === 'string' && reg.test(defaultValue)) {
+        newDefaultValue = defaultValue.replace(reg, node.value)
+      }
+      return newDefaultValue
     }
+
     const initValueMap = {
       [TypeOfPluginParam.Int]: null,
       [TypeOfPluginParam.String]: '',
