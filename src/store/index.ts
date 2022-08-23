@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { getToken, setToken, clearToken } from '@/utils/user'
+import { getToken, setToken, clearLocalStorage } from '@/utils/user'
 
 interface State {
   lang: string
@@ -37,7 +37,7 @@ export default createStore<State>({
     },
     LOGOUT(state) {
       state.token = ''
-      clearToken()
+      clearLocalStorage()
     },
     SET_SUB_APP_INSTANCE(state, payload: { key: string; instance: any }) {
       state.subAppInstances[payload.key] = payload.instance

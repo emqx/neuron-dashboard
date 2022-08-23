@@ -30,20 +30,20 @@
       </emqx-col>
 
       <emqx-col :span="12">
+        <emqx-form-item label="Decimal" prop="decimal">
+          <emqx-input-number v-model="form.decimal" :step="0.1" :min="0" controls-position="right" />
+        </emqx-form-item>
+      </emqx-col>
+
+      <emqx-col v-if="isShowPrecisionField(form.type)" :span="12">
         <emqx-form-item label="Precision" prop="precision">
           <emqx-input-number v-model="form.precision" :min="0" :max="17" controls-position="right" />
         </emqx-form-item>
       </emqx-col>
 
       <emqx-col :span="12">
-        <emqx-form-item label="Decimal" prop="decimal">
-          <emqx-input-number v-model="form.decimal" :step="0.1" :min="0" controls-position="right" />
-        </emqx-form-item>
-      </emqx-col>
-
-      <emqx-col :span="12">
         <emqx-form-item :label="$t('config.desc')">
-          <emqx-input v-model.trim="form.description" />
+          <emqx-input v-model="form.description" />
         </emqx-form-item>
       </emqx-col>
     </emqx-row>
@@ -126,6 +126,14 @@ const validAddress = (rule: any, value: string, callback: any) => {
     callback()
   }
 }
+
+const isShowPrecisionField = computed(() => (type: number | null) => {
+  if (type === null || type === undefined) return false
+
+  const whiteList = [9, 10] // FLOAT | DOUBLE
+  const res: boolean = whiteList.includes(type)
+  return res
+})
 
 const rules = {
   name: [{ required: true, message: t('config.tagNameRequired') }],
