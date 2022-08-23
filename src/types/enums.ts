@@ -72,8 +72,7 @@ export enum NodeOperationCommand {
 }
 
 export enum NodeState {
-  Idle,
-  Init,
+  Init = 1,
   Ready,
   Running,
   Stopped,
