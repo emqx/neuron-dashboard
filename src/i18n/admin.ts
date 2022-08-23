@@ -40,8 +40,8 @@ export default {
     en: 'Limit on the maximum number of nodes',
   },
   maxNodeTags: {
-    zh: '节点下 Tag 数目限制',
-    en: 'Limit on the maximum number of tags belong a node',
+    zh: 'Tag 数目限制',
+    en: 'Limit on the maximum number of tags',
   },
   enabledPlugins: {
     zh: '可用的 Plugin',

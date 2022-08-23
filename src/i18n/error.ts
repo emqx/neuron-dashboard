@@ -142,6 +142,10 @@ export default {
     zh: 'Tag 描述过长',
     en: 'Tag description too long',
   },
+  2209: {
+    zh: 'Tag 精度无效',
+    en: 'Tag precision invalid',
+  },
   2301: {
     zh: '库未找到',
     en: 'Library not found',
@@ -165,6 +169,10 @@ export default {
   2306: {
     zh: '系统库不允许删除',
     en: 'Library system not allow del',
+  },
+  2307: {
+    zh: '插件不允许实例化',
+    en: 'Library not allow create instance',
   },
   2400: {
     zh: 'License 未找到',

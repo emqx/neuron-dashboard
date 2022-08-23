@@ -14,6 +14,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, watch, reactive, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { setBreamcrumbs, getBreamcrumbs } from '@/utils/user'
 
 export default defineComponent({
   name: 'Breadcrumb',
@@ -23,6 +24,7 @@ export default defineComponent({
 <script lang="ts" setup>
 const $route = useRoute()
 const $router = useRouter()
+
 const state = reactive({
   levelList: [] as Array<any>,
 })
@@ -42,10 +44,13 @@ watch(
 
 const getBreadcrumbs = () => {
   const { fullPath, matched } = $route
+
   if ($route.meta.hiddenBreadcrumb) {
     state.levelList = []
+    setBreamcrumbs(state.levelList)
     return
   }
+
   const newMatched = matched.filter((item: any) => item.meta && item.meta.title)
 
   const current_route = {
@@ -54,7 +59,7 @@ const getBreadcrumbs = () => {
   }
   newMatched[newMatched.length - 1] = current_route
 
-  const formMatched = state.levelList // last time matched
+  const formMatched = getBreamcrumbs() // last time matched
 
   const formMatchedL = formMatched?.length
   const newMatchedL = newMatched?.length
@@ -69,12 +74,13 @@ const getBreadcrumbs = () => {
       state.levelList = formMatched
     } else {
       // go back
-      const i = formMatched.findIndex((item) => item.name === current_route.name)
+      const i = formMatched.findIndex((item: any) => item.name === current_route.name)
       state.levelList = i > -1 ? formMatched.slice(0, i + 1) : formMatched
     }
   } else {
     state.levelList = newMatched
   }
+  setBreamcrumbs(state.levelList) // fixed: recorded routes is empty when refresh page
 }
 
 const onHandleLink = (item: any) => {

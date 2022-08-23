@@ -5,7 +5,10 @@ import { DriverDirection } from '@/types/enums'
 // import { propsToAttrMap } from '@vue/shared'
 
 export const LOGIN_ROUTE_NAME = 'Login'
-
+/**
+ * hiddenBreadcrumb: current page is hidde breadcrumb; defualt: false,i show breadcrumb
+ * default page of the route doesnot need to set the 'title', default page route title is the title of parent route
+ */
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -107,15 +110,22 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: ':group',
-            name: 'SouthDriverGroupTag',
-            component: () => import('@/views/config/southDriver/Tag.vue'),
+            name: 'SouthGroupTags',
             meta: { title: 'config.tagList' },
-          },
-          {
-            path: ':group/add',
-            name: 'SouthDriverGroupAddTag',
-            component: () => import('@/views/config/southDriver/AddTag.vue'),
-            meta: { title: 'config.addTags' },
+            component: () => import('@/components/LayoutContent.vue'),
+            children: [
+              {
+                path: '',
+                name: 'SouthDriverGroupTag',
+                component: () => import('@/views/config/southDriver/Tag.vue'),
+              },
+              {
+                path: 'add',
+                name: 'SouthDriverGroupAddTag',
+                component: () => import('@/views/config/southDriver/AddTag.vue'),
+                meta: { title: 'config.addTags' },
+              },
+            ],
           },
         ],
       },
