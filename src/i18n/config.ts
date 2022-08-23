@@ -187,10 +187,6 @@ export default {
     zh: '没有需要配置的数据',
     en: 'There is no data to configure.',
   },
-  idle: {
-    zh: '空闲',
-    en: 'Idle',
-  },
   init: {
     zh: '初始化',
     en: 'Init',
