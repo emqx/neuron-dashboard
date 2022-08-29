@@ -45,7 +45,6 @@ watch(
 // Only current rou te params are supported
 const getBreadcrumbs = () => {
   const { matched, meta, params } = $route
-
   if (meta.hiddenBreadcrumb) {
     state.levelList = []
     return
