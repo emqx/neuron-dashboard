@@ -29,7 +29,7 @@ export default (props: Props) => {
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   const configForm: Ref<Record<string, any>> = ref({})
   const defaultConfigData: Ref<Record<string, any>> = ref({})
-  const configuredData: Ref<undefined | Record<string, any>> = ref(undefined)
+  const configuredData: Ref<Record<string, any>> = ref({})
   const fieldList: Ref<Array<Field>> = ref([])
   const isLoading = ref(false)
   const formCom = ref()
@@ -96,33 +96,43 @@ export default (props: Props) => {
     })
   }
 
+  // get plugin default value
   const getPluginInfo = async () => {
     const pluginName = getNodeMsgById(node.value).plugin
     const pluginMsgName = pluginMsgIdMap[pluginName]?.name
-    if (pluginMsgName) {
-      const { data } = await queryPluginConfigInfo(pluginMsgName)
+
+    const nodePluginName = pluginMsgName || pluginName
+    if (nodePluginName) {
+      const { data } = await queryPluginConfigInfo(nodePluginName)
       const pluginInfo: PluginInfo = data
       if (!pluginInfo) {
+        defaultConfigData.value = {}
+        fieldList.value = []
         return
       }
+
       const pluginInitInfo = initFormFromPluginInfo(pluginInfo)
-      configForm.value = pluginInitInfo
       defaultConfigData.value = cloneDeep(pluginInitInfo)
       fieldList.value = createFieldListFormPluginInfo(pluginInfo)
     }
   }
 
-  const keysToString = (obj: Record<string, any> | undefined) => {
-    return Object.keys(obj ?? {})
-      .sort()
-      .join(',')
-  }
-
   const fillOutTheFormFromConfiguredData = () => {
-    const configFormKeysString = keysToString(configForm.value)
-    const configuredDataKeyString = keysToString(configuredData.value)
-    if (configuredData.value && configFormKeysString === configuredDataKeyString) {
-      configForm.value = { ...configuredData.value }
+    const defaultConfigDatakeys = Object.keys(defaultConfigData.value) // according fieldList value
+    const defaultConfigDataL = defaultConfigDatakeys.length
+    if (!defaultConfigDataL) {
+      configForm.value = { ...defaultConfigData.value }
+    } else {
+      for (let i = 0; i < defaultConfigDataL; i += 1) {
+        const key = defaultConfigDatakeys[i]
+        const value = configuredData.value[key]
+        if (value === '' || value === undefined || value === null) {
+          const defaultValue = defaultConfigData.value[key]
+          configForm.value[key] = defaultValue
+        } else {
+          configForm.value[key] = configuredData.value[key]
+        }
+      }
     }
   }
 

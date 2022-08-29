@@ -29,15 +29,15 @@
         </emqx-form-item>
       </emqx-col>
 
-      <emqx-col :span="12">
-        <emqx-form-item label="Decimal" prop="decimal">
-          <emqx-input-number v-model="form.decimal" :step="0.1" :min="0" controls-position="right" />
-        </emqx-form-item>
-      </emqx-col>
-
       <emqx-col v-if="isShowPrecisionField(form.type)" :span="12">
         <emqx-form-item label="Precision" prop="precision">
           <emqx-input-number v-model="form.precision" :min="0" :max="17" controls-position="right" />
+        </emqx-form-item>
+      </emqx-col>
+
+      <emqx-col :span="12">
+        <emqx-form-item label="Decimal" prop="decimal">
+          <emqx-input-number v-model="form.decimal" :step="0.1" :min="0" controls-position="right" />
         </emqx-form-item>
       </emqx-col>
 
@@ -106,7 +106,7 @@ const form: WritableComputedRef<TagForm> = computed({
   },
 })
 
-// valid address
+// valid address: valid address by type
 const validAddress = (rule: any, value: string, callback: any) => {
   const cuurentType = form.value.type
   const curentTagRegex = tagRegex.value?.find((item: TagRegex) => item.type === Number(cuurentType))
