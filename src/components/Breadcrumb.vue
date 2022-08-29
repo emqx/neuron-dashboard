@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, watch, reactive, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { setBreamcrumbs, getBreamcrumbs } from '@/utils/user'
+import { cloneDeep } from 'lodash'
 
 export default defineComponent({
   name: 'Breadcrumb',
@@ -42,45 +42,43 @@ watch(
   { immediate: false },
 )
 
+// Only current rou te params are supported
 const getBreadcrumbs = () => {
-  const { fullPath, matched } = $route
+  const { matched, meta, params } = $route
 
-  if ($route.meta.hiddenBreadcrumb) {
+  if (meta.hiddenBreadcrumb) {
     state.levelList = []
-    setBreamcrumbs(state.levelList)
     return
   }
 
-  const newMatched = matched.filter((item: any) => item.meta && item.meta.title)
+  const currentMatched: any[] = matched.filter((item: any) => item.meta && item.meta.title)
 
-  const current_route = {
-    ...newMatched[newMatched.length - 1],
-    fullPath,
-  }
-  newMatched[newMatched.length - 1] = current_route
+  const routers = cloneDeep(currentMatched)
+  const routesL = routers.length
+  if (routesL >= 3) {
+    // Multi-layer routing nesting
+    const parmasKeys: string[] = Object.keys(params)
 
-  const formMatched = getBreamcrumbs() // last time matched
-
-  const formMatchedL = formMatched?.length
-  const newMatchedL = newMatched?.length
-  if (formMatchedL && newMatchedL && formMatched[0].name === newMatched[0].name) {
-    // same parent node
-    if (formMatchedL < newMatchedL) {
-      // into new page
-      formMatched.push(current_route)
-      state.levelList = formMatched
-    } else if (formMatchedL === newMatchedL) {
-      formMatched[formMatched.length - 1] = current_route
-      state.levelList = formMatched
-    } else {
-      // go back
-      const i = formMatched.findIndex((item: any) => item.name === current_route.name)
-      state.levelList = i > -1 ? formMatched.slice(0, i + 1) : formMatched
+    if (!parmasKeys.length) {
+      state.levelList = currentMatched
+      return
     }
+
+    for (let i = 0; i < routesL; i += 1) {
+      const routeItem = routers[i]
+      parmasKeys.map((key: string) => {
+        if (routeItem.path.includes(key)) {
+          const param: any = params[key]
+          const newPath = routeItem.path.replace(`:${key}`, param)
+          routers[i].path = newPath
+        }
+        return routers[i]
+      })
+    }
+    state.levelList = routers
   } else {
-    state.levelList = newMatched
+    state.levelList = currentMatched
   }
-  setBreamcrumbs(state.levelList) // fixed: recorded routes is empty when refresh page
 }
 
 const onHandleLink = (item: any) => {
