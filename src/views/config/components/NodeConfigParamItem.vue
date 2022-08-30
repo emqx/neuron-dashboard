@@ -1,5 +1,5 @@
 <template>
-  <emqx-form-item class="node-config-param-item" :rules="rules" :prop="paramKey" :required="!!paramInfo.default">
+  <emqx-form-item class="node-config-param-item" :rules="rules" :prop="paramKey" :required="isFieldRequired">
     <template #label>
       <span>{{ showLabel() }}</span>
       <el-popover
@@ -60,16 +60,16 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, defineEmits, defineProps } from 'vue'
+import type { PropType } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { fromByteArray } from 'base64-js'
+import md5 from 'blueimp-md5'
+import { ElPopover } from 'element-plus'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import type { ParamInfo } from '@/types/config'
 import { FileType, TypeOfPluginParam } from '@/types/enums'
-import { fromByteArray } from 'base64-js'
-import md5 from 'blueimp-md5'
-import { ElPopover } from 'element-plus'
-import type { PropType } from 'vue'
-import { computed, defineEmits, defineProps } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
@@ -98,8 +98,12 @@ const inputValue = computed({
   },
 })
 
+const isFieldRequired = computed(() => {
+  return props.paramInfo?.attribute === 'required'
+})
+
 const { rules } = useNodeConfigParamItem(props)
-const { setMaxSize, readFile } = useUploadFileAndRead()
+const { readFile } = useUploadFileAndRead()
 
 const handleUpload = async (file: any) => {
   try {
