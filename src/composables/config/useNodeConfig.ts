@@ -37,6 +37,7 @@ export default (props: Props) => {
 
   const node = computed(() => route.params.node.toString())
 
+  // get node config
   const getNodeConfig = async () => {
     try {
       const { data } = await queryNodeConfig(node.value)
@@ -49,6 +50,7 @@ export default (props: Props) => {
     }
   }
 
+  // init the plugin default data field value
   const createInitValue = (param: ParamInfo) => {
     const defaultValue = param.default
     if (defaultValue !== undefined) {
@@ -75,6 +77,7 @@ export default (props: Props) => {
     return initValueMap[param.type as TypeOfPluginParam] || ''
   }
 
+  // init plugin default data
   const initFormFromPluginInfo = (info: PluginInfo) => {
     // TODO: delete params after api changed
     const { tag_type, params, ...fields } = info
@@ -85,6 +88,7 @@ export default (props: Props) => {
     }, {} as Record<string, any>)
   }
 
+  // render form data: format plugin default data
   const createFieldListFormPluginInfo = (info: PluginInfo) => {
     // TODO: delete params after api changed
     const { params, tag_type, ...fields } = info
@@ -96,7 +100,7 @@ export default (props: Props) => {
     })
   }
 
-  // get plugin default value
+  // get plugin default data
   const getPluginInfo = async () => {
     const pluginName = getNodeMsgById(node.value).plugin
     const pluginMsgName = pluginMsgIdMap[pluginName]?.name
@@ -117,7 +121,8 @@ export default (props: Props) => {
     }
   }
 
-  const fillOutTheFormFromConfiguredData = () => {
+  // init data
+  const initData = () => {
     const defaultConfigDatakeys = Object.keys(defaultConfigData.value) // according fieldList value
     const defaultConfigDataL = defaultConfigDatakeys.length
     if (!defaultConfigDataL) {
@@ -170,7 +175,7 @@ export default (props: Props) => {
     isLoading.value = true
     await Promise.all([initMap(), initMsgIdMap()])
     await Promise.all([getPluginInfo(), getNodeConfig()])
-    fillOutTheFormFromConfiguredData()
+    initData()
     isLoading.value = false
   })
 
