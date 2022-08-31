@@ -51,9 +51,8 @@ const getBreadcrumbs = () => {
   }
 
   const currentMatched: any[] = matched.filter((item: any) => item.meta && item.meta.title)
+  const routesL = currentMatched.length
 
-  const routers = cloneDeep(currentMatched)
-  const routesL = routers.length
   if (routesL >= 3) {
     // Multi-layer routing nesting
     const parmasKeys: string[] = Object.keys(params)
@@ -63,21 +62,22 @@ const getBreadcrumbs = () => {
       return
     }
 
-    for (let i = 0; i < routesL; i += 1) {
-      const routeItem = routers[i]
-      parmasKeys.map((key: string) => {
-        if (routeItem.path.includes(key)) {
+    for (let i = 1; i < routesL; i += 1) {
+      const routeItem = cloneDeep(currentMatched[i])
+      const { path } = routeItem
+      let newPath = ''
+      parmasKeys.forEach((key: string) => {
+        if (path.includes(key)) {
           const param: any = params[key]
-          const newPath = routeItem.path.replace(`:${key}`, param)
-          routers[i].path = newPath
+          newPath = path.replace(`:${key}`, param)
         }
-        return routers[i]
       })
+      if (newPath) {
+        currentMatched[i].path = newPath
+      }
     }
-    state.levelList = routers
-  } else {
-    state.levelList = currentMatched
   }
+  state.levelList = currentMatched
 }
 
 const onHandleLink = (item: any) => {
