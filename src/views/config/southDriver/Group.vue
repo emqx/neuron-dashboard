@@ -21,6 +21,25 @@
           </emqx-button> -->
         </div>
         <div class="btn-group">
+          <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
+            <emqx-upload class="uploader-tag" :before-upload="importTags" :show-file-list="false" action="placeholder">
+              <emqx-button size="small">
+                <i class="iconfont icon-import icondownload"></i>
+                <span>{{ $t('common.import') }}</span>
+              </emqx-button>
+            </emqx-upload>
+            <template #dropdown>
+              <emqx-dropdown-menu>
+                <emqx-button plain class="btn-download-temp" @click="downloadTemplate">
+                  <span>{{ $t('config.downloadTemplate') }}</span>
+                </emqx-button>
+              </emqx-dropdown-menu>
+            </template>
+          </emqx-dropdown>
+          <emqx-button size="small" @click="ExportTagsByGroups" :loading="isExporting">
+            <i class="iconfont icon-import iconsubmit"></i>
+            <span>{{ $t('common.export') }}</span>
+          </emqx-button>
           <emqx-button size="small" type="primary" @click="addGroup">{{ $t('common.create') }}</emqx-button>
           <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
             $t('common.clear')
@@ -78,8 +97,12 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import GroupDialog from './components/GroupDialog.vue'
+import useUploadTagList from '@/composables/config/useUploadTagList'
+import useExportTagTable from '@/composables/config/useExportTagTable'
+import { queryTagList } from '@/api/config'
 
 const router = useRouter()
+
 const {
   node,
   groupList,
@@ -95,6 +118,9 @@ const {
 const showGroupDialog = ref(false)
 const isEditGroup = ref(false)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
+
+const { uploadTag } = useUploadTagList()
+const { isExporting, exportTable } = useExportTagTable()
 
 const addGroup = () => {
   currentGroup.value = undefined
@@ -119,6 +145,48 @@ const goTagPage = ({ name }: GroupData) => {
     params: { group: name },
   })
 }
+
+// import file
+const importTags = (file: File) => {
+  uploadTag(file, node.value)
+    .then(() => {
+      getGroupList()
+    })
+    .catch((error) => {
+      // no upload empty content file
+      if (error) {
+        getGroupList()
+      }
+    })
+  return Promise.reject()
+}
+
+// download template file
+const downloadTemplate = () => {
+  window.open('/template/upload-tag-template.xlsx', '_blank')
+}
+
+/**
+ *  export file
+ * TODO: Export according to the selected group
+ */
+const ExportTagsByGroups = async () => {
+  const requesList = groupList.value.map((group: GroupData) => queryTagList(node.value, group.name))
+  const AllNodeTags: any = []
+  Promise.all(requesList).then((res) => {
+    for (let i = 0; i < res.length; i += 1) {
+      const groupName: string = groupList.value[i].name
+      res[i].forEach((item) => {
+        const tag = {
+          ...item,
+          group: groupName,
+        }
+        AllNodeTags.push(tag)
+      })
+    }
+    exportTable(AllNodeTags, node.value)
+  })
+}
 </script>
 
 <style lang="scss">
@@ -133,6 +201,19 @@ const goTagPage = ({ name }: GroupData) => {
   }
   .icon-edit {
     margin-left: 8px;
+  }
+}
+.uploader-tag {
+  display: inline-block;
+  margin-right: 10px;
+}
+.btn-download-temp {
+  font-weight: normal;
+  border: none;
+}
+.btn-download-temp-popper {
+  .el-dropdown-menu {
+    padding: 0;
   }
 }
 </style>

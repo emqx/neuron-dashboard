@@ -15,20 +15,21 @@ export default () => {
   const { findLabelByValue } = useTagTypeSelect()
 
   const genExcelSheets = (tagList: Array<TagData>) => {
-    const cols = ['name', 'address', 'attribute', 'type', 'description']
+    const cols = ['group', 'name', 'address', 'attribute', 'type', 'description', 'decimal', 'precision']
     const sheets: Array<any> = [cols]
     tagList.forEach((obj) => {
-      const { name, address, attribute, type, description } = obj
+      const { group, name, address, attribute, type, description, decimal, precision } = obj
       const content = []
       const attrStr = attribute ? getAttrStrByValue(attribute, FILLER_IN_TAG_ATTR) : ''
       const typeStr = type ? findLabelByValue(type) : ''
-      content.push([name, address, attrStr, typeStr, description])
+      content.push([group, name, address, attrStr, typeStr, description, decimal, precision])
       sheets.push(...content)
     })
     return sheets
   }
 
-  const exportTable = async (tagList: Array<TagData>, groupName: string, nodeName: string) => {
+  // const exportTable = async (tagList: Array<TagData>, groupName: string, nodeName: string) => {
+  const exportTable = async (tagList: Array<TagData>, nodeName: string) => {
     if (tagList.length === 0) {
       EmqxMessage.warning(t('common.emptyData'))
       return
@@ -36,7 +37,7 @@ export default () => {
     isExporting.value = true
     const data = genExcelSheets(tagList)
     try {
-      await exportExcelData(data, `${nodeName} ${groupName} tags`)
+      await exportExcelData(data, `${nodeName} tags`)
     } catch (error: any) {
       EmqxMessage.error(error.toString())
     } finally {
