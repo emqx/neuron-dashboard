@@ -91,9 +91,13 @@ export default {
     zh: '删除',
     en: 'Delete',
   },
+  batchDelete: {
+    zh: '批量删除',
+    en: 'Batch Delete',
+  },
   create: {
-    zh: '创建',
-    en: 'Create',
+    zh: '创建 {name}',
+    en: 'Create {name}',
   },
   clear: {
     zh: '清空',

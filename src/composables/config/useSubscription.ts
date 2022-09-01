@@ -6,7 +6,7 @@ import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import useSouthDriver from './useSouthDriver'
-import { createCommonErrorMessage } from '@/utils/utils'
+import { createCommonErrorMessage, OmitArrayFields } from '@/utils/utils'
 
 interface SubscriptionDataInTable extends SubscriptionData {
   checked: boolean
@@ -35,8 +35,9 @@ export const useSubscriptionList = () => {
   })
 
   const subCheckedList = computed(() => {
-    const checked_list = subscriptionList.value.filter((item) => item.checked)
-    return checked_list
+    const checkedList: Array<SubscriptionDataInTable> = subscriptionList.value.filter((item) => item.checked)
+    const newCheckedList: Array<SubscriptionData> = OmitArrayFields(checkedList, ['checked'])
+    return newCheckedList
   })
 
   const getSubscriptionList = async () => {
@@ -48,17 +49,14 @@ export const useSubscriptionList = () => {
     isListLoading.value = false
   }
 
-  const getGroupDataExpectChecked = ({ checked, ...groupData }: SubscriptionDataInTable) => {
-    return { ...groupData, node }
-  }
-
-  const unsubscribe = async (confirmText: string, data: SubscriptionDataInTable | Array<SubscriptionDataInTable>) => {
+  const unsubscribe = async (confirmText: string, data: SubscriptionData | Array<SubscriptionData>) => {
     try {
       await EmqxMessageBox.confirm(confirmText, t('common.operateConfirm'))
       if (Array.isArray(data)) {
-        await Promise.all(data.map((groupItem) => deleteSubscription(getGroupDataExpectChecked(groupItem))))
+        const requestList = data.map((groupItem: SubscriptionData) => deleteSubscription(groupItem))
+        await Promise.all(requestList)
       } else {
-        await deleteSubscription(getGroupDataExpectChecked(data))
+        await deleteSubscription(data)
       }
       EmqxMessage.success(t('common.operateSuccessfully'))
       getSubscriptionList()
@@ -68,11 +66,12 @@ export const useSubscriptionList = () => {
   }
 
   const unsubscribeGroup = async (group: SubscriptionDataInTable) =>
-    unsubscribe(t('config.unsubscribeGroupConfirm'), group)
+    unsubscribe(t('config.unsubscribeGroupConfirm'), OmitArrayFields([group], ['checked']))
 
-  const clearSubscription = () => unsubscribe(t('config.clearSubscriptionConfirm'), subscriptionList.value)
+  const clearSubscription = () =>
+    unsubscribe(t('config.clearSubscriptionConfirm'), OmitArrayFields(subscriptionList.value, ['checked']))
 
-  const unsubscribeInBulk = () => unsubscribe(t('config.unsubscribeInBulkConfirm'), subCheckedList.value)
+  const batchUnsubscribeGroups = () => unsubscribe(t('config.unsubscribeInBulkConfirm'), subCheckedList.value)
 
   getSubscriptionList()
 
@@ -86,7 +85,7 @@ export const useSubscriptionList = () => {
     getSubscriptionList,
     unsubscribeGroup,
     clearSubscription,
-    unsubscribeInBulk,
+    batchUnsubscribeGroups,
   }
 }
 

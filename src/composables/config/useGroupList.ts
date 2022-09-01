@@ -1,10 +1,13 @@
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
-import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
-import { queryGroupList, deleteGroup } from '@/api/config'
-import { useRoute } from 'vue-router'
-import type { GroupData } from '@/types/config'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
+import { queryGroupList, deleteGroup, queryTagList } from '@/api/config'
+import type { GroupData } from '@/types/config'
+import { OmitArrayFields } from '@/utils/utils'
+import useUploadTagList from '@/composables/config/useUploadTagList'
+import useExportTagTable from '@/composables/config/useExportTagTable'
 
 interface GroupDataInTable extends GroupData {
   checked: boolean
@@ -15,6 +18,9 @@ export default () => {
   const route = useRoute()
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
+
+  const { uploadTag } = useUploadTagList()
+  const { isExporting, exportTable } = useExportTagTable()
 
   const node = computed(() => route.params.node.toString())
   const allChecked = computed({
@@ -32,8 +38,9 @@ export default () => {
   })
 
   const groupCheckedList = computed(() => {
-    const checked_list = groupList.value.filter(({ checked }) => checked)
-    return checked_list
+    const checkedList: Array<GroupDataInTable> = groupList.value.filter(({ checked }) => checked)
+    const newCheckedList: Array<GroupData> = OmitArrayFields(checkedList, ['checked'])
+    return newCheckedList
   })
 
   const getGroupList = async () => {
@@ -50,10 +57,15 @@ export default () => {
     getGroupList()
   }
 
-  const delGroupList = async (list: Array<GroupDataInTable>) => {
+  const delGroupList = async (list: Array<GroupData>) => {
     await Promise.all(list.map(({ name }) => deleteGroup(node.value, name)))
     EmqxMessage.success(t('common.operateSuccessfully'))
     getGroupList()
+  }
+
+  const batchDeleteGroup = async () => {
+    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete') })
+    delGroupList(groupCheckedList.value)
   }
 
   const clearGroup = async () => {
@@ -61,9 +73,43 @@ export default () => {
     delGroupList(groupList.value)
   }
 
-  const batchDeleteGroup = async () => {
-    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete') })
-    delGroupList(groupCheckedList.value)
+  // download template file
+  const downloadTemplate = () => {
+    window.open('/template/upload-tag-template.xlsx', '_blank')
+  }
+
+  // import file
+  const importTagsByGroups = (file: File) => {
+    uploadTag(file, node.value)
+      .then(() => {
+        getGroupList()
+      })
+      .catch((error) => {
+        // no upload empty content file
+        if (error) {
+          getGroupList()
+        }
+      })
+    return Promise.reject()
+  }
+
+  // export file
+  const ExportTagsByGroups = async () => {
+    const requesList = groupCheckedList.value.map((group: GroupData) => queryTagList(node.value, group.name))
+    const AllNodeTags: any = []
+    Promise.all(requesList).then((res) => {
+      for (let i = 0; i < res.length; i += 1) {
+        const groupName: string = groupCheckedList.value[i].name
+        res[i].forEach((item) => {
+          const tag = {
+            ...item,
+            group: groupName,
+          }
+          AllNodeTags.push(tag)
+        })
+      }
+      exportTable(AllNodeTags, node.value)
+    })
   }
 
   getGroupList()
@@ -78,5 +124,9 @@ export default () => {
     batchDeleteGroup,
     getGroupList,
     delGroup,
+    isExporting,
+    importTagsByGroups,
+    downloadTemplate,
+    ExportTagsByGroups,
   }
 }

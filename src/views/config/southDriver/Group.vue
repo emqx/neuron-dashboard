@@ -11,18 +11,22 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <!-- <emqx-button size="small">
-            <i class="icon iconfont"></i>
-            <span>{{ $t('common.import') }}</span>
-          </emqx-button> -->
-          <!-- <emqx-button size="small">
-            <i class="icon iconfont"></i>
-            <span>{{ $t('common.export') }}</span>
-          </emqx-button> -->
-        </div>
-        <div class="btn-group">
           <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
-            <emqx-upload class="uploader-tag" :before-upload="importTags" :show-file-list="false" action="placeholder">
+            <emqx-button size="small" type="primary" @click="addGroup">
+              {{ $t('common.create', { name: 'Group' }) }}
+            </emqx-button>
+            <emqx-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
+              $t('common.batchDelete')
+            }}</emqx-button>
+            <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
+              $t('common.clear')
+            }}</emqx-button>
+            <emqx-upload
+              class="uploader-tag"
+              :before-upload="importTagsByGroups"
+              :show-file-list="false"
+              action="placeholder"
+            >
               <emqx-button size="small">
                 <i class="iconfont icon-import icondownload"></i>
                 <span>{{ $t('common.import') }}</span>
@@ -36,17 +40,16 @@
               </emqx-dropdown-menu>
             </template>
           </emqx-dropdown>
-          <emqx-button size="small" @click="ExportTagsByGroups" :loading="isExporting">
+          <emqx-button
+            size="small"
+            class="export-tags--btn"
+            :disabled="!groupCheckedList.length"
+            @click="ExportTagsByGroups"
+            :loading="isExporting"
+          >
             <i class="iconfont icon-import iconsubmit"></i>
             <span>{{ $t('common.export') }}</span>
           </emqx-button>
-          <emqx-button size="small" type="primary" @click="addGroup">{{ $t('common.create') }}</emqx-button>
-          <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
-            $t('common.clear')
-          }}</emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
-            $t('common.delete')
-          }}</emqx-button>
         </div>
       </div>
     </div>
@@ -65,7 +68,7 @@
       <emqx-table-column :label="$t('config.groupName')" prop="name"></emqx-table-column>
       <emqx-table-column label="Tag Count" prop="tag_count"></emqx-table-column>
       <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
-      <emqx-table-column align="right">
+      <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <AComWithDesc :content="$t('common.edit')">
             <i class="el-icon-edit-outline" @click="operatorGroup(row, true)" />
@@ -97,9 +100,6 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import GroupDialog from './components/GroupDialog.vue'
-import useUploadTagList from '@/composables/config/useUploadTagList'
-import useExportTagTable from '@/composables/config/useExportTagTable'
-import { queryTagList } from '@/api/config'
 
 const router = useRouter()
 
@@ -113,14 +113,15 @@ const {
   clearGroup,
   delGroup,
   batchDeleteGroup,
+  isExporting,
+  downloadTemplate,
+  importTagsByGroups,
+  ExportTagsByGroups,
 } = useGroupList()
 
 const showGroupDialog = ref(false)
 const isEditGroup = ref(false)
 const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
-
-const { uploadTag } = useUploadTagList()
-const { isExporting, exportTable } = useExportTagTable()
 
 const addGroup = () => {
   currentGroup.value = undefined
@@ -145,48 +146,6 @@ const goTagPage = ({ name }: GroupData) => {
     params: { group: name },
   })
 }
-
-// import file
-const importTags = (file: File) => {
-  uploadTag(file, node.value)
-    .then(() => {
-      getGroupList()
-    })
-    .catch((error) => {
-      // no upload empty content file
-      if (error) {
-        getGroupList()
-      }
-    })
-  return Promise.reject()
-}
-
-// download template file
-const downloadTemplate = () => {
-  window.open('/template/upload-tag-template.xlsx', '_blank')
-}
-
-/**
- *  export file
- * TODO: Export according to the selected group
- */
-const ExportTagsByGroups = async () => {
-  const requesList = groupList.value.map((group: GroupData) => queryTagList(node.value, group.name))
-  const AllNodeTags: any = []
-  Promise.all(requesList).then((res) => {
-    for (let i = 0; i < res.length; i += 1) {
-      const groupName: string = groupList.value[i].name
-      res[i].forEach((item) => {
-        const tag = {
-          ...item,
-          group: groupName,
-        }
-        AllNodeTags.push(tag)
-      })
-    }
-    exportTable(AllNodeTags, node.value)
-  })
-}
 </script>
 
 <style lang="scss">
@@ -203,9 +162,10 @@ const ExportTagsByGroups = async () => {
     margin-left: 8px;
   }
 }
-.uploader-tag {
+.uploader-tag,
+.export-tags--btn {
   display: inline-block;
-  margin-right: 10px;
+  margin-left: 10px;
 }
 .btn-download-temp {
   font-weight: normal;
