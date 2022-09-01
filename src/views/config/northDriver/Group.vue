@@ -11,24 +11,14 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <!-- <emqx-button size="small">
-            <i class="icon iconfont"></i>
-            <span>{{ $t('common.import') }}</span>
-          </emqx-button> -->
-          <!-- <emqx-button size="small">
-            <i class="icon iconfont"></i>
-            <span>{{ $t('common.export') }}</span>
-          </emqx-button> -->
-        </div>
-        <div class="btn-group">
           <emqx-button size="small" type="primary" @click="addSubscription">
             {{ $t('config.addSubscription') }}
           </emqx-button>
+          <emqx-button size="small" type="danger" :disabled="!subCheckedList.length" @click="batchUnsubscribeGroups">{{
+            $t('common.batchDelete')
+          }}</emqx-button>
           <emqx-button size="small" type="warning" :disabled="!subscriptionList.length" @click="clearSubscription">{{
             $t('common.clear')
-          }}</emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!subCheckedList.length" @click="unsubscribeInBulk">{{
-            $t('common.delete')
           }}</emqx-button>
         </div>
       </div>
@@ -49,7 +39,7 @@
       <emqx-table-column :label="$t('config.deviceName')" prop="name">
         <template #default="{ row }">{{ row.driver }}</template>
       </emqx-table-column>
-      <emqx-table-column align="right">
+      <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <AComWithDesc :content="$t('config.unsubscribe')">
             <i class="iconfont icondelete" @click="unsubscribeGroup(row)" />
@@ -75,7 +65,7 @@ const {
   allChecked,
   unsubscribeGroup,
   clearSubscription,
-  unsubscribeInBulk,
+  batchUnsubscribeGroups,
   getSubscriptionList,
 } = useSubscriptionList()
 

@@ -36,7 +36,8 @@
   background: #f4f9fc;
 }
 
-.el-table .is-right i {
+.el-table .is-right i,
+.el-table .is-left i {
   cursor: pointer;
   font-size: 24px;
   color: #0d446e;

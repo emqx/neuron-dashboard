@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
 import usePaging from '@/composables/usePaging'
+import { OmitArrayFields } from '@/utils/utils'
 
 interface TagDataInTable extends TagData {
   checked: boolean
@@ -42,8 +43,9 @@ export default () => {
   })
 
   const tagCheckedList = computed(() => {
-    const checked_list = tagList.value.filter(({ checked }) => checked)
-    return checked_list
+    const checkedList: Array<TagDataInTable> = tagList.value.filter(({ checked }) => checked)
+    const newCheckedList: Array<TagData> = OmitArrayFields(checkedList, ['checked'])
+    return newCheckedList
   })
 
   const currentTag: Ref<TagForm> = ref({} as TagForm)
@@ -76,29 +78,31 @@ export default () => {
     getAPageTagData()
   }
 
-  const deleteTagList = async (list: Array<TagDataInTable>) => {
-    await deleteTag({
+  const deleteTagList = async (list: Array<TagData>) => {
+    const params = {
       node: node.value,
       group: groupName.value,
       tags: list.map(({ name }) => name),
-    })
+    }
+    await deleteTag(params)
     EmqxMessage.success(t('common.operateSuccessfully'))
     refreshTable()
   }
 
   const delTag = async (item: TagDataInTable) => {
     await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'))
-    deleteTagList([item])
-  }
-
-  const editTag = (tag: TagForm) => {
-    currentTag.value = tag
-    showEditDialog.value = true
+    const delList = OmitArrayFields([item], ['checked'])
+    deleteTagList(delList)
   }
 
   const batchDeleteTag = async () => {
     await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'))
-    deleteTagList(totalData.value.filter(({ checked }) => checked))
+    deleteTagList(tagCheckedList.value)
+  }
+
+  const editTag = (tag: TagDataInTable) => {
+    currentTag.value = OmitArrayFields([tag], ['checked'])[0]
+    showEditDialog.value = true
   }
 
   const clearTag = async () => {

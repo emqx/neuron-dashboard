@@ -2,6 +2,7 @@ import i18n from '@/i18n/index'
 import { ERROR_CODE_ARR } from './constants'
 import { utils as XLSXUtils, writeFile } from 'xlsx'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import { omit } from 'lodash'
 
 /**
  * when the value is int, can use this func to create option list
@@ -97,4 +98,9 @@ export const countBaseURL = () => {
 
 export const popUpErrorMessage = (error: number) => {
   EmqxMessage.error(`Error (code: ${error}): ${getErrorMsg(error)}`)
+}
+
+export const OmitArrayFields = (list: any, params: string[]) => {
+  const res = list.map((item: any) => omit(item, params))
+  return res
 }
