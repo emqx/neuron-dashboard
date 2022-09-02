@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, watch, reactive, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { cloneDeep } from 'lodash'
+import { setBreadcrumbFullPaths, getBreadcrumbFullPaths } from '@/utils/user'
 
 export default defineComponent({
   name: 'Breadcrumb',
@@ -42,42 +42,73 @@ watch(
   { immediate: false },
 )
 
-// Only current rou te params are supported
+// get localstorage breadcrumbs && exchan
+const getBreadcrumbsToMap = (): Map<string, string> => {
+  const nameFullPaths = getBreadcrumbFullPaths()
+  if (!nameFullPaths) return new Map()
+
+  const nameFullPathArray: string[] = nameFullPaths.split(';') // ['name: fullpath', 'name2:fullpath2']
+  const fullPathArray: any = nameFullPathArray.map((item: string) => item.split(':')) // [[naem,fullpath], [namefullpath22, ]]
+  const fullPathsMap: Map<string, string> = new Map(fullPathArray)
+  fullPathsMap.delete('')
+  return fullPathsMap
+}
+// set fullpath to all matched routes
+const getRoutesWithFullPath = (routes: any[]): any[] => {
+  const fullPaths = getBreadcrumbsToMap()
+  const newRoute = routes.map((item: any) => {
+    const fullPath = fullPaths.get(item.name)
+    if (fullPath) {
+      item.fullPath = fullPath
+    }
+    return item
+  })
+  return newRoute
+}
+
 const getBreadcrumbs = () => {
-  const { matched, meta, params } = $route
-  if (meta.hiddenBreadcrumb) {
+  const { fullPath, matched } = $route
+
+  if ($route.meta.hiddenBreadcrumb) {
     state.levelList = []
+    setBreadcrumbFullPaths('')
     return
   }
 
-  const currentMatched: any[] = matched.filter((item: any) => item.meta && item.meta.title)
-  const routesL = currentMatched.length
-
-  if (routesL >= 3) {
-    // Multi-layer routing nesting
-    const parmasKeys: string[] = Object.keys(params)
-
-    if (!parmasKeys.length) {
-      state.levelList = currentMatched
-      return
-    }
-
-    for (let i = 1; i < routesL; i += 1) {
-      const routeItem = cloneDeep(currentMatched[i])
-      const { path } = routeItem
-      let newPath = ''
-      parmasKeys.forEach((key: string) => {
-        if (path.includes(key)) {
-          const param: any = params[key]
-          newPath = path.replace(`:${key}`, param)
-        }
-      })
-      if (newPath) {
-        currentMatched[i].path = newPath
-      }
-    }
+  const newMatched = matched.filter((item: any) => item.meta && item.meta.title)
+  // set curent route fullpath
+  const currentRoute = {
+    ...newMatched[newMatched.length - 1],
+    fullPath,
   }
-  state.levelList = currentMatched
+  newMatched[newMatched.length - 1] = currentRoute
+
+  const lastMatchedToString = getBreadcrumbFullPaths()
+  const lasteMatchedMap = getBreadcrumbsToMap() // last time matched
+
+  const lastMatchedL = lasteMatchedMap.size
+  const newMatchedL = newMatched?.length
+  const rootRouteName: any = newMatchedL ? newMatched[0].name : ''
+
+  if (lastMatchedL && newMatchedL && rootRouteName && lasteMatchedMap.get(rootRouteName)) {
+    // same parent node
+    if (lastMatchedL < newMatchedL) {
+      // into new page
+      const routeName: string = String(currentRoute.name) || ''
+      const nameFullPathGroup = `${routeName}:${fullPath};`
+      setBreadcrumbFullPaths(`${lastMatchedToString}${nameFullPathGroup}`)
+    }
+  } else {
+    const namePaths = newMatched.map((item: any) => {
+      const fullpath = item.fullPath || item.path
+      return `${item.name}:${fullpath}`
+    })
+    const namePathToString = namePaths.reduce((arr, cur) => {
+      return `${arr};${cur};`
+    })
+    setBreadcrumbFullPaths(namePathToString)
+  }
+  state.levelList = getRoutesWithFullPath(newMatched)
 }
 
 const onHandleLink = (item: any) => {
