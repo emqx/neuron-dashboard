@@ -12,15 +12,6 @@
       <div class="btns common-flex">
         <div class="btn-group">
           <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
-            <emqx-button size="small" type="primary" @click="addGroup">
-              {{ $t('common.create', { name: 'Group' }) }}
-            </emqx-button>
-            <emqx-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
-              $t('common.batchDelete')
-            }}</emqx-button>
-            <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
-              $t('common.clear')
-            }}</emqx-button>
             <emqx-upload
               class="uploader-tag"
               :before-upload="importTagsByGroups"
@@ -50,6 +41,15 @@
             <i class="iconfont icon-import iconsubmit"></i>
             <span>{{ $t('common.export') }}</span>
           </emqx-button>
+          <emqx-button size="small" type="primary" @click="addGroup">
+            {{ $t('common.create') }}
+          </emqx-button>
+          <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
+            $t('common.clear')
+          }}</emqx-button>
+          <emqx-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
+            $t('common.delete')
+          }}</emqx-button>
         </div>
       </div>
     </div>

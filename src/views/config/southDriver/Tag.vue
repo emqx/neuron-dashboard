@@ -11,13 +11,13 @@
       <div class="btns common-flex">
         <div class="btn-group">
           <emqx-button size="small" type="primary" @click="goCreatePage">
-            {{ $t('common.create', { name: 'Tag' }) }}
+            {{ $t('common.create') }}
           </emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!tagCheckedList.length" @click="batchDeleteTag">{{
-            $t('common.batchDelete')
-          }}</emqx-button>
           <emqx-button size="small" type="warning" :disabled="!tagList.length" @click="clearTag">{{
             $t('common.clear')
+          }}</emqx-button>
+          <emqx-button size="small" type="danger" :disabled="!tagCheckedList.length" @click="batchDeleteTag">{{
+            $t('common.delete')
           }}</emqx-button>
         </div>
       </div>

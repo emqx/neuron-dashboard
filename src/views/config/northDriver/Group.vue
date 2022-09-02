@@ -14,11 +14,11 @@
           <emqx-button size="small" type="primary" @click="addSubscription">
             {{ $t('config.addSubscription') }}
           </emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!subCheckedList.length" @click="batchUnsubscribeGroups">{{
-            $t('common.batchDelete')
-          }}</emqx-button>
           <emqx-button size="small" type="warning" :disabled="!subscriptionList.length" @click="clearSubscription">{{
             $t('common.clear')
+          }}</emqx-button>
+          <emqx-button size="small" type="danger" :disabled="!subCheckedList.length" @click="batchUnsubscribeGroups">{{
+            $t('common.delete')
           }}</emqx-button>
         </div>
       </div>
