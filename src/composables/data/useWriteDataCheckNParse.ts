@@ -1,4 +1,4 @@
-/* 
+/*
 BYTE	    2   Hexadecimal string
 
 INT8	    3   -128 to 127
@@ -107,6 +107,7 @@ export default () => {
 
   // Support scientific notation
   const checkIsFloat = (value: string): boolean => /^-?\d*\.?\d+(e-?\d+)?$/.test(value)
+  // const checkIsFloat = (value: string): boolean => /^-?\d*(\.[1-9]\d*)$/.test(value)
   const checkFloat = (value: string): Promise<Error | boolean> => {
     if (!checkIsFloat(value)) {
       return Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))

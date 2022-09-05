@@ -198,6 +198,10 @@ export default {
     zh: '达到 license 授权的节点最大点位数',
     en: 'Reach licensed max number of tags per node',
   },
+  2406: {
+    zh: 'License 硬件不匹配',
+    en: 'License hardware token not match',
+  },
   3000: {
     zh: '插件读失败',
     en: 'Plugin read failure',
