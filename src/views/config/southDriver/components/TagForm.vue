@@ -2,17 +2,17 @@
   <emqx-form ref="formCom" :model="form" :rules="rules" @submit.prevent>
     <emqx-row :gutter="28">
       <emqx-col :span="12">
-        <emqx-form-item :label="$t('config.tagName')" prop="name" required>
+        <emqx-form-item :label="$t('config.tag')" prop="name" required>
           <emqx-input v-model.trim="form.name" :disabled="edit" />
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
-        <emqx-form-item label="Attribute" prop="attribute" required>
+        <emqx-form-item :label="$t('common.attribute')" prop="attribute" required>
           <TagAttributeSelect v-model="form.attribute" />
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
-        <emqx-form-item label="Type" prop="type" required>
+        <emqx-form-item :label="$t('common.type')" prop="type" required>
           <emqx-select v-model="form.type" @change="changeType">
             <emqx-option
               v-for="item in tagTypeOptListAfterFilter"
@@ -24,19 +24,19 @@
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
-        <emqx-form-item label="Address" prop="address" required>
+        <emqx-form-item :label="$t('config.address')" prop="address" required>
           <emqx-input v-model.trim="form.address" />
         </emqx-form-item>
       </emqx-col>
 
       <emqx-col v-if="isShowPrecisionField(form.type)" :span="12">
-        <emqx-form-item label="Precision" prop="precision">
+        <emqx-form-item :label="$t('config.precision')" prop="precision">
           <emqx-input-number v-model="form.precision" :min="0" :max="17" controls-position="right" />
         </emqx-form-item>
       </emqx-col>
 
       <emqx-col :span="12">
-        <emqx-form-item label="Decimal" prop="decimal">
+        <emqx-form-item :label="$t('config.decimal')" prop="decimal">
           <emqx-input-number v-model="form.decimal" :step="0.1" :min="0" controls-position="right" />
         </emqx-form-item>
       </emqx-col>
