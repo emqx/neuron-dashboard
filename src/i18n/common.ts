@@ -199,6 +199,10 @@ export default {
     zh: '类型',
     en: 'Type',
   },
+  attribute: {
+    zh: '属性',
+    en: 'Attribute',
+  },
   description: {
     zh: '描述',
     en: 'Description',

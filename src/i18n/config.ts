@@ -48,11 +48,11 @@ export default {
     en: 'Tag List',
   },
   addTags: {
-    zh: '添加 Tags',
+    zh: '添加标签',
     en: 'Add Tags',
   },
   editTag: {
-    zh: '编辑 Tag',
+    zh: '编辑标签',
     en: 'Edit Tag',
   },
   tagNum: {
@@ -61,7 +61,23 @@ export default {
   },
   tagName: {
     zh: 'Tag 名称',
-    en: 'Tag name',
+    en: 'Tag Name',
+  },
+  tag: {
+    zh: '标签',
+    en: 'Tag',
+  },
+  address: {
+    zh: '地址',
+    en: 'Address',
+  },
+  decimal: {
+    zh: '乘系数',
+    en: 'Decimal',
+  },
+  precision: {
+    zh: '精度',
+    en: 'Precision',
   },
   groupName: {
     zh: 'Group 名称',
@@ -90,10 +106,6 @@ export default {
   addr: {
     zh: '地址',
     en: 'Addr',
-  },
-  address: {
-    zh: '地址',
-    en: 'Address',
   },
   addressRequired: {
     zh: '地址是必填项，请单击地址按钮以配置地址！',

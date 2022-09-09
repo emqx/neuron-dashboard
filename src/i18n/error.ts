@@ -46,6 +46,10 @@ export default {
     zh: '程序繁忙',
     en: 'Is busy',
   },
+  1011: {
+    zh: '文件不存在',
+    en: 'File not exist',
+  },
   2002: {
     zh: 'Node 已存在',
     en: 'Node exist',
@@ -81,6 +85,10 @@ export default {
   2010: {
     zh: 'Node 名称过长',
     en: 'Node name too long',
+  },
+  2011: {
+    zh: 'Node 不允许删除',
+    en: 'Node not allow delete',
   },
   2101: {
     zh: 'Group 已经被订阅',
@@ -201,6 +209,10 @@ export default {
   2406: {
     zh: 'License 硬件不匹配',
     en: 'License hardware token not match',
+  },
+  2407: {
+    zh: 'License 检测到时钟异常',
+    en: 'License detect bad clock',
   },
   3000: {
     zh: '插件读失败',
