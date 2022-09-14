@@ -86,7 +86,7 @@ watch(showDialog, (val) => {
     if (!props.group || !props.tag) {
       return
     }
-    inputValue.value = props.tag.value
+    inputValue.value = ''
   } else {
     inputErrorMsg.value = ''
     isUseHexadecimal.value = false

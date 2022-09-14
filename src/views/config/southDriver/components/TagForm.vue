@@ -37,7 +37,7 @@
 
       <emqx-col :span="12">
         <emqx-form-item :label="$t('config.decimal')" prop="decimal">
-          <emqx-input-number v-model="form.decimal" :step="0.1" :min="0" controls-position="right" />
+          <emqx-input-number v-model="form.decimal" :step="0.1" controls-position="right" />
         </emqx-form-item>
       </emqx-col>
 
