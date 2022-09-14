@@ -23,7 +23,6 @@
         </div>
       </div>
     </div>
-
     <div class="table-container">
       <emqx-table :data="tableData" :empty-text="tableEmptyText">
         <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="100"></emqx-table-column>
