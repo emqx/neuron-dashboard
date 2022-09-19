@@ -2,7 +2,8 @@ import { loadMicroApp } from 'qiankun'
 import store from '@/store/index'
 
 // ❗️If you are developing and debugging ekuiper, please replace this with the address of ekuiper
-const kuiperEntry = `${window.location.origin}/ekuiper/`
+const kuiperEntry = `${window.location.origin}/ekuiper/` // production
+// const kuiperEntry = `http://localhost:3002/ekuiper/`// dev
 const defaultEnv = 'production'
 
 export const handleEKuiper = async () => {
@@ -38,15 +39,15 @@ const removeAllIViewEle = () => {
     item.remove()
   })
 }
+export const destroyEKuiper = () => {
+  // eslint-disable-next-line no-unused-expressions
+  store.state.subAppInstances.ekuiper?.unmount()
+  store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: null })
+}
 
 export const handleExitEKuiper = async () => {
   destroyEKuiper()
   removeAllIViewEle()
-}
-
-export const destroyEKuiper = () => {
-  store.state.subAppInstances.ekuiper?.unmount()
-  store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: null })
 }
 
 export const isKuiperPath = (toPath: string) => {
