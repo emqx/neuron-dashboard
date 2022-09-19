@@ -206,6 +206,7 @@ const routes: Array<RouteRecordRaw> = [
 
 export const ekuiperRoute: Array<RouteRecordRaw> = [
   {
+    meta: { hiddenBreadcrumb: true }, // if need to display ekuiper onbreadcrumb, add 'meta.title'、'name'
     path: '/:ekuiper(.*)*',
     component: Home,
   },
