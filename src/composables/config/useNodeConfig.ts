@@ -157,6 +157,10 @@ export default (props: Props) => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
+      const { tag_regex } = configForm.value
+      if (tag_regex !== undefined) {
+        delete configForm.value.tag_regex
+      }
       await submitNodeConfig(node.value, configForm.value)
       EmqxMessage.success(t('common.submitSuccess'))
       router.back()
