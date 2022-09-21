@@ -58,7 +58,7 @@ axios.interceptors.response.use(
   (error) => {
     // when requesting login, the interface will return 401 if the password or username is error, handle it
     const isInLoginPage = router.currentRoute?.value?.name === LOGIN_ROUTE_NAME
-    if ((error.response.status === 401 && !isInLoginPage) || error.response.status === 403) {
+    if ((error?.response?.status === 401 && !isInLoginPage) || error?.response?.status === 403) {
       store.commit('LOGOUT')
       router.push({ name: 'Login' })
     } else if (!error.config._handleErrorSelf) {

@@ -135,7 +135,9 @@ export default () => {
       return Promise.resolve()
     } catch (error: any) {
       const { data = {} } = error
-      handlePartialSuc(data.index, data.error)
+      if (data.index !== undefined && data.error !== undefined) {
+        handlePartialSuc(data.index, data.error)
+      }
       return Promise.reject(error)
     }
   }
