@@ -3,7 +3,7 @@ import store from '@/store/index'
 
 // ❗️If you are developing and debugging ekuiper, please replace this with the address of ekuiper
 const kuiperEntry = `${window.location.origin}/ekuiper/` // production
-// const kuiperEntry = `http://localhost:3002/ekuiper/`// dev
+// const kuiperEntry = `http://localhost:3002/ekuiper/` // dev
 const defaultEnv = 'production'
 
 export const handleEKuiper = async () => {
