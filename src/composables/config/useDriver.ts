@@ -1,8 +1,9 @@
-import { sendCommandToNode } from '@/api/config'
+import { sendCommandToNode, getDataStatisticByType } from '@/api/config'
 import type { DriverItemInList } from '@/types/config'
 import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-import { computed } from 'vue'
+// import { ElLoading } from 'element-plus'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
@@ -93,5 +94,45 @@ export const useNodeType = () => {
   }
   return {
     getNodeTypeLabelByValue,
+  }
+}
+
+export const dataStatistics = () => {
+  const drawerRef = ref()
+  const dataStatisticsVisiable = ref(false)
+  const loadingStatistic = ref(false)
+  const nodeStatisticData = ref('')
+
+  const isShowDataStatistics = (value?: boolean) => {
+    if (value === undefined || value === null) {
+      dataStatisticsVisiable.value = !dataStatisticsVisiable.value
+      return
+    }
+    dataStatisticsVisiable.value = value
+  }
+
+  /**
+   * get north app node or south device node statistic data
+   * @param type 'app' | 'driver' (north | south)
+   * @param params { node name }
+   */
+  const getNodeStatisticData = (type: string, params: any) => {
+    loadingStatistic.value = true
+    getDataStatisticByType(type, params)
+      .then((res) => {
+        nodeStatisticData.value = res.data || ''
+      })
+      .finally(() => {
+        loadingStatistic.value = false
+      })
+  }
+
+  return {
+    drawerRef,
+    isShowDataStatistics,
+    dataStatisticsVisiable,
+    nodeStatisticData,
+    loadingStatistic,
+    getNodeStatisticData,
   }
 }

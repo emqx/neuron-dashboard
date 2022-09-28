@@ -6,6 +6,9 @@
         <AComWithDesc :content="$t('config.deviceConfig')">
           <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
         </AComWithDesc>
+        <AComWithDesc :content="$t('config.dataStatistics')">
+          <i class="iconfont iconstatus" @click.stop="isShowDataStatistics()"></i>
+        </AComWithDesc>
         <AComWithDesc :content="$t('common.delete')">
           <i class="iconfont icondelete" @click.stop="deleteDriver"></i>
         </AComWithDesc>
@@ -40,16 +43,25 @@
       </div> -->
     </div>
   </div>
+
+  <!-- Data Statistics -->
+  <DataStatisticsDrawer
+    v-if="dataStatisticsVisiable"
+    v-model="dataStatisticsVisiable"
+    :type="'driver'"
+    :node-name="data.name"
+  ></DataStatisticsDrawer>
 </template>
 
 <script lang="ts" setup>
-import AComWithDesc from '@/components/AComWithDesc.vue'
-import useDeleteDriver from '@/composables/config/useDeleteDriver'
-import { useDriverStatus, useNodeStartStopStatus } from '@/composables/config/useDriver'
 import type { PropType } from 'vue'
 import { computed, defineEmits, defineProps } from 'vue'
 import { useRouter } from 'vue-router'
+import useDeleteDriver from '@/composables/config/useDeleteDriver'
+import { useDriverStatus, useNodeStartStopStatus, dataStatistics } from '@/composables/config/useDriver'
 import type { DriverItemInList } from '@/types/config'
+import AComWithDesc from '@/components/AComWithDesc.vue'
+import DataStatisticsDrawer from '../../components/dataStatisticsDrawer.vue'
 
 const props = defineProps({
   data: {
@@ -87,6 +99,9 @@ const deleteDriver = async () => {
   emit('deleted')
 }
 const goNodeConfig = () => router.push({ name: 'SouthDriverConfig', params: { node: props.data.name } })
+
+// dataStatistics
+const { isShowDataStatistics, dataStatisticsVisiable } = dataStatistics()
 </script>
 
 <style lang="scss">

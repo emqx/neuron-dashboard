@@ -388,4 +388,8 @@ export default {
     zh: '运行成功',
     en: 'Run successfully',
   },
+  dataStatistics: {
+    zh: '数据统计',
+    en: 'Data statistics',
+  },
 }
