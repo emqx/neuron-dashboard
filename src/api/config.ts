@@ -159,7 +159,6 @@ export const queryNodeConfig = async (node: string) => {
 }
 
 /* GROUP */
-
 export const queryGroupList = async (node: string): Promise<Array<GroupData>> => {
   const { data }: AxiosResponse<{ error: number; groups: Array<GroupData> }> = await http.get('/group', {
     params: { node },
@@ -192,7 +191,6 @@ export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
 }
 
 /* TAG */
-
 export const queryTagList = async (node: string, groupName: string): Promise<Array<TagData>> => {
   const { data } = await http.get('/tags', { params: { node, group: groupName } })
   return Promise.resolve(data.tags || [])
@@ -215,7 +213,6 @@ export const updateTag = (node: string, group: string, tag: TagForm) => {
 }
 
 /* PLUGIN */
-
 export const queryPluginList = (): Promise<AxiosResponse<{ plugins: Array<CreatedPlugin> }>> => {
   return http.get('/plugin')
 }
@@ -231,3 +228,15 @@ export const updatePlugin = (data: PluginForm) => {
 export const deletePlugin = (pluginName: string) => {
   return http.delete('/plugin', { data: { plugin: pluginName } })
 }
+
+/* Data statistic */
+
+/**
+ *  Get Node Statistic Data
+ *  param { String } type: 'app'(north node) | 'driver'(south node)
+ *  param { String } node: Optional, if you want to get the data statisctics of a node, pass in the parameter node name
+ *  */
+export const getDataStatisticByType = (type = 'driver', params = {}): Promise<AxiosResponse<string>> => {
+  return http.get(`/metrics?category=${type}`, { params })
+}
+/* Data statistic end */
