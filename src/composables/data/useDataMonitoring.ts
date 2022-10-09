@@ -67,13 +67,6 @@ export default () => {
     return paginate(totalData.value, pageController.value.size, pageController.value.num)
   })
 
-  const selectedNodeChanged = async () => {
-    currentGroup.value.groupName = ''
-    selectedGroup = undefined
-    const data = await queryGroupList(currentGroup.value.node.toString())
-    groupList.value = data
-  }
-
   const reSubAfterReturnError = async () => {
     const { groupName, lastTimestamp, count } = reSubCount
     const { node, groupName: currentGroupName } = currentGroup.value
@@ -97,9 +90,8 @@ export default () => {
       return {}
     }
     const tags = await queryTagList(selectedGroup?.node, selectedGroup.groupName)
-    const tagNameMap: Record<string | number, any> = {}
-    tags.forEach(({ attribute, type, name, address, description }) => {
-      tagNameMap[name] = {
+    const tagNameMap: any[] = tags.map(({ attribute, type, name, address, description }) => {
+      return {
         attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
         type,
         tagName: name,
@@ -118,9 +110,12 @@ export default () => {
     try {
       const { data } = await getMonitoringData(currentNodeName.value, currentGroup.value.groupName)
       updated.value = Date.now()
-      totalData.value = (data.tags || []).map((item) => {
-        const ret = Object.assign(item, tagMsgMap[item.name as string])
-        if (!('value' in ret) || ret.value === undefined) {
+      totalData.value = (tagMsgMap || []).map((item: any) => {
+        const tag = data.tags.find((readTagItem) => readTagItem.name === item.tagName)
+
+        // in the tag list，if the 'read' API does not return a tag, set its 'value' to '-'
+        const ret = tag ? { ...tag, ...item } : { ...item, value: '-' }
+        if (!('value' in ret) || ret?.value === undefined) {
           ret.value = ''
         }
         return ret
@@ -149,6 +144,16 @@ export default () => {
     }, 3000)
   }
 
+  // change node
+  const selectedNodeChanged = async () => {
+    currentGroup.value.groupName = ''
+    selectedGroup = undefined
+    totalData.value = []
+    const data = await queryGroupList(currentGroup.value.node.toString())
+    groupList.value = data
+  }
+
+  // change group
   const selectedGroupChanged = async () => {
     const { node, groupName } = currentGroup.value
     if (!node || !groupName) {
