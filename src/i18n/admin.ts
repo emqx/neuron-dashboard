@@ -111,4 +111,12 @@ export default {
     zh: '硬件标志',
     en: 'Hardware Token',
   },
+  systemStartupTime: {
+    zh: '系统启动时间',
+    en: 'System Startup Time',
+  },
+  isExistDebugFiles: {
+    zh: '是否存在调试文件',
+    en: 'Existence of debug files',
+  },
 }

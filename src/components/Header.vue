@@ -16,6 +16,10 @@
                 <i class="iconfont iconLicense"></i>
                 <span>License</span>
               </emqx-dropdown-item>
+              <emqx-dropdown-item @click="goGeneralStatistics">
+                <i class="iconfont iconstatus"></i>
+                <span>{{ $t('common.generalStatistics') }}</span>
+              </emqx-dropdown-item>
               <emqx-dropdown-item @click="goAbout">
                 <i class="iconfont iconabout"></i>
                 <span> {{ $t('common.about') }}</span>
@@ -51,6 +55,10 @@ const router = useRouter()
 
 const goLicense = () => {
   router.push({ name: 'License' })
+}
+
+const goGeneralStatistics = () => {
+  router.push({ name: 'GeneralStatistics' })
 }
 
 const goAbout = () => {

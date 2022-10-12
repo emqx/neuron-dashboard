@@ -1,4 +1,5 @@
-import { sendCommandToNode, getDataStatisticByType } from '@/api/config'
+import { sendCommandToNode } from '@/api/config'
+import { getStatisticByType } from '@/api/statistics'
 import type { DriverItemInList } from '@/types/config'
 import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
@@ -118,7 +119,7 @@ export const dataStatistics = () => {
    */
   const getNodeStatisticData = (type: string, params: any) => {
     loadingStatistic.value = true
-    getDataStatisticByType(type, params)
+    getStatisticByType(type, params)
       .then((res) => {
         nodeStatisticData.value = res.data || ''
       })

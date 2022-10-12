@@ -54,8 +54,5 @@ getHWToken()
 <style lang="scss" scoped>
 .about {
   min-height: 300px;
-  .card-hd-with-btn {
-    margin-bottom: 60px;
-  }
 }
 </style>
