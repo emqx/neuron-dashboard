@@ -143,6 +143,10 @@ export default {
     zh: '名称',
     en: 'Name',
   },
+  generalStatistics: {
+    zh: '通用数据统计',
+    en: 'General Statistics',
+  },
   about: {
     zh: '关于',
     en: 'About',
@@ -243,6 +247,10 @@ export default {
     zh: '版权',
     en: 'Copyright',
   },
+  second: {
+    zh: '秒',
+    en: 'second | second | seconds',
+  },
   minute: {
     zh: '分钟',
     en: 'minute | minute | minutes',
@@ -250,6 +258,10 @@ export default {
   hour: {
     zh: '小时',
     en: 'hour | hour | hours',
+  },
+  day: {
+    zh: '天',
+    en: 'day | day | days',
   },
   authorized: {
     zh: '已授权',
@@ -302,5 +314,13 @@ export default {
   document: {
     zh: '文档',
     en: 'Document',
+  },
+  yes: {
+    zh: '是',
+    en: 'Yes',
+  },
+  no: {
+    zh: '否',
+    en: 'No',
   },
 }

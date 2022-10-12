@@ -228,15 +228,3 @@ export const updatePlugin = (data: PluginForm) => {
 export const deletePlugin = (pluginName: string) => {
   return http.delete('/plugin', { data: { plugin: pluginName } })
 }
-
-/* Data statistic */
-
-/**
- *  Get Node Statistic Data
- *  param { String } type: 'app'(north node) | 'driver'(south node)
- *  param { String } node: Optional, if you want to get the data statisctics of a node, pass in the parameter node name
- *  */
-export const getDataStatisticByType = (type = 'driver', params = {}): Promise<AxiosResponse<string>> => {
-  return http.get(`/metrics?category=${type}`, { params })
-}
-/* Data statistic end */
