@@ -5,8 +5,8 @@
     </div>
     <div>
       <emqx-descriptions :column="1">
-        <emqx-descriptions-item :label="$t('admin.systemStartupTime')">
-          {{ systemStartupTime }}
+        <emqx-descriptions-item :label="$t('admin.systemRunningTime')">
+          {{ systemRunningTime }}
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.isExistDebugFiles')">{{
           $t(`${isExistDebugFilesText}`)
@@ -23,12 +23,12 @@ import { getStatisticByType } from '@/api/statistics'
 
 const loading = ref(false)
 const generalStatistics = reactive({
-  systemStartupTime: '', // neuron running seconds
+  systemRunningTime: '', // neuron running seconds
   isExistDebugFiles: '',
 })
 
-const systemStartupTime = computed(() => {
-  return secondToTime(Number(generalStatistics.systemStartupTime))
+const systemRunningTime = computed(() => {
+  return secondToTime(Number(generalStatistics.systemRunningTime))
 })
 const isExistDebugFilesText = computed(() => {
   return generalStatistics.isExistDebugFiles === '1' ? 'common.yes' : 'common.no'
@@ -44,7 +44,7 @@ const getGeneralStatistics = async () => {
 
     const startupTime = data.match(startupTimeMatchReg)
     const isDebugFiles = data.match(debugFilesMatchReg)
-    generalStatistics.systemStartupTime = startupTime ? startupTime[2].trim() : ''
+    generalStatistics.systemRunningTime = startupTime ? startupTime[2].trim() : ''
     generalStatistics.isExistDebugFiles = isDebugFiles ? isDebugFiles[2].trim() : ''
   } finally {
     loading.value = false
