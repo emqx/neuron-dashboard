@@ -183,22 +183,6 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
 
-  /* General Statistics */
-  {
-    path: '/generalStatistics',
-    name: 'GeneralStatisticsPage',
-    meta: { title: 'common.generalStatistics' },
-    component: Home,
-    children: [
-      {
-        path: '',
-        name: 'GeneralStatistics',
-        meta: { requireAuth: true },
-        component: () => import('@/views/about/GeneralStatistics.vue'),
-      },
-    ],
-  },
-
   /* About */
   {
     path: '/about',
