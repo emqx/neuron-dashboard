@@ -315,12 +315,12 @@ export default {
     zh: '文档',
     en: 'Document',
   },
-  yes: {
-    zh: '是',
-    en: 'Yes',
+  normal: {
+    zh: '正常',
+    en: 'Normal',
   },
-  no: {
-    zh: '否',
-    en: 'No',
+  exceptions: {
+    zh: '异常',
+    en: 'Exceptions',
   },
 }

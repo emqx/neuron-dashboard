@@ -115,8 +115,8 @@ export default {
     zh: '系统运行时长',
     en: 'System Running Time',
   },
-  isExistDebugFiles: {
-    zh: '是否存在调试文件',
-    en: 'Existence of debug files',
+  systemStatus: {
+    zh: '系统状态',
+    en: 'System Status',
   },
 }
