@@ -162,7 +162,7 @@ export default () => {
         : HEXADECIMAL_PREFIX + value
     try {
       await checkByte(str)
-      const hexStr = value.slice(HEXADECIMAL_PREFIX.length)
+      const hexStr = str.slice(HEXADECIMAL_PREFIX.length)
       if (type === TagType.FLOAT || type === TagType.DOUBLE) {
         return transFloatHexToDecimalNum(hexStr, type)
       }

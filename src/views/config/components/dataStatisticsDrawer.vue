@@ -1,5 +1,5 @@
 <template>
-  <el-drawer v-model="visible" :title="nodeName" direction="rtl" size="50%" custom-class="dataStatisticsDrawer">
+  <el-drawer v-model="visible" :title="nodeName" direction="rtl" size="35%" custom-class="dataStatisticsDrawer">
     <main ref="drawerRef" class="content">
       {{ nodeStatisticData }}
     </main>

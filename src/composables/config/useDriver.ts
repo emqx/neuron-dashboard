@@ -120,8 +120,12 @@ export const dataStatistics = () => {
   const getNodeStatisticData = (type: string, params: any) => {
     loadingStatistic.value = true
     getStatisticByType(type, params)
-      .then((res) => {
-        nodeStatisticData.value = res.data || ''
+      .then((res: any) => {
+        const statistics: string = res?.data || ''
+        const statisticsArr: string[] = statistics.match(/(\n=?)(\w)*(\s)(\S*)/g) || [] // match key : \w
+
+        nodeStatisticData.value = statisticsArr.reduce((a, b) => a + b)
+        nodeStatisticData.value = nodeStatisticData.value.trim()
       })
       .finally(() => {
         loadingStatistic.value = false
