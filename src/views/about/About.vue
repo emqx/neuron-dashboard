@@ -42,15 +42,15 @@ const hwToken = ref('')
 const generalStatistics = reactive({
   systemRunningTime: '', // neuron running seconds
   systemStatus: '',
-  startupTimeMatchReg: /(uptime_seconds=?)(\s*\d)*(?=\n)/,
-  debugFilesMatchReg: /(core_dumped=?)(\s*\d)*(?=\n)/,
+  startupTimeMatchReg: /(uptime_seconds=?)(\s*\d*)(?=\n)/g,
+  debugFilesMatchReg: /(core_dumped=?)(\s*\d*)(?=\n)/g,
 })
 
 const systemRunningTime = computed(() => {
   return secondToTime(Number(generalStatistics.systemRunningTime))
 })
 const systemStatusText = computed(() => {
-  return generalStatistics.systemStatus === '1' ? 'common.normal' : 'common.exceptions'
+  return generalStatistics.systemStatus === '0' ? 'common.normal' : 'common.exceptions'
 })
 
 if (Promise && !Promise.allSettled) {
@@ -82,8 +82,8 @@ const init = () => {
 
       const startupTime = statisticsInfo.match(generalStatistics.startupTimeMatchReg)
       const isDebugFiles = statisticsInfo.match(generalStatistics.debugFilesMatchReg)
-      generalStatistics.systemRunningTime = startupTime ? startupTime[2].trim() : ''
-      generalStatistics.systemStatus = isDebugFiles ? isDebugFiles[2].trim() : ''
+      generalStatistics.systemRunningTime = startupTime ? startupTime[0].split(' ')[1] : ''
+      generalStatistics.systemStatus = isDebugFiles ? isDebugFiles[0].split(' ')[1] : ''
     })
     .finally(() => {
       isDataLoading.value = false
