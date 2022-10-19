@@ -122,10 +122,7 @@ export const dataStatistics = () => {
     getStatisticByType(type, params)
       .then((res: any) => {
         const statistics: string = res?.data || ''
-        const statisticsArr: string[] = statistics.match(/(\n=?)(\w)*(\s)(\S*)/g) || [] // match key : \w
-
-        nodeStatisticData.value = statisticsArr.reduce((a, b) => a + b)
-        nodeStatisticData.value = nodeStatisticData.value.trim()
+        nodeStatisticData.value = statistics.replace(/(#)(.*)(\n)/g, '')
       })
       .finally(() => {
         loadingStatistic.value = false

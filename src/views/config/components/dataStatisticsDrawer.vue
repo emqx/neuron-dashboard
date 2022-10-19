@@ -49,6 +49,7 @@ if (props.type && props.nodeName) {
 
 <style lang="scss" scoped>
 .content {
+  line-height: 24px;
   padding: 20px;
   white-space: pre-wrap;
   color: #333;
