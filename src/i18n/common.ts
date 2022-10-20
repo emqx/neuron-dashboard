@@ -43,13 +43,37 @@ export default {
     zh: '账户设置',
     en: 'Account Settings',
   },
+  changePassword: {
+    zh: '修改密码',
+    en: 'Change Password',
+  },
+  oldPassword: {
+    zh: '原密码',
+    en: 'Original Password',
+  },
   newPassword: {
     zh: '新密码',
     en: 'New password',
   },
-  reNewPassword: {
-    zh: '再次确认密码',
-    en: 'Confirm new password',
+  confirmPassword: {
+    zh: '新密码确认',
+    en: 'Password Confirmation',
+  },
+  newPassConfirmRequired: {
+    zh: '请再次输入新密码',
+    en: 'Please enter a new password again',
+  },
+  newPassNotMatch: {
+    zh: '两次密码不匹配',
+    en: 'Password does not match',
+  },
+  changePwSuccessful: {
+    zh: '修改密码成功',
+    en: 'Change password successfully',
+  },
+  changePwFailed: {
+    zh: '修改密码失败',
+    en: 'Failed to change password',
   },
   notFound: {
     zh: '页面没有找到',

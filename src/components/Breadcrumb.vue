@@ -103,9 +103,11 @@ const getBreadcrumbs = () => {
       const fullpath = item.fullPath || item.path
       return `${item.name}:${fullpath}`
     })
-    const namePathToString = namePaths.reduce((arr, cur) => {
-      return `${arr};${cur};`
-    })
+    const namePathToString = namePaths
+      ? namePaths.reduce((arr, cur) => {
+          return `${arr};${cur};`
+        })
+      : ''
     setBreadcrumbFullPaths(namePathToString)
   }
   state.levelList = getRoutesWithFullPath(newMatched)

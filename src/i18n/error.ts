@@ -50,6 +50,14 @@ export default {
     zh: '文件不存在',
     en: 'File not exist',
   },
+  1012: {
+    zh: '密码长度太短或太长',
+    en: 'Password length too short or too long',
+  },
+  1013: {
+    zh: '密码重复',
+    en: 'Duplicate password',
+  },
   2002: {
     zh: 'Node 已存在',
     en: 'Node exist',

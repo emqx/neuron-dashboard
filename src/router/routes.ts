@@ -5,6 +5,7 @@ import { DriverDirection } from '@/types/enums'
 // import { propsToAttrMap } from '@vue/shared'
 
 export const LOGIN_ROUTE_NAME = 'Login'
+export const CHANGE_PW_ROUTE_NAME = 'ChangePassword'
 /**
  * hiddenBreadcrumb: current page is hidde breadcrumb; defualt: false,i show breadcrumb
  * default page of the route doesnot need to set the 'title', default page route title is the title of parent route
@@ -158,6 +159,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: 'common.accountSettings', requireAuth: true, hiddenBreadcrumb: true },
         component: () => import('@/views/admin/AccountSetting.vue'),
       },
+      {
+        path: 'change-password',
+        name: CHANGE_PW_ROUTE_NAME,
+        meta: { title: 'admin.changePassword', requireAuth: true, hiddenBreadcrumb: true },
+        component: () => import('@/views/admin/Password.vue'),
+      },
       // {
       //   path: 'log',
       //   name: 'AdminLog',
@@ -198,10 +205,12 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+
   {
     path: '/login',
     name: LOGIN_ROUTE_NAME,
     component: Login,
+    meta: { hiddenBreadcrumb: true },
   },
 ]
 

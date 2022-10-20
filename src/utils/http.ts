@@ -3,7 +3,7 @@ import axios from 'axios'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
-import { LOGIN_ROUTE_NAME } from '@/router/routes'
+import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
 import { countBaseURL, popUpErrorMessage } from './utils'
 
 const baseURL = countBaseURL()
@@ -57,7 +57,11 @@ axios.interceptors.response.use(
   },
   (error) => {
     // when requesting login, the interface will return 401 if the password or username is error, handle it
-    const isInLoginPage = router.currentRoute?.value?.name === LOGIN_ROUTE_NAME
+    const whiteRoutes = [LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME]
+
+    const currrentRouteName: any = router.currentRoute?.value?.name || ''
+    const isInLoginPage = whiteRoutes.includes(currrentRouteName)
+
     if ((error?.response?.status === 401 && !isInLoginPage) || error?.response?.status === 403) {
       store.commit('LOGOUT')
       router.push({ name: 'Login' })
