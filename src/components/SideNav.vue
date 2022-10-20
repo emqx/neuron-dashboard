@@ -101,6 +101,10 @@ const navList = computed(() => {
       icon: 'iconAdministration1',
       subMenus: [
         {
+          to: '/admin/change-password',
+          label: 'common.changePassword',
+        },
+        {
           to: '/admin/account-settings',
           label: 'common.accountSettings',
         },
