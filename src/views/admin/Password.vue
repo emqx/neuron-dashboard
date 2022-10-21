@@ -5,13 +5,28 @@
     </div>
     <emqx-form ref="formRef" :model="formData" :rules="rules" class="pw-form" @submit.prevent>
       <emqx-form-item prop="oldPass" :label="$t('common.oldPassword')" required>
-        <emqx-input v-model.trim="formData.oldPass" />
+        <emqx-input
+          v-model.trim="formData.oldPass"
+          type="password"
+          show-password
+          :placeholder="$t('common.oldPassword')"
+        />
       </emqx-form-item>
       <emqx-form-item prop="newPass" :label="$t('common.newPassword')" required>
-        <emqx-input v-model.trim="formData.newPass" type="password" :placeholder="$t('common.password')" />
+        <emqx-input
+          v-model.trim="formData.newPass"
+          type="password"
+          show-password
+          :placeholder="$t('common.newPassword')"
+        />
       </emqx-form-item>
       <emqx-form-item prop="newPassConfirm" :label="$t('common.confirmPassword')" required>
-        <emqx-input v-model.trim="formData.newPassConfirm" type="password" :placeholder="$t('common.password')" />
+        <emqx-input
+          v-model.trim="formData.newPassConfirm"
+          type="password"
+          show-password
+          :placeholder="$t('common.newPassword')"
+        />
       </emqx-form-item>
     </emqx-form>
 
@@ -58,7 +73,7 @@ const checkNewPassMatch = (rule: any, value: string, callback: any) => {
     }
     callback()
   } else {
-    callback(new Error(`${t('common.notmatch')}`))
+    callback(new Error(`${t('common.newPassNotMatch')}`))
   }
 }
 
@@ -68,7 +83,7 @@ const checkNewPassConfirmMatch = (rule: any, value: string, callback: any) => {
     form.validateField(['newPass'])
     callback()
   } else {
-    callback(new Error(`${t('common.notmatch')}`))
+    callback(new Error(`${t('common.newPassNotMatch')}`))
   }
 }
 
