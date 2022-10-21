@@ -49,7 +49,7 @@ export default {
   },
   oldPassword: {
     zh: '原密码',
-    en: 'Original Password',
+    en: 'Old Password',
   },
   newPassword: {
     zh: '新密码',
