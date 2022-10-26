@@ -45,14 +45,16 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    if (response.status !== 200) {
-      popUpErrorMessage(response.data.error)
-    } else if (response.data?.error) {
+    const { status, data } = response
+    if (status !== 200) {
+      popUpErrorMessage(data.error)
+    } else if (data?.error) {
       if (!(response.config as any)._handleCustomError) {
-        popUpErrorMessage(response.data.error)
+        popUpErrorMessage(data.error)
       }
       return Promise.reject(response)
     }
+
     return response
   },
   (error) => {

@@ -5,7 +5,7 @@ export default {
   },
   log: {
     zh: '日志',
-    en: 'Log',
+    en: 'Logs',
   },
   logType: {
     zh: '日志类型',
