@@ -20,6 +20,10 @@
                 <i class="iconfont iconabout"></i>
                 <span> {{ $t('common.about') }}</span>
               </emqx-dropdown-item>
+              <emqx-dropdown-item @click="downloadLogsFile">
+                <i class="iconfont icondownload"></i>
+                <span> {{ $t('admin.log') }}</span>
+              </emqx-dropdown-item>
             </emqx-dropdown-menu>
           </template>
         </emqx-dropdown>
@@ -45,6 +49,8 @@
 <script lang="ts" setup>
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { downloadLogs } from '@/api/admin'
+import { useDownload } from '@/composables/useDownload'
 
 const store = useStore()
 const router = useRouter()
@@ -55,6 +61,14 @@ const goLicense = () => {
 
 const goAbout = () => {
   router.push({ name: 'About' })
+}
+
+const { downloadFile } = useDownload()
+const downloadLogsFile = () => {
+  downloadLogs().then((res) => {
+    const { data, headers } = res
+    downloadFile(headers, data)
+  })
 }
 
 const logout = async () => {

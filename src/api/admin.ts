@@ -31,3 +31,11 @@ export const queryVersion = (): Promise<AxiosResponse<any>> => {
 export const queryHardwareToken = (): Promise<AxiosResponse<any>> => {
   return http.get('/hwtoken')
 }
+
+export const downloadLogs = (): Promise<AxiosResponse<any>> => {
+  return http({
+    url: '/logs',
+    method: 'get',
+    responseType: 'blob',
+  })
+}
