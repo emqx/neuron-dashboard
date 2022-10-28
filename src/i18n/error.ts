@@ -58,6 +58,10 @@ export default {
     zh: '密码重复',
     en: 'Duplicate password',
   },
+  1014: {
+    zh: '执行指令失败',
+    en: 'Command execution failed',
+  },
   2002: {
     zh: 'Node 已存在',
     en: 'Node exist',

@@ -22,17 +22,21 @@ import type {
 } from '@/types/config'
 
 /* NODE(DRIVER & APP) */
-
-const queryDriverList = (nodeType: number): Promise<AxiosResponse<ResponseDriverListData>> => {
-  return http.get('/node', { params: { type: nodeType } })
+const queryDriverList = (params: any): Promise<AxiosResponse<ResponseDriverListData>> => {
+  return http.get('/node', { params })
 }
 
 const getDataFromResponse = (res: AxiosResponse<ResponseDriverListData>): Array<RawDriverData> => res?.data?.nodes || []
 
-export const queryNorthDriverList = async (): Promise<Array<RawDriverData>> => {
+export const queryNorthDriverList = async (params?: any): Promise<Array<RawDriverData>> => {
   try {
     const retArr: Array<AxiosResponse<ResponseDriverListData>> = await Promise.all(
-      NORTH_DRIVER_NODE_TYPE.map((code) => queryDriverList(code)),
+      NORTH_DRIVER_NODE_TYPE.map((code) =>
+        queryDriverList({
+          type: code,
+          ...params,
+        }),
+      ),
     )
     const northList = retArr
       .reduce((arr: Array<RawDriverData>, currentData) => arr.concat(getDataFromResponse(currentData)), [])
@@ -43,10 +47,15 @@ export const queryNorthDriverList = async (): Promise<Array<RawDriverData>> => {
   }
 }
 
-export const querySouthDriverList = async (): Promise<Array<RawDriverData>> => {
+export const querySouthDriverList = async (params?: any): Promise<Array<RawDriverData>> => {
   try {
     const retArr: Array<AxiosResponse<ResponseDriverListData>> = await Promise.all(
-      SOUTH_DRIVER_NODE_TYPE.map((code) => queryDriverList(code)),
+      SOUTH_DRIVER_NODE_TYPE.map((code) =>
+        queryDriverList({
+          type: code,
+          ...params,
+        }),
+      ),
     )
     return Promise.resolve(
       retArr.reduce((arr: Array<RawDriverData>, currentData) => arr.concat(getDataFromResponse(currentData)), []),

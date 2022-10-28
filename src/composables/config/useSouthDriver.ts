@@ -5,6 +5,7 @@ import type { Ref } from 'vue'
 import { onUnmounted, ref } from 'vue'
 import usePaging from '../usePaging'
 import { useFillNodeListStatusData } from './useNodeList'
+import { debounce } from 'lodash'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
   const { fillNodeListStatusData } = useFillNodeListStatusData()
@@ -21,6 +22,10 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     total: 0,
   })
   const { setTotalData, getAPageData } = usePaging()
+
+  const queryKeyword = ref({
+    node: '',
+  })
 
   let refreshStatusTimer: undefined | number
 
@@ -40,7 +45,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const getSouthDriverList = async () => {
     isListLoading.value = true
     try {
-      const driverList = await querySouthDriverList()
+      const driverList = await querySouthDriverList(queryKeyword.value)
       const totalList = driverList.map((item) => {
         return {
           ...item,
@@ -57,6 +62,10 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       isListLoading.value = false
     }
   }
+  // debounce
+  const dbGetSouthDriverList = debounce(() => {
+    getSouthDriverList()
+  }, 500)
 
   const handleSizeChange = (size: number) => {
     pageController.value.pageSize = size
@@ -85,6 +94,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   })
 
   return {
+    queryKeyword,
     pageController,
     getAPageTagData,
     handleSizeChange,
@@ -92,5 +102,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     southDriverList,
     isListLoading,
     getSouthDriverList,
+    dbGetSouthDriverList,
   }
 }

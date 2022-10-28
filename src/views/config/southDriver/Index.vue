@@ -6,6 +6,18 @@
         {{ $t('config.addDevice') }}
       </emqx-button>
     </div>
+
+    <ViewHeaderBar>
+      <template v-slot:right>
+        <KeywordSerachInput
+          v-model="queryKeyword.node"
+          class="header-item"
+          @enter="dbGetSouthDriverList"
+          @clear="dbGetSouthDriverList"
+        />
+      </template>
+    </ViewHeaderBar>
+
     <emqx-empty v-if="!isListLoading && southDriverList.length === 0" class="empty" />
     <div v-else>
       <ul class="setup-list">
@@ -13,8 +25,8 @@
           <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.name" tag="li" class="setup-item">
             <SouthDriveItemCard
               :data="item"
-              @deleted="getSouthDriverList"
-              @updated="getSouthDriverList"
+              @deleted="dbGetSouthDriverList"
+              @updated="dbGetSouthDriverList"
               @toggle-status="setNodeStartStopStatus(item, $event, index)"
             />
           </emqx-col>
@@ -43,9 +55,19 @@ import { DriverDirection } from '@/types/enums'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
 import { ref } from 'vue'
 import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
+import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
+import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 
-const { pageController, getAPageTagData, handleSizeChange, southDriverList, isListLoading, getSouthDriverList } =
-  useSouthDriver(true, true)
+const {
+  queryKeyword,
+  pageController,
+  getAPageTagData,
+  handleSizeChange,
+  southDriverList,
+  isListLoading,
+  getSouthDriverList,
+  dbGetSouthDriverList,
+} = useSouthDriver(true, true)
 
 const showDialog = ref(false)
 
@@ -68,7 +90,7 @@ const addConfig = () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .setup-list {
   list-style: none;
   .setup-item {
