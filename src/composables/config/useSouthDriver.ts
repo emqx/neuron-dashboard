@@ -25,6 +25,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
 
   const queryKeyword = ref({
     node: '',
+    plugin: '',
   })
 
   let refreshStatusTimer: undefined | number
