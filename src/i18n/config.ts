@@ -167,6 +167,10 @@ export default {
     zh: '插件类别',
     en: 'Kind of plugin',
   },
+  pluginKindPlaceholder: {
+    zh: '请选择插件类型 ',
+    en: 'Select plugin type',
+  },
   all: {
     zh: '全部',
     en: 'All',

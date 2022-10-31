@@ -70,7 +70,7 @@ const addPlugin = () => {
   .filter-bar {
     margin-bottom: 16px;
     .emqx-select {
-      width: 280px;
+      width: 220px;
     }
   }
   .setup-list {

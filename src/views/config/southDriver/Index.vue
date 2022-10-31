@@ -9,11 +9,18 @@
 
     <ViewHeaderBar>
       <template v-slot:right>
+        <PluginTypesSelector
+          v-model="queryKeyword.plugin"
+          :types="SOUTH_DRIVER_NODE_TYPE"
+          class="header-item"
+          @change="dbGetSouthDriverList"
+        />
         <KeywordSerachInput
           v-model="queryKeyword.node"
           class="header-item"
-          @enter="dbGetSouthDriverList"
+          @input="dbGetSouthDriverList"
           @clear="dbGetSouthDriverList"
+          @enter="dbGetSouthDriverList"
         />
       </template>
     </ViewHeaderBar>
@@ -48,15 +55,17 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import type { DriverItemInList } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
-import { ref } from 'vue'
 import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
-import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
+import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
+import PluginTypesSelector from '../components/PluginTypesSelector.vue'
+import { SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 
 const {
   queryKeyword,
@@ -96,5 +105,8 @@ const addConfig = () => {
   .setup-item {
     margin-bottom: 24px;
   }
+}
+.filters-container {
+  margin-bottom: 10px;
 }
 </style>

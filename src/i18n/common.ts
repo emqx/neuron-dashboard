@@ -348,7 +348,7 @@ export default {
     en: 'Exceptions',
   },
   keywordSearchPlaceholder: {
-    zh: '按 Enter 搜索',
-    en: 'Press Enter search',
+    zh: '输入关键字搜索',
+    en: 'Enter keyword search',
   },
 }
