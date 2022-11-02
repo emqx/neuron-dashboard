@@ -89,7 +89,7 @@ export default () => {
     if (!selectedGroup?.node || !selectedGroup.groupName) {
       return {}
     }
-    const tags = await queryTagList(selectedGroup?.node, selectedGroup.groupName)
+    const tags = await queryTagList({ node: selectedGroup?.node, group: selectedGroup.groupName })
     const tagNameMap: any[] = tags.map(({ attribute, type, name, address, description }) => {
       return {
         attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],

@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
 import usePaging from '@/composables/usePaging'
 import { OmitArrayFields } from '@/utils/utils'
+import { debounce } from 'lodash'
 
 interface TagDataInTable extends TagData {
   checked: boolean
@@ -23,6 +24,10 @@ export default () => {
     pageNum: 1,
     pageSize: 50,
     total: 0,
+  })
+
+  const queryKeyword = ref({
+    name: '',
   })
 
   const node = computed(() => route.params.node.toString())
@@ -61,11 +66,21 @@ export default () => {
 
   const getTagList = async () => {
     isListLoading.value = true
-    const data = await queryTagList(node.value, groupName.value)
+    const params = {
+      node: node.value,
+      group: groupName.value,
+      ...queryKeyword.value,
+    }
+    const data = await queryTagList(params)
     setTotalData(data.map((item) => Object.assign(item, { checked: false })))
     getAPageTagData()
     isListLoading.value = false
   }
+
+  // debounce
+  const dbGetTagList = debounce(() => {
+    getTagList()
+  }, 500)
 
   const refreshTable = () => {
     pageController.value.pageNum = 1
@@ -127,9 +142,11 @@ export default () => {
     handleSizeChange,
     refreshTable,
     getTagList,
+    dbGetTagList,
     editTag,
     delTag,
     clearTag,
     batchDeleteTag,
+    queryKeyword,
   }
 }

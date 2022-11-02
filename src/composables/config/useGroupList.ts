@@ -95,7 +95,9 @@ export default () => {
 
   // export file
   const ExportTagsByGroups = async () => {
-    const requesList = groupCheckedList.value.map((group: GroupData) => queryTagList(node.value, group.name))
+    const requesList = groupCheckedList.value.map((group: GroupData) =>
+      queryTagList({ node: node.value, group: group.name }),
+    )
     const AllNodeTags: any = []
     Promise.all(requesList).then((res) => {
       for (let i = 0; i < res.length; i += 1) {

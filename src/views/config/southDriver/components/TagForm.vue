@@ -2,7 +2,7 @@
   <emqx-form ref="formCom" :model="form" :rules="rules" @submit.prevent>
     <emqx-row :gutter="28">
       <emqx-col :span="12">
-        <emqx-form-item :label="$t('config.tag')" prop="name" required>
+        <emqx-form-item :label="$t('common.name')" prop="name" required>
           <emqx-input v-model.trim="form.name" :disabled="edit" />
         </emqx-form-item>
       </emqx-col>
