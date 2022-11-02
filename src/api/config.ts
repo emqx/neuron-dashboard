@@ -200,8 +200,8 @@ export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
 }
 
 /* TAG */
-export const queryTagList = async (node: string, groupName: string): Promise<Array<TagData>> => {
-  const { data } = await http.get('/tags', { params: { node, group: groupName } })
+export const queryTagList = async (params = {}): Promise<Array<TagData>> => {
+  const { data } = await http.get('/tags', { params })
   return Promise.resolve(data.tags || [])
 }
 

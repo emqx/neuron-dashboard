@@ -19,9 +19,17 @@
           <emqx-button size="small" type="danger" :disabled="!tagCheckedList.length" @click="batchDeleteTag">{{
             $t('common.delete')
           }}</emqx-button>
+          <KeywordSerachInput
+            v-model="queryKeyword.name"
+            class="search_input"
+            @input="dbGetTagList"
+            @clear="dbGetTagList"
+            @enter="dbGetTagList"
+          />
         </div>
       </div>
     </div>
+
     <div class="table-container">
       <emqx-table :data="tagList">
         <emqx-table-column :width="28">
@@ -78,6 +86,7 @@ import EditTagDialog from './components/EditTagDialog.vue'
 import useTagList from '@/composables/config/useTagList'
 import { useRouter } from 'vue-router'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
 
 const router = useRouter()
 
@@ -98,6 +107,8 @@ const {
   delTag,
   clearTag,
   batchDeleteTag,
+  queryKeyword,
+  dbGetTagList,
 } = useTagList()
 const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
 const { getAttrStrByValue } = useTagAttributeTypeSelect()
@@ -108,7 +119,12 @@ const goCreatePage = () => {
 </script>
 
 <style lang="scss">
-.table-container {
-  margin-bottom: 24px;
+.tag-page {
+  .table-container {
+    margin-bottom: 24px;
+  }
+  .search_input {
+    margin-left: 10px;
+  }
 }
 </style>
