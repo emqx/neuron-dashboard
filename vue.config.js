@@ -6,6 +6,7 @@ function resolve(dir) {
 }
 
 module.exports = {
+  publicPath: '/web',
   lintOnSave: false,
   productionSourceMap: false,
   devServer: {
