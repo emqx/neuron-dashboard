@@ -192,5 +192,12 @@ export default () => {
       return value
     }
   }
-  return { checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal }
+  return {
+    checkFloat,
+    checkHexadecimal,
+    checkWriteData,
+    parseWriteData,
+    transToDecimal,
+    transToHexadecimal,
+  }
 }

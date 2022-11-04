@@ -57,7 +57,7 @@ export default (props: Props) => {
   const isUseHexadecimal = ref(false)
   const isSubmitting = ref(false)
 
-  const { checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal } =
+  const { checkFloat, checkHexadecimal, checkWriteData, parseWriteData, transToDecimal, transToHexadecimal } =
     useWriteDataCheckNParse()
 
   const showToggleHexadecimalSwitch = computed(() => {
@@ -70,6 +70,7 @@ export default (props: Props) => {
     )
   })
 
+  // change to hexadecimal
   const handleIsUseHexadecimalChanged = async () => {
     if (isUseHexadecimal.value) {
       inputValue.value = await transToHexadecimal({ ...props.tag, value: inputValue.value } as TagDataInTable)
@@ -92,7 +93,25 @@ export default (props: Props) => {
       const trueValue = isUseHexadecimal.value
         ? await transToDecimal({ ...props.tag, value: inputValue.value } as TagDataInTable)
         : inputValue.value
-      await checkWriteData(type, trueValue)
+
+      // when  `decimal` = 0, all other types can be enter as `float`, excepet for `bit` type
+      const decimal = props.tag?.decimal
+      if (decimal === 0) {
+        await checkWriteData(type, trueValue)
+        inputErrorMsg.value = ''
+        return Promise.resolve()
+      }
+
+      const checkValueRes = await Promise.allSettled([
+        checkFloat.bind(null, trueValue)(),
+        checkWriteData(type, trueValue),
+      ])
+      const checkRes = checkValueRes.map((item: any) => item?.value || false)
+      if (!checkRes.includes(true)) {
+        inputErrorMsg.value = errorMsgMap.value[Number('1') as keyof typeof errorMsgMap.value]
+        return Promise.reject()
+      }
+
       inputErrorMsg.value = ''
       return Promise.resolve()
     } catch (error: any) {
