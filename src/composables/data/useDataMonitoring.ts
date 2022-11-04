@@ -2,7 +2,7 @@ import { queryGroupList, queryTagList } from '@/api/config'
 import { getMonitoringData } from '@/api/data'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
-import type { GroupData } from '@/types/config'
+import type { GroupData, TagForm } from '@/types/config'
 import type { TagDataInMonitoring } from '@/types/data'
 import { TagAttributeType, TagType } from '@/types/enums'
 import { paginate } from '@/utils/utils'
@@ -19,8 +19,9 @@ export interface TagDataInTable extends TagDataInMonitoring {
   address: string
   error: number
   description: string
+  decimal?: number
+  precision?: number
 }
-
 export default () => {
   const { t } = useI18n()
 
@@ -90,13 +91,12 @@ export default () => {
       return {}
     }
     const tags = await queryTagList({ node: selectedGroup?.node, group: selectedGroup.groupName })
-    const tagNameMap: any[] = tags.map(({ attribute, type, name, address, description }) => {
+    const tagNameMap: any[] = tags.map((item: TagForm) => {
+      const { attribute, name, ...restData } = item
       return {
-        attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
-        type,
         tagName: name,
-        address,
-        description,
+        attribute: tagAttrValueMap[attribute as keyof typeof tagAttrValueMap],
+        ...restData,
       }
     })
     return Promise.resolve(tagNameMap)
