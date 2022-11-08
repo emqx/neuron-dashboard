@@ -36,8 +36,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       const { data, meta } = getAPageData(pageController.value)
       southDriverList.value = await fillNodeListStatusData(data)
       pageController.value.total = meta.total
-    } catch (error) {
-      //
     } finally {
       isListLoading.value = false
     }
@@ -57,8 +55,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       totalSouthDriverList.value = totalList
       setTotalData(totalList)
       await getAPageTagData()
-    } catch (error) {
-      //
     } finally {
       isListLoading.value = false
     }

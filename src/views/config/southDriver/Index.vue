@@ -40,7 +40,7 @@
         </emqx-row>
       </ul>
       <emqx-pagination
-        hide-on-single-page
+        v-if="pageController.total > 30"
         layout="total, sizes, prev, pager, next, jumper"
         v-model:current-page="pageController.pageNum"
         :page-sizes="[30, 60, 90]"
