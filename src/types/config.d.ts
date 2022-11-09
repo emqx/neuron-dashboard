@@ -43,6 +43,7 @@ export interface RawDriverData {
 export interface DriverStateData {
   running: NodeState
   link: NodeLinkState
+  rtt?: number
 }
 
 export interface DriverAllStatusData {

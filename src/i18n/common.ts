@@ -351,4 +351,8 @@ export default {
     zh: '输入关键字搜索',
     en: 'Enter keyword search',
   },
+  ms: {
+    zh: '毫秒',
+    en: 'ms',
+  },
 }
