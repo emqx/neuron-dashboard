@@ -37,10 +37,10 @@
         <label>Plugin: </label>
         <span>{{ data.plugin }}</span>
       </div>
-      <!-- <div class="node-item-info-row">
-        <label>{{ $t('config.runningTime') }}:</label>
-        <span>66</span>
-      </div> -->
+      <div class="node-item-info-row">
+        <label>{{ $t('config.delayTime') }}: </label>
+        <span>{{ data.rtt }} {{ $t('common.ms') }}</span>
+      </div>
     </div>
   </div>
 

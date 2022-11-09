@@ -96,7 +96,7 @@ export default (props: Props) => {
 
       // when  `decimal` = 0, all other types can be enter as `float`, excepet for `bit` type
       const decimal = props.tag?.decimal
-      if (decimal === 0) {
+      if (decimal !== undefined && decimal !== null && decimal === 0) {
         await checkWriteData(type, trueValue)
         inputErrorMsg.value = ''
         return Promise.resolve()

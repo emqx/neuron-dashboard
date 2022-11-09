@@ -396,4 +396,8 @@ export default {
     zh: '数据统计',
     en: 'Data statistics',
   },
+  delayTime: {
+    zh: '延时',
+    en: 'Delay time',
+  },
 }
