@@ -1,17 +1,19 @@
 <template>
   <emqx-card class="plugin" v-emqx-loading="isListLoading">
-    <div class="card-hd-with-btn">
-      <h3 class="card-title">{{ $t('config.pluginManagement') }}</h3>
-      <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addPlugin">
-        {{ $t('common.add') }} Plugin
-      </emqx-button>
-    </div>
-    <div class="filter-bar">
-      <emqx-select v-model="filterNodeType" clearable>
-        <emqx-option v-for="item in nodeTypeList" :key="item.value" :value="item.value" :label="item.label" />
-        <emqx-option :value="ALL_KEY" :label="$t('config.all')"></emqx-option>
-      </emqx-select>
-    </div>
+    <ViewHeaderBar>
+      <template v-slot:left>
+        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addPlugin">
+          {{ $t('common.add') }} Plugin
+        </emqx-button>
+      </template>
+      <template v-slot:right>
+        <emqx-select v-model="filterNodeType" clearable size="medium" class="header-item filter-item">
+          <emqx-option v-for="item in nodeTypeList" :key="item.value" :value="item.value" :label="item.label" />
+          <emqx-option :value="ALL_KEY" :label="$t('config.all')"></emqx-option>
+        </emqx-select>
+      </template>
+    </ViewHeaderBar>
+
     <ul class="setup-list">
       <emqx-row :gutter="24">
         <emqx-col :span="8" v-for="item in listToShow" :key="item.name" tag="li" class="setup-item">
@@ -34,6 +36,7 @@ import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constant
 import type { Ref } from 'vue'
 import PluginDialog from './components/PluginDialog.vue'
 import PluginItemCard from './components/PluginItemCard.vue'
+import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 
 const { pluginList, isListLoading, getPluginList } = usePlugin()
 const { nodeTypeList } = useNodeTypeSelect()
@@ -65,22 +68,20 @@ const addPlugin = () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .plugin {
-  .filter-bar {
-    margin-bottom: 16px;
-    .emqx-select {
-      width: 220px;
-    }
+  .filter-item {
+    width: 220px;
   }
   .setup-list {
     list-style: none;
+    margin-top: 6px;
     .setup-item {
       margin-bottom: 24px;
     }
   }
 
-  .emqx-select {
+  :deep(.emqx-select) {
     .el-icon-circle-close {
       font-size: 16px;
     }

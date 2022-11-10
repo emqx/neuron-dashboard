@@ -1,28 +1,41 @@
 <template>
   <emqx-card class="data-monitoring">
-    <h3 class="card-title">{{ $t('data.dataMonitoring') }}</h3>
-    <div class="filter-bar common-flex">
-      <div>
-        <template v-if="currentGroup.groupName">
-          <label>{{ $t('data.updated') }}</label>
+    <ViewHeaderBar>
+      <template v-slot:left>
+        <span v-if="currentGroup.groupName" class="header-item">
+          <label class="label">{{ $t('data.updated') }}</label>
           <span>{{ dateformat(updated, 'yyyy-mm-dd HH:MM:ss') }}</span>
-        </template>
-      </div>
-      <div class="target-select">
-        <div>
-          <label>{{ $t('config.southDevice') }}</label>
-          <emqx-select v-model="currentGroup.node" @change="selectedNodeChanged" filterable>
+        </span>
+      </template>
+
+      <template v-slot:right>
+        <div class="header-item search-group">
+          <label class="label">{{ $t('config.southDevice') }}</label>
+          <emqx-select
+            v-model="currentGroup.node"
+            size="medium"
+            filterable
+            class="filter-selector"
+            @change="selectedNodeChanged"
+          >
             <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
           </emqx-select>
         </div>
-        <div>
-          <label>{{ $t('config.groupName') }}</label>
-          <emqx-select v-model="currentGroup.groupName" @change="selectedGroupChanged" filterable>
+        <div class="header-item search-group">
+          <label class="label">{{ $t('config.groupName') }}</label>
+          <emqx-select
+            v-model="currentGroup.groupName"
+            filterable
+            size="medium"
+            class="filter-selector"
+            @change="selectedGroupChanged"
+          >
             <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
           </emqx-select>
         </div>
-      </div>
-    </div>
+      </template>
+    </ViewHeaderBar>
+
     <div class="table-container">
       <emqx-table :data="tableData" :empty-text="tableEmptyText">
         <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="100"></emqx-table-column>
@@ -90,6 +103,7 @@ import dateformat from 'dateformat'
 import WriteDialog from './components/WriteDialog.vue'
 import { getErrorMsg } from '@/utils/utils'
 import { useTagTypeSelect } from '@/composables/config/useAddTag'
+import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 
 const {
   nodeList,
@@ -122,8 +136,8 @@ const writeData = (item: TagDataInTable) => {
 
 <style lang="scss">
 .data-monitoring {
-  .filter-bar {
-    margin-bottom: 16px;
+  .filter-selector {
+    width: 220px;
   }
   .target-select {
     > div {
@@ -131,9 +145,6 @@ const writeData = (item: TagDataInTable) => {
       &:not(:last-child) {
         margin-right: 16px;
       }
-    }
-    .emqx-select {
-      width: 220px;
     }
   }
   .table-container {

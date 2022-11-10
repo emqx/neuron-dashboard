@@ -65,9 +65,12 @@
   }
 
   :deep(.label) {
+    display: inline-block;
     text-align: left;
-    color: #333;
+    min-width: 60px;
+    color: #999;
     font-size: 14px;
+    line-height: 40px;
   }
 }
 </style>

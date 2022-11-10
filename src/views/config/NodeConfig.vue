@@ -17,6 +17,7 @@
                 v-model="configForm[field.key]"
                 :param-key="field.key"
                 :param-info="field.info"
+                :default-data="defaultConfigData"
               />
             </template>
           </emqx-form>
@@ -59,8 +60,19 @@ const labelForNodeName = computed(() =>
   t(props.direction === DriverDirection.North ? 'config.appName' : 'config.deviceName'),
 )
 
-const { node, configForm, fieldList, isLoading, formCom, isSubmitting, shouldFieldShow, submit, cancel, reset } =
-  useNodeConfig(props)
+const {
+  node,
+  configForm,
+  defaultConfigData,
+  fieldList,
+  isLoading,
+  formCom,
+  isSubmitting,
+  shouldFieldShow,
+  submit,
+  cancel,
+  reset,
+} = useNodeConfig(props)
 </script>
 
 <style lang="scss">

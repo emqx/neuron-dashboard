@@ -15,9 +15,17 @@
       </el-popover>
     </template>
     <!-- Number -->
-    <emqx-input v-if="paramInfo.type === TypeOfPluginParam.Int" v-model.number="inputValue" />
+    <emqx-input
+      v-if="paramInfo.type === TypeOfPluginParam.Int"
+      v-model.number="inputValue"
+      :placeholder="String(defaultData[paramKey])"
+    />
     <!-- String -->
-    <emqx-input v-else-if="paramInfo.type === TypeOfPluginParam.String" v-model.trim="inputValue" />
+    <emqx-input
+      v-else-if="paramInfo.type === TypeOfPluginParam.String"
+      v-model.trim="inputValue"
+      :placeholder="String(defaultData[paramKey])"
+    />
     <!-- Boolean -->
     <emqx-radio-group v-else-if="paramInfo.type === TypeOfPluginParam.Boolean" v-model="inputValue">
       <emqx-radio :label="true">True</emqx-radio>
@@ -83,6 +91,10 @@ const props = defineProps({
   },
   paramInfo: {
     type: Object as PropType<ParamInfo>,
+    required: true,
+  },
+  defaultData: {
+    type: Object,
     required: true,
   },
 })
