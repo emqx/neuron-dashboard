@@ -4,7 +4,7 @@ import type { DriverItemInList } from '@/types/config'
 import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 // import { ElLoading } from 'element-plus'
-import { computed, ref } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
@@ -103,6 +103,7 @@ export const dataStatistics = () => {
   const dataStatisticsVisiable = ref(false)
   const loadingStatistic = ref(false)
   const nodeStatisticData = ref('')
+  let timer: undefined | number
 
   const isShowDataStatistics = (value?: boolean) => {
     if (value === undefined || value === null) {
@@ -123,11 +124,28 @@ export const dataStatistics = () => {
       .then((res: any) => {
         const statistics: string = res?.data || ''
         nodeStatisticData.value = statistics.replace(/(#)(.*)(\n)/g, '')
+        setTimer(type, params)
       })
       .finally(() => {
         loadingStatistic.value = false
       })
   }
+
+  const setTimer = (type: string, params: any) => {
+    if (timer) {
+      window.clearInterval(timer)
+    }
+
+    timer = window.setInterval(() => {
+      getNodeStatisticData(type, params)
+    }, 3000)
+  }
+
+  onUnmounted(() => {
+    if (timer) {
+      window.clearInterval(timer)
+    }
+  })
 
   return {
     drawerRef,
