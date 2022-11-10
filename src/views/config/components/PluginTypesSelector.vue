@@ -2,6 +2,7 @@
   <emqx-select
     v-model="pluginType"
     clearable
+    size="medium"
     class="plugin_select"
     :placeholder="$t('config.pluginKindPlaceholder')"
     @change="changePluginType"

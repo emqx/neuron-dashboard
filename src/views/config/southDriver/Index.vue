@@ -1,13 +1,11 @@
 <template>
   <emqx-card v-emqx-loading="isListLoading">
-    <div class="card-hd-with-btn">
-      <h3 class="card-title">{{ $t('config.southDeviceManagement') }}</h3>
-      <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addConfig">
-        {{ $t('config.addDevice') }}
-      </emqx-button>
-    </div>
-
     <ViewHeaderBar>
+      <template v-slot:left>
+        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
+          {{ $t('config.addDevice') }}
+        </emqx-button>
+      </template>
       <template v-slot:right>
         <PluginTypesSelector
           v-model="queryKeyword.plugin"
@@ -102,11 +100,9 @@ const addConfig = () => {
 <style lang="scss" scoped>
 .setup-list {
   list-style: none;
+  margin-top: 6px;
   .setup-item {
     margin-bottom: 24px;
   }
-}
-.filters-container {
-  margin-bottom: 10px;
 }
 </style>

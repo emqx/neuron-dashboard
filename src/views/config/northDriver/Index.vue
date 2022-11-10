@@ -1,11 +1,12 @@
 <template>
   <emqx-card v-emqx-loading="isListLoading">
-    <div class="card-hd-with-btn">
-      <h3 class="card-title">{{ $t('config.northAppSetup') }}</h3>
-      <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addConfig">{{
-        $t('config.addApplication')
-      }}</emqx-button>
-    </div>
+    <ViewHeaderBar>
+      <template v-slot:left>
+        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
+          {{ $t('config.addApplication') }}
+        </emqx-button>
+      </template>
+    </ViewHeaderBar>
     <ul class="setup-list">
       <emqx-row :gutter="24">
         <emqx-col :span="8" v-for="(item, index) in northDriverList" :key="item.name" tag="li" class="setup-item">
@@ -33,6 +34,7 @@ import { DriverDirection } from '@/types/enums'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
 import SetupItemCard from './components/SetupItemCard.vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 
 const { t } = useI18n()
 const { northDriverList, isListLoading, getNorthDriverList } = useNorthDriver(true, true)
@@ -60,9 +62,11 @@ const addConfig = () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .setup-list {
   list-style: none;
+  margin-top: 6px;
+
   .setup-item {
     margin-bottom: 24px;
   }

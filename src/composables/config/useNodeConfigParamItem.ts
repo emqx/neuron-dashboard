@@ -12,6 +12,8 @@ type Props = Readonly<{
 }>
 
 export default (props: Props) => {
+  console.log('props', props)
+
   const { t } = useI18n()
   const rules: Ref<Array<any> | Record<string, any>> = ref([])
 
@@ -24,8 +26,16 @@ export default (props: Props) => {
     {
       validator(rule: unknown, value: string) {
         const ret = []
-        const { valid } = props.paramInfo as NumberParamInfo
-        if (Number.isNaN(Number(value)) || Number(value) > valid.max || Number(value) < valid.min) {
+        const { valid, attribute } = props.paramInfo as NumberParamInfo
+
+        const isNumber = Number.isNaN(Number(value)) || Number(value) > valid.max || Number(value) < valid.min
+        if (attribute === 'required') {
+          if (isNumber) {
+            ret.push(
+              new Error(`${t('config.numberErrorPrefix') + valid.min}-${valid.max}${t('config.numberErrorSuffix')}`),
+            )
+          }
+        } else if (value !== '' && isNumber) {
           ret.push(
             new Error(`${t('config.numberErrorPrefix') + valid.min}-${valid.max}${t('config.numberErrorSuffix')}`),
           )

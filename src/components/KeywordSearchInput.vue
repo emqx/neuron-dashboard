@@ -4,6 +4,7 @@
     :disabled="disabled"
     :clearable="clearable"
     :placeholder="$t(`${placeholder}`)"
+    size="medium"
     class="common-search_input"
     @input="input"
     @change="change"

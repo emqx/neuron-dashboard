@@ -114,7 +114,6 @@ export default (props: Props) => {
         fieldList.value = []
         return
       }
-
       const pluginInitInfo = initFormFromPluginInfo(pluginInfo)
       defaultConfigData.value = cloneDeep(pluginInitInfo)
       fieldList.value = createFieldListFormPluginInfo(pluginInfo)
@@ -125,6 +124,7 @@ export default (props: Props) => {
   const initData = () => {
     const defaultConfigDatakeys = Object.keys(defaultConfigData.value) // according fieldList value
     const defaultConfigDataL = defaultConfigDatakeys.length
+
     if (!defaultConfigDataL) {
       configForm.value = { ...defaultConfigData.value }
     } else {
@@ -157,10 +157,28 @@ export default (props: Props) => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
+      // delete `tag_regex`
       const { tag_regex } = configForm.value
       if (tag_regex !== undefined) {
         delete configForm.value.tag_regex
       }
+
+      // if configForm value is '' or 'undefined' or null, change its value to `default` value or delete it.
+      const dataKeys = Object.keys(configForm.value)
+      dataKeys.forEach((key) => {
+        const value = configForm.value[key]
+        if (value === '' || value === undefined || value == null) {
+          const field = fieldList.value.find((item: { key: string; info: any }) => item.key === key)
+          const isOptional = field?.info?.attribute
+          const isDefaultValue = field?.info?.default !== undefined
+          if (isOptional && isDefaultValue) {
+            configForm.value[key] = defaultConfigData.value[key]
+          } else {
+            delete configForm.value[key]
+          }
+        }
+      })
+
       await submitNodeConfig(node.value, configForm.value)
       EmqxMessage.success(t('common.submitSuccess'))
       router.back()
@@ -186,6 +204,7 @@ export default (props: Props) => {
   return {
     node,
     configForm,
+    defaultConfigData,
     fieldList,
     isLoading,
     formCom,
