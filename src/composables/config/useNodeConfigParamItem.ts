@@ -12,8 +12,6 @@ type Props = Readonly<{
 }>
 
 export default (props: Props) => {
-  console.log('props', props)
-
   const { t } = useI18n()
   const rules: Ref<Array<any> | Record<string, any>> = ref([])
 

@@ -319,32 +319,68 @@ export default {
     en: 'Fins error',
   },
   10502: {
-    zh: '第一个地址处于无效区域',
-    en: 'Fins first address in inaccessible area',
+    zh: '本地节点错误',
+    en: 'Fins local node error',
   },
   10503: {
-    zh: '最后一个字超出范围',
-    en: 'Fins end of word exceed range',
+    zh: '目标节点错误',
+    en: 'Fins dest node error',
   },
   10504: {
-    zh: '无效的数据大小',
-    en: 'Fins invalid size of data',
+    zh: '控制器错误',
+    en: 'Fins communication controller error',
   },
   10505: {
-    zh: '响应块太长',
-    en: 'Fins response too long',
+    zh: '服务不受支持',
+    en: 'Fins not executable',
   },
   10506: {
-    zh: '数据受保护',
-    en: 'Fins data is protected',
+    zh: '路由表错误',
+    en: 'Fins routing error',
   },
   10507: {
-    zh: '区域只读',
-    en: 'Fins area read-only',
+    zh: '命令格式错误',
+    en: 'Fins command format error',
   },
   10508: {
-    zh: '数据不可更改',
-    en: 'Fins data cannot change',
+    zh: '参数错误',
+    en: 'Fins parameter error',
+  },
+  10509: {
+    zh: '无法读取',
+    en: 'Fins read not possible',
+  },
+  10510: {
+    zh: '无法写入',
+    en: 'Fins write not possible',
+  },
+  10511: {
+    zh: '当前模式不可执行',
+    en: 'Fins not executable in current mode',
+  },
+  10512: {
+    zh: '单元不存在',
+    en: 'Fins no unit',
+  },
+  10513: {
+    zh: '无法启动/停止',
+    en: 'Fins start/stop not possible',
+  },
+  10514: {
+    zh: '单元错误',
+    en: 'Fins unit error',
+  },
+  10515: {
+    zh: '命令错误',
+    en: 'Fins command error',
+  },
+  10516: {
+    zh: '访问权限错误',
+    en: 'Fins access error',
+  },
+  10517: {
+    zh: '中止',
+    en: 'Fins abort',
   },
   10001: {
     zh: 'Opcua tag 不存在',
