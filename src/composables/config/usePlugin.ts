@@ -1,22 +1,18 @@
 import { ref, computed } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useStore } from 'vuex'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
 import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
 import { createCommonErrorMessage } from '@/utils/utils'
 import { PluginType } from '@/types/enums'
 import type { CreatedPlugin, PluginForm } from '@/types/config'
+import useLang from '@/composables/useLang'
 
 export default () => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])
   const isListLoading = ref(false)
-  const $store = useStore()
 
-  // zh | en
-  const currentLang = computed(() => {
-    return $store.state.lang
-  })
+  const { currentLang } = useLang()
 
   const pluginTypeMapping = computed(() => (pluginName: string) => {
     if (!pluginName) return ''

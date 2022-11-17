@@ -31,7 +31,7 @@
       </div>
       <div class="info-row">
         <label>{{ $t('config.desc') }}</label>
-        <EllipsisTooltip :text="data.description"></EllipsisTooltip>
+        <EllipsisTooltip :text="nodeDesc"></EllipsisTooltip>
       </div>
     </div>
   </div>
@@ -44,14 +44,21 @@ import { useDeletePlugin } from '@/composables/config/usePlugin'
 import type { CreatedPlugin } from '@/types/config'
 import { PluginKind } from '@/types/enums'
 import type { PropType } from 'vue'
-import { defineEmits, defineProps } from 'vue'
+import { defineEmits, defineProps, computed } from 'vue'
 import EllipsisTooltip from '@/components/EllipsisTooltip.vue'
+import useLang from '@/composables/useLang'
 
 const props = defineProps({
   data: {
     type: Object as PropType<CreatedPlugin>,
     required: true,
   },
+})
+
+const { currentLang } = useLang()
+
+const nodeDesc = computed(() => {
+  return currentLang.value === 'zh' ? props.data.description_zh : props.data.description
 })
 const emit = defineEmits(['deleted'])
 const { getNodeTypeLabelByValue } = useNodeType()
