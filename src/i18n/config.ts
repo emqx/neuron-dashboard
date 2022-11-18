@@ -400,4 +400,12 @@ export default {
     zh: '延时',
     en: 'Delay time',
   },
+  updateDebugLogLevel: {
+    zh: 'DEBUG 日志',
+    en: 'DEBUG log',
+  },
+  modifyNodeLogLevelSuc: {
+    zh: '已修改节点的日志等级为 debug，十分钟左右自动切回默认等级',
+    en: 'Updated node log level to debug, it will auto back to the default level in about 10 minutes',
+  },
 }

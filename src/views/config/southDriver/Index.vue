@@ -30,8 +30,8 @@
           <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.name" tag="li" class="setup-item">
             <SouthDriveItemCard
               :data="item"
-              @deleted="dbGetSouthDriverList"
               @updated="dbGetSouthDriverList"
+              @reload="dbGetSouthDriverList"
               @toggle-status="setNodeStartStopStatus(item, $event, index)"
             />
           </emqx-col>
