@@ -1,4 +1,4 @@
-import { sendCommandToNode } from '@/api/config'
+import { sendCommandToNode, updateNodeLogLevelToDebug } from '@/api/config'
 import { getStatisticByType } from '@/api/statistics'
 import type { DriverItemInList } from '@/types/config'
 import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
@@ -6,6 +6,7 @@ import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constant
 // import { ElLoading } from 'element-plus'
 import { computed, ref, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { EmqxMessage } from '@emqx/emqx-ui'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
   const { t } = useI18n()
@@ -154,5 +155,23 @@ export const dataStatistics = () => {
     nodeStatisticData,
     loadingStatistic,
     getNodeStatisticData,
+  }
+}
+
+export const useNodeDebugLogLevel = () => {
+  const { t } = useI18n()
+
+  const modifyNodeLogLevelToDebug = async (nodeName: string) => {
+    try {
+      await updateNodeLogLevelToDebug(nodeName)
+      EmqxMessage.success(t('config.modifyNodeLogLevelSuc'))
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject()
+    }
+  }
+
+  return {
+    modifyNodeLogLevelToDebug,
   }
 }

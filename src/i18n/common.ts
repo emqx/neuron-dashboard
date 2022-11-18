@@ -355,4 +355,8 @@ export default {
     zh: '毫秒',
     en: 'ms',
   },
+  more: {
+    zh: '更多',
+    en: 'more',
+  },
 }

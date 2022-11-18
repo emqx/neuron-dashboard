@@ -12,8 +12,8 @@
         <emqx-col :span="8" v-for="(item, index) in northDriverList" :key="item.name" tag="li" class="setup-item">
           <SetupItemCard
             :data="item"
-            @deleted="getNorthDriverList"
-            @updated="getNorthDriverList"
+            @updated="dbGetNorthDriverList"
+            @reload="dbGetNorthDriverList"
             @toggle-status="setNodeStartStopStatus(item, $event, index)"
           />
         </emqx-col>
@@ -37,7 +37,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 
 const { t } = useI18n()
-const { northDriverList, isListLoading, getNorthDriverList } = useNorthDriver(true, true)
+const { northDriverList, isListLoading, getNorthDriverList, dbGetNorthDriverList } = useNorthDriver(true, true)
 const showDialog = ref(false)
 
 const { toggleNodeStartStopStatus } = useToggleNodeStartStopStatus()

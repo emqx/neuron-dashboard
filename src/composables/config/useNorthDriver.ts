@@ -5,6 +5,7 @@ import type { Ref } from 'vue'
 import { ref, onUnmounted } from 'vue'
 import { useFillNodeListStatusData } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
+import { debounce } from 'lodash'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
@@ -32,6 +33,10 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       return Promise.reject()
     }
   }
+  // debounce
+  const dbGetNorthDriverList = debounce(() => {
+    getNorthDriverList()
+  }, 500)
 
   const startTimer = () => {
     refreshStatusTimer = window.setInterval(async () => {
@@ -57,5 +62,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     northDriverList,
     isListLoading,
     getNorthDriverList,
+    dbGetNorthDriverList,
   }
 }

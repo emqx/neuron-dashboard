@@ -167,6 +167,10 @@ export const queryNodeConfig = async (node: string) => {
   }
 }
 
+export const updateNodeLogLevelToDebug = (nodeName: string) => {
+  return http.put('/log/level', { node: nodeName })
+}
+
 /* GROUP */
 export const queryGroupList = async (node: string): Promise<Array<GroupData>> => {
   const { data }: AxiosResponse<{ error: number; groups: Array<GroupData> }> = await http.get('/group', {
