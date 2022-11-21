@@ -89,6 +89,37 @@ export const useTagAttributeTypeSelect = () => {
   }
 }
 
+export const useTagPrecision = () => {
+  const isShowPrecisionField = computed(() => (type: number | null) => {
+    if (type === null || type === undefined) return false
+
+    const whiteList = [9, 10] // FLOAT | DOUBLE
+    const res: boolean = whiteList.includes(type)
+    return res
+  })
+  const tagPrecisionValue = computed(() => (type: number, value: number) => {
+    if (!isShowPrecisionField.value(type)) {
+      return '-'
+    }
+    return value
+  })
+  return {
+    isShowPrecisionField,
+    tagPrecisionValue,
+  }
+}
+export const useTagDecimal = () => {
+  const tagDecimalValue = computed(() => (value: number) => {
+    if (!value) {
+      return '-'
+    }
+    return value
+  })
+  return {
+    tagDecimalValue,
+  }
+}
+
 interface TagFormItem extends TagForm {
   id: string
 }

@@ -43,6 +43,12 @@
         <emqx-table-column :label="$t('common.type')" width="90">
           <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
         </emqx-table-column>
+        <emqx-table-column :label="$t('config.decimal')">
+          <template #default="{ row }">{{ tagDecimalValue(row.decimal) }}</template>
+        </emqx-table-column>
+        <emqx-table-column :label="$t('config.precision')">
+          <template #default="{ row }">{{ tagPrecisionValue(row.type, row.precision) }}</template>
+        </emqx-table-column>
         <emqx-table-column prop="valueToShow" min-width="100">
           <template #header>
             <div class="value-column-hd">
@@ -99,10 +105,10 @@ import { ref } from 'vue'
 import { ElPopover } from 'element-plus'
 import type { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import useDataMonitoring from '@/composables/data/useDataMonitoring'
+import { useTagTypeSelect, useTagPrecision, useTagDecimal } from '@/composables/config/useAddTag'
 import dateformat from 'dateformat'
-import WriteDialog from './components/WriteDialog.vue'
 import { getErrorMsg } from '@/utils/utils'
-import { useTagTypeSelect } from '@/composables/config/useAddTag'
+import WriteDialog from './components/WriteDialog.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 
 const {
@@ -132,6 +138,8 @@ const writeData = (item: TagDataInTable) => {
   currentTag.value = item
   showWriteDialog.value = true
 }
+const { tagPrecisionValue } = useTagPrecision()
+const { tagDecimalValue } = useTagDecimal()
 </script>
 
 <style lang="scss">

@@ -46,8 +46,14 @@
         <emqx-table-column :label="$t('common.type')">
           <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
         </emqx-table-column>
-        <emqx-table-column label="RW">
+        <emqx-table-column :label="$t('common.attribute')">
           <template #default="{ row }">{{ getAttrStrByValue(row.attribute) }}</template>
+        </emqx-table-column>
+        <emqx-table-column :label="$t('config.decimal')">
+          <template #default="{ row }">{{ tagDecimalValue(row.decimal) }}</template>
+        </emqx-table-column>
+        <emqx-table-column :label="$t('config.precision')">
+          <template #default="{ row }">{{ tagPrecisionValue(row.type, row.precision) }}</template>
         </emqx-table-column>
         <emqx-table-column :label="$t('config.desc')" prop="description" />
 
@@ -81,7 +87,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useTagAttributeTypeSelect, useTagTypeSelect } from '@/composables/config/useAddTag'
+import {
+  useTagAttributeTypeSelect,
+  useTagTypeSelect,
+  useTagPrecision,
+  useTagDecimal,
+} from '@/composables/config/useAddTag'
 import EditTagDialog from './components/EditTagDialog.vue'
 import useTagList from '@/composables/config/useTagList'
 import { useRouter } from 'vue-router'
@@ -110,6 +121,8 @@ const {
   queryKeyword,
   dbGetTagList,
 } = useTagList()
+const { tagPrecisionValue } = useTagPrecision()
+const { tagDecimalValue } = useTagDecimal()
 const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
 const { getAttrStrByValue } = useTagAttributeTypeSelect()
 

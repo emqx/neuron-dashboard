@@ -53,7 +53,7 @@
 <script lang="ts" setup>
 import type { PropType, WritableComputedRef } from 'vue'
 import { ref, defineExpose, computed, defineProps, defineEmits } from 'vue'
-import { useTagTypeSelect } from '@/composables/config/useAddTag'
+import { useTagTypeSelect, useTagPrecision } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
 import type { PluginInfo, TagForm, TagRegex } from '@/types/config'
 import { useI18n } from 'vue-i18n'
@@ -106,6 +106,8 @@ const form: WritableComputedRef<TagForm> = computed({
   },
 })
 
+const { isShowPrecisionField } = useTagPrecision()
+
 // valid address: valid address by type
 const validAddress = (rule: any, value: string, callback: any) => {
   const cuurentType = form.value.type
@@ -126,14 +128,6 @@ const validAddress = (rule: any, value: string, callback: any) => {
     callback()
   }
 }
-
-const isShowPrecisionField = computed(() => (type: number | null) => {
-  if (type === null || type === undefined) return false
-
-  const whiteList = [9, 10] // FLOAT | DOUBLE
-  const res: boolean = whiteList.includes(type)
-  return res
-})
 
 const rules = {
   name: [{ required: true, message: t('config.tagNameRequired') }],
