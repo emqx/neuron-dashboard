@@ -15,4 +15,4 @@ import '@/assets/fonts/iconfont.css'
 import '@/assets/fonts/iconfont'
 import '@/styles/kuiper.scss'
 
-createApp(App).use(i18n).use(EmqxUI).use(store).use(router).mount('#neuron-dashboard')
+createApp(App).use(i18n).use(EmqxUI).use(store).use(router).mount('#china-unicom-dashboard')

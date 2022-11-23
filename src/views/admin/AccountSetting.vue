@@ -19,6 +19,7 @@ import { computed } from 'vue'
 import store from '@/store'
 import i18n from '../../i18n/index'
 // import { useI18n } from 'vue-i18n'
+import { setDocumentTitle } from '@/utils/utils'
 
 // const { locale } = useI18n()
 
@@ -41,6 +42,8 @@ const lang = computed({
     store.commit('SET_LANG', val)
     i18n.global.locale.value = val
     // locale.value = val
+    // set document title
+    setDocumentTitle(val)
   },
 })
 </script>

@@ -29,22 +29,6 @@
       </emqx-descriptions>
       <div class="msg" :class="{ 'align-center': !hasLicense }">
         <img :src="require('@/assets/images/license.png')" width="400" v-if="!hasLicense" />
-        <div class="method-text">
-          <p v-if="!hasLicense">{{ $t('admin.licensePlaceholder') }}</p>
-          <p v-else>{{ $t('admin.howToGetTheCertificate') }}</p>
-          <p>
-            1.
-            <i18n-t class="payload-desc" keypath="admin.getFreeLicense" tag="span">
-              <a :href="licenseLink" target="_blank">{{ $t('admin.apply') }}</a>
-            </i18n-t>
-          </p>
-          <p>
-            2.
-            <i18n-t class="payload-desc" keypath="admin.buyLicense" tag="span">
-              <a :href="contactLink" target="_blank">{{ $t('admin.contactUs') }}</a>
-            </i18n-t>
-          </p>
-        </div>
         <emqx-upload action="" class="file-upload" :show-file-list="false" :before-upload="handleUpload">
           <emqx-button size="small" type="primary" class="btn-upload">
             {{ hasLicense ? t('common.reUpload') : t('common.upload') }}
@@ -64,7 +48,7 @@ import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const isDataLoading = ref(false)
 const licenseData: Ref<License | undefined> = ref(undefined)
 
@@ -77,10 +61,6 @@ const pluginsStr = computed(() => {
   }
   return ''
 })
-
-const licenseLink = computed(() => `https://www.emqx.com/${locale.value}/apply-licenses/neuron`)
-
-const contactLink = computed(() => `https://www.emqx.com/${locale.value}/contact?product=neuron`)
 
 const getLicense = async () => {
   try {

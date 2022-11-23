@@ -4,7 +4,7 @@
       <emqx-card shadow="never">
         <img class="img-login" src="~@/assets/images/img-login.png" />
         <div class="login-main">
-          <img class="img-logo" src="~@/assets/images/logo.png" alt="neuron-logo" width="141" />
+          <img class="img-logo" src="~@/assets/images/logo.png" alt="china-unicom-logo" width="180" />
           <emqx-form ref="formCom" :model="form" :rules="rules" @keyup.enter="login">
             <emqx-form-item prop="userName">
               <emqx-input v-model.trim="form.userName" type="text" :placeholder="$t('common.username')" />
@@ -107,7 +107,7 @@ const login = async () => {
   .emqx-card.el-card .el-card__body {
     box-sizing: border-box;
     height: 100%;
-    padding: 64px 64px 61px;
+    padding: 51px 64px;
   }
 
   img {
@@ -123,7 +123,7 @@ const login = async () => {
   }
 
   .img-logo {
-    margin: 0 auto 46px;
+    margin: 0 auto 10px;
   }
   .emqx-form-item {
     margin-bottom: 30px;

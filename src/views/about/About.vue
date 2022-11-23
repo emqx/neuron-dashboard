@@ -40,7 +40,7 @@ const versionData = ref({
 const hwToken = ref('')
 
 const generalStatistics = reactive({
-  systemRunningTime: '', // neuron running seconds
+  systemRunningTime: '', // running seconds
   systemStatus: '',
   startupTimeMatchReg: /(uptime_seconds=?)(\s*\d*)(?=\n)/g,
   debugFilesMatchReg: /(core_dumped=?)(\s*\d*)(?=\n)/g,

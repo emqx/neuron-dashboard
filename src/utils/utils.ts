@@ -105,3 +105,7 @@ export const OmitArrayFields = (list: any, params: string[]) => {
   const res = list.map((item: any) => omit(item, params))
   return res
 }
+
+export const setDocumentTitle = (lang: string) => {
+  document.title = lang === 'zh' || !lang ? '中国联通' : 'China unicom'
+}

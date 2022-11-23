@@ -1,7 +1,7 @@
 <template>
   <emqx-header class="header">
     <template #title>
-      <img src="../assets/images/logo.png" alt="neuron-logo" width="141" />
+      <img src="../assets/images/logo.png" alt="china-unicom-logo" width="141" />
     </template>
     <template v-slot:right>
       <div>
