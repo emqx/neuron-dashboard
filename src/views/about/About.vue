@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onUnmounted } from 'vue'
 import { queryVersion, queryHardwareToken } from '@/api/admin'
 import { getStatisticByType } from '@/api/statistics'
 import { secondToTime } from '@/utils/time'
@@ -45,6 +45,7 @@ const generalStatistics = reactive({
   startupTimeMatchReg: /(uptime_seconds=?)(\s*\d*)(?=\n)/g,
   debugFilesMatchReg: /(core_dumped=?)(\s*\d*)(?=\n)/g,
 })
+let timer: undefined | number
 
 const systemRunningTime = computed(() => {
   return secondToTime(Number(generalStatistics.systemRunningTime))
@@ -69,27 +70,60 @@ if (Promise && !Promise.allSettled) {
   }
 }
 
+const getStatistic = () => {
+  return new Promise((resolve, reject) => {
+    getStatisticByType('global')
+      .then((res) => {
+        const { data: statisticsInfo } = res
+
+        const startupTime = statisticsInfo.match(generalStatistics.startupTimeMatchReg)
+        const isDebugFiles = statisticsInfo.match(generalStatistics.debugFilesMatchReg)
+        generalStatistics.systemRunningTime = startupTime ? startupTime[0].split(' ')[1] : ''
+        generalStatistics.systemStatus = isDebugFiles ? isDebugFiles[0].split(' ')[1] : ''
+
+        setTimer()
+        resolve(res)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
+}
+const setTimer = () => {
+  if (timer) {
+    window.clearInterval(timer)
+  }
+
+  timer = window.setInterval(() => {
+    getStatistic()
+  }, 5000)
+}
+
 const init = () => {
-  isDataLoading.value = true
-  Promise.allSettled([queryVersion(), queryHardwareToken(), getStatisticByType('global')])
-    .then((values: any) => {
-      const { data: versionInfo } = values[0]?.value || { version: '', build_date: '' }
-      const { data: hwTokenInfo } = values[1]?.value || {}
-      const { data: statisticsInfo } = values[2]?.value || ''
+  try {
+    isDataLoading.value = true
+    Promise.allSettled([queryVersion(), queryHardwareToken(), getStatistic()])
+      .then((values: any) => {
+        const { data: versionInfo } = values[0]?.value || { version: '', build_date: '' }
+        const { data: hwTokenInfo } = values[1]?.value || {}
 
-      versionData.value = versionInfo
-      hwToken.value = hwTokenInfo?.token || ''
-
-      const startupTime = statisticsInfo.match(generalStatistics.startupTimeMatchReg)
-      const isDebugFiles = statisticsInfo.match(generalStatistics.debugFilesMatchReg)
-      generalStatistics.systemRunningTime = startupTime ? startupTime[0].split(' ')[1] : ''
-      generalStatistics.systemStatus = isDebugFiles ? isDebugFiles[0].split(' ')[1] : ''
-    })
-    .finally(() => {
-      isDataLoading.value = false
-    })
+        versionData.value = versionInfo
+        hwToken.value = hwTokenInfo?.token || ''
+      })
+      .finally(() => {
+        isDataLoading.value = false
+      })
+  } catch (error) {
+    console.log('error', error)
+  }
 }
 init()
+
+onUnmounted(() => {
+  if (timer) {
+    window.clearInterval(timer)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
