@@ -402,4 +402,17 @@ export default {
     zh: 'Opcua tag 不可写',
     en: 'Opcua tag is not writable',
   },
+  // 10701 - 10744
+  10701: {
+    zh: 'EtherNet/IP 错误',
+    en: 'EtherNet/IP error',
+  },
+  10798: {
+    zh: 'EtherNet/IP 数据类型不匹配',
+    en: 'EtherNet/IP data type mismatch',
+  },
+  10799: {
+    zh: 'EtherNet/IP 未注册session',
+    en: 'EtherNet/IP no session',
+  },
 }

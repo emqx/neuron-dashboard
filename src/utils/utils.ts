@@ -61,7 +61,16 @@ export const matchObjShape = (obj: Record<string, any>, templateObj: Record<stri
 
 export const getErrorMsg = (errorCode: number): string => {
   const hasErrorMsg = ERROR_CODE_ARR.includes(errorCode)
-  return hasErrorMsg ? i18n.global.t(`error.${errorCode}`) : 'unknown'
+  if (!hasErrorMsg) {
+    return 'unknown'
+  }
+
+  // 10701 - 10744
+  if (errorCode >= 10701 && errorCode <= 10744) {
+    return i18n.global.t(`error.10701`)
+  }
+
+  return i18n.global.t(`error.${errorCode}`)
 }
 
 export const exportExcelData = (content: Array<any>, fileName: string) => {
