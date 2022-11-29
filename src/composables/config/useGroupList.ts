@@ -8,6 +8,8 @@ import type { GroupData } from '@/types/config'
 import { OmitArrayFields } from '@/utils/utils'
 import useUploadTagList from '@/composables/config/useUploadTagList'
 import useExportTagTable from '@/composables/config/useExportTagTable'
+import { useDownload } from '@/composables/useDownload'
+import http from '@/utils/http'
 
 interface GroupDataInTable extends GroupData {
   checked: boolean
@@ -74,8 +76,17 @@ export default () => {
   }
 
   // download template file
-  const downloadTemplate = () => {
-    window.open('/template/upload-tag-template.xlsx', '_blank')
+  const { downloadFile } = useDownload()
+  const fileName = 'upload-tag-template.xlsx'
+  const downloadTemplate = async () => {
+    try {
+      const { pathname } = window.location
+      const fileURL = `${pathname.slice(-1) === '/' ? pathname.slice(0, -1) : pathname}/template/${fileName}`
+      const { data } = await http.get(fileURL, { responseType: 'blob', baseURL: '' })
+      downloadFile({ 'content-type': 'application/octet-stream', 'content-disposition': `filename=${fileName}` }, data)
+    } catch (error) {
+      //
+    }
   }
 
   // import file
