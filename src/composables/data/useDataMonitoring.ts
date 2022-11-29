@@ -2,7 +2,7 @@ import { queryGroupList, queryTagList } from '@/api/config'
 import { getMonitoringData } from '@/api/data'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
-import type { GroupData, TagForm } from '@/types/config'
+import type { GroupData, TagForm, RawDriverData } from '@/types/config'
 import type { TagDataInMonitoring } from '@/types/data'
 import { TagAttributeType, TagType } from '@/types/enums'
 import { paginate } from '@/utils/utils'
@@ -145,12 +145,31 @@ export default () => {
   }
 
   // change node
-  const selectedNodeChanged = async () => {
-    currentGroup.value.groupName = ''
-    selectedGroup = undefined
-    totalData.value = []
-    const data = await queryGroupList(currentGroup.value.node.toString())
-    groupList.value = data
+  const selectedNodeChanged = async (node: RawDriverData) => {
+    if (node?.name) {
+      try {
+        const { name } = node
+        currentGroup.value.node = name
+        currentGroup.value.groupName = ''
+        selectedGroup = undefined
+        totalData.value = []
+        const data = await queryGroupList(currentGroup.value.node.toString())
+        groupList.value = data
+      } catch (error) {
+        groupList.value = []
+      }
+    } else {
+      currentGroup.value.groupName = ''
+      groupList.value = []
+      totalData.value = []
+      selectedGroup = undefined
+    }
+  }
+
+  const filterSouthNodesByKeyword = (keyword: string, cb: any) => {
+    const list = nodeList.value
+    const res = keyword ? list.filter((node: RawDriverData) => node.name.includes(keyword)) : list
+    cb(res)
   }
 
   // change group
@@ -221,6 +240,7 @@ export default () => {
     canWrite,
     getTableData,
     selectedNodeChanged,
+    filterSouthNodesByKeyword,
     selectedGroupChanged,
     handleSizeChange,
   }

@@ -408,4 +408,8 @@ export default {
     zh: '已修改节点的日志等级为 debug，十分钟左右自动切回默认等级',
     en: 'Updated node log level to debug, it will auto back to the default level in about 10 minutes',
   },
+  searchNodePlaceholder: {
+    zh: '请输入节点名称',
+    en: 'Please enter a node name',
+  },
 }
