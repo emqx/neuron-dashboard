@@ -90,6 +90,7 @@ const tagTypeOptListAfterFilter = computed(() => {
   if (!tagRegex.value) {
     return tagTypeOptList
   }
+
   return tagTypeOptList.filter((tagType) =>
     (props.nodePluginInfo as PluginInfo).tag_regex.some(
       (canSelectTagType: TagRegex) => canSelectTagType.type === tagType.value,
