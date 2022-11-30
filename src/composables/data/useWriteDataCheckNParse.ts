@@ -133,6 +133,9 @@ export default () => {
       [TagType.BOOL]: checkStrNBool.bind(null),
       [TagType.BIT]: checkBit.bind(null, value),
       [TagType.STRING]: checkStrNBool.bind(null),
+      [TagType.NEU_TYPE_WORD]: checkInt.bind(null, INT16_RANGE, value),
+      [TagType.NEU_TYPE_DWORD]: checkInt.bind(null, INT16_RANGE, value),
+      [TagType.NEU_TYPE_LWORD]: checkInt.bind(null, INT16_RANGE, value),
     }
     return checkMap[type]()
   }
