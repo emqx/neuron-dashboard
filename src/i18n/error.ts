@@ -402,6 +402,10 @@ export default {
     zh: 'Opcua tag 不可写',
     en: 'Opcua tag is not writable',
   },
+  10006: {
+    zh: 'Opcua tag 不支持',
+    en: 'Opcua tag is not supported',
+  },
   // 10701 - 10744
   10701: {
     zh: 'EtherNet/IP 错误',
