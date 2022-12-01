@@ -108,6 +108,7 @@ export enum FileType {
 }
 
 export enum PluginType {
+  EthernetIp = 'ethernet-ip-cip',
   ADS = 'ads',
   A1E = 'mitsubishi-melsec-q-a1e',
   Focas = 'cnc-fanuc-focas',
