@@ -17,6 +17,7 @@ export default () => {
   const pluginTypeMapping = computed(() => (pluginName: string) => {
     if (!pluginName) return ''
     const types = new Map([
+      [/^EtherNet-IP[\s\S]*$/, PluginType.EthernetIp],
       [/^ads[\s\S]*$/, PluginType.ADS],
       [/^a1e[\s\S]*$/, PluginType.A1E],
       [/^focas[\s\S]*$/, PluginType.Focas],
