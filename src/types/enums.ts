@@ -46,9 +46,9 @@ export enum TagType {
   BOOL,
   STRING,
   BYTE,
-  NEU_TYPE_WORD = 16,
-  NEU_TYPE_DWORD,
-  NEU_TYPE_LWORD,
+  WORD = 16,
+  DWORD,
+  LWORD,
 }
 
 export enum TagAttributeType {
