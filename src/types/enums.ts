@@ -108,6 +108,9 @@ export enum FileType {
 }
 
 export enum PluginType {
+  ADS = 'ads',
+  A1E = 'mitsubishi-melsec-q-a1e',
+  Focas = 'cnc-fanuc-focas',
   MQTT = 'MQTT',
   Modbus = 'Modbus',
   OPCUA = 'OPC UA',
