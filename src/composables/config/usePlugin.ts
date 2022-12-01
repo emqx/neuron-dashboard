@@ -13,10 +13,13 @@ export default () => {
   const isListLoading = ref(false)
 
   const { currentLang } = useLang()
-
+  // if add a new plugin, please add document suffix to `PluginType` on the 'enum.ts'.
   const pluginTypeMapping = computed(() => (pluginName: string) => {
     if (!pluginName) return ''
     const types = new Map([
+      [/^ads[\s\S]*$/, PluginType.ADS],
+      [/^a1e[\s\S]*$/, PluginType.A1E],
+      [/^focas[\s\S]*$/, PluginType.Focas],
       [/^mqtt[\s\S]*$/, PluginType.MQTT],
       [/^sparkplugb[\s\S]*$/, PluginType.SparkplugB],
       [/^modbus[\s\S]*$/, PluginType.Modbus],
