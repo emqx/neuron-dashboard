@@ -97,12 +97,14 @@ export const useTagPrecision = () => {
     const res: boolean = whiteList.includes(type)
     return res
   })
+
   const tagPrecisionValue = computed(() => (type: number, value: number) => {
     if (!isShowPrecisionField.value(type)) {
       return '-'
     }
-    return value
+    return !value ? '-' : value
   })
+
   return {
     isShowPrecisionField,
     tagPrecisionValue,
@@ -115,6 +117,7 @@ export const useTagDecimal = () => {
     }
     return value
   })
+
   return {
     tagDecimalValue,
   }
