@@ -1,7 +1,7 @@
 export default {
   streamProcessing: {
     zh: '数据流处理',
-    en: 'Data Stream Processing',
+    en: 'Data Streaming',
   },
   rule: {
     zh: '规则',

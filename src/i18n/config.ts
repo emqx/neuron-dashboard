@@ -5,7 +5,7 @@ export default {
   },
   northAppSetup: {
     zh: '北向应用管理',
-    en: 'North Application',
+    en: 'North Apps',
   },
   southDeviceManagement: {
     zh: '南向设备管理',
@@ -153,7 +153,7 @@ export default {
   },
   pluginManagement: {
     zh: '插件管理',
-    en: 'Plugin',
+    en: 'Plugin Modules',
   },
   libName: {
     zh: '驱动库名称',
