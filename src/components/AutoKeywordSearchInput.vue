@@ -6,8 +6,7 @@
     :clearable="clearable"
     size="medium"
     :placeholder="$t(`${placeholder}`)"
-    class="common-search_input"
-    popper-class="common-autocomplete-search_input"
+    class="common-autocomplete_input"
     :fetch-suggestions="getKeywordList"
     :trigger-on-focus="triggerOnFocus"
     @select="handleSelect"
@@ -71,9 +70,3 @@ const clear = () => {
   emits('clear', '')
 }
 </script>
-
-<style lang="scss" scoped>
-:deep(.el-input__inner) {
-  border-radius: 8px;
-}
-</style>
