@@ -8,10 +8,28 @@
   >
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
       <emqx-form-item prop="driver" :label="$t('config.southDevice')">
-        <emqx-select v-model="subscriptionForm.driver" @change="selectedNodeChanged" filterable>
+        <AutoKeywordSearchInput
+          v-if="currentNode === 'mqtt'"
+          v-model="subscriptionForm.driver"
+          :all-search-data="deviceList"
+          :getKeywordListFunc="filterSouthNodesByKeyword"
+          :trigger-on-focus="true"
+          :placeholder="$t('config.searchSouthDevicePlaceholder')"
+          class="auto-selector"
+          @select="autoSelectedNodeChanged"
+          @enter="autoSelectedNodeChanged"
+          @input="autoSelectedNodeChanged"
+          @clear="autoSelectedNodeChanged"
+        >
+          <template v-slot:content="{ item }">
+            <div class="item title">{{ item.name }}</div>
+          </template>
+        </AutoKeywordSearchInput>
+        <emqx-select v-else v-model="subscriptionForm.driver" @change="selectedNodeChanged" filterable>
           <emqx-option v-for="{ name } in deviceList" :key="name" :value="name" :label="name" />
         </emqx-select>
       </emqx-form-item>
+
       <emqx-form-item prop="group" label="Group">
         <emqx-select v-model="subscriptionForm.group" filterable>
           <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
@@ -33,6 +51,7 @@
 import { computed, defineProps, defineEmits, watch } from 'vue'
 import { useAddSubscription } from '@/composables/config/useSubscription'
 import { ElDialog } from 'element-plus'
+import AutoKeywordSearchInput from '@/components/AutoKeywordSearchInput.vue'
 
 const props = defineProps({
   modelValue: {
@@ -57,11 +76,13 @@ const {
   rules,
   subscriptionForm,
   deviceList,
+  filterSouthNodesByKeyword,
   groupList,
   isSubmitting,
 
   initForm,
   selectedNodeChanged,
+  autoSelectedNodeChanged,
   submitData,
 } = useAddSubscription(props)
 
@@ -77,3 +98,12 @@ watch(showDialog, (val) => {
   }
 })
 </script>
+
+<style lang="scss" scoped>
+:deep {
+  .auto-selector {
+    display: block;
+    width: 100%;
+  }
+}
+</style>

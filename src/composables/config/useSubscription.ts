@@ -1,5 +1,5 @@
 import { addSubscription, deleteSubscription, queryGroupList, querySubscription } from '@/api/config'
-import type { GroupData, SubscriptionData, SubscriptionDataForm } from '@/types/config'
+import type { GroupData, SubscriptionData, SubscriptionDataForm, RawDriverData } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref, computed, nextTick } from 'vue'
 import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
@@ -99,7 +99,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
 
   const createRawSubscriptionForm = (): SubscriptionDataForm => ({
     app: null,
-    driver: null,
+    driver: '',
     group: '',
   })
 
@@ -113,6 +113,29 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
   const { totalSouthDriverList: deviceList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
+  const filterSouthNodesByKeyword = (keyword: string, cb: any) => {
+    const list = deviceList.value
+    const res = keyword ? list.filter((node: RawDriverData) => node.name.includes(keyword)) : list
+    cb(res)
+  }
+
+  const autoSelectedNodeChanged = async (node: RawDriverData) => {
+    if (node?.name) {
+      // selected device
+      try {
+        const { name } = node
+        subscriptionForm.value.driver = name
+        subscriptionForm.value.group = ''
+        groupList.value = await queryGroupList(subscriptionForm.value.driver as string)
+      } catch (error) {
+        groupList.value = []
+      }
+    } else {
+      // enter node name or clear
+      subscriptionForm.value.group = ''
+      groupList.value = []
+    }
+  }
   const selectedNodeChanged = async () => {
     subscriptionForm.value.group = ''
     const data = await queryGroupList(subscriptionForm.value.driver as string)
@@ -145,11 +168,13 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     rules,
     subscriptionForm,
     deviceList,
+    filterSouthNodesByKeyword,
     groupList,
     isSubmitting,
 
     initForm,
     selectedNodeChanged,
+    autoSelectedNodeChanged,
     submitData,
   }
 }
