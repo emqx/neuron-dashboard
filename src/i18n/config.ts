@@ -412,4 +412,8 @@ export default {
     zh: '请输入节点名称',
     en: 'Please enter a node name',
   },
+  searchSouthDevicePlaceholder: {
+    zh: '请输入设备名称',
+    en: 'Please enter a device name',
+  },
 }

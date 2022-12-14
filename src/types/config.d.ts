@@ -26,7 +26,7 @@ export interface NodeForm {
 
 export interface SubscriptionDataForm {
   app: string | null
-  driver: string | null
+  driver: string
   group: string
 }
 
