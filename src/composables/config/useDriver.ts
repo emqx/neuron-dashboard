@@ -175,3 +175,10 @@ export const useNodeDebugLogLevel = () => {
     modifyNodeLogLevelToDebug,
   }
 }
+
+export const useDriverName = () => {
+  const isDataStreamProcessingNode = computed(() => (name: string) => name === 'data-stream-processing')
+  return {
+    isDataStreamProcessingNode,
+  }
+}

@@ -3,13 +3,23 @@
     <div class="node-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <AComWithDesc :content="$t('config.appConfig')">
+        <AComWithDesc v-if="!isDataStreamProcessingNode(data.name)" :content="$t('config.appConfig')">
           <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
         </AComWithDesc>
         <AComWithDesc :content="$t('config.dataStatistics')">
           <i class="iconfont iconstatus" @click.stop="isShowDataStatistics()"></i>
         </AComWithDesc>
-        <emqx-dropdown trigger="click" @command="handleClickOperator">
+
+        <AComWithDesc v-if="isDataStreamProcessingNode(data.name)" :content="$t('config.updateDebugLogLevel')">
+          <img
+            class="img-debug-log-large"
+            src="~@/assets/images/debug-log-icon.png"
+            alt="debug-log"
+            width="16"
+            @click.stop="modifyNodeLogLevel"
+          />
+        </AComWithDesc>
+        <emqx-dropdown v-else trigger="click" @command="handleClickOperator">
           <AComWithDesc :content="$t('common.more')">
             <span class="el-dropdown-link" @click.stop>
               <i class="el-icon-more" />
@@ -77,6 +87,7 @@ import {
   useNodeStartStopStatus,
   dataStatistics,
   useNodeDebugLogLevel,
+  useDriverName,
 } from '@/composables/config/useDriver'
 import { PluginKind } from '@/types/enums'
 import type { DriverItemInList } from '@/types/config'
@@ -140,9 +151,13 @@ const handleClickOperator = (command: string) => {
     modifyNodeLogLevel()
   }
 }
+
+const { isDataStreamProcessingNode } = useDriverName()
 </script>
 
 <style lang="scss" scoped>
+@import '~@/styles/mixins.scss';
+
 .setup-item-card {
   background-color: #f4f9fc;
 }
@@ -150,5 +165,8 @@ const handleClickOperator = (command: string) => {
   margin-right: 8px;
   position: relative;
   top: 2px;
+}
+.setup-item-handlers {
+  @include display-flex();
 }
 </style>
