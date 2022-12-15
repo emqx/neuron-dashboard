@@ -53,6 +53,7 @@
         </div>
       </div>
     </div>
+
     <emqx-table :data="groupList">
       <emqx-table-column :width="28">
         <template #header>
@@ -70,19 +71,22 @@
       <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
-          <AComWithDesc :content="$t('common.edit')">
-            <i class="el-icon-edit-outline" @click="operatorGroup(row, true)" />
-          </AComWithDesc>
-          <AComWithDesc :content="$t('config.tagList')">
-            <i class="iconfont iconalarm" @click="goTagPage(row)" />
-          </AComWithDesc>
-          <AComWithDesc :content="$t('common.delete')">
-            <i class="iconfont icondelete" @click="delGroup(row)" />
-          </AComWithDesc>
+          <div class="operator-wrap">
+            <AComWithDesc :content="$t('common.edit')">
+              <i class="el-icon-edit-outline" @click="operatorGroup(row, true)" />
+            </AComWithDesc>
+            <AComWithDesc :content="$t('config.tagList')">
+              <i class="el-icon-price-tag icon-tag" @click="goTagPage(row)" />
+            </AComWithDesc>
+            <AComWithDesc :content="$t('common.delete')">
+              <i class="iconfont icondelete" @click="delGroup(row)" />
+            </AComWithDesc>
+          </div>
         </template>
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
+
   <GroupDialog
     v-model="showGroupDialog"
     :current-node="node"
@@ -148,32 +152,41 @@ const goTagPage = ({ name }: GroupData) => {
 }
 </script>
 
-<style lang="scss">
-.group {
-  .driver-name {
-    margin-right: 22px;
-  }
-  .btn-group {
-    &:not(:last-child) {
-      margin-right: 32px;
-    }
-  }
-  .icon-edit {
-    margin-left: 8px;
+<style lang="scss" scoped>
+@import '~@/styles/mixins.scss';
+
+.driver-name {
+  margin-right: 22px;
+}
+.btn-group {
+  &:not(:last-child) {
+    margin-right: 32px;
   }
 }
+// .icon-edit {
+//   margin-left: 8px;
+// }
+
 .uploader-tag,
 .export-tags--btn {
   display: inline-block;
   margin-left: 10px;
 }
+
+.btn-download-temp-popper .el-dropdown-menu {
+  padding: 0;
+}
 .btn-download-temp {
   font-weight: normal;
   border: none;
 }
-.btn-download-temp-popper {
-  .el-dropdown-menu {
-    padding: 0;
+
+.operator-wrap {
+  @include display-flex();
+
+  .icon-tag {
+    font-size: 18px !important;
+    transform: rotate(45deg);
   }
 }
 </style>
