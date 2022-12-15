@@ -9,7 +9,7 @@ export default () => {
   const createRawForm = (): GroupForm => ({
     group: '',
     node: null,
-    interval: null,
+    interval: 100,
   })
 
   const { t } = useI18n()
