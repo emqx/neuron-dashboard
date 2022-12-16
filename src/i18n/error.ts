@@ -102,6 +102,10 @@ export default {
     zh: 'Node 不允许删除',
     en: 'Node not allow delete',
   },
+  2012: {
+    zh: 'Node 不允许订阅',
+    en: 'Node not allow subscribe',
+  },
   2101: {
     zh: 'Group 已经被订阅',
     en: 'Group already subscribed',
