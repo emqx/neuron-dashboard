@@ -114,7 +114,7 @@ export default () => {
         const tag = data.tags.find((readTagItem) => readTagItem.name === item.tagName)
 
         // in the tag list，if the 'read' API does not return a tag, set its 'value' to '-'
-        const ret = tag ? { ...tag, ...item } : { ...item, value: '-' }
+        const ret = tag ? { ...tag, ...item } : { name: item.tagName, ...item, value: '-' }
         if (!('value' in ret) || ret?.value === undefined) {
           ret.value = ''
         }
