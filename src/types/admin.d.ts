@@ -6,4 +6,6 @@ export interface License {
   max_nodes: number
   max_node_tags: number
   enabled_plugins: Array<string>
+  used_nodes: number
+  used_tags: number
 }
