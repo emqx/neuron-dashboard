@@ -20,8 +20,14 @@
         <emqx-descriptions-item :label="$t('admin.maxNodes')">
           {{ licenseData.max_nodes }}
         </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.usedNodes')">
+          {{ licenseData.used_nodes }}
+        </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.maxNodeTags')">
           {{ licenseData.max_node_tags }}
+        </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.usedTags')">
+          {{ licenseData.used_tags }}
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.enabledPlugins')">
           {{ pluginsStr }}

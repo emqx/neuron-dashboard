@@ -119,4 +119,12 @@ export default {
     zh: '系统状态',
     en: 'System Status',
   },
+  usedNodes: {
+    zh: '已使用节点数',
+    en: 'Used Nodes',
+  },
+  usedTags: {
+    zh: '已使用 Tag 数',
+    en: 'Used Tags',
+  },
 }
