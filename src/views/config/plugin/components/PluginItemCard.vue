@@ -25,10 +25,10 @@
         <label>{{ $t('config.pluginKind') }}</label>
         <span class="ellipsis">{{ data.kind ? PluginKind[data.kind] : '-' }}</span>
       </div>
-      <div class="info-row">
+      <!-- <div class="info-row">
         <label>{{ $t('config.libName') }}</label>
         <span class="ellipsis">{{ data.library }}</span>
-      </div>
+      </div> -->
       <div class="info-row">
         <label>{{ $t('config.desc') }}</label>
         <EllipsisTooltip :text="nodeDesc"></EllipsisTooltip>
