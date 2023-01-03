@@ -274,6 +274,22 @@ export default {
     zh: '插件报文乱序',
     en: 'Plugin packet out of order',
   },
+  4100: {
+    zh: '文件内容过长',
+    en: 'NEU_ERR_FILE_TOO_LONG',
+  },
+  4101: {
+    zh: '打开文件失败',
+    en: 'NEU_ERR_FILE_OPEN_FAILURE',
+  },
+  4102: {
+    zh: '读文件失败',
+    en: 'NEU_ERR_FILE_READ_FAILURE',
+  },
+  4103: {
+    zh: '写文件失败',
+    en: 'NEU_ERR_FILE_WRITE_FAILURE',
+  },
   10101: {
     zh: '硬件错误',
     en: 'S7comm hardware error',
