@@ -142,7 +142,7 @@ export const querySubscription = async (node: string): Promise<Array<Subscriptio
  * And specific information about these fields
  */
 export const queryPluginConfigInfo = (name: string): Promise<AxiosResponse<PluginInfo>> => {
-  return http.get('/schema', { params: { plugin_name: name } })
+  return http.get('/schema', { params: { schema_name: name } })
 }
 
 export const submitNodeConfig = (node: string, form: Record<string, any>) => {

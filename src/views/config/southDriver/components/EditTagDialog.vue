@@ -28,6 +28,7 @@ import type { PluginInfo, TagData } from '@/types/config'
 import { queryPluginConfigInfo, updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
+import { useGetPluginMsgIdMap } from '@/composables/config/usePlugin'
 import { DriverDirection } from '@/types/enums'
 
 const props = defineProps({
@@ -77,9 +78,15 @@ watch(showDialog, (val) => {
   }
 })
 
+const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
 const getPluginInfo = async () => {
   await initMap()
-  const { data } = await queryPluginConfigInfo(getNodeMsgById(props.node).plugin)
+  await initMsgIdMap()
+  const pluginName = getNodeMsgById(props.node).plugin
+  const nodePluginToLower = pluginName.toLocaleLowerCase()
+  const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
+
+  const { data } = await queryPluginConfigInfo(schemaName)
   pluginMsg.value = data
 }
 
