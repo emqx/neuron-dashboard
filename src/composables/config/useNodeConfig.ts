@@ -102,11 +102,12 @@ export default (props: Props) => {
 
   // get plugin default data
   const getPluginInfo = async () => {
-    const pluginName = getNodeMsgById(node.value).plugin
-    const pluginMsgName = pluginMsgIdMap[pluginName]?.name
+    const nodeInfo = getNodeMsgById(node.value)
+    const { plugin: pluginName } = nodeInfo
+    const nodePluginToLower = pluginName.toLocaleLowerCase()
 
-    const nodePluginName = pluginMsgName || pluginName
-    const { data } = await queryPluginConfigInfo(nodePluginName)
+    const schemName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
+    const { data } = await queryPluginConfigInfo(schemName)
     const pluginInfo: PluginInfo = data
     if (!pluginInfo) {
       defaultConfigData.value = {}

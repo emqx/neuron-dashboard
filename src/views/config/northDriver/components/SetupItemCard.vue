@@ -3,7 +3,7 @@
     <div class="node-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
-        <AComWithDesc v-if="!isDataStreamProcessingNode(data.name)" :content="$t('config.appConfig')">
+        <AComWithDesc :content="$t('config.appConfig')">
           <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
         </AComWithDesc>
         <AComWithDesc :content="$t('config.dataStatistics')">
