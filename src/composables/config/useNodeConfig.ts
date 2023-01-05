@@ -103,11 +103,10 @@ export default (props: Props) => {
   // get plugin default data
   const getPluginInfo = async () => {
     const pluginName = getNodeMsgById(node.value).plugin
-    const pluginMsgName = pluginMsgIdMap[pluginName]?.name
+    const schemaName = pluginMsgIdMap[pluginName]?.schema
 
-    const nodePluginName = pluginMsgName || pluginName
-    if (nodePluginName) {
-      const { data } = await queryPluginConfigInfo(nodePluginName)
+    if (schemaName) {
+      const { data } = await queryPluginConfigInfo(schemaName)
       const pluginInfo: PluginInfo = data
       if (!pluginInfo) {
         defaultConfigData.value = {}
