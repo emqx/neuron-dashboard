@@ -410,7 +410,7 @@ export default {
   },
   searchNodePlaceholder: {
     zh: '请输入节点名称',
-    en: 'Please enter a node name',
+    en: 'Enter a node name',
   },
   searchSouthDevicePlaceholder: {
     zh: '请输入设备名称',
