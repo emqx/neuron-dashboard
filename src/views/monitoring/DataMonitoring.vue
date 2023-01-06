@@ -25,7 +25,6 @@
             :all-search-data="nodeList"
             :getKeywordListFunc="filterSouthNodesByKeyword"
             :trigger-on-focus="true"
-            :placeholder="$t('config.searchNodePlaceholder')"
             @select="selectedNodeChanged"
             @enter="selectedNodeChanged"
             @input="selectedNodeChanged"
@@ -45,6 +44,7 @@
             filterable
             size="medium"
             class="filter-selector"
+            :placeholder="$t('common.pleaseSelect')"
             @change="selectedGroupChanged"
           >
             <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
