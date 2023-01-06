@@ -17,24 +17,25 @@ export default () => {
   const pluginTypeMapping = computed(() => (pluginName: string) => {
     if (!pluginName) return ''
     const types = new Map([
-      [/^EtherNet-IP[\s\S]*$/, PluginType.EthernetIp],
-      [/^ads[\s\S]*$/, PluginType.ADS],
-      [/^a1e[\s\S]*$/, PluginType.A1E],
-      [/^focas[\s\S]*$/, PluginType.Focas],
-      [/^mqtt[\s\S]*$/, PluginType.MQTT],
-      [/^sparkplugb[\s\S]*$/, PluginType.SparkplugB],
-      [/^modbus[\s\S]*$/, PluginType.Modbus],
-      [/^opcua[\s\S]*$/, PluginType.OPCUA],
-      [/^s7comm[\s\S]*$/, PluginType.SiemensS7ISOTCP],
-      [/^fins[\s\S]*$/, PluginType.OmronFinsOnTCP],
-      [/^qna3e[\s\S]*$/, PluginType.MitsubishiMelsecQE71],
-      [/^iec104[\s\S]*$/, PluginType.IEC608705104],
-      [/^knx[\s\S]*$/, PluginType.KNXnetIP],
+      [/^mitsubishi1e[\s\S]*$/, PluginType.A1E],
+      [/^beckhoffads[\s\S]*$/, PluginType.ADS],
       [/^bacnet[\s\S]*$/, PluginType.BACnetIP],
       [/^dlt645[\s\S]*$/, PluginType.DLT6452007],
+      [/^ethernet\/ip[\s\S]*$/, PluginType.EthernetIp],
+      [/[\s\S]fins[\s\S]*$/, PluginType.OmronFinsOnTCP],
+      [/[\s\S]focas[\s\S]*$/, PluginType.Focas],
+      [/^iec60870-5-104[\s\S]*$/, PluginType.IEC608705104],
+      [/^knx[\s\S]*$/, PluginType.KNXnetIP],
+      [/^mqtt[\s\S]*$/, PluginType.MQTT],
+      [/^modbus[\s\S]*$/, PluginType.Modbus],
       [/^nona11[\s\S]*$/, currentLang.value === 'zh' ? PluginType.zhNoA11 : PluginType.enNoA11],
+      [/^opcua[\s\S]*$/, PluginType.OPCUA],
+      [/^mitsubishi3e[\s\S]*$/, PluginType.MitsubishiMelsecQE71],
+      [/^siemenss7isotcp[\s\S]*$/, PluginType.SiemensS7ISOTCP],
+      [/^sparkplugb[\s\S]*$/, PluginType.SparkplugB],
     ])
-    const typeKV = [...types].filter(([key, value]) => key.test(`${pluginName}`))
+    const lowerName = pluginName.replace(/\s/g, '').toLocaleLowerCase()
+    const typeKV = [...types].filter(([key, value]) => key.test(`${lowerName}`))
     const res = typeKV.length ? typeKV[0][1].toLocaleLowerCase().replace(/\s+/g, '-') : ''
     return res
   })
