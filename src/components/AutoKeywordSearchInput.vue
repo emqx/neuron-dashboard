@@ -33,7 +33,7 @@ const props = defineProps({
   disabled: { type: Boolean, default: false },
   clearable: { type: Boolean, default: true },
   triggerOnFocus: { type: Boolean, default: false },
-  placeholder: { type: String, default: 'common.keywordSearchPlaceholder' },
+  placeholder: { type: String, default: 'common.pleaseSelect' },
 })
 
 const emits = defineEmits(['update:modelValue', 'clear', 'select', 'enter', 'input'])
