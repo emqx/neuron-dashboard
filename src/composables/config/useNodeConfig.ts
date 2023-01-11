@@ -145,8 +145,13 @@ export default (props: Props) => {
     if (!fieldData.info.condition) {
       return true
     }
-    const { field, value } = fieldData.info.condition
-    return configForm.value[field] === value
+    const { field, regex, value } = fieldData.info.condition
+    const fieldValue = configForm.value[field]
+    if (regex) {
+      const regexExpression = new RegExp(regex)
+      return regexExpression.test(fieldValue)
+    }
+    return value ? fieldValue === value : true
   }
 
   const cancel = () => {

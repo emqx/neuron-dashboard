@@ -73,6 +73,7 @@ interface ParamBaseInfo {
   condition?: {
     field: string
     value: boolean | number | string
+    regex: string
   }
 }
 
