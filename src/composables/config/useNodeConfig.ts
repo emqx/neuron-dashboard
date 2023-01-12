@@ -106,18 +106,16 @@ export default (props: Props) => {
     const pluginMsgName = pluginMsgIdMap[pluginName]?.name
 
     const nodePluginName = pluginMsgName || pluginName
-    if (nodePluginName) {
-      const { data } = await queryPluginConfigInfo(nodePluginName)
-      const pluginInfo: PluginInfo = data
-      if (!pluginInfo) {
-        defaultConfigData.value = {}
-        fieldList.value = []
-        return
-      }
-      const pluginInitInfo = initFormFromPluginInfo(pluginInfo)
-      defaultConfigData.value = cloneDeep(pluginInitInfo)
-      fieldList.value = createFieldListFormPluginInfo(pluginInfo)
+    const { data } = await queryPluginConfigInfo(nodePluginName)
+    const pluginInfo: PluginInfo = data
+    if (!pluginInfo) {
+      defaultConfigData.value = {}
+      fieldList.value = []
+      return
     }
+    const pluginInitInfo = initFormFromPluginInfo(pluginInfo)
+    defaultConfigData.value = cloneDeep(pluginInitInfo)
+    fieldList.value = createFieldListFormPluginInfo(pluginInfo)
   }
 
   // init data
