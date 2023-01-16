@@ -11,26 +11,20 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
-            <emqx-upload
-              class="uploader-tag"
-              :before-upload="importTagsByGroups"
-              :show-file-list="false"
-              action="placeholder"
-            >
-              <emqx-button size="small">
-                <i class="iconfont icon-import icondownload"></i>
-                <span>{{ $t('common.import') }}</span>
-              </emqx-button>
-            </emqx-upload>
-            <template #dropdown>
-              <emqx-dropdown-menu>
-                <emqx-button plain class="btn-download-temp" @click="downloadTemplate">
-                  <span>{{ $t('config.downloadTemplate') }}</span>
-                </emqx-button>
-              </emqx-dropdown-menu>
-            </template>
-          </emqx-dropdown>
+          <el-link href="javascript:void(0);" type="primary" @click="downloadTemplate">
+            {{ $t('config.downloadTemplate') }}
+          </el-link>
+          <emqx-upload
+            class="uploader-tag"
+            :before-upload="importTagsByGroups"
+            :show-file-list="false"
+            action="placeholder"
+          >
+            <emqx-button size="small">
+              <i class="iconfont icon-import icondownload"></i>
+              <span>{{ $t('common.import') }}</span>
+            </emqx-button>
+          </emqx-upload>
           <emqx-button
             size="small"
             class="export-tags--btn"
@@ -97,12 +91,13 @@
 </template>
 
 <script lang="ts" setup>
-import AComWithDesc from '@/components/AComWithDesc.vue'
-import useGroupList from '@/composables/config/useGroupList'
-import type { GroupData, GroupForm } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElLink } from 'element-plus'
+import AComWithDesc from '@/components/AComWithDesc.vue'
+import useGroupList from '@/composables/config/useGroupList'
+import type { GroupData, GroupForm } from '@/types/config'
 import GroupDialog from './components/GroupDialog.vue'
 
 const router = useRouter()
