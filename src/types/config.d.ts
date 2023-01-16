@@ -29,12 +29,16 @@ export interface SubscriptionDataForm {
   app: string | null
   driver: string
   group: string
+  topic?: string
 }
 
 export interface SubscriptionData extends SubscriptionDataForm {
   app: string
   driver: string
   group: string
+  params?: {
+    topic: string
+  }
 }
 
 export interface RawDriverData {
