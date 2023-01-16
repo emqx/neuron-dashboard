@@ -9,7 +9,7 @@
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
       <emqx-form-item prop="driver" :label="$t('config.southDevice')">
         <AutoKeywordSearchInput
-          v-if="currentNode === 'mqtt'"
+          v-if="isMQTTPugin(nodePlugin(currentNode))"
           v-model="subscriptionForm.driver"
           :all-search-data="deviceList"
           :getKeywordListFunc="filterSouthNodesByKeyword"
@@ -52,6 +52,7 @@ import { computed, defineProps, defineEmits, watch } from 'vue'
 import { useAddSubscription } from '@/composables/config/useSubscription'
 import { ElDialog } from 'element-plus'
 import AutoKeywordSearchInput from '@/components/AutoKeywordSearchInput.vue'
+import useNorthDriver from '@/composables/config/useNorthDriver'
 
 const props = defineProps({
   modelValue: {
@@ -85,6 +86,8 @@ const {
   autoSelectedNodeChanged,
   submitData,
 } = useAddSubscription(props)
+
+const { isMQTTPugin, nodePlugin } = useNorthDriver()
 
 const submit = async () => {
   await submitData()
