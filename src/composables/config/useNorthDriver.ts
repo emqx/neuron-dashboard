@@ -2,7 +2,7 @@ import { queryNorthDriverList } from '@/api/config'
 import type { DriverItemInList } from '@/types/config'
 import type { PluginKind } from '@/types/enums'
 import type { Ref } from 'vue'
-import { ref, onUnmounted } from 'vue'
+import { ref, onUnmounted, computed } from 'vue'
 import { useFillNodeListStatusData } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 import { debounce } from 'lodash'
@@ -16,6 +16,10 @@ export default (autoLoad = true, needRefreshStatus = false) => {
 
   let refreshStatusTimer: undefined | number
 
+  const nodePlugin = computed(
+    () => (nodeName: string) => northDriverList.value.find((item: DriverItemInList) => item.name === nodeName)?.plugin,
+  )
+  const isMQTTPugin = computed(() => (plugin: string | undefined) => plugin && plugin.toLocaleLowerCase() === 'mqtt')
   const getNorthDriverList = async () => {
     try {
       isListLoading.value = true
@@ -63,5 +67,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     isListLoading,
     getNorthDriverList,
     dbGetNorthDriverList,
+    isMQTTPugin,
+    nodePlugin,
   }
 }
