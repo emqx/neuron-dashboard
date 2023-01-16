@@ -31,9 +31,13 @@
       </emqx-form-item>
 
       <emqx-form-item prop="group" label="Group">
-        <emqx-select v-model="subscriptionForm.group" filterable>
+        <emqx-select v-model="subscriptionForm.group" filterable @change="changeGroup">
           <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
         </emqx-select>
+      </emqx-form-item>
+
+      <emqx-form-item v-if="isMQTTPugin(nodePlugin(currentNode))" :label="$t('config.topic')">
+        <emqx-input v-model="subscriptionForm.topic" />
       </emqx-form-item>
     </emqx-form>
     <template #footer>
@@ -49,8 +53,8 @@
 
 <script lang="ts" setup>
 import { computed, defineProps, defineEmits, watch } from 'vue'
-import { useAddSubscription } from '@/composables/config/useSubscription'
 import { ElDialog } from 'element-plus'
+import { useAddSubscription } from '@/composables/config/useSubscription'
 import AutoKeywordSearchInput from '@/components/AutoKeywordSearchInput.vue'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 
@@ -83,6 +87,7 @@ const {
 
   initForm,
   selectedNodeChanged,
+  changeGroup,
   autoSelectedNodeChanged,
   submitData,
 } = useAddSubscription(props)

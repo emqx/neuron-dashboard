@@ -101,6 +101,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     app: null,
     driver: '',
     group: '',
+    topic: '', // /neuron/{node_name}/{group_name}
   })
 
   const formCom = ref()
@@ -126,6 +127,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
         const { name } = node
         subscriptionForm.value.driver = name
         subscriptionForm.value.group = ''
+        subscriptionForm.value.topic = ''
         groupList.value = await queryGroupList(subscriptionForm.value.driver as string)
       } catch (error) {
         groupList.value = []
@@ -133,6 +135,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     } else {
       // enter node name or clear
       subscriptionForm.value.group = ''
+      subscriptionForm.value.topic = ''
       groupList.value = []
     }
   }
@@ -141,7 +144,11 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     const data = await queryGroupList(subscriptionForm.value.driver as string)
     groupList.value = data
   }
-
+  const changeGroup = (val: string) => {
+    const nodeName = props.currentNode
+    const groupName = val
+    subscriptionForm.value.topic = val && nodeName ? `/neuron/${nodeName}/${groupName}` : ''
+  }
   const initForm = async () => {
     subscriptionForm.value = createRawSubscriptionForm()
     await nextTick()
@@ -152,8 +159,17 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
-      const data = { ...subscriptionForm.value, app: props.currentNode }
-      await addSubscription(data as SubscriptionData)
+      const { topic, ...baseSubscriptionForm } = subscriptionForm.value
+      let data: SubscriptionData = { ...baseSubscriptionForm, app: props.currentNode }
+      if (topic) {
+        data = {
+          ...data,
+          params: {
+            topic,
+          },
+        }
+      }
+      await addSubscription(data)
       EmqxMessage.success(t('common.submitSuccess'))
       return Promise.resolve()
     } catch (error) {
@@ -175,6 +191,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     initForm,
     selectedNodeChanged,
     autoSelectedNodeChanged,
+    changeGroup,
     submitData,
   }
 }
