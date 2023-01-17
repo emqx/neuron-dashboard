@@ -39,6 +39,9 @@
       <emqx-table-column :label="$t('config.deviceName')" prop="name">
         <template #default="{ row }">{{ row.driver }}</template>
       </emqx-table-column>
+      <emqx-table-column :label="$t('config.topic')">
+        <template #default="{ row }">{{ row?.params?.topic }}</template>
+      </emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <AComWithDesc :content="$t('config.unsubscribe')">

@@ -101,7 +101,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     app: null,
     driver: '',
     group: '',
-    topic: '', // /neuron/{node_name}/{group_name}
+    topic: '',
   })
 
   const formCom = ref()
