@@ -8,4 +8,5 @@ export interface License {
   enabled_plugins: Array<string>
   used_nodes: number
   used_tags: number
+  hardware_token: string
 }

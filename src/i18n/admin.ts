@@ -127,4 +127,8 @@ export default {
     zh: '已使用 Tag 数',
     en: 'Used Tags',
   },
+  hardwareToken: {
+    zh: '硬件标识',
+    en: 'Hardware Token',
+  },
 }
