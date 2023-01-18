@@ -95,7 +95,7 @@
       </emqx-table>
     </div>
     <emqx-pagination
-      hide-on-single-page
+      v-if="pageController.total > 100"
       layout="total, sizes, prev, pager, next, jumper"
       v-model:current-page="pageController.num"
       :page-sizes="[100, 200, 300, 400, 500]"
