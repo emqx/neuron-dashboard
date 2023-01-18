@@ -20,6 +20,12 @@
         <emqx-descriptions-item :label="$t('admin.hardwareToken')">
           {{ licenseData.hardware_token || '-' }}
         </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.object')">
+          {{ licenseData.object }}
+        </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.emailAddress')">
+          {{ licenseData.email_address }}
+        </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.maxNodes')">
           {{ licenseData.max_nodes }}
         </emqx-descriptions-item>

@@ -131,4 +131,12 @@ export default {
     zh: '硬件标识',
     en: 'Hardware Token',
   },
+  object: {
+    zh: '签发对象',
+    en: 'object',
+  },
+  emailAddress: {
+    zh: '签发邮箱',
+    en: 'Email Address',
+  },
 }

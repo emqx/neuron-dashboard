@@ -9,4 +9,6 @@ export interface License {
   used_nodes: number
   used_tags: number
   hardware_token: string
+  object: string
+  email_address: string
 }
