@@ -17,6 +17,9 @@
         <emqx-descriptions-item :label="$t('admin.expireDate')">
           {{ licenseData.valid_until }}
         </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.hardwareToken')">
+          {{ licenseData.hardware_token || '-' }}
+        </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.maxNodes')">
           {{ licenseData.max_nodes }}
         </emqx-descriptions-item>
