@@ -133,7 +133,7 @@ export default {
   },
   object: {
     zh: '签发对象',
-    en: 'object',
+    en: 'Object',
   },
   emailAddress: {
     zh: '签发邮箱',
