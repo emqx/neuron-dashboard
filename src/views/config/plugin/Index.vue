@@ -3,7 +3,7 @@
     <ViewHeaderBar>
       <template v-slot:left>
         <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addPlugin">
-          {{ $t('common.add') }} Plugin
+          {{ $t('config.addPlugin') }}
         </emqx-button>
       </template>
       <template v-slot:right>

@@ -1,7 +1,7 @@
 <template>
   <emqx-card v-emqx-loading="isDataLoading">
     <div class="card-hd-with-btn">
-      <h3 class="card-title">License</h3>
+      <h3 class="card-title">{{ $t('admin.license') }}</h3>
     </div>
     <div class="license">
       <emqx-descriptions :column="1" v-if="hasLicense">

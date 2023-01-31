@@ -178,7 +178,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/license',
     name: 'LicensePage',
-    meta: { title: 'License' },
+    meta: { title: 'admin.license' },
     component: Home,
     children: [
       {
