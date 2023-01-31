@@ -107,67 +107,67 @@ export default {
     en: 'Node not allow subscribe',
   },
   2101: {
-    zh: 'Group 已经被订阅',
+    zh: '组已经被订阅',
     en: 'Group already subscribed',
   },
   2102: {
-    zh: 'Group 未被订阅',
+    zh: '组未被订阅',
     en: 'Group not subscribe',
   },
   2103: {
-    zh: 'Group 不允许',
+    zh: '组不允许',
     en: 'Group not allow',
   },
   2104: {
-    zh: 'Group 已存在',
+    zh: '组已存在',
     en: 'Group exist',
   },
   2105: {
-    zh: 'Group 参数无效',
+    zh: '组参数无效',
     en: 'Group parameter invalid',
   },
   2106: {
-    zh: 'Group 不存在',
+    zh: '组不存在',
     en: 'Group not exist',
   },
   2107: {
-    zh: 'Group 名称过长',
+    zh: '组名称过长',
     en: 'Group name too long',
   },
   2201: {
-    zh: 'Tag 不存在',
+    zh: '点位不存在',
     en: 'Tag not exist',
   },
   2202: {
-    zh: 'Tag 名称冲突',
+    zh: '点位名称冲突',
     en: 'Tag name conflict',
   },
   2203: {
-    zh: 'Tag 属性不支持',
+    zh: '点位属性不支持',
     en: 'Tag attribute not support',
   },
   2204: {
-    zh: 'Tag 类型不支持',
+    zh: '点位类型不支持',
     en: 'Tag type not support',
   },
   2205: {
-    zh: 'Tag 地址格式无效',
+    zh: '点位地址格式无效',
     en: 'Tag address format invalid',
   },
   2206: {
-    zh: 'Tag 名称过长',
+    zh: '点位名称过长',
     en: 'Tag name too long',
   },
   2207: {
-    zh: 'Tag 地址过长',
+    zh: '点位地址过长',
     en: 'Tag address too long',
   },
   2208: {
-    zh: 'Tag 描述过长',
+    zh: '点位描述过长',
     en: 'Tag description too long',
   },
   2209: {
-    zh: 'Tag 精度无效',
+    zh: '点位精度无效',
     en: 'Tag precision invalid',
   },
   2301: {

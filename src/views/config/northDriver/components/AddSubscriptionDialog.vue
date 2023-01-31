@@ -30,7 +30,7 @@
         </emqx-select>
       </emqx-form-item>
 
-      <emqx-form-item prop="group" label="Group">
+      <emqx-form-item prop="group" :label="$t('config.group')">
         <emqx-select v-model="subscriptionForm.group" filterable>
           <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
         </emqx-select>

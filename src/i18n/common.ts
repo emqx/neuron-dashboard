@@ -359,4 +359,8 @@ export default {
     zh: '更多',
     en: 'more',
   },
+  No: {
+    zh: '序号',
+    en: 'No.',
+  },
 }
