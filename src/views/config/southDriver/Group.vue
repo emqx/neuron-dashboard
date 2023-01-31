@@ -57,12 +57,12 @@
           <emqx-checkbox v-model="row.checked" />
         </template>
       </emqx-table-column>
-      <emqx-table-column label="No" :width="60">
+      <emqx-table-column :label="$t('common.No')" :width="60">
         <template #default="{ index }">{{ index + 1 }}</template>
       </emqx-table-column>
       <emqx-table-column :label="$t('config.groupName')" prop="name"></emqx-table-column>
-      <emqx-table-column label="Tag Count" prop="tag_count"></emqx-table-column>
-      <emqx-table-column label="Interval" prop="interval"></emqx-table-column>
+      <emqx-table-column :label="$t('config.tagCounts')" prop="tag_count"></emqx-table-column>
+      <emqx-table-column :label="$t('config.interval')" prop="interval"></emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <div class="operator-wrap">
