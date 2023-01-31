@@ -3,7 +3,7 @@
     v-model="showDialog"
     :width="600"
     custom-class="common-dialog"
-    :title="`${$t('common.add')} Plugin`"
+    :title="`${$t('config.addPlugin')}`"
     :z-index="2000"
   >
     <emqx-form ref="pluginFormCom" :model="pluginForm" :rules="pluginFormRules" @submit.prevent>

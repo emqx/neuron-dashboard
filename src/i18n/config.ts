@@ -40,31 +40,31 @@ export default {
     en: 'South',
   },
   groupList: {
-    zh: 'Group 列表',
+    zh: '组列表',
     en: 'Group List',
   },
   tagList: {
-    zh: 'Tag 列表',
+    zh: '点位列表',
     en: 'Tag List',
   },
   addTags: {
-    zh: '添加标签',
+    zh: '添加点位',
     en: 'Add Tags',
   },
   editTag: {
-    zh: '编辑标签',
+    zh: '编辑点位',
     en: 'Edit Tag',
   },
   tagNum: {
-    zh: 'Tag 数目',
+    zh: '点位数目',
     en: 'Number of tags',
   },
   tagName: {
-    zh: 'Tag 名称',
+    zh: '点位名称',
     en: 'Tag Name',
   },
   tag: {
-    zh: '标签',
+    zh: '点位',
     en: 'Tag',
   },
   address: {
@@ -80,19 +80,19 @@ export default {
     en: 'Precision',
   },
   groupName: {
-    zh: 'Group 名称',
+    zh: '组名称',
     en: 'Group Name',
   },
   createGroup: {
-    zh: '创建 Group',
+    zh: '创建组',
     en: 'Create Group',
   },
   editGroup: {
-    zh: '编辑 Group',
+    zh: '编辑组',
     en: 'Edit Group',
   },
   viewGroup: {
-    zh: '查看 Group',
+    zh: '查看组',
     en: 'View Group',
   },
   deviceName: {
@@ -151,6 +151,14 @@ export default {
     zh: '南向设备',
     en: 'South device',
   },
+  plugin: {
+    zh: '插件',
+    en: 'Plugin',
+  },
+  addPlugin: {
+    zh: '添加插件',
+    en: 'Add Plugin',
+  },
   pluginManagement: {
     zh: '插件管理',
     en: 'Plugin Modules',
@@ -188,7 +196,7 @@ export default {
     en: 'Device configuration ',
   },
   unsubscribeGroupConfirm: {
-    zh: '是否确定取消订阅该 group',
+    zh: '是否确定取消订阅该组',
     en: 'Are you sure you want to unsubscribe this group',
   },
   clearSubscriptionConfirm: {
@@ -196,7 +204,7 @@ export default {
     en: 'Are you sure to clear the subscription?',
   },
   unsubscribeInBulkConfirm: {
-    zh: '是否确认取消订阅所选 group',
+    zh: '是否确认取消订阅所选组',
     en: 'Are you sure to unsubscribe from selected groups?',
   },
   noConfigInfoDesc: {
@@ -265,7 +273,7 @@ export default {
   },
   /* FOR FORM */
   groupNameRequired: {
-    zh: '请填写 Group 名称',
+    zh: '请填写组名称',
     en: 'Please enter the group name',
   },
   nodeRequired: {
@@ -285,27 +293,27 @@ export default {
     en: 'Please fill in a valid number',
   },
   tagNumExceedsTheMaximumError: {
-    zh: '一次最多能添加 100 条 Tag 数据，请重新输入 Tag 数目。',
+    zh: '一次最多能添加 100 条点位数据，请重新输入点位数目。',
     en: 'A maximum of 100 tags can be added at a time. Please re-enter the number of tags.',
   },
   tagNameRequired: {
-    zh: '请填写 Tag 名称',
+    zh: '请填写点位名称',
     en: 'Please enter the tag name',
   },
   tagAddressRequired: {
-    zh: '请填写 Tag 地址',
+    zh: '请填写点位地址',
     en: 'Please enter the tag address',
   },
   tagAddressValid: {
-    zh: '请填写有效的 Tag 地址',
+    zh: '请填写有效的点位地址',
     en: 'Please enter the valid tag address',
   },
   tagAttributeRequired: {
-    zh: '请选择 Tag 属性',
+    zh: '请选择点位属性',
     en: 'Please select tag attribute',
   },
   tagTypeRequired: {
-    zh: '请选择 Tag 类型',
+    zh: '请选择点位类型',
     en: 'Please select tag type',
   },
   nameRequired: {
@@ -313,12 +321,16 @@ export default {
     en: 'Please enter the name',
   },
   pluginRequired: {
-    zh: '请选择 Plugin',
+    zh: '请选择插件',
     en: 'Please select the plugin',
   },
   southDeviceRequired: {
     zh: '请选择南向设备',
     en: 'Please select south device',
+  },
+  group: {
+    zh: '组',
+    en: 'Group',
   },
   groupRequired: {
     zh: '请选择 group',
@@ -365,7 +377,7 @@ export default {
     en: 'Download template',
   },
   tagTypeError: {
-    zh: '当前设备 plugin 能添加的 tag 的 type 为 {typesStr}, 请调整表格数据后再尝试提交',
+    zh: '当前设备插件能添加的点位的类型为 {typesStr}, 请调整表格数据后再尝试提交',
     en: 'The type of the tag that can be added by the current device plugin is {typesStr}, please try to upload after adjusting the table data',
   },
   partialUploadFailed: {
@@ -377,7 +389,7 @@ export default {
     en: 'Clear uploaded file',
   },
   tagPartAddedFailedPopup: {
-    zh: '部分 tag 添加失败，错误原因：{0}。 已过滤掉添加成功的 tag，请检查后再次尝试添加',
+    zh: '部分点位添加失败，错误原因：{0}。 已过滤掉添加成功的 tag，请检查后再次尝试添加',
     en: 'Some tags failed to be added, the reason for the error: {0}, the successfully added tags have been filtered out, please check and try to add again',
   },
   desc: {
@@ -419,5 +431,13 @@ export default {
   topic: {
     zh: '主题',
     en: 'Topic',
+  },
+  tagCounts: {
+    zh: '点位数量',
+    en: 'Tag Counts',
+  },
+  interval: {
+    zh: '间隔',
+    en: 'Interval',
   },
 }

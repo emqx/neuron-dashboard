@@ -54,7 +54,7 @@
         <span>{{ data.rtt }} {{ $t('common.ms') }}</span>
       </div>
       <div class="node-item-info-row">
-        <label>Plugin: </label>
+        <label>{{ $t('config.plugin') }}: </label>
         <span>{{ data.plugin }}</span>
       </div>
     </div>

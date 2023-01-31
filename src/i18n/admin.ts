@@ -19,12 +19,16 @@ export default {
     zh: '请先选择时间范围',
     en: 'Please select a time range first',
   },
+  license: {
+    zh: '软件授权',
+    en: 'License',
+  },
   licenseType: {
-    zh: 'License 类型',
+    zh: '软件授权类型',
     en: 'License type',
   },
   licenseStatus: {
-    zh: 'License 状态',
+    zh: '软件授权状态',
     en: 'License status',
   },
   effectiveDate: {
@@ -40,15 +44,15 @@ export default {
     en: 'Limit on the maximum number of nodes',
   },
   maxNodeTags: {
-    zh: 'Tag 数目限制',
+    zh: '点位数目限制',
     en: 'Limit on the maximum number of tags',
   },
   enabledPlugins: {
-    zh: '可用的 Plugin',
+    zh: '可用的插件',
     en: 'Enabled plugins',
   },
   licensePlaceholder: {
-    zh: '当前暂无 License，请以下列途径获取 License',
+    zh: '当前暂无软件授权，请以下列途径获取软件授权',
     en: 'There is currently no license, please get the license in the following ways',
   },
   howToGetTheCertificate: {
@@ -56,7 +60,7 @@ export default {
     en: 'How to get the certificate',
   },
   getFreeLicense: {
-    zh: '免费{0} License',
+    zh: '免费{0} 软件授权',
     en: '{0} for a license for free.',
   },
   apply: {
@@ -64,7 +68,7 @@ export default {
     en: 'Apply',
   },
   buyLicense: {
-    zh: '{0}，购买商业 License',
+    zh: '{0}，购买商业软件授权',
     en: '{0} to purchase a commercial license.',
   },
   contactUs: {
@@ -80,11 +84,11 @@ export default {
     en: `Please upload '.lic' type file`,
   },
   licenseExpired: {
-    zh: 'License 已过期，请尽快更新 License',
+    zh: '软件授权已过期，请尽快更新软件授权',
     en: 'The previous license has expired, please update the license as soon as possible',
   },
   licenseExpiredSoon: {
-    zh: 'License 即将过期，请即时更新 License。',
+    zh: '软件授权即将过期，请即时更新软件授权',
     en: 'The license is about to expire, please update the license immediately',
   },
   notYetValid: {
@@ -124,7 +128,7 @@ export default {
     en: 'Used Nodes',
   },
   usedTags: {
-    zh: '已使用 Tag 数',
+    zh: '已使用点位数',
     en: 'Used Tags',
   },
   hardwareToken: {
