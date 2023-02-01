@@ -219,6 +219,14 @@ export default {
     zh: '确认',
     en: 'Confirm',
   },
+  confirmButtonText: {
+    zh: '确认',
+    en: 'OK',
+  },
+  cancelButtonText: {
+    zh: '取消',
+    en: 'Cancel',
+  },
   back: {
     zh: '返回',
     en: 'Back',

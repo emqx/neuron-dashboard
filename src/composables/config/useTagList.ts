@@ -105,13 +105,19 @@ export default () => {
   }
 
   const delTag = async (item: TagDataInTable) => {
-    await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'))
+    await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'), {
+      confirmButtonText: t('common.confirmButtonText'),
+      cancelButtonText: t('common.cancelButtonText'),
+    })
     const delList = OmitArrayFields([item], ['checked'])
     deleteTagList(delList)
   }
 
   const batchDeleteTag = async () => {
-    await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'))
+    await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'), {
+      confirmButtonText: t('common.confirmButtonText'),
+      cancelButtonText: t('common.cancelButtonText'),
+    })
     deleteTagList(tagCheckedList.value)
   }
 
@@ -121,7 +127,11 @@ export default () => {
   }
 
   const clearTag = async () => {
-    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmClear') })
+    await EmqxMessageBox({
+      title: t('common.operateConfirm'),
+      message: t('common.confirmClear'),
+      confirmButtonText: t('common.confirmButtonText'),
+    })
     deleteTagList(totalData.value)
   }
 
