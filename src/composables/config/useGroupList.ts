@@ -53,7 +53,11 @@ export default () => {
   }
 
   const delGroup = async ({ name }: GroupDataInTable) => {
-    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete') })
+    await EmqxMessageBox({
+      title: t('common.operateConfirm'),
+      message: t('common.confirmDelete'),
+      confirmButtonText: t('common.confirmButtonText'),
+    })
     await deleteGroup(node.value, name)
     EmqxMessage.success(t('common.operateSuccessfully'))
     getGroupList()
@@ -66,12 +70,20 @@ export default () => {
   }
 
   const batchDeleteGroup = async () => {
-    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete') })
+    await EmqxMessageBox({
+      title: t('common.operateConfirm'),
+      message: t('common.confirmDelete'),
+      confirmButtonText: t('common.confirmButtonText'),
+    })
     delGroupList(groupCheckedList.value)
   }
 
   const clearGroup = async () => {
-    await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmClear') })
+    await EmqxMessageBox({
+      title: t('common.operateConfirm'),
+      message: t('common.confirmClear'),
+      confirmButtonText: t('common.confirmButtonText'),
+    })
     delGroupList(groupList.value)
   }
 

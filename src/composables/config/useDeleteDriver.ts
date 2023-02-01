@@ -7,7 +7,12 @@ export default () => {
   const { t } = useI18n()
   const delDriver = async ({ name }: DriverItemInList) => {
     try {
-      await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete'), type: 'warning' })
+      await EmqxMessageBox({
+        title: t('common.operateConfirm'),
+        message: t('common.confirmDelete'),
+        type: 'warning',
+        confirmButtonText: t('common.confirmButtonText'),
+      })
       await deleteDriver(name)
       EmqxMessage.success(t('common.operateSuccessfully'))
       return Promise.resolve()
