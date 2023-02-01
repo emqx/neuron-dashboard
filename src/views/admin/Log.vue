@@ -23,7 +23,7 @@
       <emqx-button type="primary" @click="getLogs">{{ $t('common.submit') }}</emqx-button>
     </div>
     <div class="table-container">
-      <emqx-table :data="tableData">
+      <emqx-table :data="tableData" :empty-text="$t('common.emptyData')">
         <emqx-table-column :label="$t('admin.log')">
           <template #default="{ row }">
             {{ row }}
