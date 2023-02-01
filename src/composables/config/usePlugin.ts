@@ -131,7 +131,12 @@ export const useDeletePlugin = () => {
   const { t } = useI18n()
   const delPlugin = async ({ name }: CreatedPlugin) => {
     try {
-      await EmqxMessageBox({ title: t('common.operateConfirm'), message: t('common.confirmDelete'), type: 'warning' })
+      await EmqxMessageBox({
+        title: t('common.operateConfirm'),
+        message: t('common.confirmDelete'),
+        type: 'warning',
+        confirmButtonText: t('common.confirmButtonText'),
+      })
       await deletePlugin(name)
       EmqxMessage.success(t('common.operateSuccessfully'))
       return Promise.resolve()

@@ -51,7 +51,10 @@ export const useSubscriptionList = () => {
 
   const unsubscribe = async (confirmText: string, data: SubscriptionData | Array<SubscriptionData>) => {
     try {
-      await EmqxMessageBox.confirm(confirmText, t('common.operateConfirm'))
+      await EmqxMessageBox.confirm(confirmText, t('common.operateConfirm'), {
+        confirmButtonText: t('common.confirmButtonText'),
+        cancelButtonText: t('common.cancelButtonText'),
+      })
       if (Array.isArray(data)) {
         const requestList = data.map((groupItem: SubscriptionData) => deleteSubscription(groupItem))
         await Promise.all(requestList)
