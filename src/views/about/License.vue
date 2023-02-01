@@ -5,28 +5,28 @@
     </div>
     <div class="license">
       <emqx-descriptions :column="1" v-if="hasLicense">
-        <emqx-descriptions-item :label="$t('admin.licenseType')">
+        <!-- <emqx-descriptions-item :label="$t('admin.licenseType')">
           {{ licenseData.license_type }}
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.licenseStatus')">
           {{ licenseStatus }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.effectiveDate')">
-          {{ licenseData.valid_since }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.expireDate')">
-          {{ licenseData.valid_until }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.hardwareToken')">
-          {{ licenseData.hardware_token || '-' }}
-        </emqx-descriptions-item>
+        </emqx-descriptions-item> -->
+        <!-- <emqx-descriptions-item :label="$t('admin.object')"> -->
         <emqx-descriptions-item :label="$t('admin.object')">
           {{ licenseData.object }}
         </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.emailAddress')">
-          {{ licenseData.email_address }}
+        <emqx-descriptions-item :label="$t('admin.nodeUsage')">
+          <el-progress :stroke-width="14" :percentage="licenseData.nodesUsage" status="success" class="progress-bar">
+            <span class="progress-text">{{ licenseData.used_nodes }} / {{ licenseData.max_nodes }}</span>
+          </el-progress>
         </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.maxNodes')">
+        <emqx-descriptions-item :label="$t('admin.tagUsage')">
+          <el-progress :stroke-width="14" :percentage="licenseData.tagsUsage" status="success" class="progress-bar">
+            <span class="progress-text">{{ licenseData.used_tags }} / {{ licenseData.max_node_tags }}</span>
+          </el-progress>
+        </emqx-descriptions-item>
+
+        <!-- <emqx-descriptions-item :label="$t('admin.maxNodes')">
           {{ licenseData.max_nodes }}
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.usedNodes')">
@@ -37,9 +37,21 @@
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.usedTags')">
           {{ licenseData.used_tags }}
+        </emqx-descriptions-item> -->
+        <emqx-descriptions-item :label="$t('admin.emailAddress')">
+          {{ licenseData.email_address }}
+        </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.effectiveDate')">
+          {{ licenseData.valid_since }}
+        </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.expireDate')">
+          {{ licenseData.valid_until }}
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.enabledPlugins')">
           {{ pluginsStr }}
+        </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.hardwareToken')">
+          {{ licenseData.hardware_token || '-' }}
         </emqx-descriptions-item>
       </emqx-descriptions>
       <div class="msg" :class="{ 'align-center': !hasLicense }">
@@ -73,17 +85,25 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
+import { ElProgress } from 'element-plus'
 import type { License } from '@/types/admin'
 import { queryLicense, uploadLicense } from '@/api/admin'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
+import useLang from '@/composables/useLang'
 
 const { t, locale } = useI18n()
 const isDataLoading = ref(false)
 const licenseData: Ref<License | undefined> = ref(undefined)
 
+const { currentLang } = useLang()
+
 const hasLicense = computed(() => !!licenseData.value)
+
+const labelWidth = computed(() => {
+  return currentLang.value === 'zh' ? '90px' : '120px'
+})
 
 const pluginsStr = computed(() => {
   const { enabled_plugins } = licenseData.value || {}
@@ -101,7 +121,14 @@ const getLicense = async () => {
   try {
     const { data } = await queryLicense()
     const { error, ...license } = data
-    licenseData.value = license
+    const { max_nodes, used_nodes, used_tags, max_node_tags } = license
+    const nodesUsage = parseFloat((Number(used_nodes) / Number(max_nodes)).toFixed(2)) * 100
+    const tagsUsage = parseFloat((Number(used_tags) / Number(max_node_tags)).toFixed(2)) * 100
+    licenseData.value = {
+      ...license,
+      nodesUsage,
+      tagsUsage,
+    }
   } catch (error) {
     console.error(error)
   }
@@ -170,5 +197,28 @@ getLicense()
       color: #459bf7;
     }
   }
+}
+
+.progress-bar {
+  display: inline-flex;
+  align-items: center;
+  top: 2px;
+}
+:deep {
+  .el-descriptions__label {
+    display: inline-block;
+    width: v-bind(labelWidth);
+  }
+  .el-progress-bar {
+    width: 220px;
+  }
+  .el-progress__text {
+    display: inline-block;
+    margin-top: -2px;
+  }
+}
+.progress-text {
+  color: #1d1d1d;
+  font-size: 14px;
 }
 </style>

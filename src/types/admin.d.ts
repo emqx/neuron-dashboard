@@ -11,4 +11,6 @@ export interface License {
   hardware_token: string
   object: string
   email_address: string
+  nodesUsage?: number
+  tagsUsage?: number
 }

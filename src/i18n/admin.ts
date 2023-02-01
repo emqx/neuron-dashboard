@@ -32,12 +32,12 @@ export default {
     en: 'License status',
   },
   effectiveDate: {
-    zh: '生效日期',
-    en: 'Effective date',
+    zh: '签发时间',
+    en: 'Issued At',
   },
   expireDate: {
-    zh: '失效日期',
-    en: 'Expire date',
+    zh: '过期时间',
+    en: 'Expire At',
   },
   maxNodes: {
     zh: '节点数限制',
@@ -48,7 +48,7 @@ export default {
     en: 'Limit on the maximum number of tags',
   },
   enabledPlugins: {
-    zh: '可用的插件',
+    zh: '可用插件',
     en: 'Enabled plugins',
   },
   licensePlaceholder: {
@@ -137,10 +137,18 @@ export default {
   },
   object: {
     zh: '签发对象',
-    en: 'Object',
+    en: 'Customer',
   },
   emailAddress: {
     zh: '签发邮箱',
-    en: 'Email Address',
+    en: 'Issuance of email',
+  },
+  nodeUsage: {
+    zh: '节点使用情况',
+    en: 'Nodes usage',
+  },
+  tagUsage: {
+    zh: '点位使用情况',
+    en: 'Tags usage',
   },
 }
