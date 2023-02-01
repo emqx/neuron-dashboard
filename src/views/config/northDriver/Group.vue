@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <emqx-table :data="subscriptionList">
+    <emqx-table :data="subscriptionList" :empty-text="$t('common.emptyData')">
       <emqx-table-column :width="28">
         <template #header>
           <emqx-checkbox v-model="allChecked" />

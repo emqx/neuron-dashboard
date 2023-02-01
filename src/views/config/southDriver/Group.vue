@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <emqx-table :data="groupList">
+    <emqx-table :data="groupList" :empty-text="$t('common.emptyData')">
       <emqx-table-column :width="28">
         <template #header>
           <emqx-checkbox v-model="allChecked" />

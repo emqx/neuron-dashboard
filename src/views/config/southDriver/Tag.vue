@@ -31,7 +31,7 @@
     </div>
 
     <div class="table-container">
-      <emqx-table :data="tagList">
+      <emqx-table :data="tagList" :empty-text="$t('common.emptyData')">
         <emqx-table-column :width="28">
           <template #header>
             <emqx-checkbox v-model="allChecked" />
