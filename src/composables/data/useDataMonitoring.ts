@@ -163,6 +163,7 @@ export default () => {
       groupList.value = []
       totalData.value = []
       selectedGroup = undefined
+      initPageController()
     }
   }
 
