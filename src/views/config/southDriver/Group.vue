@@ -11,20 +11,27 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <el-link href="javascript:void(0);" type="primary" @click="downloadTemplate">
-            {{ $t('config.downloadTemplate') }}
-          </el-link>
-          <emqx-upload
-            class="uploader-tag"
-            :before-upload="importTagsByGroups"
-            :show-file-list="false"
-            action="placeholder"
-          >
-            <emqx-button size="small">
-              <i class="iconfont icon-import icondownload"></i>
-              <span>{{ $t('common.import') }}</span>
-            </emqx-button>
-          </emqx-upload>
+          <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
+            <emqx-upload
+              class="uploader-tag"
+              :before-upload="importTagsByGroups"
+              :show-file-list="false"
+              action="placeholder"
+            >
+              <emqx-button size="small">
+                <i class="iconfont icon-import icondownload"></i>
+                <span>{{ $t('common.import') }}</span>
+              </emqx-button>
+            </emqx-upload>
+            <template #dropdown>
+              <emqx-dropdown-menu>
+                <emqx-button plain class="btn-download-temp" @click="downloadTemplate">
+                  <span>{{ $t('config.downloadTemplate') }}</span>
+                </emqx-button>
+              </emqx-dropdown-menu>
+            </template>
+          </emqx-dropdown>
+
           <emqx-button
             size="small"
             class="export-tags--btn"
