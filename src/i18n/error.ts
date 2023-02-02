@@ -276,19 +276,19 @@ export default {
   },
   4100: {
     zh: '文件内容过长',
-    en: 'NEU_ERR_FILE_TOO_LONG',
+    en: 'File too long',
   },
   4101: {
     zh: '打开文件失败',
-    en: 'NEU_ERR_FILE_OPEN_FAILURE',
+    en: 'File open failure',
   },
   4102: {
     zh: '读文件失败',
-    en: 'NEU_ERR_FILE_READ_FAILURE',
+    en: 'File read failure',
   },
   4103: {
     zh: '写文件失败',
-    en: 'NEU_ERR_FILE_WRITE_FAILURE',
+    en: 'File write failure',
   },
   10101: {
     zh: '硬件错误',
