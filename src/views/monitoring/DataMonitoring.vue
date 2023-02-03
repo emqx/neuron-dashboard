@@ -25,6 +25,7 @@
             :all-search-data="nodeList"
             :getKeywordListFunc="filterSouthNodesByKeyword"
             :trigger-on-focus="true"
+            :placeholder="$t('config.searchNodePlaceholder')"
             @select="selectedNodeChanged"
             @enter="selectedNodeChanged"
             @input="selectedNodeChanged"

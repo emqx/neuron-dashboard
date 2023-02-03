@@ -13,7 +13,7 @@
       </emqx-col>
       <emqx-col :span="12">
         <emqx-form-item :label="$t('common.type')" prop="type" required>
-          <emqx-select v-model="form.type" @change="changeType">
+          <emqx-select v-model="form.type" :placeholder="$t('common.pleaseSelect')" @change="changeType">
             <emqx-option
               v-for="item in tagTypeOptListAfterFilter"
               :key="item.value"
