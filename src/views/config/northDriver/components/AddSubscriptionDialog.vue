@@ -25,13 +25,24 @@
             <div class="item title">{{ item.name }}</div>
           </template>
         </AutoKeywordSearchInput>
-        <emqx-select v-else v-model="subscriptionForm.driver" @change="selectedNodeChanged" filterable>
+        <emqx-select
+          v-else
+          v-model="subscriptionForm.driver"
+          filterable
+          :placeholder="$t('common.pleaseSelect')"
+          @change="selectedNodeChanged"
+        >
           <emqx-option v-for="{ name } in deviceList" :key="name" :value="name" :label="name" />
         </emqx-select>
       </emqx-form-item>
 
       <emqx-form-item prop="group" :label="$t('config.group')">
-        <emqx-select v-model="subscriptionForm.group" filterable @change="changeGroup">
+        <emqx-select
+          v-model="subscriptionForm.group"
+          filterable
+          :placeholder="$t('common.pleaseSelect')"
+          @change="changeGroup"
+        >
           <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
         </emqx-select>
       </emqx-form-item>
