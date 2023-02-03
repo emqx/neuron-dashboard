@@ -7,7 +7,13 @@
         </emqx-button>
       </template>
       <template v-slot:right>
-        <emqx-select v-model="filterNodeType" clearable size="medium" class="header-item filter-item">
+        <emqx-select
+          v-model="filterNodeType"
+          clearable
+          size="medium"
+          :placeholder="$t('common.pleaseSelect')"
+          class="header-item filter-item"
+        >
           <emqx-option v-for="item in nodeTypeList" :key="item.value" :value="item.value" :label="item.label" />
           <emqx-option :value="ALL_KEY" :label="$t('config.all')"></emqx-option>
         </emqx-select>

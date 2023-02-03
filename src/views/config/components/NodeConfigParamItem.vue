@@ -55,7 +55,7 @@
           {{ upperFirstLetter(key) }}
         </emqx-radio>
       </emqx-radio-group>
-      <emqx-select v-else v-model="inputValue">
+      <emqx-select v-else v-model="inputValue" :placeholder="$t('common.pleaseSelect')">
         <emqx-option
           v-for="{ key, value } in paramInfo.valid.map"
           :key="value"
