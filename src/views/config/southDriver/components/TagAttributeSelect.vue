@@ -1,5 +1,5 @@
 <template>
-  <emqx-select v-model="selectedValue" multiple>
+  <emqx-select v-model="selectedValue" multiple :placeholder="$t('common.pleaseSelect')">
     <emqx-option v-for="item in tagAttributeTypeOptList" :key="item.value" :label="item.label" :value="item.value" />
   </emqx-select>
 </template>
