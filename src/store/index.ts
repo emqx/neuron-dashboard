@@ -26,6 +26,7 @@ export default createStore<State>({
       },
     }
   },
+
   mutations: {
     SET_LANG(state: State, payload: string) {
       state.lang = payload
