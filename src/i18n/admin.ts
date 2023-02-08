@@ -151,4 +151,12 @@ export default {
     zh: '点位使用情况',
     en: 'Tags usage',
   },
+  cpuUsage: {
+    zh: 'CPU 使用情况',
+    en: 'CPU usage',
+  },
+  memoryUsage: {
+    zh: '内存使用情况',
+    en: 'Memory usage',
+  },
 }
