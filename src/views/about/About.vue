@@ -8,18 +8,40 @@
         <emqx-descriptions-item :label="$t('admin.version')">
           {{ versionData.version }}
         </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.builtDate')">
-          {{ versionData.build_date }}
+        <emqx-descriptions-item :label="$t('admin.systemStatus')">{{
+          $t(`${systemStatusText}`)
+        }}</emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.systemRunningTime')">
+          {{ systemRunningTime }}
+        </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.cpuUsage')">
+          <el-progress
+            :stroke-width="14"
+            :percentage="generalStatistics.cpuPercent"
+            status="success"
+            class="progress-bar"
+          >
+            <span class="progress-text">{{ generalStatistics.cpuPercent }} / {{ generalStatistics.cpuCores }}</span>
+          </el-progress>
+        </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.memoryUsage')">
+          <el-progress
+            :stroke-width="14"
+            :percentage="generalStatistics.memPercent"
+            status="success"
+            class="progress-bar"
+          >
+            <span class="progress-text">
+              {{ generalStatistics.memUsedBytes }} / {{ generalStatistics.memTotalBytes }}</span
+            >
+          </el-progress>
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.hwToken')">
           {{ hwToken }}
         </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.systemRunningTime')">
-          {{ systemRunningTime }}
+        <emqx-descriptions-item :label="$t('admin.builtDate')">
+          {{ versionData.build_date }}
         </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.systemStatus')">{{
-          $t(`${systemStatusText}`)
-        }}</emqx-descriptions-item>
       </emqx-descriptions>
     </div>
   </emqx-card>
@@ -27,9 +49,14 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onUnmounted } from 'vue'
+import { ElProgress } from 'element-plus'
 import { queryVersion, queryHardwareToken } from '@/api/admin'
 import { getStatisticByType } from '@/api/statistics'
 import { secondToTime } from '@/utils/time'
+import { formatMemory } from '@/utils/utils'
+import useLang from '@/composables/useLang'
+
+const { currentLang } = useLang()
 
 const isDataLoading = ref(false)
 
@@ -42,8 +69,17 @@ const hwToken = ref('')
 const generalStatistics = reactive({
   systemRunningTime: '', // neuron running seconds
   systemStatus: '',
+  cpuPercent: 0,
+  cpuCores: 0,
+  memPercent: 0,
+  memTotalBytes: '',
+  memUsedBytes: '',
   startupTimeMatchReg: /(uptime_seconds=?)(\s*\d*)(?=\n)/g,
   debugFilesMatchReg: /(core_dumped=?)(\s*\d*)(?=\n)/g,
+  cpuPercentReg: /(cpu_percent=?)(\s*\d*)(?=\n)/g,
+  cpuCoresReg: /(cpu_cores=?)(\s*\d*)(?=\n)/g,
+  memTotalBytesReg: /(mem_total_bytes=?)(\s*\d*)(?=\n)/g,
+  memUsedBytesReg: /(mem_used_bytes=?)(\s*\d*)(?=\n)/g,
 })
 let timer: undefined | number
 
@@ -52,6 +88,10 @@ const systemRunningTime = computed(() => {
 })
 const systemStatusText = computed(() => {
   return generalStatistics.systemStatus === '0' ? 'common.normal' : 'common.exceptions'
+})
+
+const labelWidth = computed(() => {
+  return currentLang.value === 'zh' ? '90px' : '120px'
 })
 
 if (Promise && !Promise.allSettled) {
@@ -78,8 +118,24 @@ const getStatistic = () => {
 
         const startupTime = statisticsInfo.match(generalStatistics.startupTimeMatchReg)
         const isDebugFiles = statisticsInfo.match(generalStatistics.debugFilesMatchReg)
+        const CPUPercent = statisticsInfo.match(generalStatistics.cpuPercentReg)
+        const CPUCores = statisticsInfo.match(generalStatistics.cpuCoresReg)
+        const memUsedBytesData = statisticsInfo.match(generalStatistics.memUsedBytesReg)
+        const memTotalBytesData = statisticsInfo.match(generalStatistics.memTotalBytesReg)
+
         generalStatistics.systemRunningTime = startupTime ? startupTime[0].split(' ')[1] : ''
         generalStatistics.systemStatus = isDebugFiles ? isDebugFiles[0].split(' ')[1] : ''
+
+        generalStatistics.cpuPercent = Number(CPUPercent ? CPUPercent[0].split(' ')[1] : '0')
+        generalStatistics.cpuCores = Number(CPUCores ? CPUCores[0].split(' ')[1] : '0') * 100
+
+        const memUsedBytes = Number(memUsedBytesData ? memUsedBytesData[0].split(' ')[1] : '0')
+        const memTotalBytes = Number(memTotalBytesData ? memTotalBytesData[0].split(' ')[1] : '0')
+        generalStatistics.memPercent = Number(
+          memUsedBytes && memTotalBytes ? ((memUsedBytes / memTotalBytes) * 100).toFixed(2) : '0',
+        )
+        generalStatistics.memUsedBytes = formatMemory(memUsedBytes, 'Byte')
+        generalStatistics.memTotalBytes = formatMemory(memTotalBytes, 'Byte')
 
         setTimer()
         resolve(res)
@@ -129,5 +185,31 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .about {
   min-height: 300px;
+}
+
+.progress-bar {
+  display: inline-flex;
+  align-items: center;
+  top: 2px;
+}
+:deep {
+  .el-descriptions__label {
+    display: inline-block;
+    width: v-bind(labelWidth);
+  }
+  .el-progress-bar {
+    width: 220px;
+  }
+  .el-progress__text {
+    display: inline-block;
+    margin-top: -2px;
+  }
+  // .el-progress-bar__innerText {
+  //   color: var(--main-label-color);
+  // }
+}
+.progress-text {
+  color: #1d1d1d;
+  font-size: 14px;
 }
 </style>

@@ -114,3 +114,45 @@ export const OmitArrayFields = (list: any, params: string[]) => {
   const res = list.map((item: any) => omit(item, params))
   return res
 }
+
+// show 'G', or 'M'
+const handleMemory = (memory: number, type: string): string => {
+  let resString = ''
+  let isGB = null
+
+  if (type === `byte`) {
+    isGB = memory / (1024 * 1024 * 1024) > 1
+    const mem = isGB ? memory / (1024 * 1024 * 1024) : memory / (1024 * 1024)
+    resString = mem.toFixed(2)
+  } else if (type === 'kb') {
+    isGB = memory / (1024 * 1024) > 1
+    const mem = isGB ? memory / (1024 * 1024) : memory / 1024
+    resString = mem.toFixed(2)
+  } else if (type === 'mb') {
+    isGB = memory / 1024 > 1
+    const mem = isGB ? memory / 1024 : memory
+    resString = mem.toFixed(2)
+  } else if (type === 'gb') {
+    resString = memory.toFixed(2)
+  } else if (type === 'tb') {
+    resString = (memory * 1024).toFixed(2)
+  }
+
+  const unit = isGB ? 'G' : 'M'
+  return `${resString} ${unit}`
+}
+
+export const formatMemory = (memory: number, type?: string): string => {
+  if (!memory) return `0 M`
+
+  const ty: string = type?.toLocaleLowerCase() || 'byte'
+
+  const dataMap = new Map([
+    ['byte', handleMemory(memory, ty)],
+    ['kb', handleMemory(memory, ty)],
+    ['mb', handleMemory(memory, ty)],
+    ['gb', handleMemory(memory, ty)],
+    ['tb', handleMemory(memory, ty)],
+  ])
+  return dataMap.get(ty) || ''
+}
