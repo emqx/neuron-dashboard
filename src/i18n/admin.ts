@@ -123,15 +123,4 @@ export default {
     zh: '系统状态',
     en: 'System Status',
   },
-<<<<<<< HEAD
-=======
-  usedNodes: {
-    zh: '已使用节点数',
-    en: 'Used Nodes',
-  },
-  usedTags: {
-    zh: '已使用点位数',
-    en: 'Used Tags',
-  },
->>>>>>> da5a212 (refactor(i18n): refactor the i18n of tag, group, license, plugin)
 }
