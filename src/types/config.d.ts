@@ -16,8 +16,8 @@ export interface CreatedPlugin extends PluginForm {
   name: string
   description: string
   description_zh?: string
-  doc_link?: string
   schema?: string
+  // doc_link?: string
 }
 
 export interface NodeForm {
