@@ -7,11 +7,11 @@
           <span>{{ data.name }}</span>
         </p>
         <div class="handlers">
-          <AComWithDesc v-if="data.doc_link" :content="$t('common.document')">
+          <!-- <AComWithDesc v-if="data.doc_link" :content="$t('common.document')">
             <a :href="data.doc_link" target="_blank" class="icon-plugin-link icon">
               <i class="el-icon-document" />
             </a>
-          </AComWithDesc>
+          </AComWithDesc> -->
           <AComWithDesc v-if="data.kind === PluginKind.Custom" :content="$t('common.delete')">
             <i class="iconfont icon icondelete" @click="deletePlugin" />
           </AComWithDesc>
