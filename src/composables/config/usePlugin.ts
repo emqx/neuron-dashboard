@@ -1,50 +1,50 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
 import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
 import { createCommonErrorMessage } from '@/utils/utils'
-import { PluginType } from '@/types/enums'
+// import { PluginType } from '@/types/enums'
 import type { CreatedPlugin, PluginForm } from '@/types/config'
-import useLang from '@/composables/useLang'
+// import useLang from '@/composables/useLang'
 
 export default () => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])
   const isListLoading = ref(false)
 
-  const { currentLang } = useLang()
+  // const { currentLang } = useLang()
   // if add a new plugin, please add document suffix to `PluginType` on the 'enum.ts'.
-  const pluginTypeMapping = computed(() => (pluginName: string) => {
-    if (!pluginName) return ''
-    const types = new Map([
-      [/^mitsubishi1e[\s\S]*$/, PluginType.A1E],
-      [/^beckhoffads[\s\S]*$/, PluginType.ADS],
-      [/^bacnet[\s\S]*$/, PluginType.BACnetIP],
-      [/^dlt645[\s\S]*$/, PluginType.DLT6452007],
-      [/^ethernet\/ip[\s\S]*$/, PluginType.EthernetIp],
-      [/[\s\S]fins[\s\S]*$/, PluginType.OmronFinsOnTCP],
-      [/[\s\S]focas[\s\S]*$/, PluginType.Focas],
-      [/^iec60870-5-104[\s\S]*$/, PluginType.IEC608705104],
-      [/^knx[\s\S]*$/, PluginType.KNXnetIP],
-      [/^mqtt[\s\S]*$/, PluginType.MQTT],
-      [/^modbus[\s\S]*$/, PluginType.Modbus],
-      [/^nona11[\s\S]*$/, currentLang.value === 'zh' ? PluginType.zhNoA11 : PluginType.enNoA11],
-      [/^opcua[\s\S]*$/, PluginType.OPCUA],
-      [/^mitsubishi3e[\s\S]*$/, PluginType.MitsubishiMelsecQE71],
-      [/^siemenss7isotcp[\s\S]*$/, PluginType.SiemensS7ISOTCP],
-      [/^sparkplugb[\s\S]*$/, PluginType.SparkplugB],
-    ])
-    const lowerName = pluginName.replace(/\s/g, '').toLocaleLowerCase()
-    const typeKV = [...types].filter(([key, value]) => key.test(`${lowerName}`))
-    const res = typeKV.length ? typeKV[0][1].toLocaleLowerCase().replace(/\s+/g, '-') : ''
-    return res
-  })
+  // const pluginTypeMapping = computed(() => (pluginName: string) => {
+  //   if (!pluginName) return ''
+  //   const types = new Map([
+  //     [/^mitsubishi1e[\s\S]*$/, PluginType.A1E],
+  //     [/^beckhoffads[\s\S]*$/, PluginType.ADS],
+  //     [/^bacnet[\s\S]*$/, PluginType.BACnetIP],
+  //     [/^dlt645[\s\S]*$/, PluginType.DLT6452007],
+  //     [/^ethernet\/ip[\s\S]*$/, PluginType.EthernetIp],
+  //     [/[\s\S]fins[\s\S]*$/, PluginType.OmronFinsOnTCP],
+  //     [/[\s\S]focas[\s\S]*$/, PluginType.Focas],
+  //     [/^iec60870-5-104[\s\S]*$/, PluginType.IEC608705104],
+  //     [/^knx[\s\S]*$/, PluginType.KNXnetIP],
+  //     [/^mqtt[\s\S]*$/, PluginType.MQTT],
+  //     [/^modbus[\s\S]*$/, PluginType.Modbus],
+  //     [/^nona11[\s\S]*$/, currentLang.value === 'zh' ? PluginType.zhNoA11 : PluginType.enNoA11],
+  //     [/^opcua[\s\S]*$/, PluginType.OPCUA],
+  //     [/^mitsubishi3e[\s\S]*$/, PluginType.MitsubishiMelsecQE71],
+  //     [/^siemenss7isotcp[\s\S]*$/, PluginType.SiemensS7ISOTCP],
+  //     [/^sparkplugb[\s\S]*$/, PluginType.SparkplugB],
+  //   ])
+  //   const lowerName = pluginName.replace(/\s/g, '').toLocaleLowerCase()
+  //   const typeKV = [...types].filter(([key, value]) => key.test(`${lowerName}`))
+  //   const res = typeKV.length ? typeKV[0][1].toLocaleLowerCase().replace(/\s+/g, '-') : ''
+  //   return res
+  // })
 
-  const pluginLinkURL = computed(() => (pluginName: string) => {
-    const pluginType = pluginTypeMapping.value(pluginName)
-    const pluginlink = `https://neugates.io/docs/${currentLang.value}/latest/module-plugins/module-driver.html#${pluginType}`
-    return pluginType ? pluginlink : ''
-  })
+  // const pluginLinkURL = computed(() => (pluginName: string) => {
+  //   const pluginType = pluginTypeMapping.value(pluginName)
+  //   const pluginlink = `https://neugates.io/docs/${currentLang.value}/latest/module-plugins/module-driver.html#${pluginType}`
+  //   return pluginType ? pluginlink : ''
+  // })
 
   const getPluginList = async () => {
     isListLoading.value = true
@@ -53,7 +53,7 @@ export default () => {
       ? data.plugins.map((item) => {
           return {
             ...item,
-            doc_link: pluginLinkURL.value(item.name),
+            // doc_link: pluginLinkURL.value(item.name),
           }
         })
       : []
