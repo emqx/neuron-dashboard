@@ -50,6 +50,10 @@ const navList = computed(() => {
     icon: 'iconstream',
     subMenus: [
       {
+        to: '/ekuiper/nodes/single-node/source/0',
+        label: 'ekuiper.sources',
+      },
+      {
         to: '/ekuiper/nodes/single-node/rules',
         label: 'ekuiper.rule',
       },
@@ -126,10 +130,17 @@ const secondLevelRoutePathArr: Array<string> = []
 
 const actvieMenu = computed(() => {
   const currentPath = useRoute().path
-  let ret = secondLevelRoutePathArr.find((item) => currentPath.match(item))
+
+  const isEkuiperSourceRoute = currentPath.includes('/ekuiper/nodes/single-node/source')
+  // Compatible with `source` routing special
+  let ret = isEkuiperSourceRoute
+    ? '/ekuiper/nodes/single-node/source/0'
+    : secondLevelRoutePathArr.find((item) => currentPath.match(item))
+
   if (ret) {
     return ret
   }
+
   ret = firstLevelRoutePathArr.find((item) => currentPath.match(item))
   return ret || ''
 })
