@@ -149,7 +149,7 @@ export default (props: Props) => {
       const regexExpression = new RegExp(regex)
       return regexExpression.test(fieldValue)
     }
-    return value ? fieldValue === value : true
+    return value !== undefined || value !== null ? fieldValue === value : true
   }
 
   const cancel = () => {
