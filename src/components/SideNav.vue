@@ -50,7 +50,7 @@ const navList = computed(() => {
     icon: 'iconstream',
     subMenus: [
       {
-        to: '/ekuiper/nodes/single-node/source/0',
+        to: '/ekuiper/nodes/single-node/source',
         label: 'ekuiper.sources',
       },
       {
