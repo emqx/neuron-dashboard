@@ -130,12 +130,7 @@ const secondLevelRoutePathArr: Array<string> = []
 
 const actvieMenu = computed(() => {
   const currentPath = useRoute().path
-
-  const isEkuiperSourceRoute = currentPath.includes('/ekuiper/nodes/single-node/source')
-  // Compatible with `source` routing special
-  let ret = isEkuiperSourceRoute
-    ? '/ekuiper/nodes/single-node/source/0'
-    : secondLevelRoutePathArr.find((item) => currentPath.match(item))
+  let ret = secondLevelRoutePathArr.find((item) => currentPath.match(item))
 
   if (ret) {
     return ret
