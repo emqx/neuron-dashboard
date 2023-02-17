@@ -1,0 +1,1 @@
+(window["webpackJsonp_eKuiper"]=window["webpackJsonp_eKuiper"]||[]).push([["chunk-2d0bd7b5"],{"2bd3":function(e,n,u){"use strict";u.r(n);var a,l,o=u("79a9"),p={name:"LookupTableDetails",extends:o["default"],data:function(){return{prevTabName:"lookupTable",kind:"lookup"}}},t=p,d=u("2877"),b=Object(d["a"])(t,a,l,!1,null,null,null);n["default"]=b.exports}}]);
