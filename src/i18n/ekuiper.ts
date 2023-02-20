@@ -15,4 +15,8 @@ export default {
     zh: '拓展',
     en: 'Extension',
   },
+  configuration: {
+    zh: '配置',
+    en: 'Configuration',
+  },
 }

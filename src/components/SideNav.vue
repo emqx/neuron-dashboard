@@ -61,6 +61,10 @@ const navList = computed(() => {
         to: '/ekuiper/nodes/single-node/extension',
         label: 'ekuiper.extension',
       },
+      {
+        to: '/ekuiper/nodes/single-node/configuration',
+        label: 'ekuiper.configuration',
+      },
     ],
   }
   const navs = [
