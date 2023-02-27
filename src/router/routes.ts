@@ -153,12 +153,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Admin',
     component: Home,
     children: [
-      {
-        path: 'account-settings',
-        name: 'AccountSettings',
-        meta: { title: 'common.accountSettings', requireAuth: true, hiddenBreadcrumb: true },
-        component: () => import('@/views/admin/AccountSetting.vue'),
-      },
+      // {
+      //   path: 'account-settings',
+      //   name: 'AccountSettings',
+      //   meta: { title: 'common.accountSettings', requireAuth: true, hiddenBreadcrumb: true },
+      //   component: () => import('@/views/admin/AccountSetting.vue'),
+      // },
       {
         path: 'change-password',
         name: CHANGE_PW_ROUTE_NAME,

@@ -20,11 +20,23 @@ export const setLang = () => {
 export default () => {
   const $store = useStore()
 
+  const langList = [
+    {
+      label: '中文',
+      value: 'zh',
+    },
+    {
+      label: 'English',
+      value: 'en',
+    },
+  ]
+
   const currentLang = computed(() => {
     return $store.state.lang
   })
 
   return {
+    langList,
     currentLang,
   }
 }

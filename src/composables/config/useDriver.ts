@@ -17,19 +17,19 @@ export const useDriverStatus = (props: { data: DriverItemInList }) => {
     [NodeState.Stopped]: 'iconstopped',
   }
   const statusTextMap = {
-    [NodeState.Init]: t('config.init'),
-    [NodeState.Ready]: t('config.ready'),
-    [NodeState.Running]: t('config.running'),
-    [NodeState.Stopped]: t('config.stopped'),
+    [NodeState.Init]: 'config.init',
+    [NodeState.Ready]: 'config.ready',
+    [NodeState.Running]: 'config.running',
+    [NodeState.Stopped]: 'config.stopped',
   }
-  // [NodeLinkState.Connecting]: t('config.connecting'),
+  // [NodeLinkState.Connecting]: 'config.connecting',
   const connectionStatusTextMap = {
-    [NodeLinkState.Disconnected]: t('config.disconnected'),
-    [NodeLinkState.Connected]: t('config.connected'),
+    [NodeLinkState.Disconnected]: 'config.disconnected',
+    [NodeLinkState.Connected]: 'config.connected',
   }
   const statusIcon = computed(() => statusIconClassMap[props.data.running])
-  const statusText = computed(() => statusTextMap[props.data.running] || '-')
-  const connectionStatusText = computed(() => connectionStatusTextMap[props.data.link])
+  const statusText = computed(() => t(`${statusTextMap[props.data.running]}`) || '-')
+  const connectionStatusText = computed(() => t(`${connectionStatusTextMap[props.data.link]}`))
 
   return {
     statusIconClassMap,

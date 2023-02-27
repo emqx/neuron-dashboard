@@ -1,3 +1,4 @@
+<!-- Discard，this page has been moved to th Header.vue -->
 <template>
   <emqx-card class="account-setting">
     <h3 class="card-title">{{ $t('common.accountSettings') }}</h3>

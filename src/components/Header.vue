@@ -3,9 +3,10 @@
     <template #title>
       <img src="../assets/images/logo.png" alt="neuron-logo" width="141" />
     </template>
+
     <template v-slot:right>
       <div>
-        <emqx-dropdown>
+        <emqx-dropdown class="dropdown-item">
           <span class="el-dropdown-link">
             {{ $t('common.systemInformation') }}
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -23,6 +24,25 @@
               <emqx-dropdown-item @click="downloadLogsFile">
                 <i class="iconfont icondownload"></i>
                 <span> {{ $t('admin.log') }}</span>
+              </emqx-dropdown-item>
+            </emqx-dropdown-menu>
+          </template>
+        </emqx-dropdown>
+
+        <emqx-dropdown class="dropdown-item" @command="changeLanguage">
+          <span class="el-dropdown-link">
+            {{ langLabel }}
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <template #dropdown>
+            <emqx-dropdown-menu class="header-menu">
+              <emqx-dropdown-item
+                v-for="item in langList"
+                :key="item.label"
+                :command="item.value"
+                :class="{ 'active-lang': item.value === lang }"
+              >
+                {{ item.label }}
               </emqx-dropdown-item>
             </emqx-dropdown-menu>
           </template>
@@ -47,10 +67,13 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
+import useLang, { setLang } from '@/composables/useLang'
+import i18n from '@/i18n/index'
 
 const store = useStore()
 const router = useRouter()
@@ -79,13 +102,38 @@ const logout = async () => {
     console.error(error)
   }
 }
+
+const { langList } = useLang()
+const { initLang } = setLang()
+
+const lang = computed({
+  get() {
+    return store.state.lang
+  },
+  set(val: string) {
+    store.commit('SET_LANG', val)
+    i18n.global.locale.value = val
+    initLang()
+  },
+})
+
+const langLabel = computed(() => langList.find((item) => item.value === lang.value)?.label || '')
+
+const changeLanguage = (command: string) => {
+  lang.value = command
+}
 </script>
 
 <style lang="scss">
+@import '@/styles/emqx-ui-variables.scss';
+
 .header {
   .el-dropdown {
     color: #fff;
   }
+}
+.dropdown-item {
+  margin-left: 14px;
 }
 .header-menu {
   .emqx-dropdown-item {
@@ -96,6 +144,9 @@ const logout = async () => {
     display: flex;
     align-items: center;
   }
+}
+.active-lang {
+  color: $--color-primary !important;
 }
 .username {
   margin-bottom: 12px;
