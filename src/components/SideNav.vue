@@ -112,10 +112,10 @@ const navList = computed(() => {
           to: '/admin/change-password',
           label: 'common.changePassword',
         },
-        {
-          to: '/admin/account-settings',
-          label: 'common.accountSettings',
-        },
+        // {
+        //   to: '/admin/account-settings',
+        //   label: 'common.accountSettings',
+        // },
         // {
         //   to: '/admin/log',
         //   label: ('admin.log'),
