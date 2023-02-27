@@ -20,6 +20,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     () => (nodeName: string) => northDriverList.value.find((item: DriverItemInList) => item.name === nodeName)?.plugin,
   )
   const isMQTTPugin = computed(() => (plugin: string | undefined) => plugin && plugin.toLocaleLowerCase() === 'mqtt')
+
   const getNorthDriverList = async () => {
     try {
       isListLoading.value = true

@@ -177,8 +177,12 @@ export const useNodeDebugLogLevel = () => {
 }
 
 export const useDriverName = () => {
-  const isDataStreamProcessingNode = computed(() => (name: string) => name === 'data-stream-processing')
+  const isSupportRemoveNode = computed(() => (nodeName: string) => {
+    const nodeNameLowerCase = nodeName.toLocaleLowerCase()
+    return nodeNameLowerCase === 'data-stream-processing' || nodeNameLowerCase === 'monitor'
+  })
+
   return {
-    isDataStreamProcessingNode,
+    isSupportRemoveNode,
   }
 }

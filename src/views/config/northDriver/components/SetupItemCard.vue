@@ -9,8 +9,7 @@
         <AComWithDesc :content="$t('config.dataStatistics')">
           <i class="iconfont iconstatus" @click.stop="isShowDataStatistics()"></i>
         </AComWithDesc>
-
-        <AComWithDesc v-if="isDataStreamProcessingNode(data.name)" :content="$t('config.updateDebugLogLevel')">
+        <AComWithDesc v-if="isSupportRemoveNode(data.name)" :content="$t('config.updateDebugLogLevel')">
           <img
             class="img-debug-log-large"
             src="~@/assets/images/debug-log-icon.png"
@@ -152,7 +151,7 @@ const handleClickOperator = (command: string) => {
   }
 }
 
-const { isDataStreamProcessingNode } = useDriverName()
+const { isSupportRemoveNode } = useDriverName()
 </script>
 
 <style lang="scss" scoped>
