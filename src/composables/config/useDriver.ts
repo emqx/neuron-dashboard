@@ -1,9 +1,9 @@
+import { useStore } from 'vuex'
 import { sendCommandToNode, updateNodeLogLevelToDebug } from '@/api/config'
 import { getStatisticByType } from '@/api/statistics'
 import type { DriverItemInList } from '@/types/config'
 import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-// import { ElLoading } from 'element-plus'
 import { computed, ref, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage } from '@emqx/emqx-ui'
@@ -105,8 +105,11 @@ export const dataStatistics = () => {
   const loadingStatistic = ref(false)
   const nodeStatisticData = ref('')
   let timer: undefined | number
+  const nodeItemData = ref({ name: '' })
 
-  const isShowDataStatistics = (value?: boolean) => {
+  const isShowDataStatistics = (node: DriverItemInList, value?: boolean) => {
+    nodeItemData.value = node
+
     if (value === undefined || value === null) {
       dataStatisticsVisiable.value = !dataStatisticsVisiable.value
       return
@@ -155,6 +158,7 @@ export const dataStatistics = () => {
     nodeStatisticData,
     loadingStatistic,
     getNodeStatisticData,
+    nodeItemData,
   }
 }
 
@@ -184,5 +188,20 @@ export const useDriverName = () => {
 
   return {
     isSupportRemoveNode,
+  }
+}
+
+export const useListShowType = () => {
+  const store = useStore()
+
+  const showType = computed({
+    get: () => store.state.listShowType,
+    set: (val) => {
+      store.commit('SET_LIST_SHOW_TYPE', val)
+    },
+  })
+
+  return {
+    showType,
   }
 }

@@ -1,13 +1,13 @@
 <template>
-  <div class="node-card setup-item-card" @click="goGroupPage">
+  <div class="node-card setup-item-card" @click="goGroupPage(data)">
     <div class="node-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <AComWithDesc :content="$t('config.appConfig')">
-          <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
+          <i class="iconfont iconsetting" @click.stop="goNodeConfig(data)"></i>
         </AComWithDesc>
         <AComWithDesc :content="$t('config.dataStatistics')">
-          <i class="iconfont iconstatus" @click.stop="isShowDataStatistics()"></i>
+          <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(data)"></i>
         </AComWithDesc>
         <AComWithDesc v-if="isSupportRemoveNode(data.name)" :content="$t('config.updateDebugLogLevel')">
           <img
@@ -15,7 +15,7 @@
             src="~@/assets/images/debug-log-icon.png"
             alt="debug-log"
             width="16"
-            @click.stop="modifyNodeLogLevel"
+            @click.stop="handleClickOperator('debugLogLevel')"
           />
         </AComWithDesc>
         <emqx-dropdown v-else trigger="click" @command="handleClickOperator">
@@ -79,7 +79,6 @@
 <script lang="ts" setup>
 import { computed, defineEmits, defineProps } from 'vue'
 import type { PropType } from 'vue'
-import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import {
   useDriverStatus,
@@ -88,18 +87,19 @@ import {
   useNodeDebugLogLevel,
   useDriverName,
 } from '@/composables/config/useDriver'
+import useNorthDriver from '@/composables/config/useNorthDriver'
 import { PluginKind } from '@/types/enums'
 import type { DriverItemInList } from '@/types/config'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import DataStatisticsDrawer from '../../components/dataStatisticsDrawer.vue'
 
 const emit = defineEmits(['reload', 'updated', 'toggleStatus'])
-const router = useRouter()
 
 const props = defineProps({
   data: { type: Object as PropType<DriverItemInList>, required: true },
 })
 
+const { goNodeConfig, goGroupPage } = useNorthDriver(true, true)
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
 
 const { countNodeStartStopStatus } = useNodeStartStopStatus()
@@ -113,42 +113,21 @@ const nodeStartStopStatus = computed({
   },
 })
 
-const goGroupPage = () => {
-  router.push({
-    name: 'NorthDriverGroup',
-    params: {
-      node: props.data?.name,
-    },
-  })
-}
-
-const goNodeConfig = () => router.push({ name: 'NorthDriverConfig', params: { node: props.data.name } })
-
 // dataStatistics
 const { isShowDataStatistics, dataStatisticsVisiable } = dataStatistics()
 
 // more operators
-const { delDriver } = useDeleteDriver()
+const { deleteDriverByNode } = useDeleteDriver()
 const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
 
-const deleteDriver = async () => {
-  if (props.data.pluginKind === PluginKind.Static) {
-    return
-  }
-  await delDriver(props.data)
-  emit('reload')
-}
-const modifyNodeLogLevel = async () => {
-  await modifyNodeLogLevelToDebug(props.data.name)
-  emit('reload')
-}
-
-const handleClickOperator = (command: string) => {
+const handleClickOperator = async (command: string) => {
   if (command === 'delete') {
-    deleteDriver()
+    await deleteDriverByNode('app', props.data)
   } else if (command === 'debugLogLevel') {
-    modifyNodeLogLevel()
+    await modifyNodeLogLevelToDebug(props.data.name)
   }
+
+  emit('reload')
 }
 
 const { isSupportRemoveNode } = useDriverName()

@@ -1,3 +1,4 @@
+import { useRouter } from 'vue-router'
 import { queryNorthDriverList } from '@/api/config'
 import type { DriverItemInList } from '@/types/config'
 import type { PluginKind } from '@/types/enums'
@@ -6,10 +7,16 @@ import { ref, onUnmounted, computed } from 'vue'
 import { useFillNodeListStatusData } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 import { debounce } from 'lodash'
+import useDeleteDriver from '@/composables/config/useDeleteDriver'
+import { useNodeDebugLogLevel } from '@/composables/config/useDriver'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
+  const router = useRouter()
+
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   const { fillNodeListStatusData } = useFillNodeListStatusData()
+  const { deleteDriverByNode } = useDeleteDriver()
+  const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
 
   const northDriverList: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
@@ -49,6 +56,28 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     }, 15 * 1000)
   }
 
+  const goGroupPage = (node: DriverItemInList) => {
+    router.push({
+      name: 'NorthDriverGroup',
+      params: {
+        node: node.name,
+      },
+    })
+  }
+
+  const goNodeConfig = (node: DriverItemInList) =>
+    router.push({ name: 'NorthDriverConfig', params: { node: node.name } })
+
+  const deleteDriver = async (node: DriverItemInList) => {
+    await deleteDriverByNode('app', node)
+    dbGetNorthDriverList()
+  }
+
+  const modifyNodeLogLevel = async (node: DriverItemInList) => {
+    await modifyNodeLogLevelToDebug(node.name)
+    dbGetNorthDriverList()
+  }
+
   if (autoLoad) {
     getNorthDriverList()
   }
@@ -70,5 +99,9 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     dbGetNorthDriverList,
     isMQTTPugin,
     nodePlugin,
+    goGroupPage,
+    goNodeConfig,
+    modifyNodeLogLevel,
+    deleteDriver,
   }
 }

@@ -371,4 +371,8 @@ export default {
     zh: '序号',
     en: 'No.',
   },
+  card: {
+    zh: '卡片',
+    en: 'Card',
+  },
 }

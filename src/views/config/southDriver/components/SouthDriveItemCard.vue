@@ -1,13 +1,13 @@
 <template>
-  <div class="node-card south-drive-item-card" @click.stop.prevent="goGroupPage">
+  <div class="node-card south-drive-item-card" @click.stop.prevent="goGroupPage(data)">
     <div class="node-item-hd common-flex">
       <p class="south-drive-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <AComWithDesc :content="$t('config.deviceConfig')">
-          <i class="iconfont iconsetting" @click.stop="goNodeConfig"></i>
+          <i class="iconfont iconsetting" @click.stop="goNodeConfig(props.data)"></i>
         </AComWithDesc>
         <AComWithDesc :content="$t('config.dataStatistics')">
-          <i class="iconfont iconstatus" @click.stop="isShowDataStatistics()"></i>
+          <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(data)"></i>
         </AComWithDesc>
         <emqx-dropdown trigger="click" @command="handleClickOperator">
           <AComWithDesc :content="$t('common.more')">
@@ -72,7 +72,6 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue'
 import { computed, defineEmits, defineProps } from 'vue'
-import { useRouter } from 'vue-router'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import {
   useDriverStatus,
@@ -80,6 +79,7 @@ import {
   dataStatistics,
   useNodeDebugLogLevel,
 } from '@/composables/config/useDriver'
+import useSouthDriver from '@/composables/config/useSouthDriver'
 import type { DriverItemInList } from '@/types/config'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import DataStatisticsDrawer from '../../components/dataStatisticsDrawer.vue'
@@ -92,7 +92,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['updated', 'toggleStatus', 'reload'])
-const router = useRouter()
+
+const { goGroupPage, goNodeConfig } = useSouthDriver(true, true)
+const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
+
 const { countNodeStartStopStatus } = useNodeStartStopStatus()
 
 const nodeStartStopStatus = computed({
@@ -103,42 +106,22 @@ const nodeStartStopStatus = computed({
     emit('toggleStatus', val)
   },
 })
-const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
-
-const goGroupPage = () => {
-  router.push({
-    name: 'SouthDriverGroup',
-    params: {
-      node: props.data.name,
-    },
-  })
-}
-
-const goNodeConfig = () => router.push({ name: 'SouthDriverConfig', params: { node: props.data.name } })
 
 // dataStatistics
 const { isShowDataStatistics, dataStatisticsVisiable } = dataStatistics()
 
 // more operators
-const { delDriver } = useDeleteDriver()
+const { deleteDriverByNode } = useDeleteDriver()
 const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
 
-const deleteDriver = async () => {
-  await delDriver(props.data)
-  emit('reload')
-}
-
-const modifyNodeLogLevel = async () => {
-  await modifyNodeLogLevelToDebug(props.data.name)
-  emit('reload')
-}
-
-const handleClickOperator = (command: string) => {
+const handleClickOperator = async (command: string) => {
   if (command === 'delete') {
-    deleteDriver()
+    await deleteDriverByNode('driver', props.data)
   } else if (command === 'debugLogLevel') {
-    modifyNodeLogLevel()
+    await modifyNodeLogLevelToDebug(props.data.name)
   }
+
+  emit('reload')
 }
 </script>
 
