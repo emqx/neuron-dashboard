@@ -6,6 +6,7 @@ interface State {
   token: string
   isSubAppLoading: boolean
   subAppInstances: Record<string, any>
+  listShowType: string
 }
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
@@ -24,6 +25,7 @@ export default createStore<State>({
       subAppInstances: {
         ekuiper: undefined,
       },
+      listShowType: 'list',
     }
   },
 
@@ -45,6 +47,20 @@ export default createStore<State>({
     },
     SET_SUB_APP_LOADING(state, payload: boolean) {
       state.isSubAppLoading = payload
+    },
+    SET_LIST_SHOW_TYPE(state, type: string) {
+      state.listShowType = type
+    },
+    RESET_LIST_SHOW_TYPE(state, { to, from, next }) {
+      const { matched: fromMatched } = from
+      const { matched: toMatched } = to
+      const fromRouteName = fromMatched[0]?.name
+      const toRouteName = toMatched[0]?.name
+
+      if (fromRouteName !== toRouteName) {
+        state.listShowType = 'list'
+      }
+      next()
     },
   },
 })

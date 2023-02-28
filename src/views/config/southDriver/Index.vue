@@ -20,12 +20,14 @@
           @clear="dbGetSouthDriverList"
           @enter="dbGetSouthDriverList"
         />
+        <ListCardSwitch v-model="showType" />
       </template>
     </ViewHeaderBar>
 
     <emqx-empty v-if="!isListLoading && southDriverList.length === 0" class="empty" />
     <div v-else>
-      <ul class="setup-list">
+      <!-- card show -->
+      <ul v-if="showType === 'card'" class="setup-list">
         <emqx-row :gutter="24">
           <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.name" tag="li" class="setup-item">
             <SouthDriveItemCard
@@ -37,6 +39,67 @@
           </emqx-col>
         </emqx-row>
       </ul>
+
+      <!-- table show -->
+      <emqx-table v-if="showType === 'list'" :data="southDriverList" :empty-text="$t('common.emptyData')">
+        <emqx-table-column :label="$t('common.name')" prop="name" sortable show-overflow-tooltip>
+          <template #default="{ row }">
+            <el-link type="primary" :underline="false" href="javascript:;" @click="goGroupPage(row)">
+              {{ row.name }}
+            </el-link>
+          </template>
+        </emqx-table-column>
+        <!--  workStatus-->
+        <emqx-table-column :label="$t('config.workStatus')" prop="running" sortable>
+          <template #default="{ row }">
+            <svg class="iconfont icon-svg" aria-hidden="true">
+              <use :xlink:href="`#${getNodeValue(row).statusIcon.value}`" />
+            </svg>
+            {{ getNodeValue(row).statusText.value }}
+          </template>
+        </emqx-table-column>
+        <!-- connectionStatus -->
+        <emqx-table-column :label="$t('config.connectionStatus')" prop="link" sortable min-width="90">
+          <template #default="{ row }">
+            {{ getNodeValue(row).connectionStatusText.value }}
+          </template>
+        </emqx-table-column>
+        <emqx-table-column :label="$t('config.delayTime')">
+          <template #default="{ row }"> {{ row.rtt }} {{ $t('common.ms') }} </template>
+        </emqx-table-column>
+        <emqx-table-column :label="$t('config.plugin')" prop="plugin" />
+        <emqx-table-column align="left" :label="$t('common.oper')" width="220px">
+          <template #default="{ row, index }">
+            <div class="operator-wrap">
+              <AComWithDesc :content="countNodeStartStopStatus(row) ? $t('common.stop') : $t('common.start')">
+                <i
+                  :class="countNodeStartStopStatus(row) ? 'el-icon-video-pause' : 'el-icon-video-play'"
+                  @click="setNodeStartStopStatus(row, !countNodeStartStopStatus(row), index)"
+                />
+              </AComWithDesc>
+              <AComWithDesc :content="$t('config.deviceConfig')">
+                <i class="iconfont iconsetting" @click.stop="goNodeConfig(row)" />
+              </AComWithDesc>
+              <AComWithDesc :content="$t('config.dataStatistics')">
+                <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(row)" />
+              </AComWithDesc>
+              <AComWithDesc :content="$t('config.updateDebugLogLevel')">
+                <img
+                  class="img-debug-log"
+                  src="~@/assets/images/debug-log-icon.png"
+                  alt="debug-log"
+                  width="22"
+                  @click.stop="modifyNodeLogLevel(row)"
+                />
+              </AComWithDesc>
+              <AComWithDesc :content="$t('common.delete')">
+                <i class="iconfont icondelete" @click.stop="deleteDriver(row)" />
+              </AComWithDesc>
+            </div>
+          </template>
+        </emqx-table-column>
+      </emqx-table>
+
       <emqx-pagination
         v-if="pageController.total > 30"
         layout="total, sizes, prev, pager, next, jumper"
@@ -49,12 +112,29 @@
       />
     </div>
   </emqx-card>
+
+  <!-- Data Statistics -->
+  <DataStatisticsDrawer
+    v-if="dataStatisticsVisiable"
+    v-model="dataStatisticsVisiable"
+    :type="'driver'"
+    :node-name="nodeItemData.name"
+  />
+
   <DriverDialog v-model="showDialog" :type="DriverDirection.South" @submitted="getSouthDriverList" />
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { useToggleNodeStartStopStatus } from '@/composables/config/useDriver'
+<script lang="ts">
+import { ref, defineComponent } from 'vue'
+import store from '@/store'
+import { ElLink } from 'element-plus'
+import {
+  useToggleNodeStartStopStatus,
+  useDriverStatus,
+  useNodeStartStopStatus,
+  dataStatistics,
+  useListShowType,
+} from '@/composables/config/useDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import type { DriverItemInList } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
@@ -63,8 +143,19 @@ import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
 import PluginTypesSelector from '../components/PluginTypesSelector.vue'
+import ListCardSwitch from '@/components/ListCardSwitch.vue'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 import { SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 
+export default defineComponent({
+  beforeRouteEnter(to, from, next) {
+    store.commit('RESET_LIST_SHOW_TYPE', { to, from, next })
+  },
+})
+</script>
+
+<script lang="ts" setup>
 const {
   queryKeyword,
   pageController,
@@ -74,11 +165,24 @@ const {
   isListLoading,
   getSouthDriverList,
   dbGetSouthDriverList,
+  goGroupPage,
+  goNodeConfig,
+  deleteDriver,
+  modifyNodeLogLevel,
 } = useSouthDriver(true, true)
 
+const { isShowDataStatistics, dataStatisticsVisiable, nodeItemData } = dataStatistics()
+
+const { showType } = useListShowType()
+
 const showDialog = ref(false)
+const addConfig = () => {
+  showDialog.value = true
+}
 
 const { toggleNodeStartStopStatus } = useToggleNodeStartStopStatus()
+const { countNodeStartStopStatus } = useNodeStartStopStatus()
+
 const setNodeStartStopStatus = async (node: DriverItemInList, status: boolean, nodeIndex: number) => {
   try {
     const ret = await toggleNodeStartStopStatus(node, status)
@@ -92,8 +196,9 @@ const setNodeStartStopStatus = async (node: DriverItemInList, status: boolean, n
   }
 }
 
-const addConfig = () => {
-  showDialog.value = true
+const getNodeValue = (node: DriverItemInList) => {
+  const useDriverStatusSet = useDriverStatus({ data: node })
+  return useDriverStatusSet
 }
 </script>
 
@@ -104,5 +209,10 @@ const addConfig = () => {
   .setup-item {
     margin-bottom: 24px;
   }
+}
+.img-debug-log {
+  margin-right: 8px;
+  position: relative;
+  top: 2px;
 }
 </style>

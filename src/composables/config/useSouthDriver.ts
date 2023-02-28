@@ -1,3 +1,4 @@
+import { useRouter } from 'vue-router'
 import { querySouthDriverList } from '@/api/config'
 import type { DriverItemInList, RawDriverData } from '@/types/config'
 import { NodeLinkState, NodeState } from '@/types/enums'
@@ -6,9 +7,15 @@ import { onUnmounted, ref } from 'vue'
 import usePaging from '../usePaging'
 import { useFillNodeListStatusData } from './useNodeList'
 import { debounce } from 'lodash'
+import useDeleteDriver from '@/composables/config/useDeleteDriver'
+import { useNodeDebugLogLevel } from '@/composables/config/useDriver'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
+  const router = useRouter()
+
   const { fillNodeListStatusData } = useFillNodeListStatusData()
+  const { deleteDriverByNode } = useDeleteDriver()
+  const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
 
   // before pagination and without status data, for select
   const totalSouthDriverList: Ref<Array<RawDriverData>> = ref([])
@@ -76,6 +83,28 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     }, 15 * 1000)
   }
 
+  const goGroupPage = (node: DriverItemInList) => {
+    router.push({
+      name: 'SouthDriverGroup',
+      params: {
+        node: node.name,
+      },
+    })
+  }
+
+  const goNodeConfig = (node: DriverItemInList) =>
+    router.push({ name: 'SouthDriverConfig', params: { node: node.name } })
+
+  const deleteDriver = async (node: DriverItemInList) => {
+    await deleteDriverByNode('driver', node)
+    dbGetSouthDriverList()
+  }
+
+  const modifyNodeLogLevel = async (node: DriverItemInList) => {
+    await modifyNodeLogLevelToDebug(node.name)
+    dbGetSouthDriverList()
+  }
+
   if (autoLoad) {
     getSouthDriverList()
   }
@@ -100,5 +129,9 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     isListLoading,
     getSouthDriverList,
     dbGetSouthDriverList,
+    goGroupPage,
+    goNodeConfig,
+    modifyNodeLogLevel,
+    deleteDriver,
   }
 }
