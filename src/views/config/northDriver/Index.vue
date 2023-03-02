@@ -72,7 +72,7 @@
                 @click.stop="modifyNodeLogLevel(row)"
               />
             </AComWithDesc>
-            <AComWithDesc v-if="!isSupportRemoveNode(row.name)" :content="$t('common.delete')">
+            <AComWithDesc v-if="!isNotSupportRemoveNode(row.name)" :content="$t('common.delete')">
               <i class="iconfont icondelete" @click.stop="deleteDriver(row)" />
             </AComWithDesc>
           </div>
@@ -139,7 +139,7 @@ const {
 } = useNorthDriver(true, true)
 
 const { isShowDataStatistics, dataStatisticsVisiable, nodeItemData } = dataStatistics()
-const { isSupportRemoveNode } = useDriverName()
+const { isNotSupportRemoveNode } = useDriverName()
 
 const { showType } = useListShowType()
 
