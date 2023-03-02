@@ -9,7 +9,7 @@
         <AComWithDesc :content="$t('config.dataStatistics')">
           <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(data)"></i>
         </AComWithDesc>
-        <AComWithDesc v-if="isSupportRemoveNode(data.name)" :content="$t('config.updateDebugLogLevel')">
+        <AComWithDesc v-if="isNotSupportRemoveNode(data.name)" :content="$t('config.updateDebugLogLevel')">
           <img
             class="img-debug-log-large"
             src="~@/assets/images/debug-log-icon.png"
@@ -130,7 +130,7 @@ const handleClickOperator = async (command: string) => {
   emit('reload')
 }
 
-const { isSupportRemoveNode } = useDriverName()
+const { isNotSupportRemoveNode } = useDriverName()
 </script>
 
 <style lang="scss" scoped>
