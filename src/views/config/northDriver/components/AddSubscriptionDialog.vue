@@ -8,25 +8,7 @@
   >
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
       <emqx-form-item prop="driver" :label="$t('config.southDevice')">
-        <AutoKeywordSearchInput
-          v-if="isMQTTPugin(nodePlugin(currentNode))"
-          v-model="subscriptionForm.driver"
-          :all-search-data="deviceList"
-          :getKeywordListFunc="filterSouthNodesByKeyword"
-          :trigger-on-focus="true"
-          :placeholder="$t('config.searchSouthDevicePlaceholder')"
-          class="auto-selector"
-          @select="autoSelectedNodeChanged"
-          @enter="autoSelectedNodeChanged"
-          @input="autoSelectedNodeChanged"
-          @clear="autoSelectedNodeChanged"
-        >
-          <template v-slot:content="{ item }">
-            <div class="item title">{{ item.name }}</div>
-          </template>
-        </AutoKeywordSearchInput>
         <emqx-select
-          v-else
           v-model="subscriptionForm.driver"
           filterable
           :placeholder="$t('common.pleaseSelect')"
@@ -66,7 +48,6 @@
 import { computed, defineProps, defineEmits, watch } from 'vue'
 import { ElDialog } from 'element-plus'
 import { useAddSubscription } from '@/composables/config/useSubscription'
-import AutoKeywordSearchInput from '@/components/AutoKeywordSearchInput.vue'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 
 const props = defineProps({
@@ -92,14 +73,12 @@ const {
   rules,
   subscriptionForm,
   deviceList,
-  filterSouthNodesByKeyword,
   groupList,
   isSubmitting,
 
   initForm,
   selectedNodeChanged,
   changeGroup,
-  autoSelectedNodeChanged,
   submitData,
 } = useAddSubscription(props)
 
