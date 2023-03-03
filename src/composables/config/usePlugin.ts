@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { sortBy } from 'lodash'
 import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
 import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
 import { createCommonErrorMessage } from '@/utils/utils'
@@ -57,6 +58,7 @@ export default () => {
           }
         })
       : []
+    pluginList.value = sortBy(pluginList.value, (plugin: CreatedPlugin) => plugin.name)
     isListLoading.value = false
   }
 
