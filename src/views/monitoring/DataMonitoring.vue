@@ -11,31 +11,16 @@
       <template v-slot:right>
         <div class="header-item search-group">
           <label class="label">{{ $t('config.southDevice') }}</label>
-          <!-- <emqx-select
+          <emqx-select
             v-model="currentGroup.node"
             size="medium"
             filterable
+            clearable
             class="filter-selector"
             @change="selectedNodeChanged"
           >
             <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
-          </emqx-select> -->
-          <AutoKeywordSearchInput
-            v-model="currentGroup.node"
-            :all-search-data="nodeList"
-            :getKeywordListFunc="filterSouthNodesByKeyword"
-            :trigger-on-focus="true"
-            :placeholder="$t('config.searchNodePlaceholder')"
-            @select="selectedNodeChanged"
-            @enter="selectedNodeChanged"
-            @input="selectedNodeChanged"
-            @clear="selectedNodeChanged"
-            class="header-item"
-          >
-            <template v-slot:content="{ item }">
-              <div class="item title">{{ item.name }}</div>
-            </template>
-          </AutoKeywordSearchInput>
+          </emqx-select>
         </div>
 
         <div class="header-item search-group">
@@ -43,6 +28,7 @@
           <emqx-select
             v-model="currentGroup.groupName"
             filterable
+            clearable
             size="medium"
             class="filter-selector"
             :placeholder="$t('common.pleaseSelect')"
@@ -131,7 +117,6 @@ import dateformat from 'dateformat'
 import { getErrorMsg } from '@/utils/utils'
 import WriteDialog from './components/WriteDialog.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
-import AutoKeywordSearchInput from '@/components/AutoKeywordSearchInput.vue'
 import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
 
 const {
@@ -151,7 +136,6 @@ const {
   getTableData,
   handleSizeChange,
   selectedNodeChanged,
-  filterSouthNodesByKeyword,
   selectedGroupChanged,
   dbGetTagList,
 } = useDataMonitoring()
