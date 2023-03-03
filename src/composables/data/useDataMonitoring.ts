@@ -10,6 +10,7 @@ import type { Ref } from 'vue'
 import { computed, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTagAttributeTypeSelect } from '../config/useAddTag'
+import { debounce } from 'lodash'
 
 export interface TagDataInTable extends TagDataInMonitoring {
   attribute: Array<number>
@@ -28,10 +29,11 @@ export default () => {
   const { totalSouthDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
-  let selectedGroup: undefined | { node: string; groupName: string }
-  const currentGroup: Ref<{ node: string | string; groupName: string }> = ref({
+  let selectedGroup: undefined | { node: string; groupName: string; name: string }
+  const currentGroup: Ref<{ node: string | string; groupName: string; name: string }> = ref({
     node: '',
     groupName: '',
+    name: '',
   })
   const currentNodeName = computed(() => {
     if (!currentGroup.value.node) {
@@ -90,7 +92,12 @@ export default () => {
     if (!selectedGroup?.node || !selectedGroup.groupName) {
       return {}
     }
-    const tags = await queryTagList({ node: selectedGroup?.node, group: selectedGroup.groupName })
+    const params = {
+      node: selectedGroup?.node,
+      group: selectedGroup.groupName,
+      name: selectedGroup.name,
+    }
+    const tags = await queryTagList(params)
     const tagNameMap: any[] = tags.map((item: TagForm) => {
       const { attribute, name, ...restData } = item
       return {
@@ -144,6 +151,29 @@ export default () => {
     }, 3000)
   }
 
+  const initTagList = async () => {
+    try {
+      const { node, groupName, name } = currentGroup.value
+      if (!node || !groupName) {
+        return
+      }
+
+      selectedGroup = { node, groupName, name }
+      tagMsgMap = await getTagDetail()
+      initPageController()
+      getTableData()
+
+      return Promise.resolve(true)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  // debounce
+  const dbGetTagList = debounce(() => {
+    initTagList()
+  }, 500)
+
   // change node
   const selectedNodeChanged = async (node: RawDriverData) => {
     if (node?.name) {
@@ -160,6 +190,7 @@ export default () => {
       }
     } else {
       currentGroup.value.groupName = ''
+      currentGroup.value.name = ''
       groupList.value = []
       totalData.value = []
       selectedGroup = undefined
@@ -175,15 +206,8 @@ export default () => {
 
   // change group
   const selectedGroupChanged = async () => {
-    const { node, groupName } = currentGroup.value
-    if (!node || !groupName) {
-      return
-    }
-
-    selectedGroup = { node, groupName }
-    tagMsgMap = await getTagDetail()
-    initPageController()
-    getTableData()
+    currentGroup.value.name = ''
+    await initTagList()
   }
 
   const handleSizeChange = (size: number) => {
@@ -240,6 +264,7 @@ export default () => {
     handleShowValueByHexadecimalChanged,
     canWrite,
     getTableData,
+    dbGetTagList,
     selectedNodeChanged,
     filterSouthNodesByKeyword,
     selectedGroupChanged,
