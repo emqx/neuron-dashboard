@@ -51,9 +51,15 @@
             <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
           </emqx-select>
         </div>
+        <KeywordSerachInput
+          v-model="currentGroup.name"
+          class="header-item search_input"
+          @input="dbGetTagList"
+          @clear="dbGetTagList"
+          @enter="dbGetTagList"
+        />
       </template>
     </ViewHeaderBar>
-
     <div class="table-container">
       <emqx-table :data="tableData" :empty-text="tableEmptyText">
         <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="100"></emqx-table-column>
@@ -126,6 +132,7 @@ import { getErrorMsg } from '@/utils/utils'
 import WriteDialog from './components/WriteDialog.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import AutoKeywordSearchInput from '@/components/AutoKeywordSearchInput.vue'
+import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
 
 const {
   nodeList,
@@ -146,6 +153,7 @@ const {
   selectedNodeChanged,
   filterSouthNodesByKeyword,
   selectedGroupChanged,
+  dbGetTagList,
 } = useDataMonitoring()
 const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
 const showWriteDialog = ref(false)
