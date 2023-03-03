@@ -11,6 +11,14 @@
   </emqx-row>
 </template>
 
+<script lang="ts" setup>
+import { defineProps } from 'vue'
+
+defineProps({
+  labelWidth: { type: String, default: '40px' },
+})
+</script>
+
 <style lang="scss" scoped>
 @import '@/styles/mixins.scss';
 
@@ -67,10 +75,10 @@
   :deep(.label) {
     display: inline-block;
     text-align: left;
-    min-width: 60px;
     color: #999;
     font-size: 14px;
-    line-height: 40px;
+    line-height: 36px;
+    min-width: v-bind(labelWidth);
   }
 }
 </style>
