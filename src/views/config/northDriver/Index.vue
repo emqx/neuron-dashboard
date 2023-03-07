@@ -47,7 +47,7 @@
           {{ getNodeValue(row).connectionStatusText.value }}
         </template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.plugin')" prop="plugin" />
+      <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable />
       <emqx-table-column align="left" :label="$t('common.oper')" width="220px">
         <template #default="{ row, index }">
           <div class="operator-wrap">
