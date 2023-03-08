@@ -46,12 +46,23 @@
         />
       </template>
     </ViewHeaderBar>
+
     <div class="table-container">
-      <emqx-table :data="tableData" :empty-text="tableEmptyText">
-        <emqx-table-column prop="tagName" :label="$t('common.name')" min-width="100"></emqx-table-column>
-        <emqx-table-column prop="address" :label="$t('config.address')" min-width="100"></emqx-table-column>
-        <emqx-table-column :label="$t('common.type')" width="90">
-          <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
+      <emqx-table :data="tableData" :empty-text="tableEmptyText" @sort-change="sortDataByKey">
+        <emqx-table-column
+          prop="tagName"
+          :label="$t('common.name')"
+          sortable="custom"
+          min-width="100"
+        ></emqx-table-column>
+        <emqx-table-column
+          prop="address"
+          :label="$t('config.address')"
+          sortable="custom"
+          min-width="100"
+        ></emqx-table-column>
+        <emqx-table-column :label="$t('common.type')" width="90" sortable="custom" prop="typeLabel">
+          <template #default="{ row }">{{ row.typeLabel }}</template>
         </emqx-table-column>
         <emqx-table-column :label="$t('config.decimal')">
           <template #default="{ row }">{{ tagDecimalValue(row.decimal) }}</template>
@@ -112,7 +123,7 @@ import { ref } from 'vue'
 import { ElPopover } from 'element-plus'
 import type { TagDataInTable } from '@/composables/data/useDataMonitoring'
 import useDataMonitoring from '@/composables/data/useDataMonitoring'
-import { useTagTypeSelect, useTagDecimal } from '@/composables/config/useAddTag'
+import { useTagDecimal } from '@/composables/config/useAddTag'
 import dateformat from 'dateformat'
 import { getErrorMsg } from '@/utils/utils'
 import WriteDialog from './components/WriteDialog.vue'
@@ -138,8 +149,9 @@ const {
   selectedNodeChanged,
   selectedGroupChanged,
   dbGetTagList,
+  sortDataByKey,
 } = useDataMonitoring()
-const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
+
 const showWriteDialog = ref(false)
 const currentTag: Ref<undefined | TagDataInTable> = ref(undefined)
 
