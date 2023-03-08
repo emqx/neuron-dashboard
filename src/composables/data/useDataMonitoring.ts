@@ -5,16 +5,17 @@ import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 import type { GroupData, TagForm } from '@/types/config'
 import type { TagDataInMonitoring } from '@/types/data'
 import { TagAttributeType, TagType } from '@/types/enums'
-import { paginate } from '@/utils/utils'
+import { paginate, listOrderByKey } from '@/utils/utils'
 import type { Ref } from 'vue'
 import { computed, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useTagAttributeTypeSelect } from '../config/useAddTag'
-import { debounce } from 'lodash'
+import { useTagAttributeTypeSelect, useTagTypeSelect } from '../config/useAddTag'
+import { debounce, cloneDeep } from 'lodash'
 
 export interface TagDataInTable extends TagDataInMonitoring {
   attribute: Array<number>
   type: number
+  typeLabel: string
   tagName: string
   valueToShow: string
   address: string
@@ -29,11 +30,17 @@ export default () => {
   const { totalSouthDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
 
+  const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
+
   let selectedGroup: undefined | { node: string; groupName: string; name: string }
   const currentGroup: Ref<{ node: string | string; groupName: string; name: string }> = ref({
     node: '',
     groupName: '',
     name: '',
+  })
+  const sortBy = ref({
+    prop: '',
+    order: '',
   })
   const currentNodeName = computed(() => {
     if (!currentGroup.value.node) {
@@ -49,6 +56,7 @@ export default () => {
     total: 0,
   })
   const totalData: Ref<Array<TagDataInTable>> = ref([])
+  const totalDataBackup: Ref<Array<TagDataInTable>> = ref([])
   const showValueByHexadecimal = ref(false)
   let tagMsgMap: Record<string, any> = {}
   let pollTimer: undefined | number
@@ -69,6 +77,23 @@ export default () => {
   const tableData = computed(() => {
     return paginate(totalData.value, pageController.value.size, pageController.value.num)
   })
+
+  const sortDataByKey = (data: { prop: string | null; order: string | null }) => {
+    const { prop, order } = data
+
+    if (order && prop) {
+      const sortByOrder = order.includes('asc') ? 'asc' : 'desc'
+      sortBy.value.order = sortByOrder
+      sortBy.value.prop = prop
+      totalData.value = listOrderByKey(totalData.value, prop, sortByOrder)
+    } else {
+      sortBy.value = {
+        order: '',
+        prop: '',
+      }
+      totalData.value = cloneDeep(totalDataBackup.value)
+    }
+  }
 
   const reSubAfterReturnError = async () => {
     const { groupName, lastTimestamp, count } = reSubCount
@@ -118,8 +143,9 @@ export default () => {
       const { data } = await getMonitoringData(currentNodeName.value, currentGroup.value.groupName)
       updated.value = Date.now()
       totalData.value = (tagMsgMap || []).map((item: any) => {
-        const tag = data.tags.find((readTagItem) => readTagItem.name === item.tagName)
+        item.typeLabel = findTagTypeLabelByValue(item.type)
 
+        const tag = data.tags.find((readTagItem) => readTagItem.name === item.tagName)
         // in the tag list，if the 'read' API does not return a tag, set its 'value' to '-'
         const ret = tag ? { ...tag, ...item } : { name: item.tagName, ...item, value: '-' }
         if (!('value' in ret) || ret?.value === undefined) {
@@ -127,8 +153,13 @@ export default () => {
         }
         return ret
       })
-      handleShowValueByHexadecimalChanged()
+
       pageController.value.total = totalData.value.length
+      await handleShowValueByHexadecimalChanged()
+
+      totalDataBackup.value = cloneDeep(totalData.value)
+      sortDataByKey(sortBy.value)
+
       startPoll()
     } catch (error: any) {
       if (error?.response?.data?.error === 2014) {
@@ -182,6 +213,7 @@ export default () => {
         currentGroup.value.groupName = ''
         selectedGroup = undefined
         totalData.value = []
+
         const data = await queryGroupList(currentGroup.value.node.toString())
         groupList.value = data
       } catch (error) {
@@ -233,9 +265,14 @@ export default () => {
   }
 
   const handleShowValueByHexadecimalChanged = () => {
-    totalData.value.forEach(async (item) => {
-      item.valueToShow = await valueToShow(item)
-    })
+    try {
+      totalData.value.forEach(async (item) => {
+        item.valueToShow = await valueToShow(item)
+      })
+      return Promise.resolve(totalData.value)
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 
   const canWrite = (item: TagDataInTable) => {
@@ -267,5 +304,6 @@ export default () => {
     selectedNodeChanged,
     selectedGroupChanged,
     handleSizeChange,
+    sortDataByKey,
   }
 }

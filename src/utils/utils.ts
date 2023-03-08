@@ -2,7 +2,7 @@ import i18n from '@/i18n/index'
 import { ERROR_CODE_ARR } from './constants'
 import { utils as XLSXUtils, writeFile } from 'xlsx'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import { omit } from 'lodash'
+import { omit, cloneDeep, orderBy } from 'lodash'
 
 /**
  * when the value is int, can use this func to create option list
@@ -155,4 +155,12 @@ export const formatMemory = (memory: number, type?: string): string => {
     ['tb', handleMemory(memory, ty)],
   ])
   return dataMap.get(ty) || ''
+}
+
+export const listOrderByKey = (list: Array<any>, prop: string, order: 'asc' | 'desc') => {
+  if (!list.length) return []
+
+  const data = cloneDeep(list)
+  const sortList = orderBy(data, [prop], [order])
+  return sortList
 }
