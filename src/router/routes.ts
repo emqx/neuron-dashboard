@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/configuration/north-driver',
+    redirect: '/configuration/south-driver',
   },
   /** Overview */
   // {
