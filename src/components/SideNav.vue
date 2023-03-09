@@ -99,7 +99,7 @@ const navList = computed(() => {
         },
         {
           to: '/configuration/plugin',
-          label: 'config.pluginManagement',
+          label: 'config.plugin',
         },
       ],
     },
