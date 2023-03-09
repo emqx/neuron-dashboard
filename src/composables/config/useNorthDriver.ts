@@ -6,9 +6,11 @@ import type { Ref } from 'vue'
 import { ref, onUnmounted, computed } from 'vue'
 import { useFillNodeListStatusData } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
-import { debounce } from 'lodash'
+import { debounce, cloneDeep } from 'lodash'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useNodeDebugLogLevel } from '@/composables/config/useDriver'
+import { listOrderByKey } from '@/utils/utils'
+import { statusTextMap, connectionStatusTextMap } from '@/utils/driver'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
   const router = useRouter()
@@ -19,7 +21,13 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
 
   const northDriverList: Ref<Array<DriverItemInList>> = ref([])
+  const northDriverListBackup: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
+
+  const sortBy = ref({
+    prop: '',
+    order: '',
+  })
 
   let refreshStatusTimer: undefined | number
 
@@ -39,6 +47,8 @@ export default (autoLoad = true, needRefreshStatus = false) => {
           }),
         ),
       )
+      northDriverListBackup.value = cloneDeep(northDriverList.value)
+
       isListLoading.value = false
       return Promise.resolve(northDriverList.value)
     } catch (error) {
@@ -54,6 +64,38 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     refreshStatusTimer = window.setInterval(async () => {
       northDriverList.value = await fillNodeListStatusData(northDriverList.value)
     }, 15 * 1000)
+  }
+
+  /** sort by name, status, connection status, plugin
+   * To resolve node status(setInterval) sort in different lang
+   */
+  const i18nNodeStatus = (node: Array<DriverItemInList>) => {
+    const list: Array<DriverItemInList> = node.map((item: DriverItemInList) => {
+      return {
+        ...item,
+        statusText: statusTextMap[item.running],
+        connectionStatusText: connectionStatusTextMap[item.link],
+      }
+    })
+    return list
+  }
+  const sortDataByKey = async (data: { prop: string | null; order: string | null }) => {
+    const { prop, order } = data
+
+    if (order && prop) {
+      const sortByOrder = order.includes('asc') ? 'asc' : 'desc'
+      sortBy.value.order = sortByOrder
+      sortBy.value.prop = prop
+
+      const totalList: Array<DriverItemInList> = i18nNodeStatus(northDriverList.value)
+      northDriverList.value = listOrderByKey(totalList, prop, sortByOrder)
+    } else {
+      sortBy.value = {
+        order: '',
+        prop: '',
+      }
+      northDriverList.value = cloneDeep(northDriverListBackup.value)
+    }
   }
 
   const goGroupPage = (node: DriverItemInList) => {
@@ -103,5 +145,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     goNodeConfig,
     modifyNodeLogLevel,
     deleteDriver,
+    sortDataByKey,
   }
 }

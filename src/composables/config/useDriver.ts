@@ -2,31 +2,16 @@ import { useStore } from 'vuex'
 import { sendCommandToNode, updateNodeLogLevelToDebug } from '@/api/config'
 import { getStatisticByType } from '@/api/statistics'
 import type { DriverItemInList } from '@/types/config'
-import { DriverDirection, NodeLinkState, NodeOperationCommand, NodeState } from '@/types/enums'
+import { DriverDirection, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { computed, ref, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import { statusIconClassMap, statusTextMap, connectionStatusTextMap } from '@/utils/driver'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
   const { t } = useI18n()
-  const statusIconClassMap = {
-    [NodeState.Init]: 'iconinit',
-    [NodeState.Ready]: 'iconready',
-    [NodeState.Running]: 'iconrunning',
-    [NodeState.Stopped]: 'iconstopped',
-  }
-  const statusTextMap = {
-    [NodeState.Init]: 'config.init',
-    [NodeState.Ready]: 'config.ready',
-    [NodeState.Running]: 'config.running',
-    [NodeState.Stopped]: 'config.stopped',
-  }
-  // [NodeLinkState.Connecting]: 'config.connecting',
-  const connectionStatusTextMap = {
-    [NodeLinkState.Disconnected]: 'config.disconnected',
-    [NodeLinkState.Connected]: 'config.connected',
-  }
+
   const statusIcon = computed(() => statusIconClassMap[props.data.running])
   const statusText = computed(() => t(`${statusTextMap[props.data.running]}`) || '-')
   const connectionStatusText = computed(() => t(`${connectionStatusTextMap[props.data.link]}`))
