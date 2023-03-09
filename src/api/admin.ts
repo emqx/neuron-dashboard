@@ -37,5 +37,6 @@ export const downloadLogs = (): Promise<AxiosResponse<any>> => {
     url: '/logs',
     method: 'get',
     responseType: 'blob',
+    timeout: 1800000,
   })
 }
