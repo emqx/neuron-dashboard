@@ -24,8 +24,13 @@
       </emqx-row>
     </ul>
 
-    <emqx-table v-if="showType === 'list'" :data="northDriverList" :empty-text="$t('common.emptyData')">
-      <emqx-table-column :label="$t('common.name')" prop="name" sortable show-overflow-tooltip>
+    <emqx-table
+      v-if="showType === 'list'"
+      :data="northDriverList"
+      :empty-text="$t('common.emptyData')"
+      @sort-change="sortDataByKey"
+    >
+      <emqx-table-column :label="$t('common.name')" prop="name" sortable="custom" show-overflow-tooltip>
         <template #default="{ row }">
           <el-link type="primary" :underline="false" href="javascript:;" @click="goGroupPage(row)">
             {{ row.name }}
@@ -33,7 +38,7 @@
         </template>
       </emqx-table-column>
       <!--  workStatus-->
-      <emqx-table-column :label="$t('config.workStatus')" prop="running" sortable>
+      <emqx-table-column :label="$t('config.workStatus')" prop="statusText" sortable="custom">
         <template #default="{ row }">
           <svg class="iconfont icon-svg" aria-hidden="true">
             <use :xlink:href="`#${getNodeValue(row).statusIcon.value}`" />
@@ -42,12 +47,17 @@
         </template>
       </emqx-table-column>
       <!-- connectionStatus -->
-      <emqx-table-column :label="$t('config.connectionStatus')" prop="link" sortable min-width="90">
+      <emqx-table-column
+        :label="$t('config.connectionStatus')"
+        prop="connectionStatusText"
+        sortable="custom"
+        min-width="90"
+      >
         <template #default="{ row }">
           {{ getNodeValue(row).connectionStatusText.value }}
         </template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable />
+      <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable="custom" />
       <emqx-table-column align="left" :label="$t('common.oper')" width="220px">
         <template #default="{ row, index }">
           <div class="operator-wrap">
@@ -136,6 +146,7 @@ const {
   goNodeConfig,
   modifyNodeLogLevel,
   deleteDriver,
+  sortDataByKey,
 } = useNorthDriver(true, true)
 
 const { isShowDataStatistics, dataStatisticsVisiable, nodeItemData } = dataStatistics()

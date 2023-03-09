@@ -63,6 +63,8 @@ export type DriverItemInList = Merge<
   {
     pluginKind?: PluginKind
     plugin: string
+    statusText?: string
+    connectionStatusText?: string
   }
 >
 

@@ -6,9 +6,11 @@ import type { Ref } from 'vue'
 import { onUnmounted, ref } from 'vue'
 import usePaging from '../usePaging'
 import { useFillNodeListStatusData } from './useNodeList'
-import { debounce } from 'lodash'
+import { debounce, cloneDeep } from 'lodash'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
 import { useNodeDebugLogLevel } from '@/composables/config/useDriver'
+import { listOrderByKey } from '@/utils/utils'
+import { statusTextMap, connectionStatusTextMap } from '@/utils/driver'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
   const router = useRouter()
@@ -19,6 +21,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
 
   // before pagination and without status data, for select
   const totalSouthDriverList: Ref<Array<RawDriverData>> = ref([])
+  const totalSouthDriverListBackup: Ref<Array<RawDriverData>> = ref([])
   // after pagination, for show in list page
   const southDriverList: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
@@ -33,6 +36,11 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const queryKeyword = ref({
     node: '',
     plugin: '',
+  })
+
+  const sortBy = ref({
+    prop: '',
+    order: '',
   })
 
   let refreshStatusTimer: undefined | number
@@ -60,6 +68,8 @@ export default (autoLoad = true, needRefreshStatus = false) => {
         }
       })
       totalSouthDriverList.value = totalList
+      totalSouthDriverListBackup.value = cloneDeep(totalSouthDriverList.value)
+
       setTotalData(totalList)
       await getAPageTagData()
     } finally {
@@ -70,6 +80,45 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const dbGetSouthDriverList = debounce(() => {
     getSouthDriverList()
   }, 500)
+
+  /** sort by name, status, connection status, plugin
+   * To resolve node status(setInterval) sort in different lang
+   */
+  const i18nNodeStatus = (node: Array<DriverItemInList>) => {
+    const list: Array<DriverItemInList> = node.map((item: DriverItemInList) => {
+      return {
+        ...item,
+        statusText: statusTextMap[item.running],
+        connectionStatusText: connectionStatusTextMap[item.link],
+      }
+    })
+    return list
+  }
+  const sortDataByKey = async (data: { prop: string | null; order: string | null }) => {
+    const { prop, order } = data
+
+    if (order && prop) {
+      const sortByOrder = order.includes('asc') ? 'asc' : 'desc'
+      sortBy.value.order = sortByOrder
+      sortBy.value.prop = prop
+
+      let totalList: Array<DriverItemInList> = await fillNodeListStatusData(totalSouthDriverList.value)
+      totalList = i18nNodeStatus(totalList)
+      totalList = listOrderByKey(totalList, prop, sortByOrder)
+
+      totalSouthDriverList.value = totalList
+      setTotalData(totalList)
+      await getAPageTagData()
+    } else {
+      sortBy.value = {
+        order: '',
+        prop: '',
+      }
+      totalSouthDriverList.value = cloneDeep(totalSouthDriverListBackup.value)
+      setTotalData(totalSouthDriverList.value)
+      await getAPageTagData()
+    }
+  }
 
   const handleSizeChange = (size: number) => {
     pageController.value.pageSize = size
@@ -133,5 +182,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     goNodeConfig,
     modifyNodeLogLevel,
     deleteDriver,
+    sortDataByKey,
   }
 }
