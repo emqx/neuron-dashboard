@@ -136,12 +136,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/configuration/plugin',
     name: 'Plugin',
-    meta: { title: 'config.pluginManagement' },
+    meta: { title: 'config.plugin' },
     component: Home,
     children: [
       {
         path: '',
-        name: 'PluginManagement',
+        name: 'Plugin',
         component: () => import('@/views/config/plugin/Index.vue'),
         meta: { hiddenBreadcrumb: true },
       },
