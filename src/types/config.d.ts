@@ -135,6 +135,7 @@ interface TagRegex {
 export interface PluginInfo {
   tag_type: Array<TagType>
   tag_regex: Array<TagRegex>
+  group_interval: number | null
   // TODO: delete params after api changed
   params: Array<string>
   /**

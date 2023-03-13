@@ -58,7 +58,8 @@ const props = defineProps({
   isEdit: { type: Boolean, deafult: false },
 })
 
-const { formCom, groupForm, isSubmitting, groupFormRules, resetFields, submitForm, initForm } = useAddGroup()
+const { formCom, groupForm, isSubmitting, groupFormRules, resetFields, submitForm, initForm, getPluginConfigInfo } =
+  useAddGroup()
 
 const showDialog = computed({
   get: () => props.modelValue,
@@ -81,9 +82,12 @@ watch(showDialog, async (val) => {
     resetFields()
     initForm()
   } else if (props.group) {
+    // edit group
     groupForm.value = props.group
   } else if (props.currentNode) {
+    // create group
     groupForm.value.node = props.currentNode
+    getPluginConfigInfo()
   }
 })
 
