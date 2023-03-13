@@ -69,7 +69,7 @@
                 @click.stop="setNodeStartStopStatus(row, !countNodeStartStopStatus(row), index)"
               />
             </AComWithDesc>
-            <AComWithDesc :content="$t('config.deviceConfig')">
+            <AComWithDesc :content="$t('config.appConfig')">
               <i class="iconfont iconsetting" @click.stop="goNodeConfig(row)" />
             </AComWithDesc>
             <AComWithDesc :content="$t('config.dataStatistics')">
