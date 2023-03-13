@@ -45,7 +45,9 @@
         v-if="showType === 'list'"
         :data="southDriverList"
         :empty-text="$t('common.emptyData')"
+        :row-class-name="'table-row-click'"
         @sort-change="sortDataByKey"
+        @row-click="goGroupPage"
       >
         <emqx-table-column :label="$t('common.name')" prop="name" sortable="custom" show-overflow-tooltip>
           <template #default="{ row }">
@@ -84,7 +86,7 @@
               <AComWithDesc :content="countNodeStartStopStatus(row) ? $t('common.stop') : $t('common.start')">
                 <i
                   :class="countNodeStartStopStatus(row) ? 'el-icon-video-pause' : 'el-icon-video-play'"
-                  @click="setNodeStartStopStatus(row, !countNodeStartStopStatus(row), index)"
+                  @click.stop="setNodeStartStopStatus(row, !countNodeStartStopStatus(row), index)"
                 />
               </AComWithDesc>
               <AComWithDesc :content="$t('config.deviceConfig')">

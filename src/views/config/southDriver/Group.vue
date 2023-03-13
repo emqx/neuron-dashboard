@@ -55,32 +55,40 @@
       </div>
     </div>
 
-    <emqx-table :data="groupList" :empty-text="$t('common.emptyData')">
+    <emqx-table
+      :data="groupList"
+      :empty-text="$t('common.emptyData')"
+      :row-class-name="'table-row-click'"
+      @row-click="goTagPage"
+    >
       <emqx-table-column :width="28">
         <template #header>
           <emqx-checkbox v-model="allChecked" />
         </template>
         <template #default="{ row }">
-          <emqx-checkbox v-model="row.checked" />
+          <emqx-checkbox v-model="row.checked" @click.stop="() => {}" />
         </template>
       </emqx-table-column>
       <emqx-table-column :label="$t('common.No')" :width="60">
         <template #default="{ index }">{{ index + 1 }}</template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.groupName')" prop="name"></emqx-table-column>
+      <emqx-table-column :label="$t('config.groupName')" prop="name">
+        <template #default="{ row }">
+          <el-link type="primary" :underline="false" href="javascript:;" @click.stop="goTagPage(row)">
+            {{ row.name }}
+          </el-link>
+        </template>
+      </emqx-table-column>
       <emqx-table-column :label="$t('config.tagCounts')" prop="tag_count"></emqx-table-column>
       <emqx-table-column :label="$t('config.interval')" prop="interval"></emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <div class="operator-wrap">
             <AComWithDesc :content="$t('common.edit')">
-              <i class="el-icon-edit-outline" @click="operatorGroup(row, true)" />
-            </AComWithDesc>
-            <AComWithDesc :content="$t('config.tagList')">
-              <i class="el-icon-price-tag icon-tag" @click="goTagPage(row)" />
+              <i class="el-icon-edit-outline" @click.stop="operatorGroup(row, true)" />
             </AComWithDesc>
             <AComWithDesc :content="$t('common.delete')">
-              <i class="iconfont icondelete" @click="delGroup(row)" />
+              <i class="iconfont icondelete" @click.stop="delGroup(row)" />
             </AComWithDesc>
           </div>
         </template>
@@ -155,8 +163,6 @@ const goTagPage = ({ name }: GroupData) => {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/styles/mixins.scss';
-
 .driver-name {
   margin-right: 22px;
 }
@@ -165,9 +171,6 @@ const goTagPage = ({ name }: GroupData) => {
     margin-right: 32px;
   }
 }
-// .icon-edit {
-//   margin-left: 8px;
-// }
 
 .uploader-tag,
 .export-tags--btn {
@@ -181,14 +184,5 @@ const goTagPage = ({ name }: GroupData) => {
 .btn-download-temp {
   font-weight: normal;
   border: none;
-}
-
-.operator-wrap {
-  @include display-flex();
-
-  .icon-tag {
-    font-size: 18px !important;
-    transform: rotate(45deg);
-  }
 }
 </style>
