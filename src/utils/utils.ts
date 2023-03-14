@@ -114,3 +114,23 @@ export const OmitArrayFields = (list: any, params: string[]) => {
   const res = list.map((item: any) => omit(item, params))
   return res
 }
+
+export const dataType = (value: any) => {
+  const valueType = Object.prototype.toString.call(value)
+  const mapData = new Map([
+    ['[object String]', 'string'],
+    ['[object Number]', 'number'],
+    ['[object Boolean]', 'boolean'],
+    ['[object Undefined]', 'undefined'],
+    ['[object Object]', 'object'],
+    ['[object Array]', 'array'],
+    ['[object Null]', 'null'],
+    ['[object RegExp]', 'RegExp'],
+    ['[object Symbol]', 'symbol'],
+    ['[object JSON]', 'json'],
+    ['[object Math]', 'math'],
+    ['[object Blob]', 'blob'],
+    ['default', 'object'],
+  ])
+  return mapData.get(valueType) || mapData.get('default')
+}
