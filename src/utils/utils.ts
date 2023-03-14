@@ -164,3 +164,23 @@ export const listOrderByKey = (list: Array<any>, prop: string, order: 'asc' | 'd
   const sortList = orderBy(data, [prop], [order])
   return sortList
 }
+
+export const dataType = (value: any) => {
+  const valueType = Object.prototype.toString.call(value)
+  const mapData = new Map([
+    ['[object String]', 'string'],
+    ['[object Number]', 'number'],
+    ['[object Boolean]', 'boolean'],
+    ['[object Undefined]', 'undefined'],
+    ['[object Object]', 'object'],
+    ['[object Array]', 'array'],
+    ['[object Null]', 'null'],
+    ['[object RegExp]', 'RegExp'],
+    ['[object Symbol]', 'symbol'],
+    ['[object JSON]', 'json'],
+    ['[object Math]', 'math'],
+    ['[object Blob]', 'blob'],
+    ['default', 'object'],
+  ])
+  return mapData.get(valueType) || mapData.get('default')
+}
