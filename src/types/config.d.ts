@@ -165,8 +165,14 @@ export interface TagForm {
   attribute: number | undefined
   type: number | null
   description: string
-  precision?: number
-  decimal?: number
+  precision?: number | undefined
+  decimal?: number | null
+}
+export interface TagFormItem extends TagForm {
+  id: string
+}
+export interface AddTagForm {
+  tagList: Array<TagFormItem>
 }
 
 export interface TagData extends TagForm {

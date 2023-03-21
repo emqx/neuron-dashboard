@@ -1,5 +1,5 @@
 import { addTag, queryPluginConfigInfo } from '@/api/config'
-import type { PluginInfo, TagForm } from '@/types/config'
+import type { PluginInfo, TagFormItem, AddTagForm } from '@/types/config'
 import { DriverDirection, TagAttributeType, TagType } from '@/types/enums'
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
-import { createRandomString, getErrorMsg, jumpToFirstErrorFormItem, popUpErrorMessage } from '@/utils/utils'
+import { createRandomString, getErrorMsg, popUpErrorMessage } from '@/utils/utils'
 import { useNodeMsgMap } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 
@@ -124,10 +124,6 @@ export const useTagDecimal = () => {
   }
 }
 
-interface TagFormItem extends TagForm {
-  id: string
-}
-
 export default () => {
   const route = useRoute()
   const router = useRouter()
@@ -140,11 +136,16 @@ export default () => {
     type: null,
     // for the key when use v-for
     id: createRandomString(6),
+    decimal: null,
     description: '',
+    precision: undefined,
   })
 
   const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])
   const tagList: Ref<Array<TagFormItem>> = ref([createRawTagForm()])
+  const formData: Ref<AddTagForm> = ref({
+    tagList: tagList.value,
+  })
   const isSubmitting = ref(false)
 
   const node = computed(() => route.params.node.toString())
@@ -169,6 +170,7 @@ export default () => {
     }
   }
 
+  const tagFormRef = ref()
   const setFormRef = (com: typeof TagFormCom) => {
     if (com) {
       tagFormComList.value.push(com)
@@ -176,11 +178,11 @@ export default () => {
   }
 
   const addTagItem = () => {
-    tagList.value.push(createRawTagForm())
+    formData.value.tagList.push(createRawTagForm())
   }
 
   const deleteTagItem = (index: number) => {
-    tagList.value.splice(index, 1)
+    formData.value.tagList.splice(index, 1)
   }
 
   const handlePartialSuc = (errIndex: number, errorNum: number) => {
@@ -189,31 +191,23 @@ export default () => {
       return
     }
     EmqxMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
-    tagList.value = tagList.value.slice(errIndex)
+    formData.value.tagList = formData.value.tagList.slice(errIndex)
   }
 
   const submit = async () => {
-    let pass = true
-    try {
-      await Promise.all(tagFormComList.value.map((com: typeof TagFormCom) => com.validate()))
-    } catch (error) {
-      pass = false
-      jumpToFirstErrorFormItem()
-    }
-    if (!pass) {
-      return
-    }
     try {
       isSubmitting.value = true
+      await tagFormRef.value.validate()
       const nodeName = route.params.node.toString()
       const groupName: string = route.params.group as string
-      const tags = tagList.value.map(({ id, ...tagData }) => tagData)
+      const tags = formData.value.tagList.map(({ id, ...tagData }) => tagData)
       await addTag({ tags, node: nodeName, group: groupName })
       EmqxMessage.success(t('common.createSuccess'))
       router.push({
         name: 'SouthDriverGroupTag',
       })
     } catch (error: any) {
+      console.error(error)
       const { data = {} } = error
       if (data.error !== 0 && data.index !== undefined) {
         handlePartialSuc(data.index, data.error)
@@ -230,12 +224,13 @@ export default () => {
   getNodePluginInfo()
   return {
     nodePluginInfo,
-    tagList,
+    formData,
     isSubmitting,
 
     createRawTagForm,
     addTagItem,
     deleteTagItem,
+    tagFormRef,
     setFormRef,
     cancel,
     submit,

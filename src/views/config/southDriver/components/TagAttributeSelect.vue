@@ -1,5 +1,5 @@
 <template>
-  <emqx-select v-model="selectedValue" multiple :placeholder="$t('common.pleaseSelect')">
+  <emqx-select v-model="selectedValue" multiple :collapse-tags="collapseTags" :placeholder="$t('common.pleaseSelect')">
     <emqx-option v-for="item in tagAttributeTypeOptList" :key="item.value" :label="item.label" :value="item.value" />
   </emqx-select>
 </template>
@@ -10,6 +10,7 @@ import { useTagAttributeTypeSelect } from '@/composables/config/useAddTag'
 
 const props = defineProps({
   modelValue: { type: [Number] },
+  collapseTags: { type: Boolean, default: false },
 })
 const emit = defineEmits(['update:modelValue'])
 
