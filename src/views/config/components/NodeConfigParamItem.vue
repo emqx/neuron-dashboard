@@ -131,14 +131,14 @@ const clearFile = () => {
   inputValue.value = ''
 }
 
-const showLabel = () => upperFirstLetter(props.paramInfo?.name || '')
-
 const upperFirstLetter = (str: string) => {
   if (/^[a-z]/.test(str)) {
     return str.slice(0, 1).toUpperCase() + str.slice(1)
   }
   return str
 }
+
+const showLabel = () => upperFirstLetter(props.paramInfo?.name || '')
 
 const fileContentPreview = md5
 </script>

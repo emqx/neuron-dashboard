@@ -41,6 +41,7 @@ export default (props: Props) => {
   const getNodeConfig = async () => {
     try {
       const { data } = await queryNodeConfig(node.value)
+
       if (data && data?.params && typeof data.params === 'object') {
         configuredData.value = data.params
       }
@@ -159,6 +160,7 @@ export default (props: Props) => {
   const submit = async () => {
     try {
       await formCom.value.validate()
+
       isSubmitting.value = true
       // delete `tag_regex`
       const { tag_regex } = configForm.value
