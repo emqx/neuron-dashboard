@@ -29,6 +29,12 @@
         </emqx-form-item>
       </emqx-col>
 
+      <emqx-col v-if="isAttrsIncludeTheValue(form.attribute, TagAttributeType.Static)" :span="12">
+        <emqx-form-item :label="$t('config.tagValue')" prop="value" required>
+          <emqx-input v-model.trim="form.value" />
+        </emqx-form-item>
+      </emqx-col>
+
       <emqx-col v-if="isShowPrecisionField(form.type)" :span="12">
         <emqx-form-item :label="$t('config.precision')" prop="precision">
           <emqx-input-number v-model="form.precision" :min="0" :max="17" controls-position="right" />
@@ -53,10 +59,11 @@
 <script lang="ts" setup>
 import type { PropType, WritableComputedRef } from 'vue'
 import { defineExpose, computed, defineProps, defineEmits } from 'vue'
-import { useTagPrecision } from '@/composables/config/useAddTag'
+import { useTagPrecision, useTagAttributeTypeSelect } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
 import type { PluginInfo, TagForm } from '@/types/config'
 import useTagForm from '@/composables/config/useTagForm'
+import { TagAttributeType } from '@/types/enums'
 
 const props = defineProps({
   data: {
@@ -75,6 +82,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const { formCom, tagTypeOptListAfterFilter, rules, validate, resetFields } = useTagForm(props)
 const { isShowPrecisionField } = useTagPrecision()
+const { isAttrsIncludeTheValue } = useTagAttributeTypeSelect()
 
 const form: WritableComputedRef<TagForm> = computed({
   get() {

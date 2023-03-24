@@ -52,6 +52,23 @@
         </template>
       </el-table-column>
 
+      <!-- value -->
+      <el-table-column width="110" :rules="rules.value" required>
+        <template #header>
+          <span class="thead-title">{{ $t('config.tagValue') }}</span>
+        </template>
+        <template #default="{ row, $index }">
+          <el-form-item :prop="`tagList.${$index}.value`" :rules="rules.value" required>
+            <emqx-input
+              v-if="isAttrsIncludeTheValue(row.attribute, TagAttributeType.Static)"
+              v-model="row.value"
+              type="text"
+            />
+            <span v-else>-</span>
+          </el-form-item>
+        </template>
+      </el-table-column>
+
       <el-table-column :label="$t('config.desc')" width="120">
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.description`">
@@ -103,10 +120,11 @@
 import type { PropType, WritableComputedRef } from 'vue'
 import { defineExpose, computed, defineProps, defineEmits } from 'vue'
 import { ElTable, ElForm, ElFormItem, ElTableColumn } from 'element-plus'
-import { useTagPrecision } from '@/composables/config/useAddTag'
+import { useTagPrecision, useTagAttributeTypeSelect } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
 import type { PluginInfo, AddTagListForm, TagFormItem } from '@/types/config'
 import useTagForm from '@/composables/config/useTagForm'
+import { TagAttributeType } from '@/types/enums'
 
 const props = defineProps({
   data: {
@@ -125,6 +143,7 @@ const emit = defineEmits(['update:modelValue', 'deleteTagItem'])
 
 const { formCom, tagTypeOptListAfterFilter, rules, validate, resetFields } = useTagForm(props)
 const { isShowPrecisionField } = useTagPrecision()
+const { isAttrsIncludeTheValue } = useTagAttributeTypeSelect()
 
 const formData: WritableComputedRef<AddTagListForm> = computed({
   get() {

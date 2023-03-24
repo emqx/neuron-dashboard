@@ -167,6 +167,7 @@ export interface TagForm {
   description: string
   precision?: number | undefined
   decimal?: number | null
+  value?: string | undefined
 }
 export interface TagFormItem extends TagForm {
   id: string

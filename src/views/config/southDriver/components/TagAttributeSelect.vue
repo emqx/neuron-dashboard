@@ -23,7 +23,8 @@ const selectedValue = computed({
     return tagAttrValueMap[props.modelValue as keyof typeof tagAttrValueMap]
   },
   set(val: Array<number>) {
-    const value = Object.keys(tagAttrValueMap).find(
+    const keys = Object.keys(tagAttrValueMap)
+    const value = keys.find(
       (total) =>
         tagAttrValueMap[Number(total) as keyof typeof tagAttrValueMap].join(',') ===
         val.sort((a, b) => a - b).join(','),
