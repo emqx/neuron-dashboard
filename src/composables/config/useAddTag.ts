@@ -38,8 +38,11 @@ export const useTagAttributeTypeSelect = () => {
       label: TagAttributeType[key as keyof typeof TagAttributeType],
     }))
 
-  // 1, 2, 4
-  // Possible values are 1, 2, 3, 4, 5, 6, 7
+  /** Tag `attribute` possible value
+   *  Options: 1, 2, 4, 8
+   *  key-value: 'value' is selected values; 'key' is the cumulative of values;
+   *  For example, 6: [2, 4], means that the the currently selected values are 2, 4, then the `key` is the sum of 2 and 4, i.e. 6.
+   */
   const tagAttrValueMap = {
     1: [1],
     2: [2],
@@ -48,6 +51,14 @@ export const useTagAttributeTypeSelect = () => {
     5: [1, 4],
     6: [2, 4],
     7: [1, 2, 4],
+    8: [8],
+    9: [1, 8],
+    10: [2, 8],
+    11: [1, 2, 8],
+    12: [4, 8],
+    13: [1, 4, 8],
+    14: [2, 4, 8],
+    15: [1, 2, 4, 8],
   }
 
   const findLabelByValue = (val: number) => tagAttributeTypeOptList.find(({ value }) => val === value)?.label || ''
@@ -81,12 +92,24 @@ export const useTagAttributeTypeSelect = () => {
     }
   }
 
+  // attr values is include the attr value
+  const isAttrsIncludeTheValue = (value: number | undefined, attr: number) => {
+    if (!value || !attr) return false
+
+    const key = Object.keys(tagAttrValueMap).find((total) => {
+      return Number(total) === value
+    })
+    const attrValues = tagAttrValueMap[Number(key) as keyof typeof tagAttrValueMap]
+    return attrValues.includes(attr)
+  }
+
   return {
     tagAttributeTypeOptList,
     tagAttrValueMap,
     getAttrStrByValue,
     findLabelByValue,
     getTotalValueByStr,
+    isAttrsIncludeTheValue,
   }
 }
 
@@ -139,6 +162,7 @@ export default () => {
     decimal: null,
     description: '',
     precision: undefined,
+    value: undefined,
   })
 
   const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])

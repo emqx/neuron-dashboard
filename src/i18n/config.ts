@@ -79,6 +79,10 @@ export default {
     zh: '精度',
     en: 'Precision',
   },
+  tagValue: {
+    zh: '值',
+    en: 'Value',
+  },
   groupName: {
     zh: '组名称',
     en: 'Group Name',
@@ -311,6 +315,10 @@ export default {
   tagTypeRequired: {
     zh: '请选择点位类型',
     en: 'Please select tag type',
+  },
+  tagValueRequired: {
+    zh: '请输入点位的值',
+    en: 'Please enter tag value',
   },
   nameRequired: {
     zh: '请填写名称',

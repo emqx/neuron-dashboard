@@ -73,6 +73,7 @@ export default (props: any) => {
       },
     ],
     type: [{ required: true, message: t('config.tagTypeRequired') }],
+    value: [{ required: true, message: t('config.tagValueRequired') }],
   }
 
   const validate = () => {
