@@ -171,7 +171,7 @@ export interface TagForm {
 export interface TagFormItem extends TagForm {
   id: string
 }
-export interface AddTagForm {
+export interface AddTagListForm {
   tagList: Array<TagFormItem>
 }
 

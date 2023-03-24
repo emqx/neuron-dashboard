@@ -1,5 +1,5 @@
 import { addTag, queryPluginConfigInfo } from '@/api/config'
-import type { PluginInfo, TagFormItem, AddTagForm } from '@/types/config'
+import type { PluginInfo, TagFormItem, AddTagListForm } from '@/types/config'
 import { DriverDirection, TagAttributeType, TagType } from '@/types/enums'
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
@@ -143,7 +143,7 @@ export default () => {
 
   const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])
   const tagList: Ref<Array<TagFormItem>> = ref([createRawTagForm()])
-  const formData: Ref<AddTagForm> = ref({
+  const formData: Ref<AddTagListForm> = ref({
     tagList: tagList.value,
   })
   const isSubmitting = ref(false)

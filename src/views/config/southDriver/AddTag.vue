@@ -6,7 +6,12 @@
 
     <!-- table -->
     <emqx-card shadow="none">
-      <TagForm ref="tagFormRef" :data="formData" :node-plugin-info="nodePluginInfo" @deleteTagItem="deleteTagItem" />
+      <TagListForm
+        ref="tagFormRef"
+        :data="formData"
+        :node-plugin-info="nodePluginInfo"
+        @deleteTagItem="deleteTagItem"
+      />
       <emqx-button class="btn-add-tag" @click="addTagItem">
         <i class="iconfont iconcreate" />
         <span>{{ $t('common.add') }}</span>
@@ -23,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import TagForm from './components/TagForm.vue'
+import TagListForm from './components/TagListForm.vue'
 import useAddTag from '@/composables/config/useAddTag'
 
 const { nodePluginInfo, formData, isSubmitting, addTagItem, deleteTagItem, tagFormRef, cancel, submit } = useAddTag()
