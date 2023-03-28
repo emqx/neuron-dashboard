@@ -147,9 +147,14 @@ export default (props: Props) => {
   }
 
   const shouldFieldShow = (fieldData: Field) => {
+    const { key } = fieldData
+    const whiteList = ['tag_regex', 'group_interval']
+    if (whiteList.includes(key)) return false
+
     if (!fieldData.info.condition) {
       return true
     }
+
     const { field, regex, value } = fieldData.info.condition
     const fieldValue = configForm.value[field]
     if (regex) {

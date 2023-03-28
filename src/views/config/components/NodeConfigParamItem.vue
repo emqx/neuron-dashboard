@@ -137,7 +137,6 @@ const upperFirstLetter = (str: string) => {
   }
   return str
 }
-
 const showLabel = () => upperFirstLetter(props.paramInfo?.name || '')
 
 const fileContentPreview = md5
