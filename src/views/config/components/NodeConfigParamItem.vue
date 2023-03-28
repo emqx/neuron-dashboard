@@ -7,7 +7,7 @@
         placement="top-start"
         :width="300"
         trigger="hover"
-        :content="paramInfo.description"
+        :content="i18nContent(paramInfo, 'description')"
       >
         <template #reference>
           <i class="iconfont iconalarm" />
@@ -76,6 +76,7 @@ import md5 from 'blueimp-md5'
 import { ElPopover } from 'element-plus'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
+import useLang from '@/composables/useLang'
 import type { ParamInfo } from '@/types/config'
 import { FileType, TypeOfPluginParam } from '@/types/enums'
 
@@ -100,6 +101,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
+
+const { i18nContent } = useLang()
 
 const inputValue = computed({
   get() {
@@ -137,8 +140,11 @@ const upperFirstLetter = (str: string) => {
   }
   return str
 }
-const showLabel = () => upperFirstLetter(props.paramInfo?.name || '')
 
+const showLabel = () => {
+  const label = i18nContent(props.paramInfo, 'name')
+  return upperFirstLetter(label)
+}
 const fileContentPreview = md5
 </script>
 

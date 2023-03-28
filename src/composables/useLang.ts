@@ -35,8 +35,17 @@ export default () => {
     return $store.state.lang
   })
 
+  const i18nContent = <T extends Record<string, any>, K extends keyof T>(obj: T, field: K): string => {
+    if (field in obj && currentLang.value === 'zh') {
+      const k = `${field.toString()}_zh`
+      return k in obj ? obj[k] : obj[field]
+    }
+    return obj[field] || ''
+  }
+
   return {
     langList,
     currentLang,
+    i18nContent,
   }
 }
