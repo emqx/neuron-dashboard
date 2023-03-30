@@ -94,7 +94,15 @@ const submit = async () => {
   try {
     await formRef.value.validate()
     isSubmitting.value = true
-    await updateTag(props.node, props.group, tagData.value)
+
+    let bodyData = tagData.value
+    if (bodyData?.value !== undefined) {
+      bodyData.value = Number(bodyData.value)
+    } else if (bodyData?.value === null) {
+      const { value, ...restData } = bodyData
+      bodyData = restData
+    }
+    await updateTag(props.node, props.group, bodyData)
     showDialog.value = false
     EmqxMessage.success(t('common.submitSuccess'))
     emit('submitted')

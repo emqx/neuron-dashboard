@@ -18,7 +18,7 @@
         </template>
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.attribute`" :rules="rules.attribute" required>
-            <TagAttributeSelect v-model="row.attribute" :collapseTags="true" />
+            <TagAttributeSelect v-model="row.attribute" :collapseTags="true" @change="changeAttribute(row, $index)" />
           </el-form-item>
         </template>
       </el-table-column>
@@ -46,24 +46,40 @@
           <span class="thead-title">{{ $t('config.address') }}</span>
         </template>
         <template #default="{ row, $index }">
-          <el-form-item :prop="`tagList.${$index}.address`" :rules="rules.address" required>
+          <el-form-item
+            v-if="isAttrsIncludeStatic(row.attribute)"
+            :prop="`tagList.${$index}.address`"
+            :rules="[{ required: false }, rules.address]"
+          >
+            <emqx-input v-model="row.address" />
+          </el-form-item>
+          <el-form-item
+            v-else
+            :prop="`tagList.${$index}.address`"
+            :rules="[{ required: true, message: $t('config.tagAddressRequired') }, ...rules.address]"
+          >
             <emqx-input v-model="row.address" />
           </el-form-item>
         </template>
       </el-table-column>
 
       <!-- value -->
-      <el-table-column width="110" :rules="rules.value" required>
+      <el-table-column width="110" :rules="rules.value">
         <template #header>
           <span class="thead-title">{{ $t('config.tagValue') }}</span>
         </template>
         <template #default="{ row, $index }">
-          <el-form-item :prop="`tagList.${$index}.value`" :rules="rules.value" required>
-            <emqx-input
-              v-if="isAttrsIncludeTheValue(row.attribute, TagAttributeType.Static)"
-              v-model="row.value"
-              type="text"
-            />
+          <el-form-item
+            :prop="`tagList.${$index}.value`"
+            :rules="[
+              ...rules.value,
+              {
+                required: isAttrsIncludeStatic(row.attribute),
+                message: $t('config.tagValueRequired'),
+              },
+            ]"
+          >
+            <emqx-input v-if="isAttrsIncludeStatic(row.attribute)" v-model.trim="row.value" />
             <span v-else>-</span>
           </el-form-item>
         </template>
@@ -80,7 +96,14 @@
       <el-table-column :label="$t('config.decimal')" width="110">
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.decimal`">
-            <emqx-input-number v-model="row.decimal" :step="0.1" controls-position="right" />
+            <!-- @blur="changeDecimal($index)" -->
+            <emqx-input-number
+              v-if="!isAttrsIncludeStatic(row.attribute)"
+              v-model="row.decimal"
+              :step="0.1"
+              controls-position="right"
+            />
+            <span v-else>-</span>
           </el-form-item>
         </template>
       </el-table-column>
@@ -89,7 +112,7 @@
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.precision`">
             <emqx-input-number
-              v-if="isShowPrecisionField(row.type)"
+              v-if="isShowPrecisionField(row.type) && !isAttrsIncludeStatic(row.attribute)"
               v-model="row.precision"
               :min="0"
               :max="17"
@@ -118,13 +141,12 @@
 
 <script lang="ts" setup>
 import type { PropType, WritableComputedRef } from 'vue'
-import { defineExpose, computed, defineProps, defineEmits } from 'vue'
+import { defineExpose, computed, defineProps, defineEmits, nextTick } from 'vue'
 import { ElTable, ElForm, ElFormItem, ElTableColumn } from 'element-plus'
-import { useTagPrecision, useTagAttributeTypeSelect } from '@/composables/config/useAddTag'
+import { useTagPrecision } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
 import type { PluginInfo, AddTagListForm, TagFormItem } from '@/types/config'
 import useTagForm from '@/composables/config/useTagForm'
-import { TagAttributeType } from '@/types/enums'
 
 const props = defineProps({
   data: {
@@ -141,9 +163,8 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue', 'deleteTagItem'])
 
-const { formCom, tagTypeOptListAfterFilter, rules, validate, resetFields } = useTagForm(props)
+const { formCom, isAttrsIncludeStatic, tagTypeOptListAfterFilter, rules, validate, resetFields } = useTagForm(props)
 const { isShowPrecisionField } = useTagPrecision()
-const { isAttrsIncludeTheValue } = useTagAttributeTypeSelect()
 
 const formData: WritableComputedRef<AddTagListForm> = computed({
   get() {
@@ -154,10 +175,35 @@ const formData: WritableComputedRef<AddTagListForm> = computed({
   },
 })
 
+const changeAttribute = (row: TagFormItem, $index: number) => {
+  const isStaticAttr = isAttrsIncludeStatic.value(row.attribute)
+
+  if (!isStaticAttr) {
+    formData.value.tagList[$index].value = undefined
+  } else {
+    formData.value.tagList[$index].precision = undefined
+    formData.value.tagList[$index].decimal = null
+  }
+
+  // validate  'address'
+  nextTick(() => {
+    formCom.value.validateField(`tagList.${$index}.address`)
+  })
+}
+
 // validate address when change tag type
 const changeType = (row: TagFormItem, $index: number) => {
-  formCom.value.validateField(`tagList.${$index}.address`)
+  const validateFields = [`tagList.${$index}.address`]
+  if (formData.value.tagList[$index].value) {
+    validateFields.push(`tagList.${$index}.value`)
+  }
+  formCom.value.validateField(validateFields)
 }
+
+// used when 'vaule' is related width decimal
+// const changeDecimal = ($index: number) => {
+//   formCom.value.validateField(`tagList.${$index}.value`)
+// }
 
 const deleteItem = (index: number) => {
   emit('deleteTagItem', index)

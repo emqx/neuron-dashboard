@@ -224,7 +224,18 @@ export default () => {
       await tagFormRef.value.validate()
       const nodeName = route.params.node.toString()
       const groupName: string = route.params.group as string
-      const tags = formData.value.tagList.map(({ id, ...tagData }) => tagData)
+      const tags = formData.value.tagList.map(({ id, ...tagData }) => {
+        let data = tagData
+
+        if (tagData?.value !== undefined) {
+          data.value = Number(tagData.value)
+        } else if (tagData?.value === null) {
+          const { value, ...restData } = tagData
+          data = restData
+        }
+
+        return data
+      })
       await addTag({ tags, node: nodeName, group: groupName })
       EmqxMessage.success(t('common.createSuccess'))
       router.push({

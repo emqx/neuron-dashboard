@@ -8,7 +8,7 @@
       </emqx-col>
       <emqx-col :span="12">
         <emqx-form-item :label="$t('common.attribute')" prop="attribute" required>
-          <TagAttributeSelect v-model="form.attribute" />
+          <TagAttributeSelect v-model="form.attribute" @change="changeAttribute" />
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
@@ -24,25 +24,43 @@
         </emqx-form-item>
       </emqx-col>
       <emqx-col :span="12">
-        <emqx-form-item :label="$t('config.address')" prop="address" required>
+        <emqx-form-item
+          :label="$t('config.address')"
+          prop="address"
+          :rules="[
+            { required: !isAttrsIncludeStatic(form.attribute), message: $t('config.tagAddressRequired') },
+            ...rules.address,
+          ]"
+        >
           <emqx-input v-model.trim="form.address" />
         </emqx-form-item>
       </emqx-col>
 
-      <emqx-col v-if="isAttrsIncludeTheValue(form.attribute, TagAttributeType.Static)" :span="12">
-        <emqx-form-item :label="$t('config.tagValue')" prop="value" required>
+      <emqx-col v-if="isAttrsIncludeStatic(form.attribute)" :span="12">
+        <emqx-form-item
+          :label="$t('config.tagValue')"
+          prop="value"
+          :rules="[
+            ...rules.value,
+            {
+              required: isAttrsIncludeStatic(form.attribute),
+              message: $t('config.tagValueRequired'),
+            },
+          ]"
+        >
           <emqx-input v-model.trim="form.value" />
         </emqx-form-item>
       </emqx-col>
 
-      <emqx-col v-if="isShowPrecisionField(form.type)" :span="12">
+      <emqx-col v-if="isShowPrecisionField(form.type) && !isAttrsIncludeStatic(form.attribute)" :span="12">
         <emqx-form-item :label="$t('config.precision')" prop="precision">
           <emqx-input-number v-model="form.precision" :min="0" :max="17" controls-position="right" />
         </emqx-form-item>
       </emqx-col>
 
-      <emqx-col :span="12">
+      <emqx-col v-if="!isAttrsIncludeStatic(form.attribute)" :span="12">
         <emqx-form-item :label="$t('config.decimal')" prop="decimal">
+          <!--  @blur="changeDecimal" -->
           <emqx-input-number v-model="form.decimal" :step="0.1" controls-position="right" />
         </emqx-form-item>
       </emqx-col>
@@ -58,12 +76,11 @@
 
 <script lang="ts" setup>
 import type { PropType, WritableComputedRef } from 'vue'
-import { defineExpose, computed, defineProps, defineEmits } from 'vue'
-import { useTagPrecision, useTagAttributeTypeSelect } from '@/composables/config/useAddTag'
+import { defineExpose, computed, defineProps, defineEmits, nextTick } from 'vue'
+import { useTagPrecision } from '@/composables/config/useAddTag'
 import TagAttributeSelect from './TagAttributeSelect.vue'
 import type { PluginInfo, TagForm } from '@/types/config'
 import useTagForm from '@/composables/config/useTagForm'
-import { TagAttributeType } from '@/types/enums'
 
 const props = defineProps({
   data: {
@@ -80,9 +97,8 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue'])
 
-const { formCom, tagTypeOptListAfterFilter, rules, validate, resetFields } = useTagForm(props)
+const { formCom, isAttrsIncludeStatic, tagTypeOptListAfterFilter, rules, validate, resetFields } = useTagForm(props)
 const { isShowPrecisionField } = useTagPrecision()
-const { isAttrsIncludeTheValue } = useTagAttributeTypeSelect()
 
 const form: WritableComputedRef<TagForm> = computed({
   get() {
@@ -93,10 +109,36 @@ const form: WritableComputedRef<TagForm> = computed({
   },
 })
 
-// validate address when change tag type
-const changeType = () => {
-  formCom.value.form.validateField('address')
+const changeAttribute = () => {
+  const isStaticAttr = isAttrsIncludeStatic.value(form.value.attribute)
+
+  if (!isStaticAttr) {
+    form.value.value = undefined
+  } else {
+    form.value.precision = undefined
+    form.value.decimal = null
+  }
+  // validate  'address'
+  nextTick(() => {
+    formCom.value.form.validateField('address')
+  })
 }
+
+// validate address when change tag `type`
+const changeType = () => {
+  const validateFields = [`address`]
+  if (form.value.value) {
+    validateFields.push(`value`)
+  }
+
+  formCom.value.form.validateField(validateFields)
+}
+
+// used when 'vaule' is related width decimal
+// validate address when change tag `Decimal`
+// const changeDecimal = () => {
+//   formCom.value.form.validateField('value')
+// }
 
 defineExpose({
   validate,

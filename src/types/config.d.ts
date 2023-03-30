@@ -161,13 +161,13 @@ export interface GroupData extends Omit<GroupForm, 'node'> {
 
 export interface TagForm {
   name: string
-  address: string
+  address?: string
   attribute: number | undefined
   type: number | null
   description: string
   precision?: number | undefined
   decimal?: number | null
-  value?: string | undefined
+  value?: string | number | undefined
 }
 export interface TagFormItem extends TagForm {
   id: string
