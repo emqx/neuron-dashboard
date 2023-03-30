@@ -81,6 +81,7 @@ export default (props: Props) => {
 
   const validate = async () => {
     const { type } = props.tag as TagDataInTable
+
     try {
       if (isUseHexadecimal.value) {
         await checkHexadecimal(inputValue.value)

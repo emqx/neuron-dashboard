@@ -1,5 +1,11 @@
 <template>
-  <emqx-select v-model="selectedValue" multiple :collapse-tags="collapseTags" :placeholder="$t('common.pleaseSelect')">
+  <emqx-select
+    v-model="selectedValue"
+    multiple
+    :collapse-tags="collapseTags"
+    :placeholder="$t('common.pleaseSelect')"
+    @change="change"
+  >
     <emqx-option v-for="item in tagAttributeTypeOptList" :key="item.value" :label="item.label" :value="item.value" />
   </emqx-select>
 </template>
@@ -12,7 +18,7 @@ const props = defineProps({
   modelValue: { type: [Number] },
   collapseTags: { type: Boolean, default: false },
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const { tagAttributeTypeOptList, tagAttrValueMap } = useTagAttributeTypeSelect()
 const selectedValue = computed({
@@ -32,4 +38,8 @@ const selectedValue = computed({
     emit('update:modelValue', Number(value))
   },
 })
+
+const change = () => {
+  emit('change', change)
+}
 </script>
