@@ -264,7 +264,7 @@ export default () => {
     return data
   }
 
-  const handleShowValueByHexadecimalChanged = () => {
+  const handleShowValueByHexadecimalChanged = async () => {
     try {
       totalData.value.forEach(async (item) => {
         item.valueToShow = await valueToShow(item)
