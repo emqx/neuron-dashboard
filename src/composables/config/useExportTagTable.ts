@@ -14,15 +14,16 @@ export default () => {
   const { getAttrStrByValue } = useTagAttributeTypeSelect()
   const { findLabelByValue } = useTagTypeSelect()
 
+  // when a filed is added to tag（refer to the `createRawTagForm` in useAddTag.ts）, sync here.
   const genExcelSheets = (tagList: Array<TagData>) => {
-    const cols = ['group', 'name', 'address', 'attribute', 'type', 'description', 'decimal', 'precision']
+    const cols = ['group', 'name', 'address', 'attribute', 'type', 'description', 'decimal', 'precision', 'value']
     const sheets: Array<any> = [cols]
     tagList.forEach((obj) => {
-      const { group, name, address, attribute, type, description, decimal, precision } = obj
+      const { group, name, address, attribute, type, description, decimal, precision, value } = obj
       const content = []
       const attrStr = attribute ? getAttrStrByValue(attribute, FILLER_IN_TAG_ATTR) : ''
       const typeStr = type ? findLabelByValue(type) : ''
-      content.push([group, name, address, attrStr, typeStr, description, decimal, precision])
+      content.push([group, name, address, attrStr, typeStr, description, decimal, precision, value])
       sheets.push(...content)
     })
     return sheets
@@ -36,6 +37,7 @@ export default () => {
     }
     isExporting.value = true
     const data = genExcelSheets(tagList)
+
     try {
       await exportExcelData(data, `${nodeName} tags`)
     } catch (error: any) {

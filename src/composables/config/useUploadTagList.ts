@@ -24,8 +24,9 @@ export default () => {
       EmqxMessage.warning(t('config.validTableError'))
       return false
     }
-    // description is not required
-    const { id, description, ...templateTag } = createRawTagForm()
+
+    // description, value fields are not required, void uploading failures due to not matching
+    const { id, description, value, ...templateTag } = createRawTagForm()
     if (!matchObjShape(data[0], templateTag)) {
       EmqxMessage.warning(t('config.errorTableError'))
       return false
@@ -35,6 +36,7 @@ export default () => {
 
   const checkTagType = (type: TagType) => nodePluginInfo.value?.tag_type?.some((item) => item === type) || true
 
+  // when a filed is added to tag（refer to the `createRawTagForm` in useAddTag.ts）, sync here.
   const handleTagListInTableFile = async (tagList: Array<Record<string, any>>): Promise<Array<TagForm>> => {
     return new Promise((resolve, reject) => {
       let startIndex = 2
@@ -48,6 +50,7 @@ export default () => {
         description = '',
         decimal,
         precision,
+        value,
       } of tagList) {
         const attr = getAttrTotalValueByStr(attribute, FILLER_IN_TAG_ATTR)
         const type = findTypeValueByLabel(typeLabel)
@@ -75,6 +78,7 @@ export default () => {
           description: description.toString(),
           decimal,
           precision,
+          value,
         })
         startIndex += 1
       }
@@ -122,7 +126,6 @@ export default () => {
     try {
       const data = await fileReader(file)
       const tagList = ((data[0] && data[0].sheet) || []) as Array<TagData>
-
       if (!checkTagListInTableFile(tagList)) {
         return Promise.reject()
       }
