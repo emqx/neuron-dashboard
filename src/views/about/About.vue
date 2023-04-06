@@ -14,16 +14,7 @@
         <emqx-descriptions-item :label="$t('admin.systemRunningTime')">
           {{ systemRunningTime }}
         </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.cpuUsage')">
-          <el-progress
-            :stroke-width="14"
-            :percentage="generalStatistics.cpuPercent"
-            status="success"
-            class="progress-bar"
-          >
-            <span class="progress-text">{{ generalStatistics.cpuPercent }} / {{ generalStatistics.cpuCores }}</span>
-          </el-progress>
-        </emqx-descriptions-item>
+
         <emqx-descriptions-item :label="$t('admin.memoryUsage')">
           <el-progress
             :stroke-width="14"
@@ -69,15 +60,11 @@ const hwToken = ref('')
 const generalStatistics = reactive({
   systemRunningTime: '', // neuron running seconds
   systemStatus: '',
-  cpuPercent: 0,
-  cpuCores: 0,
   memPercent: 0,
   memTotalBytes: '',
   memUsedBytes: '',
   startupTimeMatchReg: /(uptime_seconds=?)(\s*\d*)(?=\n)/g,
   debugFilesMatchReg: /(core_dumped=?)(\s*\d*)(?=\n)/g,
-  cpuPercentReg: /(cpu_percent=?)(\s*\d*)(?=\n)/g,
-  cpuCoresReg: /(cpu_cores=?)(\s*\d*)(?=\n)/g,
   memTotalBytesReg: /(mem_total_bytes=?)(\s*\d*)(?=\n)/g,
   memUsedBytesReg: /(mem_used_bytes=?)(\s*\d*)(?=\n)/g,
 })
@@ -118,16 +105,11 @@ const getStatistic = () => {
 
         const startupTime = statisticsInfo.match(generalStatistics.startupTimeMatchReg)
         const isDebugFiles = statisticsInfo.match(generalStatistics.debugFilesMatchReg)
-        const CPUPercent = statisticsInfo.match(generalStatistics.cpuPercentReg)
-        const CPUCores = statisticsInfo.match(generalStatistics.cpuCoresReg)
         const memUsedBytesData = statisticsInfo.match(generalStatistics.memUsedBytesReg)
         const memTotalBytesData = statisticsInfo.match(generalStatistics.memTotalBytesReg)
 
         generalStatistics.systemRunningTime = startupTime ? startupTime[0].split(' ')[1] : ''
         generalStatistics.systemStatus = isDebugFiles ? isDebugFiles[0].split(' ')[1] : ''
-
-        generalStatistics.cpuPercent = Number(CPUPercent ? CPUPercent[0].split(' ')[1] : '0')
-        generalStatistics.cpuCores = Number(CPUCores ? CPUCores[0].split(' ')[1] : '0') * 100
 
         const memUsedBytes = Number(memUsedBytesData ? memUsedBytesData[0].split(' ')[1] : '0')
         const memTotalBytes = Number(memTotalBytesData ? memTotalBytesData[0].split(' ')[1] : '0')
