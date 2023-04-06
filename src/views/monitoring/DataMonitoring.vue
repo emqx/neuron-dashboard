@@ -113,7 +113,7 @@
     :group="currentGroup.groupName"
     :tag="currentTag"
     :node-name="currentNodeName"
-    @updated="getTableData"
+    @updated="writtenTag"
   />
 </template>
 
@@ -150,6 +150,7 @@ const {
   selectedGroupChanged,
   dbGetTagList,
   sortDataByKey,
+  writtenTag,
 } = useDataMonitoring()
 
 const showWriteDialog = ref(false)
