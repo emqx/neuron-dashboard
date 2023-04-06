@@ -60,6 +60,7 @@ export default () => {
   const showValueByHexadecimal = ref(false)
   let tagMsgMap: Record<string, any> = {}
   let pollTimer: undefined | number
+  let wittenTagTimer: undefined | number
   const updated = ref(Date.now())
   const { tagAttrValueMap } = useTagAttributeTypeSelect()
   const { transToHexadecimal } = useWriteDataCheckNParse()
@@ -141,6 +142,7 @@ export default () => {
     }
     try {
       const { data } = await getMonitoringData(currentNodeName.value, currentGroup.value.groupName)
+
       updated.value = Date.now()
       totalData.value = (tagMsgMap || []).map((item: any) => {
         item.typeLabel = findTagTypeLabelByValue(item.type)
@@ -148,6 +150,7 @@ export default () => {
         const tag = data.tags.find((readTagItem) => readTagItem.name === item.tagName)
         // in the tag list，if the 'read' API does not return a tag, set its 'value' to '-'
         const ret = tag ? { ...tag, ...item } : { name: item.tagName, ...item, value: '-' }
+
         if (!('value' in ret) || ret?.value === undefined) {
           ret.value = ''
         }
@@ -204,6 +207,15 @@ export default () => {
   const dbGetTagList = debounce(() => {
     initTagList()
   }, 500)
+
+  const writtenTag = () => {
+    if (wittenTagTimer) {
+      window.clearTimeout(wittenTagTimer)
+    }
+    wittenTagTimer = window.setTimeout(() => {
+      getTableData()
+    }, 900)
+  }
 
   // change node
   const selectedNodeChanged = async (nodeName: string) => {
@@ -283,6 +295,9 @@ export default () => {
     if (pollTimer) {
       window.clearInterval(pollTimer)
     }
+    if (wittenTagTimer) {
+      window.clearTimeout(wittenTagTimer)
+    }
   })
 
   return {
@@ -305,5 +320,6 @@ export default () => {
     selectedGroupChanged,
     handleSizeChange,
     sortDataByKey,
+    writtenTag,
   }
 }
