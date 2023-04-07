@@ -26,7 +26,7 @@ export default () => {
     }
 
     // description, value fields are not required, void uploading failures due to not matching
-    const { id, description, value, ...templateTag } = createRawTagForm()
+    const { id, description, value, precision, decimal, ...templateTag } = createRawTagForm()
     if (!matchObjShape(data[0], templateTag)) {
       EmqxMessage.warning(t('config.errorTableError'))
       return false
