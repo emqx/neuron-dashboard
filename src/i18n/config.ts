@@ -368,6 +368,10 @@ export default {
     zh: '请下载模版，根据模版填充表格数据再尝试上传',
     en: 'Please download the template, fill in the form data according to the template and try to upload',
   },
+  errorStaticWithValue: {
+    zh: `表格第 {rowNum} 行的点位 {name} 的属性包含 'Static'，请填入有效的值后再尝试提交`,
+    en: `The attribute of tag {name} in row {rowNum} of the table contains 'Static'. Please fill in valid value before attempting to submit`,
+  },
   uploadSuc: {
     zh: '上传成功',
     en: 'Uploaded successfully',

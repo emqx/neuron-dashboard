@@ -2,8 +2,9 @@ import { addTag } from '@/api/config'
 import useTableFileReader from '@/composables/useTableFileReader'
 import type { TagForm, TagData } from '@/types/config'
 import type { TagType } from '@/types/enums'
+import { TagAttributeType } from '@/types/enums'
 import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
-import { getErrorMsg, matchObjShape, popUpErrorMessage } from '@/utils/utils'
+import { getErrorMsg, matchObjShape, popUpErrorMessage, dataType } from '@/utils/utils'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -17,8 +18,14 @@ export default () => {
   const route = useRoute()
 
   const { findValueByLabel: findTypeValueByLabel, findLabelByValue: findTypeLabelByValue } = useTagTypeSelect()
-  const { getTotalValueByStr: getAttrTotalValueByStr } = useTagAttributeTypeSelect()
+  const { getTotalValueByStr: getAttrTotalValueByStr, isAttrsIncludeTheValue } = useTagAttributeTypeSelect()
 
+  const checkAttrIncludeStatic = (attr: number) => {
+    const isIncludeStaticAttr = isAttrsIncludeTheValue(attr, TagAttributeType.Static)
+    return isIncludeStaticAttr
+  }
+
+  // Check excel colunm required fileds in the init state
   const checkTagListInTableFile = (data: Array<TagForm>): boolean => {
     if (!data.length) {
       EmqxMessage.warning(t('config.validTableError'))
@@ -26,8 +33,9 @@ export default () => {
     }
 
     // description, value fields are not required, void uploading failures due to not matching
-    const { id, description, value, precision, decimal, ...templateTag } = createRawTagForm()
-    if (!matchObjShape(data[0], templateTag)) {
+    const { id, description, value, precision, decimal, ...requiredData } = createRawTagForm()
+
+    if (!matchObjShape(data[0], requiredData)) {
       EmqxMessage.warning(t('config.errorTableError'))
       return false
     }
@@ -69,7 +77,15 @@ export default () => {
           reject()
           break
         }
-        ret.push({
+
+        // when when `attribute` is includes `Static`， but `value` is empty
+        if (checkAttrIncludeStatic(attr) && dataType(value) !== 'number') {
+          EmqxMessage.error(`${t('config.errorStaticWithValue', { rowNum: startIndex, name })}`)
+          reject()
+          break
+        }
+
+        let tagItem: TagData = {
           group,
           name: name.toString(),
           address: address.toString(),
@@ -78,8 +94,15 @@ export default () => {
           description: description.toString(),
           decimal,
           precision,
-          value,
-        })
+        }
+        // when `attribute` is includes `Static`
+        if (checkAttrIncludeStatic(attr)) {
+          tagItem = {
+            ...tagItem,
+            value,
+          }
+        }
+        ret.push(tagItem)
         startIndex += 1
       }
       resolve(ret)
