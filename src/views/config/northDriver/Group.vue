@@ -11,7 +11,7 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <emqx-button size="small" type="primary" @click="addSubscription">
+          <emqx-button size="small" type="primary" :disabled="isMonitorNode(node)" @click="addSubscription">
             {{ $t('config.addSubscription') }}
           </emqx-button>
           <emqx-button size="small" type="warning" :disabled="!subscriptionList.length" @click="clearSubscription">{{
@@ -57,6 +57,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useSubscriptionList } from '@/composables/config/useSubscription'
+import { useDriverName } from '@/composables/config/useDriver'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 
@@ -77,6 +78,8 @@ const showAddSubscriptionDialog = ref(false)
 const addSubscription = () => {
   showAddSubscriptionDialog.value = true
 }
+
+const { isMonitorNode } = useDriverName()
 </script>
 
 <style lang="scss">
