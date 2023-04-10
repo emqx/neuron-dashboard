@@ -90,12 +90,12 @@ const navList = computed(() => {
       icon: 'iconconfig',
       subMenus: [
         {
-          to: '/configuration/north-driver',
-          label: 'config.northAppSetup',
-        },
-        {
           to: '/configuration/south-driver',
           label: 'config.southDeviceManagement',
+        },
+        {
+          to: '/configuration/north-driver',
+          label: 'config.northAppSetup',
         },
         {
           to: '/configuration/plugin',
