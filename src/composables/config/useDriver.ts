@@ -172,8 +172,11 @@ export const useDriverName = () => {
     return whiteList.includes(nodeNameLowerCase)
   })
 
+  const isMonitorNode = (nodeName: string) => nodeName.toLowerCase() === 'monitor'
+
   return {
     isNotSupportRemoveNode,
+    isMonitorNode,
   }
 }
 
