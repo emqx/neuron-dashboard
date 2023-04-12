@@ -8,7 +8,7 @@ import { useFillNodeListStatusData } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 import { debounce, cloneDeep } from 'lodash'
 import useDeleteDriver from '@/composables/config/useDeleteDriver'
-import { useNodeDebugLogLevel } from '@/composables/config/useDriver'
+import { useNodeDebugLogLevel, useDriverName } from '@/composables/config/useDriver'
 import { listOrderByKey } from '@/utils/utils'
 import { statusTextMap, connectionStatusTextMap } from '@/utils/driver'
 
@@ -19,6 +19,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const { fillNodeListStatusData } = useFillNodeListStatusData()
   const { deleteDriverByNode } = useDeleteDriver()
   const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
+  const { isMonitorNode } = useDriverName()
 
   const northDriverList: Ref<Array<DriverItemInList>> = ref([])
   const northDriverListBackup: Ref<Array<DriverItemInList>> = ref([])
@@ -99,12 +100,14 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   }
 
   const goGroupPage = (node: DriverItemInList) => {
-    router.push({
-      name: 'NorthDriverGroup',
-      params: {
-        node: node.name,
-      },
-    })
+    if (!isMonitorNode(node.name)) {
+      router.push({
+        name: 'NorthDriverGroup',
+        params: {
+          node: node.name,
+        },
+      })
+    }
   }
 
   const goNodeConfig = (node: DriverItemInList) =>
