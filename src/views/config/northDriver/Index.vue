@@ -28,13 +28,14 @@
       v-if="showType === 'list'"
       :data="northDriverList"
       :empty-text="$t('common.emptyData')"
-      :row-class-name="'table-row-click'"
+      :row-class-name="rowClassName"
       @sort-change="sortDataByKey"
       @row-click="goGroupPage"
     >
       <emqx-table-column :label="$t('common.name')" prop="name" sortable="custom" show-overflow-tooltip>
         <template #default="{ row }">
-          <el-link type="primary" :underline="false" href="javascript:;" @click="goGroupPage(row)">
+          <span v-if="isMonitorNode(row.name)">{{ row.name }}</span>
+          <el-link v-else type="primary" :underline="false" href="javascript:;" @click.stop="goGroupPage(row, $event)">
             {{ row.name }}
           </el-link>
         </template>
@@ -152,7 +153,7 @@ const {
 } = useNorthDriver(true, true)
 
 const { isShowDataStatistics, dataStatisticsVisiable, nodeItemData } = dataStatistics()
-const { isNotSupportRemoveNode } = useDriverName()
+const { isNotSupportRemoveNode, isMonitorNode } = useDriverName()
 
 const { showType } = useListShowType()
 
@@ -183,6 +184,11 @@ const getNodeValue = (node: DriverItemInList) => {
   const useDriverStatusSet = useDriverStatus({ data: node })
   return useDriverStatusSet
 }
+
+const rowClassName = (data: { row: DriverItemInList; rowIndex: number }) => {
+  const { row: node } = data
+  return isMonitorNode(node.name) ? 'row-disabled' : ''
+}
 </script>
 
 <style lang="scss" scoped>
@@ -199,5 +205,9 @@ const getNodeValue = (node: DriverItemInList) => {
   margin-right: 8px;
   position: relative;
   top: 2px;
+  cursor: pointer;
+}
+:deep(.row-disabled) {
+  cursor: not-allowed;
 }
 </style>
