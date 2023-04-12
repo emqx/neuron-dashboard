@@ -1,8 +1,7 @@
 import { queryNodeConfig, queryPluginConfigInfo, submitNodeConfig } from '@/api/config'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import type { ParamInfo, PluginInfo } from '@/types/config'
-import type { DriverDirection } from '@/types/enums'
-import { TypeOfPluginParam } from '@/types/enums'
+import { DriverDirection, TypeOfPluginParam } from '@/types/enums'
 import type { Ref } from 'vue'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -164,8 +163,18 @@ export default (props: Props) => {
     return value !== undefined || value !== null ? fieldValue === value : true
   }
 
-  const cancel = () => {
+  const returnTablePage = () => {
+    if (props.direction === DriverDirection.South) {
+      const { pageNum } = route.query
+      if (pageNum) {
+        router.push({ name: 'SouthDriver', query: { pageNum } })
+      }
+    }
     router.back()
+  }
+
+  const cancel = () => {
+    returnTablePage()
   }
 
   const submit = async () => {
@@ -197,7 +206,7 @@ export default (props: Props) => {
 
       await submitNodeConfig(node.value, configForm.value)
       EmqxMessage.success(t('common.submitSuccess'))
-      router.back()
+      returnTablePage()
     } catch (error) {
       console.error(error)
     } finally {

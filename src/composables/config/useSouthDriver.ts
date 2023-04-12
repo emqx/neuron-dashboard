@@ -1,9 +1,9 @@
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { querySouthDriverList } from '@/api/config'
 import type { DriverItemInList, RawDriverData } from '@/types/config'
 import { NodeLinkState, NodeState } from '@/types/enums'
 import type { Ref } from 'vue'
-import { onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import usePaging from '../usePaging'
 import { useFillNodeListStatusData } from './useNodeList'
 import { debounce, cloneDeep } from 'lodash'
@@ -13,6 +13,7 @@ import { listOrderByKey } from '@/utils/utils'
 import { statusTextMap, connectionStatusTextMap } from '@/utils/driver'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
+  const route = useRoute()
   const router = useRouter()
 
   const { fillNodeListStatusData } = useFillNodeListStatusData()
@@ -142,7 +143,11 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   }
 
   const goNodeConfig = (node: DriverItemInList) =>
-    router.push({ name: 'SouthDriverConfig', params: { node: node.name } })
+    router.push({
+      name: 'SouthDriverConfig',
+      params: { node: node.name },
+      query: { pageNum: pageController.value.pageNum },
+    })
 
   const deleteDriver = async (node: DriverItemInList) => {
     await deleteDriverByNode('driver', node)
@@ -161,6 +166,13 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   if (needRefreshStatus) {
     startTimer()
   }
+
+  onMounted(() => {
+    const { pageNum } = route.query
+    if (pageNum) {
+      pageController.value.pageNum = Number(pageNum)
+    }
+  })
 
   onUnmounted(() => {
     if (refreshStatusTimer) {
