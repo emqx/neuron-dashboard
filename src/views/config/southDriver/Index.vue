@@ -118,6 +118,7 @@
         :page-sizes="[30, 60, 90]"
         :total="pageController.total"
         :page-size="pageController.pageSize"
+        class="pagination"
         @current-change="getAPageTagData"
         @size-change="handleSizeChange"
       />
@@ -158,15 +159,12 @@ import ListCardSwitch from '@/components/ListCardSwitch.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import { SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
+import { isTheSameParentRoute } from '@/utils/utils'
 
 export default defineComponent({
   beforeRouteEnter(to, from, next) {
-    const { matched: fromMatched } = from
-    const { matched: toMatched } = to
-    const fromRouteName = fromMatched[0]?.name
-    const toRouteName = toMatched[0]?.name
-
-    if (fromRouteName !== toRouteName) {
+    const isSameParentRoute = isTheSameParentRoute(from, to)
+    if (!isSameParentRoute) {
       const paginationData = { pageNum: 1, pageSize: 30, total: 0 }
       store.commit('SET_PAGINATION', paginationData)
     }

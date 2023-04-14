@@ -184,3 +184,11 @@ export const dataType = (value: any) => {
   ])
   return mapData.get(valueType) || mapData.get('default')
 }
+
+export const isTheSameParentRoute = (from: any, to: any) => {
+  const { matched: fromMatched } = from
+  const { matched: toMatched } = to
+  const fromRouteName = fromMatched[0]?.name
+  const toRouteName = toMatched[0]?.name
+  return fromRouteName === toRouteName
+}
