@@ -161,6 +161,16 @@ import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 
 export default defineComponent({
   beforeRouteEnter(to, from, next) {
+    const { matched: fromMatched } = from
+    const { matched: toMatched } = to
+    const fromRouteName = fromMatched[0]?.name
+    const toRouteName = toMatched[0]?.name
+
+    if (fromRouteName !== toRouteName) {
+      const paginationData = { pageNum: 1, pageSize: 30, total: 0 }
+      store.commit('SET_PAGINATION', paginationData)
+    }
+
     store.commit('RESET_LIST_SHOW_TYPE', { to, from, next })
   },
 })

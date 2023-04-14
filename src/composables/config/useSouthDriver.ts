@@ -1,9 +1,10 @@
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { querySouthDriverList } from '@/api/config'
 import type { DriverItemInList, RawDriverData } from '@/types/config'
 import { NodeLinkState, NodeState } from '@/types/enums'
 import type { Ref } from 'vue'
-import { onUnmounted, ref } from 'vue'
+import { onUnmounted, ref, computed } from 'vue'
 import usePaging from '../usePaging'
 import { useFillNodeListStatusData } from './useNodeList'
 import { debounce, cloneDeep } from 'lodash'
@@ -14,6 +15,7 @@ import { statusTextMap, connectionStatusTextMap } from '@/utils/driver'
 
 export default (autoLoad = true, needRefreshStatus = false) => {
   const router = useRouter()
+  const store = useStore()
 
   const { fillNodeListStatusData } = useFillNodeListStatusData()
   const { deleteDriverByNode } = useDeleteDriver()
@@ -26,10 +28,11 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const southDriverList: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
 
-  const pageController = ref({
-    pageNum: 1,
-    pageSize: 30,
-    total: 0,
+  const pageController = computed({
+    get: () => store.state.paginationData,
+    set: (val) => {
+      store.commit('SET_PAGINATION', val)
+    },
   })
   const { setTotalData, getAPageData } = usePaging()
 
@@ -51,6 +54,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       const { data, meta } = getAPageData(pageController.value)
       southDriverList.value = await fillNodeListStatusData(data)
       pageController.value.total = meta.total
+      store.commit('SET_PAGINATION', meta)
     } finally {
       isListLoading.value = false
     }

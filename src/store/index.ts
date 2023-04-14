@@ -1,12 +1,18 @@
 import { createStore } from 'vuex'
 import { getToken, setToken, clearLocalStorage } from '@/utils/user'
 
+interface paginationInfo {
+  pageNum: number
+  pageSize: number
+  total: number
+}
 interface State {
   lang: string
   token: string
   isSubAppLoading: boolean
   subAppInstances: Record<string, any>
   listShowType: string
+  paginationData: paginationInfo
 }
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
@@ -26,6 +32,11 @@ export default createStore<State>({
         ekuiper: undefined,
       },
       listShowType: 'list',
+      paginationData: {
+        pageNum: 1,
+        pageSize: 30,
+        total: 0,
+      },
     }
   },
 
@@ -61,6 +72,9 @@ export default createStore<State>({
         state.listShowType = 'list'
       }
       next()
+    },
+    SET_PAGINATION(state, data: paginationInfo) {
+      state.paginationData = data
     },
   },
 })
