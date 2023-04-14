@@ -130,10 +130,15 @@ import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import ListCardSwitch from '@/components/ListCardSwitch.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
+import { isTheSameParentRoute } from '@/utils/utils'
 
 export default defineComponent({
   beforeRouteEnter(to, from, next) {
-    store.commit('RESET_LIST_SHOW_TYPE', { to, from, next })
+    const isSameParentRoute = isTheSameParentRoute(from, to)
+    if (!isSameParentRoute) {
+      store.commit('SET_LIST_SHOW_TYPE', 'list')
+    }
+    next()
   },
 })
 </script>
