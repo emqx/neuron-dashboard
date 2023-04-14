@@ -62,17 +62,6 @@ export default createStore<State>({
     SET_LIST_SHOW_TYPE(state, type: string) {
       state.listShowType = type
     },
-    RESET_LIST_SHOW_TYPE(state, { to, from, next }) {
-      const { matched: fromMatched } = from
-      const { matched: toMatched } = to
-      const fromRouteName = fromMatched[0]?.name
-      const toRouteName = toMatched[0]?.name
-
-      if (fromRouteName !== toRouteName) {
-        state.listShowType = 'list'
-      }
-      next()
-    },
     SET_PAGINATION(state, data: paginationInfo) {
       state.paginationData = data
     },
