@@ -1,5 +1,9 @@
 <template>
-  <div class="node-card setup-item-card" @click="goGroupPage(data)">
+  <div
+    class="node-card setup-item-card"
+    :class="{ 'row-disabled': isMonitorNode(data.name) }"
+    @click="goGroupPage(data)"
+  >
     <div class="node-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
@@ -130,7 +134,7 @@ const handleClickOperator = async (command: string) => {
   emit('reload')
 }
 
-const { isNotSupportRemoveNode } = useDriverName()
+const { isNotSupportRemoveNode, isMonitorNode } = useDriverName()
 </script>
 
 <style lang="scss" scoped>
@@ -146,5 +150,8 @@ const { isNotSupportRemoveNode } = useDriverName()
 }
 .setup-item-handlers {
   @include display-flex();
+}
+.img-debug-log-large {
+  cursor: pointer;
 }
 </style>
