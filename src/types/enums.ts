@@ -29,6 +29,7 @@ export enum TypeOfPluginParam {
   Enum = 'enum',
   Map = 'map',
   File = 'file',
+  Array = 'array',
 }
 
 export enum TagType {

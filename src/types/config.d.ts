@@ -75,11 +75,14 @@ export interface ResponseDriverListData {
 
 interface ParamBaseInfo {
   description: string
+  description_zh?: string
   name: string
+  name_zh: string
   attribute: ParamRequired
   condition?: {
     field: string
     value: boolean | number | string
+    values?: Array<any>
     regex: string
   }
 }
@@ -125,8 +128,23 @@ interface MapParamInfo extends ParamBaseInfo {
     map: Array<MapItem>
   }
 }
+interface ArrayParamInfo extends ParamBaseInfo {
+  type: TypeOfPluginParam.Array
+  default?: Array<any>
+  fields: Array<NumberParamInfo | StringParamInfo | BoolParamInfo | MapParamInfo>
+  valid: {
+    min_length: number
+    max_length: number
+  }
+}
 
-export type ParamInfo = NumberParamInfo | StringParamInfo | BoolParamInfo | MapParamInfo | FileParamInfo
+export type ParamInfo =
+  | NumberParamInfo
+  | StringParamInfo
+  | BoolParamInfo
+  | MapParamInfo
+  | FileParamInfo
+  | ArrayParamInfo
 
 interface TagRegex {
   type: number
