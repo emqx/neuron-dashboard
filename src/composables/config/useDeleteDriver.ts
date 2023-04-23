@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
 import { deleteDriver } from '@/api/config'
 import type { DriverItemInList } from '@/types/config'
-import { PluginKind } from '@/types/enums'
+import { PluginKind, NodeCatogery } from '@/types/enums'
 
 export default () => {
   const { t } = useI18n()
@@ -22,9 +22,9 @@ export default () => {
     }
   }
 
-  const deleteDriverByNode = async (type: string, node: DriverItemInList) => {
+  const deleteDriverByNode = async (type: NodeCatogery[keyof NodeCatogery], node: DriverItemInList) => {
     try {
-      if (type === 'app' && node.pluginKind === PluginKind.Static) {
+      if (type === NodeCatogery.North && node.pluginKind === PluginKind.Static) {
         return
       }
 

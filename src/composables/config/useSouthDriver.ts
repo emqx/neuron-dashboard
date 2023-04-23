@@ -2,7 +2,7 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { querySouthDriverList } from '@/api/config'
 import type { DriverItemInList, RawDriverData } from '@/types/config'
-import { NodeLinkState, NodeState } from '@/types/enums'
+import { NodeLinkState, NodeState, NodeCatogery } from '@/types/enums'
 import type { Ref } from 'vue'
 import { onUnmounted, ref, computed } from 'vue'
 import usePaging from '../usePaging'
@@ -149,7 +149,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     router.push({ name: 'SouthDriverConfig', params: { node: node.name } })
 
   const deleteDriver = async (node: DriverItemInList) => {
-    await deleteDriverByNode('driver', node)
+    await deleteDriverByNode(NodeCatogery.South, node)
     dbGetSouthDriverList()
   }
 
