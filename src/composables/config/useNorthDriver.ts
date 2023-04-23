@@ -100,7 +100,8 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     }
   }
 
-  const goGroupPage = (node: DriverItemInList) => {
+  // Compatible with jumping from created a node
+  const goGroupPage = (node: DriverItemInList | { name: string }) => {
     if (!isMonitorNode(node.name)) {
       router.push({
         name: 'NorthDriverGroup',

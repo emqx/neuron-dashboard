@@ -136,7 +136,8 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     }, 15 * 1000)
   }
 
-  const goGroupPage = (node: DriverItemInList) => {
+  // Compatible with jumping from created a node
+  const goGroupPage = (node: DriverItemInList | { name: string }) => {
     router.push({
       name: 'SouthDriverGroup',
       params: {
