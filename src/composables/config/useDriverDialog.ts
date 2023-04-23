@@ -6,6 +6,8 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import type { Ref } from 'vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import useNorthDriver from '@/composables/config/useNorthDriver'
+import useSouthDriver from '@/composables/config/useSouthDriver'
 
 export const usePluginList = (type: DriverDirection) => {
   const pluginList: Ref<Array<CreatedPlugin>> = ref([])
@@ -53,12 +55,25 @@ export default (type: DriverDirection) => {
     driverForm.value = createRawDriverForm()
   }
 
+  const { goGroupPage: goNorthGroupPage } = useNorthDriver()
+  const { goGroupPage: goSouthGroupPage } = useSouthDriver()
+
+  const goNodeConfigPage = () => {
+    const { name } = driverForm.value
+    if (type === DriverDirection.South) {
+      goSouthGroupPage({ name })
+    } else if (type === DriverDirection.North) {
+      goNorthGroupPage({ name })
+    }
+  }
+
   const submitData = async () => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
       await addDriver(driverForm.value)
       EmqxMessage.success(t('common.createSuccess'))
+      goNodeConfigPage()
     } catch (error) {
       return Promise.reject()
     } finally {
