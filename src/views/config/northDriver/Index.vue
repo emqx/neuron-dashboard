@@ -102,7 +102,7 @@
   <DataStatisticsDrawer
     v-if="dataStatisticsVisiable"
     v-model="dataStatisticsVisiable"
-    :type="'app'"
+    :type="NodeCatogery.North"
     :node-name="nodeItemData.name"
   />
 </template>
@@ -122,7 +122,7 @@ import {
 } from '@/composables/config/useDriver'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import type { DriverItemInList } from '@/types/config'
-import { DriverDirection } from '@/types/enums'
+import { DriverDirection, NodeCatogery } from '@/types/enums'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
 import SetupItemCard from './components/SetupItemCard.vue'
 import { EmqxMessage } from '@emqx/emqx-ui'

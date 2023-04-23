@@ -46,6 +46,7 @@ import { getStatisticByType } from '@/api/statistics'
 import { secondToTime } from '@/utils/time'
 import { formatMemory } from '@/utils/utils'
 import useLang from '@/composables/useLang'
+import { NodeCatogery } from '@/types/enums'
 
 const { currentLang } = useLang()
 
@@ -99,7 +100,7 @@ if (Promise && !Promise.allSettled) {
 
 const getStatistic = () => {
   return new Promise((resolve, reject) => {
-    getStatisticByType('global')
+    getStatisticByType(NodeCatogery.GLOBAL)
       .then((res) => {
         const { data: statisticsInfo } = res
 
