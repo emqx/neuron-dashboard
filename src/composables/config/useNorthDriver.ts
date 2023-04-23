@@ -1,6 +1,7 @@
 import { useRouter } from 'vue-router'
 import { queryNorthDriverList } from '@/api/config'
 import type { DriverItemInList } from '@/types/config'
+import { NodeCatogery } from '@/types/enums'
 import type { PluginKind } from '@/types/enums'
 import type { Ref } from 'vue'
 import { ref, onUnmounted, computed } from 'vue'
@@ -114,7 +115,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     router.push({ name: 'NorthDriverConfig', params: { node: node.name } })
 
   const deleteDriver = async (node: DriverItemInList) => {
-    await deleteDriverByNode('app', node)
+    await deleteDriverByNode(NodeCatogery.North, node)
     dbGetNorthDriverList()
   }
 

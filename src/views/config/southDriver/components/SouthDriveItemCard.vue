@@ -117,7 +117,7 @@ const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
 
 const handleClickOperator = async (command: string) => {
   if (command === 'delete') {
-    await deleteDriverByNode('driver', props.data)
+    await deleteDriverByNode(NodeCatogery.South, props.data)
   } else if (command === 'debugLogLevel') {
     await modifyNodeLogLevelToDebug(props.data.name)
   }
