@@ -2,6 +2,7 @@ import { useStore } from 'vuex'
 import { sendCommandToNode, updateNodeLogLevelToDebug } from '@/api/config'
 import { getStatisticByType } from '@/api/statistics'
 import type { DriverItemInList } from '@/types/config'
+import type { NodeCatogery } from '@/types/enums'
 import { DriverDirection, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { computed, ref, onUnmounted } from 'vue'
@@ -103,11 +104,10 @@ export const dataStatistics = () => {
   }
 
   /**
-   * get north app node or south device node statistic data
-   * @param type 'app' | 'driver' (north | south)
+   * Get north app node or south device node statistic data
    * @param params { node name }
    */
-  const getNodeStatisticData = (type: string, params: any) => {
+  const getNodeStatisticData = (type: NodeCatogery[keyof NodeCatogery], params: any) => {
     loadingStatistic.value = true
     getStatisticByType(type, params)
       .then((res: any) => {
@@ -120,7 +120,7 @@ export const dataStatistics = () => {
       })
   }
 
-  const setTimer = (type: string, params: any) => {
+  const setTimer = (type: NodeCatogery[keyof NodeCatogery], params: any) => {
     if (timer) {
       window.clearInterval(timer)
     }

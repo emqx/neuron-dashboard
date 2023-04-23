@@ -21,6 +21,11 @@ export enum DriverDirection {
   // now seem useless
   Web = 2,
 }
+export enum NodeCatogery {
+  South = 'driver',
+  North = 'app',
+  GLOBAL = 'global',
+}
 
 export enum TypeOfPluginParam {
   Int = 'int',

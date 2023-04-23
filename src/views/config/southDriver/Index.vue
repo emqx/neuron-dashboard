@@ -129,7 +129,7 @@
   <DataStatisticsDrawer
     v-if="dataStatisticsVisiable"
     v-model="dataStatisticsVisiable"
-    :type="'driver'"
+    :type="NodeCatogery.South"
     :node-name="nodeItemData.name"
   />
 
@@ -149,7 +149,7 @@ import {
 } from '@/composables/config/useDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import type { DriverItemInList } from '@/types/config'
-import { DriverDirection } from '@/types/enums'
+import { DriverDirection, NodeCatogery } from '@/types/enums'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
 import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
