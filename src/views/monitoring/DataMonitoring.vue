@@ -38,7 +38,7 @@
           </emqx-select>
         </div>
         <KeywordSerachInput
-          v-model="currentGroup.name"
+          v-model="keywordSearch"
           class="header-item search_input"
           @input="dbGetTagList"
           @clear="dbGetTagList"
@@ -133,6 +133,7 @@ import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
 const {
   nodeList,
   groupList,
+  keywordSearch,
   currentGroup,
   pageController,
   tableData,
@@ -144,7 +145,6 @@ const {
 
   handleShowValueByHexadecimalChanged,
   canWrite,
-  getTableData,
   handleSizeChange,
   selectedNodeChanged,
   selectedGroupChanged,
