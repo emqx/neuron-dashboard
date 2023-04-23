@@ -7,8 +7,9 @@ import type { TagDataInMonitoring } from '@/types/data'
 import { TagAttributeType, TagType } from '@/types/enums'
 import { paginate, listOrderByKey } from '@/utils/utils'
 import type { Ref } from 'vue'
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onUnmounted, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
 import { useTagAttributeTypeSelect, useTagTypeSelect } from '../config/useAddTag'
 import { debounce, cloneDeep } from 'lodash'
 
@@ -26,6 +27,7 @@ export interface TagDataInTable extends TagDataInMonitoring {
 }
 export default () => {
   const { t } = useI18n()
+  const store = useStore()
 
   const { totalSouthDriverList: nodeList } = useSouthDriver()
   const groupList: Ref<Array<GroupData>> = ref([])
@@ -33,11 +35,16 @@ export default () => {
   const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
 
   let selectedGroup: undefined | { node: string; groupName: string; name: string }
-  const currentGroup: Ref<{ node: string | string; groupName: string; name: string }> = ref({
-    node: '',
-    groupName: '',
-    name: '',
+
+  const currentGroup = computed({
+    get: () => store.state.nodeGroupMemory,
+    set: (val) => {
+      const { node, groupName } = val
+      store.commit('SET_NODE_GROUP', { node, groupName })
+    },
   })
+  const keywordSearch = ref('')
+
   const sortBy = ref({
     prop: '',
     order: '',
@@ -185,14 +192,14 @@ export default () => {
     }, 3000)
   }
 
-  const initTagList = async () => {
+  const getTagList = async () => {
     try {
-      const { node, groupName, name } = currentGroup.value
+      const { node, groupName } = currentGroup.value
       if (!node || !groupName) {
         return
       }
 
-      selectedGroup = { node, groupName, name }
+      selectedGroup = { node, groupName, name: keywordSearch.value }
       tagMsgMap = await getTagDetail()
       initPageController()
       getTableData()
@@ -205,7 +212,7 @@ export default () => {
 
   // debounce
   const dbGetTagList = debounce(() => {
-    initTagList()
+    getTagList()
   }, 500)
 
   const writtenTag = () => {
@@ -217,23 +224,29 @@ export default () => {
     }, 900)
   }
 
+  const resetKeywordSearch = () => {
+    keywordSearch.value = ''
+  }
+
   // change node
   const selectedNodeChanged = async (nodeName: string) => {
     if (nodeName) {
       try {
         currentGroup.value.node = nodeName
-        currentGroup.value.groupName = ''
         selectedGroup = undefined
         totalData.value = []
 
         const data = await queryGroupList(currentGroup.value.node.toString())
+        const isExistGroup = data.find((group) => group.name === currentGroup.value.groupName)
+        currentGroup.value.groupName = isExistGroup?.name || ''
+
         groupList.value = data
       } catch (error) {
         groupList.value = []
       }
     } else {
       currentGroup.value.groupName = ''
-      currentGroup.value.name = ''
+      resetKeywordSearch()
       groupList.value = []
       totalData.value = []
       selectedGroup = undefined
@@ -243,10 +256,10 @@ export default () => {
 
   // change group
   const selectedGroupChanged = async (groupName: string) => {
-    currentGroup.value.name = ''
+    resetKeywordSearch()
 
     if (groupName) {
-      await initTagList()
+      await getTagList()
     } else {
       totalData.value = []
       initPageController()
@@ -291,6 +304,20 @@ export default () => {
     return item.attribute && item.attribute.some((attr) => attr === TagAttributeType.Write)
   }
 
+  const initTagList = async () => {
+    const { node, groupName } = currentGroup.value
+    if (node) {
+      await selectedNodeChanged(node)
+    }
+    if (node && groupName) {
+      await getTagList()
+    }
+  }
+
+  onMounted(() => {
+    initTagList()
+  })
+
   onUnmounted(() => {
     if (pollTimer) {
       window.clearInterval(pollTimer)
@@ -303,6 +330,7 @@ export default () => {
   return {
     nodeList,
     groupList,
+    keywordSearch,
     currentGroup,
     currentNodeName,
     pageController,

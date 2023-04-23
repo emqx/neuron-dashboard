@@ -6,6 +6,10 @@ interface paginationInfo {
   pageSize: number
   total: number
 }
+interface NodeGroup {
+  node: string
+  groupName: string
+}
 interface State {
   lang: string
   token: string
@@ -13,6 +17,7 @@ interface State {
   subAppInstances: Record<string, any>
   listShowType: string
   paginationData: paginationInfo
+  nodeGroupMemory: NodeGroup
 }
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
@@ -36,6 +41,10 @@ export default createStore<State>({
         pageNum: 1,
         pageSize: 30,
         total: 0,
+      },
+      nodeGroupMemory: {
+        node: '',
+        groupName: '',
       },
     }
   },
@@ -64,6 +73,9 @@ export default createStore<State>({
     },
     SET_PAGINATION(state, data: paginationInfo) {
       state.paginationData = data
+    },
+    SET_NODE_GROUP(state, data: NodeGroup) {
+      state.nodeGroupMemory = data
     },
   },
 })
