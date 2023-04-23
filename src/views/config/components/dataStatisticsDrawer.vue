@@ -8,13 +8,15 @@
 </template>
 
 <script lang="ts" setup>
+import type { PropType } from 'vue'
 import { computed, defineProps, defineEmits } from 'vue'
 import { ElDrawer } from 'element-plus'
 import { dataStatistics } from '@/composables/config/useDriver'
+import type { NodeCatogery } from '@/types/enums'
 
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
-  type: { type: String, default: '' }, // 'app' | 'driver'
+  type: { type: String as PropType<NodeCatogery[keyof NodeCatogery]>, default: '' },
   nodeName: { type: String, default: '' },
 })
 const emits = defineEmits(['update:modelValue'])

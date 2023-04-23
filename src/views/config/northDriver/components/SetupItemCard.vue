@@ -75,7 +75,7 @@
   <DataStatisticsDrawer
     v-if="dataStatisticsVisiable"
     v-model="dataStatisticsVisiable"
-    :type="'app'"
+    :type="NodeCatogery.North"
     :node-name="data.name"
   ></DataStatisticsDrawer>
 </template>
@@ -92,7 +92,7 @@ import {
   useDriverName,
 } from '@/composables/config/useDriver'
 import useNorthDriver from '@/composables/config/useNorthDriver'
-import { PluginKind } from '@/types/enums'
+import { PluginKind, NodeCatogery } from '@/types/enums'
 import type { DriverItemInList } from '@/types/config'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import DataStatisticsDrawer from '../../components/dataStatisticsDrawer.vue'
