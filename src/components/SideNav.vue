@@ -29,7 +29,6 @@
       </emqx-submenu>
     </template>
   </emqx-menu>
-  <!-- <status-bar></status-bar> -->
 </template>
 
 <script lang="ts">
