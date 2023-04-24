@@ -3,7 +3,7 @@ import { createI18n } from 'vue-i18n'
 import store from '@/store'
 import { setLang } from '@/composables/useLang'
 
-const LangModules = ['data', 'common', 'config', 'admin', 'error', 'ekuiper']
+const LangModules = ['data', 'common', 'config', 'admin', 'error', 'ekuiper', 'plugin', 'schema']
 
 type LangModel = {
   [key in Language]: $TSFixed

@@ -41,6 +41,7 @@ export default (props: Props) => {
   const setParamRef = (el: any) => {
     formComParmasRef.value.push(el)
   }
+  const nodePluginName = ref('')
 
   const node = computed(() => route.params.node.toString())
 
@@ -111,6 +112,8 @@ export default (props: Props) => {
   const getPluginInfo = async () => {
     const nodeInfo = getNodeMsgById(node.value)
     const { plugin: pluginName } = nodeInfo
+    nodePluginName.value = pluginName
+
     const nodePluginToLower = pluginName.toLocaleLowerCase()
 
     const schemName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
@@ -224,6 +227,7 @@ export default (props: Props) => {
 
   return {
     node,
+    nodePluginName,
     configForm,
     defaultConfigData,
     fieldList,

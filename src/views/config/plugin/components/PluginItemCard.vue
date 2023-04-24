@@ -47,6 +47,8 @@ import type { PropType } from 'vue'
 import { defineEmits, defineProps, computed } from 'vue'
 import EllipsisTooltip from '@/components/EllipsisTooltip.vue'
 import useLang from '@/composables/useLang'
+import { useI18n } from 'vue-i18n'
+import { IGNORE_PLUGINS } from '@/utils/constants'
 
 const props = defineProps({
   data: {
@@ -55,10 +57,18 @@ const props = defineProps({
   },
 })
 
-const { currentLang } = useLang()
+const { t } = useI18n()
+const { currentLang, i18nContent } = useLang()
 
+// If the subsequent English also needs front-end support, please modify the logic and i18/plugin.ts
 const nodeDesc = computed(() => {
-  return currentLang.value === 'zh' ? props.data.description_zh : props.data.description
+  const lowerCaseName = props.data.name.toLocaleLowerCase().replaceAll(/\s(w)/g, '')
+
+  let desc = i18nContent(props.data, 'description')
+  if (IGNORE_PLUGINS.includes(lowerCaseName) && currentLang.value === 'zh') {
+    desc = t(`plugin.${lowerCaseName}`)
+  }
+  return desc
 })
 const emit = defineEmits(['deleted'])
 const { getNodeTypeLabelByValue } = useNodeType()

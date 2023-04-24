@@ -16,6 +16,7 @@
               :ref="setParamRef"
               v-if="shouldFieldShow(field, configForm)"
               v-model="configForm[field.key]"
+              :plugin="nodePluginName"
               :param-key="field.key"
               :param-info="field.info"
               :default-data="defaultConfigData"
@@ -68,6 +69,7 @@ const { shouldFieldShow } = useNodeConfigParamCommon()
 
 const {
   node,
+  nodePluginName,
   configForm,
   defaultConfigData,
   fieldList,
