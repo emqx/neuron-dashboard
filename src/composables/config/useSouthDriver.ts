@@ -136,8 +136,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     }, 15 * 1000)
   }
 
-  // Compatible with jumping from created a node
-  const goGroupPage = (node: DriverItemInList | { name: string }) => {
+  const goGroupPage = (node: DriverItemInList) => {
     router.push({
       name: 'SouthDriverGroup',
       params: {
@@ -146,7 +145,8 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     })
   }
 
-  const goNodeConfig = (node: DriverItemInList) =>
+  // Compatible with jumping from created a node
+  const goNodeConfig = (node: DriverItemInList | { name: string }) =>
     router.push({ name: 'SouthDriverConfig', params: { node: node.name } })
 
   const deleteDriver = async (node: DriverItemInList) => {

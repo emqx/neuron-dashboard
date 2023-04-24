@@ -100,8 +100,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     }
   }
 
-  // Compatible with jumping from created a node
-  const goGroupPage = (node: DriverItemInList | { name: string }) => {
+  const goGroupPage = (node: DriverItemInList) => {
     if (!isMonitorNode(node.name)) {
       router.push({
         name: 'NorthDriverGroup',
@@ -112,7 +111,8 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     }
   }
 
-  const goNodeConfig = (node: DriverItemInList) =>
+  // Compatible with jumping from created a node
+  const goNodeConfig = (node: DriverItemInList | { name: string }) =>
     router.push({ name: 'NorthDriverConfig', params: { node: node.name } })
 
   const deleteDriver = async (node: DriverItemInList) => {
