@@ -55,15 +55,15 @@ export default (type: DriverDirection) => {
     driverForm.value = createRawDriverForm()
   }
 
-  const { goGroupPage: goNorthGroupPage } = useNorthDriver()
-  const { goGroupPage: goSouthGroupPage } = useSouthDriver()
+  const { goNodeConfig: goNorthNodeConfig } = useNorthDriver()
+  const { goNodeConfig: goSouthNodeConfig } = useSouthDriver()
 
   const goNodeConfigPage = () => {
     const { name } = driverForm.value
     if (type === DriverDirection.South) {
-      goSouthGroupPage({ name })
+      goSouthNodeConfig({ name })
     } else if (type === DriverDirection.North) {
-      goNorthGroupPage({ name })
+      goNorthNodeConfig({ name })
     }
   }
 
