@@ -31,3 +31,5 @@ export const DASHBOARD_APP_NAME = 'default-dashboard-adapter'
 export const APP_DO_NOT_NEED_SHOW = [DASHBOARD_APP_NAME, 'default-persist-adapter']
 
 export const PLUGIN_TYPES = 'default-dashboard-adapter'
+
+export const IGNORE_PLUGINS: string[] = ['mqtt', 'ekuiper', 'monitor', 'modbustcp', 'modbusrtu', 'file']
