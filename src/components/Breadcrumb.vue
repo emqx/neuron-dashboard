@@ -1,5 +1,5 @@
 <template>
-  <emqx-breadcrumb separator="/">
+  <emqx-breadcrumb separator="/" v-if="levelList.length > 0">
     <transition-group name="breadcrumb" mode="out-in">
       <emqx-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
@@ -106,7 +106,7 @@ const getBreadcrumbs = () => {
     const namePathToString = namePaths
       ? namePaths.reduce((arr, cur) => {
           return `${arr};${cur};`
-        })
+        }, '')
       : ''
     setBreadcrumbFullPaths(namePathToString)
   }

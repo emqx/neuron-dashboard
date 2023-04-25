@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import routes, { ekuiperRoute } from './routes'
 import store from '@/store/index'
+import { isSubApp } from '@/utils/forToBeSubApp'
 import { handleEKuiper, isKuiperPath, isExitEKuiper, handleExitEKuiper } from '@/utils/forEKuiper'
 import { isShowEkuiper } from '@/config/index'
 
@@ -18,8 +19,7 @@ router.beforeEach((to, from, next) => {
     axiosCancels.forEach(async (e) => e && e())
     store.commit('SET_AXIOS_PROMISE_CANCEL', [])
   }
-
-  if (!store.state.token && to.name !== 'Login') {
+  if (!store.state.token && to.name !== 'Login' && !isSubApp) {
     next({ name: 'Login' })
   } else if (store.state.token && to.name === 'Login') {
     next('/')

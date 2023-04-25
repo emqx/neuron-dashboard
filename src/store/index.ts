@@ -12,8 +12,15 @@ interface NodeGroup {
   groupName: string
 }
 interface State {
+  isSubApp: boolean
+  tabsNeedBeHidden: boolean
+  orgId: string
+  projectId: string
+  serviceId: string
+  version: string
   lang: string
   token: string
+  isAdmin: boolean
   isSubAppLoading: boolean
   subAppInstances: Record<string, any>
   listShowType: string
@@ -31,8 +38,15 @@ const getDefaultLanguage = () => {
 export default createStore<State>({
   state() {
     return {
+      isSubApp: window.__POWERED_BY_QIANKUN__ || false,
+      tabsNeedBeHidden: false,
+      orgId: '',
+      projectId: '',
+      serviceId: '',
+      version: '',
       lang: getDefaultLanguage(),
       token: getToken() ?? '',
+      isAdmin: false,
       isSubAppLoading: false,
       subAppInstances: {
         ekuiper: undefined,
@@ -59,6 +73,24 @@ export default createStore<State>({
     SET_TOKEN(state: State, payload: string) {
       state.token = payload
       setToken(payload)
+    },
+    SET_IS_ADMIN(state: State, payload: boolean) {
+      state.isAdmin = payload
+    },
+    SET_HIDDEN_TAB(state: State, payload: boolean) {
+      state.tabsNeedBeHidden = payload
+    },
+    SET_ORG_ID(state: State, payload: string) {
+      state.orgId = payload
+    },
+    SET_PROJECT_ID(state: State, payload: string) {
+      state.projectId = payload
+    },
+    SET_SERVICE_ID(state: State, payload: string) {
+      state.serviceId = payload
+    },
+    SET_VERSION(state: State, payload: string) {
+      state.version = payload
     },
     LOGOUT(state) {
       state.token = ''

@@ -37,7 +37,7 @@ const i18n = createI18n({
   legacy: false, // Composition API mode
   globalInjection: true, // global
   locale: store.state.lang,
-  fallbackLocale: 'zh',
+  fallbackLocale: 'en',
   messages,
 })
 
