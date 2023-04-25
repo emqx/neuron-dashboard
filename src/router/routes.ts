@@ -184,7 +184,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/license',
         name: 'License',
-        meta: { requireAuth: true },
+        meta: { requireAuth: true, hiddenBreadcrumb: true },
         component: () => import('@/views/about/License.vue'),
       },
     ],

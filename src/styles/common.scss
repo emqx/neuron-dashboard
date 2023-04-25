@@ -22,3 +22,15 @@
 .table-row-click {
   cursor: pointer;
 }
+
+@media screen and (max-width: 1920px) {
+  .emqx-container.is-normal, .emqx-header-container {
+    max-width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 2560px) {
+  .emqx-container.is-normal, .emqx-header-container {
+    max-width: 100% !important;
+  }
+}

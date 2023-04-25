@@ -4,16 +4,17 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
-import { countBaseURL, popUpErrorMessage, dataType } from './utils'
+import { popUpErrorMessage, dataType } from './utils'
+import action from './action'
 
-const baseURL = countBaseURL()
+// const baseURL = countBaseURL()
 const option = {
   headers: {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
     Accept: 'application/json',
   },
-  baseURL,
+  // baseURL= './',
   timeout: 10000,
 }
 
@@ -49,7 +50,7 @@ export const handleBlobError = (data: Blob, statusInfo: { status: number; status
   }
 }
 
-export const handleError = (error: AxiosError) => {
+export const handleError = (error: any) => {
   const { response } = error
 
   if (response?.data?.error) {
@@ -75,11 +76,18 @@ export const handleError = (error: AxiosError) => {
 
 axios.interceptors.request.use(
   (config) => {
+    const { serviceId } = store.state
     if (store.state.token) {
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${store.state.token}`,
       }
+    }
+    const { url } = config
+    if (url?.includes('edgeservice') === false && url?.includes('template') === false) {
+      config.url = `/api/edgeservice/proxy/${serviceId}/api/v2${config.url}`
+    } else if (url?.includes('template') === true && url?.includes('integration') === false) {
+      config.url = `/integration/neuron/v2.4.3${config.url}`
     }
     return config
   },
@@ -107,9 +115,10 @@ axios.interceptors.response.use(
     const currrentRouteName: any = router.currentRoute?.value?.name || ''
     const isInLoginPage = whiteRoutes.includes(currrentRouteName)
 
-    if ((error?.response?.status === 401 && !isInLoginPage) || error?.response?.status === 403) {
-      store.commit('LOGOUT')
-      router.push({ name: 'Login' })
+    if (error?.response?.status === 401 && !isInLoginPage) {
+      action.setGlobalState({
+        refreshToken: true,
+      })
     } else if (!error.config._handleErrorSelf) {
       handleError(error)
     }

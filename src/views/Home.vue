@@ -1,10 +1,10 @@
 <template>
   <div class="main">
-    <Header />
-    <emqx-container normal fixed-nav class="body" :page-min-width="1250">
-      <template #nav>
-        <side-nav></side-nav>
-      </template>
+    <Header v-if="!isSubApp" />
+    <emqx-container normal fixed-nav class="body">
+      <!-- <template #nav v-if="!isSubApp">
+        <side-nav v-if="!isSubApp"></side-nav>
+      </template> -->
       <template #page-content>
         <div>
           <Breadcrumb />
@@ -25,7 +25,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import Header from '@/components/Header.vue'
-import SideNav from '@/components/SideNav.vue'
+// import SideNav from '@/components/SideNav.vue'
 // import useEKuiper from '@/composables/ekuiper/useEKuiper'
 import { isKuiperPath } from '@/utils/forEKuiper'
 import { useRoute } from 'vue-router'
@@ -36,7 +36,7 @@ export default defineComponent({
   name: 'Home',
   components: {
     Header,
-    SideNav,
+    // SideNav,
     Breadcrumb,
   },
   setup() {
@@ -44,12 +44,26 @@ export default defineComponent({
     const store = useStore()
     const isKuiperPage = computed(() => isKuiperPath(route.path))
     const isSubAppLoading = computed(() => store.state.isSubAppLoading)
+    const isSubApp = computed(() => store.state.isSubApp)
     // const { pageTitle } = useEKuiper()
     return {
       isKuiperPage,
       isSubAppLoading,
+      isSubApp,
       // pageTitle,
     }
   },
 })
 </script>
+
+<style lang="scss">
+.main {
+  .el-aside {
+    width: 0 !important;
+  }
+  .el-container {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+</style>
