@@ -29,6 +29,7 @@ import { queryPluginConfigInfo, updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
 import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import { useGetPluginMsgIdMap } from '@/composables/config/usePlugin'
+import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 import { DriverDirection } from '@/types/enums'
 
 const props = defineProps({
@@ -52,6 +53,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'submitted'])
 
 const { t } = useI18n()
+const { parseWriteData } = useWriteDataCheckNParse()
 
 const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
 const pluginMsg: Ref<undefined | PluginInfo> = ref(undefined)
@@ -95,13 +97,16 @@ const submit = async () => {
     await formRef.value.validate()
     isSubmitting.value = true
 
-    let bodyData = tagData.value
-    if (bodyData?.value !== undefined) {
-      bodyData.value = Number(bodyData.value)
-    } else if (bodyData?.value === null) {
-      const { value, ...restData } = bodyData
-      bodyData = restData
+    const bodyData = tagData.value
+    const { type, value } = bodyData
+
+    if (value !== undefined && value !== null) {
+      /** let it go, when the tags value use hexadecimal, , and sync useAddTag.ts
+       * const newValue = isUseHexadecimal.value ? await transToDecimal({ ...tagData, value } as TagDataInTable): value
+       */
+      bodyData.value = parseWriteData(Number(type), String(value))
     }
+
     await updateTag(props.node, props.group, bodyData)
     showDialog.value = false
     EmqxMessage.success(t('common.submitSuccess'))

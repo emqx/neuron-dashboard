@@ -71,7 +71,7 @@ export default (props: any) => {
   }
 
   // checkFloat,
-  const { checkWriteData } = useWriteDataCheckNParse()
+  const { checkWriteData, parseWriteData } = useWriteDataCheckNParse()
   const createErrorMsg = (type: number, prefix: string, suffix: string) => {
     if (!type) return ''
     return prefix + TagType[type] + suffix
@@ -98,7 +98,7 @@ export default (props: any) => {
   const validTagValue = async (rule: any, value: string, callback: any) => {
     const { field } = rule
     const $index = field.split('.')[1]
-    const tag: TagDataInTable = props?.data?.tagList ? props?.data?.tagList[$index] : props?.data
+    const tag: TagDataInTable = props?.data?.tagList ? props.data.tagList[$index] : props?.data
     // const { type, attribute, decimal } = tag
     const { type, attribute } = tag
 

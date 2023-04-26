@@ -10,6 +10,7 @@ import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
 import { createRandomString, getErrorMsg, popUpErrorMessage } from '@/utils/utils'
 import { useNodeMsgMap } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
+import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 
 export const useTagTypeSelect = () => {
   const tagTypeOptList = Object.keys(TagType)
@@ -218,6 +219,7 @@ export default () => {
     formData.value.tagList = formData.value.tagList.slice(errIndex)
   }
 
+  const { parseWriteData } = useWriteDataCheckNParse()
   const submit = async () => {
     try {
       isSubmitting.value = true
@@ -225,17 +227,18 @@ export default () => {
       const nodeName = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags = formData.value.tagList.map(({ id, ...tagData }) => {
-        let data = tagData
-
-        if (tagData?.value !== undefined) {
-          data.value = Number(tagData.value)
-        } else if (tagData?.value === null) {
-          const { value, ...restData } = tagData
-          data = restData
+        const data = tagData
+        const { type, value } = data
+        if (value !== undefined && value !== null) {
+          /** let it go, when the tags value use hexadecimal, and sync EditTagDialog.vue
+           * const newValue = isUseHexadecimal.value ? await transToDecimal({ ...tagData, value } as TagDataInTable): value
+           */
+          data.value = parseWriteData(Number(type), String(value))
         }
 
         return data
       })
+
       await addTag({ tags, node: nodeName, group: groupName })
       EmqxMessage.success(t('common.createSuccess'))
       router.push({
