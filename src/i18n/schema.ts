@@ -37,7 +37,7 @@ export default {
     zh: '客户端 ID',
     en: '',
   },
-  mqttClientDesc: {
+  mqttClientIdDesc: {
     zh: 'MQTT 客户端 ID',
     en: '',
   },
@@ -351,14 +351,12 @@ export default {
     en: '',
   },
   modbusrtuPort: {
-    name: {
-      zh: '端口号',
-      en: '',
-    },
-    description: {
-      zh: '服务端模式中填写本地端口号，客户端模式中填写远程设备端口号',
-      en: '',
-    },
+    zh: '端口号',
+    en: '',
+  },
+  modbusrtuPortDesc: {
+    zh: '服务端模式中填写本地端口号，客户端模式中填写远程设备端口号',
+    en: '',
   },
   modbusrtuStop: {
     zh: '停止位',
@@ -368,23 +366,21 @@ export default {
     zh: '停止位',
     en: '',
   },
-  modbusrtuIimeout: {
+  modbusrtuTimeout: {
     zh: '连接超时时间',
     en: '',
   },
-  modbusrtuIimeoutDesc: {
+  modbusrtuTimeoutDesc: {
     zh: '连接超时时间，单位为毫秒',
     en: '',
   },
   // file
   fileFileLength: {
-    name: {
-      zh: '文件最大长度',
-      en: 'File Max Length',
-    },
-    description: {
-      zh: '连接超时时间，单位为毫秒',
-      en: '',
-    },
+    zh: '文件最大长度',
+    en: 'File Max Length',
+  },
+  fileFileLengtDesc: {
+    zh: '连接超时时间，单位为毫秒',
+    en: '',
   },
 }
