@@ -180,6 +180,7 @@ export const dataType = (value: any) => {
     ['[object JSON]', 'json'],
     ['[object Math]', 'math'],
     ['[object Blob]', 'blob'],
+    ['[object ArrayBuffer]', 'arrayBuffer'],
     ['default', 'object'],
   ])
   return mapData.get(valueType) || mapData.get('default')
