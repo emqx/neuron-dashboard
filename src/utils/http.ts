@@ -20,18 +20,32 @@ const option = {
 Object.assign(axios.defaults, option)
 
 export const handleBlobError = (data: Blob, statusInfo: { status: number; statusText: string }) => {
+  const { statusText, status } = statusInfo
+  const statusMsg = statusText || status
+
   const reader = new FileReader()
   reader.readAsText(data, 'utf-8')
   reader.onload = () => {
-    const jsonText = JSON.parse(reader.result as string)
-    const { error: errorNumber } = jsonText
-    if (errorNumber) {
-      popUpErrorMessage(errorNumber)
-    } else {
-      const { statusText, status } = statusInfo
-      const msg = statusText || status
-      EmqxMessage.error(`${JSON.stringify(msg)}`)
+    const msg = reader.result || ''
+
+    if (typeof msg === 'string') {
+      const reg = /^\{[\s\S]*\}$/
+      const isJSON = reg.test(msg)
+      if (!isJSON) {
+        const newMsg = msg || statusMsg
+        EmqxMessage.error(newMsg)
+        return
+      }
+
+      const jsonText = JSON.parse(reader.result as string)
+      const { error: errorNumber } = jsonText
+      if (errorNumber) {
+        popUpErrorMessage(errorNumber)
+      } else {
+        EmqxMessage.error(statusMsg)
+      }
     }
+    // ToDo: arrayBuffer
   }
 }
 
@@ -53,7 +67,9 @@ export const handleError = (error: AxiosError) => {
       EmqxMessage.error(msg)
     }
   } else {
-    EmqxMessage.error(error.toString())
+    let msg = dataType(error) === 'string' ? error : response?.statusText || response?.status
+    msg = msg || 'unknow'
+    EmqxMessage.error(msg)
   }
 }
 
