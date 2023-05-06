@@ -37,14 +37,20 @@ export const handleBlobError = (data: Blob, statusInfo: { status: number; status
 
 export const handleError = (error: AxiosError) => {
   const { response } = error
+
   if (response?.data?.error) {
     popUpErrorMessage(response.data.error)
   } else if (response?.data) {
+    const { statusText, status } = response.data
+
+    const newStatusText = statusText || response?.statusText
+    const newStatus = status || response?.status
+
     if (dataType(response.data) === 'blob') {
-      const { statusText, status } = response.data
-      handleBlobError(response.data, { statusText, status })
+      handleBlobError(response.data, { statusText: newStatusText, status: newStatus })
     } else {
-      EmqxMessage.error(`${JSON.stringify(response.data)}`)
+      const msg = newStatusText || newStatus
+      EmqxMessage.error(msg)
     }
   } else {
     EmqxMessage.error(error.toString())
