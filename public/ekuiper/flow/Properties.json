@@ -1,0 +1,2754 @@
+{
+  "edge": {
+    "crczmq": {
+      "id": "5-1-1",
+      "parent": "5-1",
+      "nodeType": "crrc_zmq",
+      "about": {
+        "trial": true,
+        "installed": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/plugins/sinks/zmq.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/plugins/sinks/zmq.md"
+        },
+        "description": {
+          "en": "This a demo 0MQ sink plugin, it cannot be used in production env.",
+          "zh": "本插件为演示 ZMQ 数据发送插件，不能使用在生产环境中"
+        },
+        "label": {
+          "en": "ZMQ",
+          "zh": "ZMQ"
+        }
+      },
+      "libs": ["github.com/pebbe/zmq4@v1.0.0"],
+      "properties": [
+        {
+          "exist": false,
+          "name": "server",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The url of the Zero Mq server",
+            "zh": "Zero Mq 服务器的 URL"
+          },
+          "label": {
+            "en": "Server address",
+            "zh": "服务器地址"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    },
+    "source_mqtt": {
+      "id": "5-2-1",
+      "parent": "5-2",
+      "nodeType": "mqtt",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/rules/sinks/mqtt.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/rules/sinks/mqtt.md"
+        },
+        "description": {
+          "en": "The action is used for publish output message into an MQTT server.",
+          "zh": "该操作用于将输出消息发布到 MQTT 服务器中"
+        },
+        "label": {
+          "en": "MQTT",
+          "zh": "MQTT"
+        }
+      },
+      "libs": null,
+      "properties": [
+        {
+          "exist": false,
+          "name": "server",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The broker address of the MQTT server, such as tcp://127.0.0.1:1883.",
+            "zh": "MQTT 服务器地址，例如 tcp://127.0.0.1:1883"
+          },
+          "label": {
+            "en": "MQTT broker address",
+            "zh": "MQTT 服务器地址"
+          }
+        },
+        {
+          "exist": false,
+          "name": "topic",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The MQTT topic, such as analysis/result",
+            "zh": "MQTT 主题，例如 analysis/result"
+          },
+          "label": {
+            "en": "MQTT topic",
+            "zh": "MQTT 主题"
+          }
+        },
+        {
+          "exist": false,
+          "name": "clientId",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The client id for MQTT connection. If not specified, an uuid will be used",
+            "zh": "MQTT 连接的客户端 ID。 如果未指定，将使用一个 uuid"
+          },
+          "label": {
+            "en": "MQTT ClientID",
+            "zh": "MQTT 客户端标识符(ClinetID)"
+          }
+        },
+        {
+          "exist": false,
+          "name": "protocolVersion",
+          "placeholder": null,
+          "type": "string",
+          "control": "select",
+          "connection_related": true,
+          "optional": true,
+          "values": ["3.1", "3.1.1"],
+          "hint": {
+            "en": "MQTT protocol version. 3.1 (also refer as MQTT 3) or 3.1.1 (also refer as MQTT 4).  If not specified, the default value is 3.1.",
+            "zh": "MQTT 协议版本。3.1 (也被称为 MQTT 3) 或者 3.1.1 (也被称为 MQTT 4)。 如果未指定，缺省值为 3.1。"
+          },
+          "label": {
+            "en": "MQTT protocol version",
+            "zh": "MQTT 协议版本"
+          }
+        },
+        {
+          "exist": false,
+          "name": "qos",
+          "placeholder": null,
+          "type": "list_int",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [0, 1, 2],
+          "hint": {
+            "en": "The QoS for message delivery.",
+            "zh": "消息转发的服务质量"
+          },
+          "label": {
+            "en": "QoS",
+            "zh": "QoS"
+          }
+        },
+        {
+          "exist": false,
+          "name": "username",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The username for the connection.",
+            "zh": "连接用户名"
+          },
+          "label": {
+            "en": "Username",
+            "zh": "用户名"
+          }
+        },
+        {
+          "exist": false,
+          "name": "password",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The password for the connection.",
+            "zh": "连接密码。"
+          },
+          "label": {
+            "en": "Password",
+            "zh": "密码"
+          }
+        },
+        {
+          "exist": false,
+          "name": "certificationPath",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The certification path. It can be an absolute path, or a relative path. If it is an relative path, then the base path is where you excuting the kuiperd command. For example, if you run bin/kuiperd from /var/kuiper, then the base path is /var/kuiper; If you run ./kuiperd from /var/kuiper/bin, then the base path is /var/kuiper/bin.",
+            "zh": "证书路径。可以为绝对路径，也可以为相对路径。如果指定的是相对路径，那么父目录为执行 kuiperd 命令的路径。比如，如果你在 /var/kuiper 中运行 bin/kuiperd ，那么父目录为 /var/kuiper; 如果运行从 /var/kuiper/bin 中运行./kuiperd，那么父目录为 /var/kuiper/bin"
+          },
+          "label": {
+            "en": "Certification path",
+            "zh": "证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "privateKeyPath",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The private key path. It can be either absolute path, or relative path, which is similar to use of certificationPath.",
+            "zh": "私钥路径。可以为绝对路径，也可以为相对路径，相对路径的用法与 certificationPath 类似"
+          },
+          "label": {
+            "en": "Private key path",
+            "zh": "私钥路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "rootCaPath",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of root ca path. It can be an absolute path, or a relative path. ",
+            "zh": "根证书路径，用以验证服务器证书。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Root Ca path",
+            "zh": "根证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "insecureSkipVerify",
+          "placeholder": null,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "If InsecureSkipVerify is true, TLS accepts any certificate presented by the server and any host name in that certificate.  In this mode, TLS is susceptible to man-in-the-middle attacks. The default value is false. The configuration item can only be used with TLS connections.",
+            "zh": "如果 InsecureSkipVerify 设置为 true, TLS接受服务器提供的任何证书以及该证书中的任何主机名。 在这种模式下，TLS容易受到中间人攻击。默认值为false。配置项只能用于TLS连接。"
+          },
+          "label": {
+            "en": "Skip Certification verification",
+            "zh": "跳过证书验证"
+          }
+        }
+      ]
+    }
+  },
+
+  "source": {
+    "CSV": {
+      "id": "1-2-1",
+      "parent": "1-2",
+      "nodeType": "crrc_file",
+      "about": {
+        "trial": true,
+        "installed": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/plugins/sinks/zmq.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/plugins/sinks/zmq.md"
+        },
+        "description": {
+          "en": "offline data.",
+          "zh": "离线数据"
+        },
+        "label": {
+          "en": "CSV",
+          "zh": "CSV"
+        }
+      },
+      "libs": [""],
+      "properties": [
+        {
+          "exist": false,
+          "name": "file",
+          "placeholder": null,
+          "type": "string",
+          "control": "file",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "file selection",
+            "zh": "文件选择"
+          },
+          "label": {
+            "en": "file selection",
+            "zh": "文件选择"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    },
+    "TXT": {
+      "id": "1-2-2",
+      "parent": "1-2",
+      "nodeType": "crrc_file",
+      "about": {
+        "trial": true,
+        "installed": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/plugins/sinks/zmq.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/plugins/sinks/zmq.md"
+        },
+        "description": {
+          "en": "offline data.",
+          "zh": "离线数据"
+        },
+        "label": {
+          "en": "TXT",
+          "zh": "TXT"
+        }
+      },
+      "libs": [""],
+      "properties": [
+        {
+          "exist": false,
+          "name": "file",
+          "placeholder": null,
+          "type": "string",
+          "control": "file",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "file selection",
+            "zh": "文件选择"
+          },
+          "label": {
+            "en": "file selection",
+            "zh": "文件选择"
+          }
+        },
+        {
+          "exist": false,
+          "name": "interval",
+          "placeholder": null,
+          "type": "int",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Interval(s)",
+            "zh": "发送间隔（秒）"
+          },
+          "label": {
+            "en": "Interval(s)",
+            "zh": "发送间隔（秒）"
+          }
+        },
+        {
+          "exist": false,
+          "name": "length",
+          "placeholder": null,
+          "type": "int",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Data Length",
+            "zh": "发送数据的长度"
+          },
+          "label": {
+            "en": "Data Length",
+            "zh": "发送数据的长度"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    },
+    "neuron": {
+      "id": "1-3-1",
+      "parent": "1-3",
+      "nodeType": "TODO:",
+      "about": {
+        "trial": true,
+        "installed": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/plugins/sinks/zmq.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/plugins/sinks/zmq.md"
+        },
+        "description": {
+          "en": "neuron source",
+          "zh": "neuron source"
+        },
+        "label": {
+          "en": "Neuron",
+          "zh": "Neuron"
+        }
+      },
+      "libs": [""],
+      "properties": [],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    }
+  },
+
+  "function": {
+    "savitzky_golay": {
+      "id": "2-1-1-1-1",
+      "parent": "2-1-1-1",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "Polynomial Fitting Smoothing",
+          "zh": "多项式拟合平滑法"
+        },
+        "label": {
+          "en": "Polynomial Fitting Smoothing",
+          "zh": "多项式拟合平滑法"
+        }
+      },
+      "functions": [
+        {
+          "name": "datasmooth",
+          "example": "datasmooth(data, degree)",
+          "hint": {
+            "en": "Polynomial Fitting Smoothing",
+            "zh": "多项式拟合平滑法"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "degree",
+              "optional": false,
+              "placeholder": 2,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Degree of the polynomial used for smoothing",
+                "zh": "平滑程度"
+              },
+              "label": {
+                "en": "Degree of the polynomial used for smoothing",
+                "zh": "平滑程度"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "weak",
+                    "zh": "弱"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "weaker",
+                    "zh": "较弱"
+                  }
+                },
+                {
+                  "value": 2,
+                  "label": {
+                    "en": "moderate",
+                    "zh": "适中"
+                  }
+                },
+                {
+                  "value": 3,
+                  "label": {
+                    "en": "stronger",
+                    "zh": "较强"
+                  }
+                },
+                {
+                  "value": 4,
+                  "label": {
+                    "en": "strong",
+                    "zh": "强"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "datasmooth"
+        }
+      ]
+    },
+    "cleannormal": {
+      "id": "2-1-1-2",
+      "parent": "2-1-1",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "normalization function",
+          "zh": "归一化函数"
+        },
+        "label": {
+          "en": "normalization function",
+          "zh": "归一化函数"
+        }
+      },
+      "functions": [
+        {
+          "name": "cleannormal",
+          "example": "cleannormal(data, regression_type)",
+          "hint": {
+            "en": "normalization function",
+            "zh": "归一化函数"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input signal data",
+                "zh": "输入信号数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "regression_type",
+              "optional": false,
+              "placeholder": 5,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "regression type",
+                "zh": "回归类型"
+              },
+              "label": {
+                "en": "regression type",
+                "zh": "回归类型"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "Maximum and minimum normalization",
+                    "zh": "最大最小值标准化"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "Z_Score normalization",
+                    "zh": "Z_Score标准化"
+                  }
+                },
+                {
+                  "value": 2,
+                  "label": {
+                    "en": "sigmoid",
+                    "zh": "sigmoid"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "cleannormal"
+        }
+      ]
+    },
+    "dimensionreduction": {
+      "id": "2-1-1-3",
+      "parent": "2-1-1",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "Data dimensionality reduction processing",
+          "zh": "数据降维处理"
+        },
+        "label": {
+          "en": "Data dimensionality reduction processing",
+          "zh": "数据降维处理"
+        }
+      },
+      "functions": [
+        {
+          "name": "dimensionreduction",
+          "example": "dimensionreduction(array, compression_ratio, method)",
+          "hint": {
+            "en": "Data dimensionality reduction processing",
+            "zh": "数据降维处理"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "compression_ratio",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Compression ratio",
+                "zh": "压缩比例"
+              },
+              "label": {
+                "en": "Compression ratio",
+                "zh": "压缩比例"
+              }
+            },
+            {
+              "name": "dimensionreduction",
+              "optional": false,
+              "placeholder": 0,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Dimension reduction method",
+                "zh": "降维方式"
+              },
+              "label": {
+                "en": "Dimension reduction method",
+                "zh": "降维方式"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "mean",
+                    "zh": "均值"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "sum",
+                    "zh": "总和"
+                  }
+                },
+                {
+                  "value": 2,
+                  "label": {
+                    "en": "maximum",
+                    "zh": "最大"
+                  }
+                },
+                {
+                  "value": 3,
+                  "label": {
+                    "en": "minimum",
+                    "zh": "最小"
+                  }
+                },
+                {
+                  "value": 4,
+                  "label": {
+                    "en": "K-means",
+                    "zh": "K-均值"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "dimensionreduction"
+        }
+      ]
+    },
+    "cleandrop": {
+      "id": "2-1-1-4",
+      "parent": "2-1-1",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "Data downsampling",
+          "zh": "数据降采样"
+        },
+        "label": {
+          "en": "Data downsampling",
+          "zh": "数据降采样"
+        }
+      },
+      "functions": [
+        {
+          "name": "cleandrop",
+          "example": "cleandrop(data, compression_ratio)",
+          "hint": {
+            "en": "Data downsampling",
+            "zh": "数据降采样"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input signal data",
+                "zh": "输入信号数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "compression_ratio",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Compression ratio",
+                "zh": "压缩比例"
+              },
+              "label": {
+                "en": "Compression ratio",
+                "zh": "压缩比例"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "cleandrop"
+        }
+      ]
+    },
+    "cleansort": {
+      "id": "2-1-1-5",
+      "parent": "2-1-1",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "Sort function",
+          "zh": "排序函数"
+        },
+        "label": {
+          "en": "Sort function",
+          "zh": "排序函数"
+        }
+      },
+      "functions": [
+        {
+          "name": "cleansort",
+          "example": "cleansort(array, range, sort_type)",
+          "hint": {
+            "en": "Sort function",
+            "zh": "排序函数"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "min",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Minimum value",
+                "zh": "取值范围下限"
+              },
+              "label": {
+                "en": "Minimum value",
+                "zh": "取值范围下限"
+              }
+            },
+            {
+              "name": "max",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Maximum value",
+                "zh": "取值范围上限"
+              },
+              "label": {
+                "en": "Maximum value",
+                "zh": "取值范围上限"
+              }
+            },
+            {
+              "name": "sort_type",
+              "optional": false,
+              "placeholder": 0,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Sort type",
+                "zh": "排序类型"
+              },
+              "label": {
+                "en": "Sort type",
+                "zh": "排序类型"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "Sort by ascending",
+                    "zh": "升序排列"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "Sort by descending",
+                    "zh": "降序排列"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "cleansort"
+        }
+      ]
+    },
+    "peakvally": {
+      "id": "2-1-2-1",
+      "parent": "2-1-2",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "Peak and valley detection",
+          "zh": "峰谷值检测"
+        },
+        "label": {
+          "en": "Peak and valley detection",
+          "zh": "峰谷值检测"
+        }
+      },
+      "functions": [
+        {
+          "name": "peakvallydet",
+          "example": "peakvallydet(data, pthresh)",
+          "hint": {
+            "en": "Peak and valley detection",
+            "zh": "峰谷值检测"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "thresh",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "The value is 0-1, float, indicating that the peak and trough are judged by the percentage of the highest value.",
+                "zh": "取值为0-1，float，表示以最值的百分比作为判断波峰波谷"
+              },
+              "label": {
+                "en": "Threshold percentage",
+                "zh": "阈值百分比"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "peakvallydet"
+        }
+      ]
+    },
+    "listmax": {
+      "id": "2-1-2-2",
+      "parent": "2-1-2",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "description": {
+          "en": "Maximum value statistics",
+          "zh": "最大值统计"
+        },
+        "label": {
+          "en": "Maximum value statistics",
+          "zh": "最大值统计"
+        }
+      },
+      "functions": [
+        {
+          "name": "listmax",
+          "example": "listmax(data, param1)",
+          "hint": {
+            "en": "Maximum value statistics",
+            "zh": "最大值统计"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "calCount",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Average coefficient",
+                "zh": "均分系数"
+              },
+              "label": {
+                "en": "Average coefficient",
+                "zh": "均分系数"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "listmax"
+        }
+      ]
+    },
+    "listrms": {
+      "id": "2-1-2-3",
+      "parent": "2-1-2",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "description": {
+          "en": "Root mean square statistics",
+          "zh": "均方根统计"
+        },
+        "label": {
+          "en": "Root mean square statistics",
+          "zh": "均方根统计"
+        }
+      },
+      "functions": [
+        {
+          "name": "listrms",
+          "example": "listrms(data, param1)",
+          "hint": {
+            "en": "Root mean square statistics",
+            "zh": "均方根统计"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "calCount",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Average coefficient",
+                "zh": "均分系数"
+              },
+              "label": {
+                "en": "Average coefficient",
+                "zh": "均分系数"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "listrms"
+        }
+      ]
+    },
+    "listamp": {
+      "id": "2-1-2-4",
+      "parent": "2-1-2",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "description": {
+          "en": "Spoke value statistics",
+          "zh": "辐值统计"
+        },
+        "label": {
+          "en": "Spoke value statistics",
+          "zh": "辐值统计"
+        }
+      },
+      "functions": [
+        {
+          "name": "listamp",
+          "example": "listamp(data, param1)",
+          "hint": {
+            "en": "Spoke value statistics",
+            "zh": "辐值统计"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "calCount",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Average coefficient",
+                "zh": "均分系数"
+              },
+              "label": {
+                "en": "Average coefficient",
+                "zh": "均分系数"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "listamp"
+        }
+      ]
+    },
+    "butterworth": {
+      "id": "2-1-3-1",
+      "parent": "2-1-3",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "butterworth filter",
+          "zh": "巴特沃斯滤波"
+        },
+        "label": {
+          "en": "butterworth filter",
+          "zh": "巴特沃斯滤波"
+        }
+      },
+      "functions": [
+        {
+          "name": "butterworth",
+          "example": "butterworth(data, sample_rate, filter_band, type, order)",
+          "hint": {
+            "en": "Apply butterworth filter",
+            "zh": "巴特沃斯滤波。"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input signal data",
+                "zh": "输入信号数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "sample_rate",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Sample rate",
+                "zh": "采样率"
+              },
+              "label": {
+                "en": "Sample rate",
+                "zh": "采样率"
+              }
+            },
+            {
+              "name": "filter_band",
+              "optional": false,
+              "control": "text",
+              "type": "any",
+              "hint": {
+                "en": "Filter band",
+                "zh": "滤波器带宽"
+              },
+              "label": {
+                "en": "Filter band",
+                "zh": "滤波器带宽"
+              }
+            },
+            {
+              "name": "type",
+              "optional": false,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Filter type",
+                "zh": "滤波器类型"
+              },
+              "label": {
+                "en": "Filter type",
+                "zh": "滤波器类型"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "lowpass",
+                    "zh": "低通"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "highpass",
+                    "zh": "高通"
+                  }
+                },
+                {
+                  "value": 3,
+                  "label": {
+                    "en": "bandpass",
+                    "zh": "带通"
+                  }
+                },
+                {
+                  "value": 4,
+                  "label": {
+                    "en": "bandstop",
+                    "zh": "带阻"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "order",
+              "optional": false,
+              "placeholder": 5,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Filter order",
+                "zh": "滤波器阶数"
+              },
+              "label": {
+                "en": "Filter order",
+                "zh": "滤波器阶数"
+              },
+              "values": [1, 2, 3, 4, 5]
+            }
+          ],
+          "return": {
+            "type": "array",
+            "hint": {
+              "en": "Filtered data",
+              "zh": "滤波后的数据"
+            }
+          },
+          "ui": {
+            "category": "函数/滤波",
+            "icon": "iconPath",
+            "label": "IIR滤波",
+            "color": "red"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "butterworth"
+        }
+      ]
+    },
+    "chebyshev": {
+      "id": "2-1-3-2",
+      "parent": "2-1-3",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "chebyshev filter",
+          "zh": "使用切比雪夫滤波"
+        },
+        "label": {
+          "en": "chebyshev filter",
+          "zh": "使用切比雪夫滤波"
+        }
+      },
+      "functions": [
+        {
+          "name": "chebyshev",
+          "example": "chebyshev(data, fs, ftype, freqs, order, rp)",
+          "hint": {
+            "en": "Chebyshev filter design",
+            "zh": "使用切比雪夫滤波"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input signal data",
+                "zh": "输入信号数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "fs",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Sample rate",
+                "zh": "采样率"
+              },
+              "label": {
+                "en": "Sample rate",
+                "zh": "采样率"
+              }
+            },
+            {
+              "name": "ftype",
+              "optional": false,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Filter type",
+                "zh": "滤波器类型"
+              },
+              "label": {
+                "en": "Filter type",
+                "zh": "滤波器类型"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "lowpass",
+                    "zh": "低通"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "highpass",
+                    "zh": "高通"
+                  }
+                },
+                {
+                  "value": 3,
+                  "label": {
+                    "en": "bandpass",
+                    "zh": "带通"
+                  }
+                },
+                {
+                  "value": 4,
+                  "label": {
+                    "en": "bandstop",
+                    "zh": "带阻"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "freqs",
+              "optional": false,
+              "control": "text",
+              "type": "any",
+              "hint": {
+                "en": "Filter band",
+                "zh": "滤波频率"
+              },
+              "label": {
+                "en": "Filter band",
+                "zh": "滤波频率"
+              }
+            },
+            {
+              "name": "order",
+              "optional": false,
+              "placeholder": 5,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Filter order",
+                "zh": "滤波器阶数"
+              },
+              "label": {
+                "en": "Filter order",
+                "zh": "滤波器阶数"
+              }
+            },
+            {
+              "name": "rp",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Passband ripple",
+                "zh": "增益"
+              },
+              "label": {
+                "en": "Passband ripple",
+                "zh": "增益"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "chebyshev"
+        }
+      ]
+    },
+    "fftTrans": {
+      "id": "2-1-4-1",
+      "parent": "2-1-4",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "Spectrum analysis (magnitude spectrum)",
+          "zh": "频谱分析（幅值谱）"
+        },
+        "label": {
+          "en": "Spectrum analysis (magnitude spectrum)",
+          "zh": "频谱分析（幅值谱）"
+        }
+      },
+      "functions": [
+        {
+          "name": "fftamp",
+          "example": "fftamp(signal, sample_rate, type)",
+          "hint": {
+            "en": "Spectrum analysis (magnitude spectrum)",
+            "zh": "频谱分析（幅值谱）"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "sample_rate",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Sample rate",
+                "zh": "采样频率"
+              },
+              "label": {
+                "en": "Sample rate",
+                "zh": "采样频率"
+              }
+            },
+            {
+              "name": "type",
+              "optional": false,
+              "placeholder": 0,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Type",
+                "zh": "谱类型"
+              },
+              "label": {
+                "en": "Type",
+                "zh": "谱类型"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "single-sided spectrum",
+                    "zh": "单边谱"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "double-sided spectrum",
+                    "zh": "双边谱"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Frequency list",
+            "zh": "频率列表"
+          },
+          "value": "fftamp[0]"
+        },
+        {
+          "label": {
+            "en": "Amplitude list",
+            "zh": "幅值列表"
+          },
+          "value": "fftamp[1]"
+        }
+      ]
+    },
+    "fftPSD": {
+      "id": "2-1-4-2",
+      "parent": "2-1-4",
+      "nodeType": "function",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "description": {
+          "en": "Spectrum analysis (power spectrum)",
+          "zh": "频谱分析（功率谱）"
+        },
+        "label": {
+          "en": "Spectrum analysis (power spectrum)",
+          "zh": "频谱分析（功率谱）"
+        }
+      },
+      "functions": [
+        {
+          "name": "fftpower",
+          "example": "fftpower(signal, sample_rate, unit, method, type)",
+          "hint": {
+            "en": "Spectrum analysis (power spectrum)",
+            "zh": "频谱分析（功率谱）"
+          },
+          "args": [
+            {
+              "name": "inputData",
+              "hidden": true,
+              "optional": false,
+              "control": "text",
+              "type": "string",
+              "hint": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "label": {
+                "en": "Input data",
+                "zh": "用户输入数据"
+              },
+              "values": []
+            },
+            {
+              "name": "sample_rate",
+              "optional": false,
+              "control": "text",
+              "type": "int",
+              "hint": {
+                "en": "Sample rate",
+                "zh": "采样频率"
+              },
+              "label": {
+                "en": "Sample rate",
+                "zh": "采样频率"
+              }
+            },
+            {
+              "name": "unit",
+              "optional": false,
+              "placeholder": 0,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Unit",
+                "zh": "单位"
+              },
+              "label": {
+                "en": "Unit",
+                "zh": "单位"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "W/Hz",
+                    "zh": "W/Hz"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "dB",
+                    "zh": "dB"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "method",
+              "optional": false,
+              "placeholder": 0,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "method",
+                "zh": "方法"
+              },
+              "label": {
+                "en": "method",
+                "zh": "方法"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "direct method",
+                    "zh": "直接法"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "indirect method",
+                    "zh": "间接法"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "type",
+              "optional": false,
+              "placeholder": 0,
+              "control": "select",
+              "type": "int",
+              "hint": {
+                "en": "Type",
+                "zh": "谱类型"
+              },
+              "label": {
+                "en": "Type",
+                "zh": "谱类型"
+              },
+              "values": [
+                {
+                  "value": 0,
+                  "label": {
+                    "en": "one-sided spectrum",
+                    "zh": "单边谱"
+                  }
+                },
+                {
+                  "value": 1,
+                  "label": {
+                    "en": "bilateral spectrum",
+                    "zh": "双边谱"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Frequency list",
+            "zh": "频率列表"
+          },
+          "value": "fftamp[0]"
+        },
+        {
+          "label": {
+            "en": "Power spectrum list",
+            "zh": "功率谱列表"
+          },
+          "value": "fftamp[1]"
+        }
+      ]
+    },
+
+    "vibration_acceleration": {
+      "id": "1-4-1-1",
+      "parent": "1-4-1",
+      "nodeType": "filter",
+      "about": {
+        "description": {
+          "en": "Vibration acceleration",
+          "zh": "振动加速度"
+        },
+        "label": {
+          "en": "Vibration acceleration",
+          "zh": "振动加速度"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "name": "hatID",
+          "hidden": true,
+          "default": 325,
+          "type": "int",
+          "control": "text",
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "hatID",
+            "zh": "hatID"
+          },
+          "label": {
+            "en": "hatID",
+            "zh": "hatID"
+          }
+        },
+        {
+          "name": "address",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3, 4, 5, 6, 7],
+          "hint": {
+            "en": "address",
+            "zh": "地址"
+          },
+          "label": {
+            "en": "address",
+            "zh": "地址"
+          }
+        },
+        {
+          "name": "channel",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1],
+          "hint": {
+            "en": "channel",
+            "zh": "频道"
+          },
+          "label": {
+            "en": "channel",
+            "zh": "频道"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    },
+    "analog_input_single": {
+      "id": "1-4-1-2",
+      "parent": "1-4-1",
+      "nodeType": "filter",
+      "about": {
+        "description": {
+          "en": "Analog input(Single-ended)",
+          "zh": "模拟量输入（单端）"
+        },
+        "label": {
+          "en": "Analog input(Single-ended)",
+          "zh": "模拟量输入（单端）"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "name": "hatID",
+          "hidden": true,
+          "default": 322,
+          "type": "int",
+          "control": "text",
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "hatID",
+            "zh": "hatID"
+          },
+          "label": {
+            "en": "hatID",
+            "zh": "hatID"
+          }
+        },
+        {
+          "name": "address",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3, 4, 5, 6, 7],
+          "hint": {
+            "en": "address",
+            "zh": "地址"
+          },
+          "label": {
+            "en": "address",
+            "zh": "地址"
+          }
+        },
+        {
+          "name": "channel",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3, 4, 5, 6, 7],
+          "hint": {
+            "en": "channel",
+            "zh": "频道"
+          },
+          "label": {
+            "en": "channel",
+            "zh": "频道"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    },
+    "analog_input_diff": {
+      "id": "1-4-1-3",
+      "parent": "1-4-1",
+      "nodeType": "filter",
+      "about": {
+        "description": {
+          "en": "Analog input(Differential signal)",
+          "zh": "模拟量输入（差分）"
+        },
+        "label": {
+          "en": "Analog input(Differential signal)",
+          "zh": "模拟量输入（差分）"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "name": "hatID",
+          "hidden": true,
+          "default": 326,
+          "type": "int",
+          "control": "text",
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "hatID",
+            "zh": "hatID"
+          },
+          "label": {
+            "en": "hatID",
+            "zh": "hatID"
+          }
+        },
+        {
+          "name": "address",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3, 4, 5, 6, 7],
+          "hint": {
+            "en": "address",
+            "zh": "地址"
+          },
+          "label": {
+            "en": "address",
+            "zh": "地址"
+          }
+        },
+        {
+          "name": "channel",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3],
+          "hint": {
+            "en": "channel",
+            "zh": "频道"
+          },
+          "label": {
+            "en": "channel",
+            "zh": "频道"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    },
+    "digital_input": {
+      "id": "1-4-1-1",
+      "parent": "1-4-1",
+      "nodeType": "filter",
+      "about": {
+        "description": {
+          "en": "Digital input",
+          "zh": "数字输入"
+        },
+        "label": {
+          "en": "Digital input",
+          "zh": "数字输入"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "name": "hatID",
+          "hidden": true,
+          "default": 324,
+          "type": "int",
+          "control": "text",
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "hatID",
+            "zh": "hatID"
+          },
+          "label": {
+            "en": "hatID",
+            "zh": "hatID"
+          }
+        },
+        {
+          "name": "address",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3, 4, 5, 6, 7],
+          "hint": {
+            "en": "address",
+            "zh": "地址"
+          },
+          "label": {
+            "en": "address",
+            "zh": "地址"
+          }
+        },
+        {
+          "name": "channel",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3],
+          "hint": {
+            "en": "channel",
+            "zh": "频道"
+          },
+          "label": {
+            "en": "channel",
+            "zh": "频道"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    },
+    "wireless_vibration_sensor": {
+      "id": "1-4-2-1",
+      "parent": "1-4-2",
+      "nodeType": "filter",
+      "about": {
+        "description": {
+          "en": "Wireless vibration sensor",
+          "zh": "无线振动传感器"
+        },
+        "label": {
+          "en": "Wireless vibration sensor",
+          "zh": "无线振动传感器"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "name": "hatID",
+          "hidden": true,
+          "default": 520,
+          "type": "int",
+          "control": "text",
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "hatID",
+            "zh": "hatID"
+          },
+          "label": {
+            "en": "hatID",
+            "zh": "hatID"
+          }
+        },
+        {
+          "name": "address",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3, 4, 5, 6, 7],
+          "hint": {
+            "en": "address",
+            "zh": "地址"
+          },
+          "label": {
+            "en": "address",
+            "zh": "地址"
+          }
+        },
+        {
+          "name": "channel",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2],
+          "hint": {
+            "en": "channel",
+            "zh": "频道"
+          },
+          "label": {
+            "en": "channel",
+            "zh": "频道"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    },
+    "wireless_strain_sensor": {
+      "id": "1-4-2-2",
+      "parent": "1-4-2",
+      "nodeType": "filter",
+      "about": {
+        "description": {
+          "en": "Wireless strain sensor",
+          "zh": "无线应变传感器"
+        },
+        "label": {
+          "en": "Wireless strain sensor",
+          "zh": "无线应变传感器"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "name": "hatID",
+          "hidden": true,
+          "default": 521,
+          "type": "int",
+          "control": "text",
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "hatID",
+            "zh": "hatID"
+          },
+          "label": {
+            "en": "hatID",
+            "zh": "hatID"
+          }
+        },
+        {
+          "name": "address",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2, 3, 4, 5, 6, 7],
+          "hint": {
+            "en": "address",
+            "zh": "地址"
+          },
+          "label": {
+            "en": "address",
+            "zh": "地址"
+          }
+        },
+        {
+          "name": "channel",
+          "placeholder": null,
+          "type": "array",
+          "control": "col_selector",
+          "optional": true,
+          "values": [0, 1, 2],
+          "hint": {
+            "en": "channel",
+            "zh": "频道"
+          },
+          "label": {
+            "en": "channel",
+            "zh": "频道"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": {
+            "en": "Output",
+            "zh": "输出"
+          },
+          "value": "signal"
+        }
+      ]
+    }
+  },
+
+  "sink": {
+    "mqttpv": {
+      "id": "3-1",
+      "parent": "3",
+      "nodeType": "mqtt",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/rules/sinks/mqtt.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/rules/sinks/mqtt.md"
+        },
+        "description": {
+          "en": "The action is used for publish output message into an MQTT server.",
+          "zh": "该操作用于将输出消息发布到 MQTT 服务器中"
+        },
+        "label": {
+          "en": "MQTT",
+          "zh": "MQTT"
+        }
+      },
+      "libs": null,
+      "properties": [
+        {
+          "exist": false,
+          "name": "server",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The broker address of the MQTT server, such as tcp://127.0.0.1:1883.",
+            "zh": "MQTT 服务器地址，例如 tcp://127.0.0.1:1883"
+          },
+          "label": {
+            "en": "MQTT broker address",
+            "zh": "MQTT 服务器地址"
+          }
+        },
+        {
+          "exist": false,
+          "name": "topic",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The MQTT topic, such as analysis/result",
+            "zh": "MQTT 主题，例如 analysis/result"
+          },
+          "label": {
+            "en": "MQTT topic",
+            "zh": "MQTT 主题"
+          }
+        },
+        {
+          "exist": false,
+          "name": "sendSingle",
+          "default": true,
+          "placeholder": null,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Send single",
+            "zh": "Send single"
+          },
+          "label": {
+            "en": "Send single",
+            "zh": "Send single"
+          }
+        }
+      ]
+    },
+    "file": {
+      "id": "3-2",
+      "parent": "3",
+      "nodeType": "TODO:",
+      "about": {
+        "trial": true,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en_US/rules/sources/file.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh_CN/rules/sources/file.md"
+        },
+        "description": {
+          "en": "Reading file content into the eKuiper processing pipeline. The file source is usually used as a table and it is the default type for create table statement.",
+          "zh": "读取文件内容，并且将数据放入 eKuiper 数据处理流水线中。通常用于表格，且为使用 create table 语句时，默认的源类型。"
+        },
+        "label": {
+          "en": "File",
+          "zh": "文件"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "exist": false,
+          "name": "fileType",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The file format type.",
+            "zh": "文件格式类型"
+          },
+          "label": {
+            "en": "File type",
+            "zh": "文件类型"
+          }
+        },
+        {
+          "exist": false,
+          "name": "path",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The directory of the file relative to eKuiper root or an absolute path. Do not include the file name here. The file name should be defined in the stream data source.",
+            "zh": "文件所在文件夹的路径。请勿包含文件名，文件名应该在数据源中定义。"
+          },
+          "label": {
+            "en": "Path",
+            "zh": "文件夹路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "interval",
+          "placeholder": null,
+          "type": "int",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The interval between reading the files, time unit is ms. If only read once, set it to 0",
+            "zh": "读取文件的间隔时间。如果只需读取一次，设置为0。"
+          },
+          "label": {
+            "en": "Interval",
+            "zh": "间隔时间"
+          }
+        }
+      ]
+    },
+    "tdengine": {
+      "id": "3-3",
+      "parent": "3",
+      "nodeType": "TODO:",
+      "about": {
+        "trial": true,
+        "installed": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en_US/plugins/sinks/tdengine.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh_CN/plugins/sinks/tdengine.md"
+        },
+        "description": {
+          "en": "This a sink plugin for TDengine, it can be used for saving the analysis data into TDengine.",
+          "zh": "本插件为 TDengine 的持久化插件，可以用于将分析数据存入 TDengine 中"
+        },
+        "label": {
+          "en": "TDengine",
+          "zh": "TDengine"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "exist": false,
+          "name": "ip",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "IP address of Taosdb",
+            "zh": "Taosdb IP 地址"
+          },
+          "label": {
+            "en": "Database address",
+            "zh": "数据库地址"
+          }
+        },
+        {
+          "exist": false,
+          "name": "port",
+          "placeholder": null,
+          "type": "int",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Database port",
+            "zh": "数据库端口号"
+          },
+          "label": {
+            "en": "Port",
+            "zh": "端口号"
+          }
+        },
+        {
+          "exist": false,
+          "name": "user",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Username",
+            "zh": "用户名"
+          },
+          "label": {
+            "en": "Username",
+            "zh": "用户名"
+          }
+        },
+        {
+          "exist": false,
+          "name": "password",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Password of Taosdb",
+            "zh": "数据库密码"
+          },
+          "label": {
+            "en": "Password",
+            "zh": "密码"
+          }
+        },
+        {
+          "exist": false,
+          "name": "database",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Database name",
+            "zh": "库名称"
+          },
+          "label": {
+            "en": "Database name",
+            "zh": "库名称"
+          }
+        },
+        {
+          "exist": false,
+          "name": "table",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Table name",
+            "zh": "表名"
+          },
+          "label": {
+            "en": "Table name",
+            "zh": "表名"
+          }
+        },
+        {
+          "exist": false,
+          "name": "fields",
+          "placeholder": null,
+          "type": "list_string",
+          "control": "list",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Field of table",
+            "zh": "表字段"
+          },
+          "label": {
+            "en": "Table field",
+            "zh": "表字段"
+          }
+        },
+        {
+          "exist": false,
+          "name": "provideTs",
+          "placeholder": null,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Whether to provide a timestamp",
+            "zh": "是否提供时间戳"
+          },
+          "label": {
+            "en": "Whether to provide a timestamp",
+            "zh": "是否提供时间戳"
+          }
+        },
+        {
+          "exist": false,
+          "name": "tsFieldName",
+          "placeholder": null,
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "Timestamp field name",
+            "zh": "时间戳字段名"
+          },
+          "label": {
+            "en": "Timestamp field name",
+            "zh": "时间戳字段名"
+          }
+        }
+      ]
+    }
+  },
+
+  "chart": {
+    "line": {
+      "id": "4-1",
+      "parent": "4",
+      "nodeType": "nop",
+      "about": {
+        "trial": true,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/plugins/sinks/zmq.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/plugins/sinks/zmq.md"
+        },
+        "description": {
+          "en": "Line configuration",
+          "zh": "图表配置"
+        },
+        "label": {
+          "en": "Line",
+          "zh": "图表"
+        }
+      },
+      "libs": null,
+      "properties": [],
+      "inputs": [
+        {
+          "label": {
+            "en": "X-Axis",
+            "zh": "X 轴"
+          },
+          "value": "x"
+        },
+        {
+          "label": {
+            "en": "Y-Axis",
+            "zh": "Y 轴"
+          },
+          "value": "y"
+        }
+      ]
+    }
+  }
+}
