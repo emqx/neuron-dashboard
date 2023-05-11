@@ -74,6 +74,7 @@ import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
 import i18n from '@/i18n/index'
+import { qiankunActions } from '@/utils/forEKuiper'
 
 const store = useStore()
 const router = useRouter()
@@ -114,6 +115,8 @@ const lang = computed({
     store.commit('SET_LANG', val)
     i18n.global.locale.value = val
     initLang()
+    // Trigger: notification microservice
+    qiankunActions.setGlobalState({ lang: store.state.lang })
   },
 })
 
