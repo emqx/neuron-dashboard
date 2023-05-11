@@ -1,0 +1,28 @@
+{
+  "id": {
+    "type": "bigint"
+  },
+  "name": {
+    "type": "string"
+  },
+  "age": {
+    "type": "bigint"
+  },
+  "hobbies": {
+    "type": "struct",
+    "properties": {
+      "indoor": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "outdoor": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
