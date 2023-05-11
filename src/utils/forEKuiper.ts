@@ -1,4 +1,5 @@
-import { loadMicroApp } from 'qiankun'
+import { loadMicroApp, initGlobalState } from 'qiankun'
+import type { MicroAppStateActions } from 'qiankun'
 import store from '@/store/index'
 
 // ❗️If you are developing and debugging ekuiper, please replace this with the address of ekuiper
@@ -7,6 +8,13 @@ const kuiperEntry = pathname === '/' ? `${origin}/ekuiper/` : `${origin}${pathna
 // const kuiperEntry = pathname === '/' ? `http://localhost:3002/ekuiper/` : `http://localhost:3002${pathname}ekuiper/` // dev
 
 const defaultEnv = 'production'
+
+const initialState = {
+  hideTabBarInNodePage: true,
+  token: store.state.token,
+  lang: store.state.lang,
+}
+export const qiankunActions: MicroAppStateActions = initGlobalState(initialState)
 
 export const handleEKuiper = async () => {
   if (store.state.subAppInstances.ekuiper) {
@@ -21,11 +29,12 @@ export const handleEKuiper = async () => {
       entry: kuiperEntry,
       container: '#page-content',
       props: {
+        hideTabBarInNodePage: initialState.hideTabBarInNodePage,
         lang: store.state.lang,
-        hideTabBarInNodePage: true,
         token: store.state.token,
       },
     })
+
     store.commit('SET_SUB_APP_INSTANCE', { key: 'ekuiper', instance: app })
     await app.loadPromise
   } catch (error) {
