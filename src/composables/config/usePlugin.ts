@@ -1,7 +1,8 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { MessageBoxConfirm } from '@/utils/element'
 import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
 import { createCommonErrorMessage } from '@/utils/utils'
 // import { PluginType } from '@/types/enums'
@@ -131,12 +132,8 @@ export const useDeletePlugin = () => {
   const { t } = useI18n()
   const delPlugin = async ({ name }: CreatedPlugin) => {
     try {
-      await EmqxMessageBox({
-        title: t('common.operateConfirm'),
-        message: t('common.confirmDelete'),
-        type: 'warning',
-        confirmButtonText: t('common.confirmButtonText'),
-      })
+      await MessageBoxConfirm()
+
       await deletePlugin(name)
       EmqxMessage.success(t('common.operateSuccessfully'))
       return Promise.resolve()

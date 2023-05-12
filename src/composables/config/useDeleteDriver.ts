@@ -1,5 +1,6 @@
 import { useI18n } from 'vue-i18n'
-import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { MessageBoxConfirm } from '@/utils/element'
 import { deleteDriver } from '@/api/config'
 import type { DriverItemInList } from '@/types/config'
 import { PluginKind, NodeCatogery } from '@/types/enums'
@@ -8,12 +9,7 @@ export default () => {
   const { t } = useI18n()
   const delDriver = async ({ name }: DriverItemInList) => {
     try {
-      await EmqxMessageBox({
-        title: t('common.operateConfirm'),
-        message: t('common.confirmDelete'),
-        type: 'warning',
-        confirmButtonText: t('common.confirmButtonText'),
-      })
+      await MessageBoxConfirm()
       await deleteDriver(name)
       EmqxMessage.success(t('common.operateSuccessfully'))
       return Promise.resolve()
