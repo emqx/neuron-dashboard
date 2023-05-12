@@ -2,7 +2,8 @@ import { addSubscription, deleteSubscription, queryGroupList, querySubscription 
 import type { GroupData, SubscriptionData, SubscriptionDataForm } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref, computed, nextTick } from 'vue'
-import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { MessageBoxConfirm } from '@/utils/element'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import useSouthDriver from './useSouthDriver'
@@ -51,10 +52,8 @@ export const useSubscriptionList = () => {
 
   const unsubscribe = async (confirmText: string, data: SubscriptionData | Array<SubscriptionData>) => {
     try {
-      await EmqxMessageBox.confirm(confirmText, t('common.operateConfirm'), {
-        confirmButtonText: t('common.confirmButtonText'),
-        cancelButtonText: t('common.cancelButtonText'),
-      })
+      await MessageBoxConfirm(confirmText)
+
       if (Array.isArray(data)) {
         const requestList = data.map((groupItem: SubscriptionData) => deleteSubscription(groupItem))
         await Promise.all(requestList)

@@ -4,7 +4,8 @@ import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { EmqxMessage, EmqxMessageBox } from '@emqx/emqx-ui'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { MessageBoxConfirm } from '@/utils/element'
 import usePaging from '@/composables/usePaging'
 import { OmitArrayFields } from '@/utils/utils'
 import { debounce } from 'lodash'
@@ -105,19 +106,15 @@ export default () => {
   }
 
   const delTag = async (item: TagDataInTable) => {
-    await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'), {
-      confirmButtonText: t('common.confirmButtonText'),
-      cancelButtonText: t('common.cancelButtonText'),
-    })
+    await MessageBoxConfirm()
+
     const delList = OmitArrayFields([item], ['checked'])
     deleteTagList(delList)
   }
 
   const batchDeleteTag = async () => {
-    await EmqxMessageBox.confirm(t('common.confirmDelete'), t('common.operateConfirm'), {
-      confirmButtonText: t('common.confirmButtonText'),
-      cancelButtonText: t('common.cancelButtonText'),
-    })
+    await MessageBoxConfirm()
+
     deleteTagList(tagCheckedList.value)
   }
 
@@ -127,11 +124,8 @@ export default () => {
   }
 
   const clearTag = async () => {
-    await EmqxMessageBox({
-      title: t('common.operateConfirm'),
-      message: t('common.confirmClear'),
-      confirmButtonText: t('common.confirmButtonText'),
-    })
+    await MessageBoxConfirm(t('common.confirmClear'))
+
     deleteTagList(totalData.value)
   }
 
