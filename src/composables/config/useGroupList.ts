@@ -2,7 +2,8 @@ import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { EmqxMessageBox, EmqxMessage } from '@emqx/emqx-ui'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { MessageBoxConfirm } from '@/utils/element'
 import { queryGroupList, deleteGroup, queryTagList } from '@/api/config'
 import type { GroupData } from '@/types/config'
 import { OmitArrayFields } from '@/utils/utils'
@@ -53,11 +54,8 @@ export default () => {
   }
 
   const delGroup = async ({ name }: GroupDataInTable) => {
-    await EmqxMessageBox({
-      title: t('common.operateConfirm'),
-      message: t('common.confirmDelete'),
-      confirmButtonText: t('common.confirmButtonText'),
-    })
+    await MessageBoxConfirm()
+
     await deleteGroup(node.value, name)
     EmqxMessage.success(t('common.operateSuccessfully'))
     getGroupList()
@@ -70,20 +68,14 @@ export default () => {
   }
 
   const batchDeleteGroup = async () => {
-    await EmqxMessageBox({
-      title: t('common.operateConfirm'),
-      message: t('common.confirmDelete'),
-      confirmButtonText: t('common.confirmButtonText'),
-    })
+    await MessageBoxConfirm()
+
     delGroupList(groupCheckedList.value)
   }
 
   const clearGroup = async () => {
-    await EmqxMessageBox({
-      title: t('common.operateConfirm'),
-      message: t('common.confirmClear'),
-      confirmButtonText: t('common.confirmButtonText'),
-    })
+    await MessageBoxConfirm(t('common.confirmClear'))
+
     delGroupList(groupList.value)
   }
 
