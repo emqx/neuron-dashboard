@@ -36,9 +36,7 @@ export default () => {
   let selectedGroup: undefined | { node: string; groupName: string; name: string }
 
   const currentGroup = computed({
-    get: () => {
-      return store.state.nodeGroupMemory
-    },
+    get: () => store.state.nodeGroupMemory,
     set: (val) => {
       const { node, groupName } = val
       store.commit('SET_NODE_GROUP', { node, groupName })
@@ -229,23 +227,16 @@ export default () => {
     keywordSearch.value = ''
   }
 
-  const initCurrentNode = () => {
-    const { node } = currentGroup.value
+  const initCurrentGroupName = async () => {
+    const { node, groupName } = currentGroup.value
 
     // reset default value when remove a node.
-    if (node && !currentNodeName.value) {
-      currentGroup.value = {
-        node: '',
-        groupName: '',
-      }
-    }
-  }
-
-  const initCurrentGroupName = () => {
-    const { groupName } = currentGroup.value
     const group = groupList.value.find(({ name }) => name === groupName)
-    // reset default value when remove a node.
     currentGroup.value.groupName = group?.name || ''
+
+    if (node && currentGroup.value.groupName) {
+      await getTagList()
+    }
   }
 
   // change node
@@ -259,7 +250,7 @@ export default () => {
         const data = await queryGroupList(currentGroup.value.node.toString())
         groupList.value = data
 
-        initCurrentGroupName()
+        await initCurrentGroupName()
       } catch (error) {
         groupList.value = []
       }
@@ -333,16 +324,25 @@ export default () => {
     }
   }
 
-  const initTagList = async () => {
-    initCurrentNode()
+  const initCurrentNode = async () => {
+    const { node } = currentGroup.value
 
-    const { node, groupName } = currentGroup.value
-    if (node) {
+    // reset default value when remove a node.
+    if (node && !currentNodeName.value) {
+      currentGroup.value = {
+        node: '',
+        groupName: '',
+      }
+    }
+
+    if (currentGroup.value.node) {
       await selectedNodeChanged(node)
     }
-    if (node && groupName) {
-      await getTagList()
-    }
+  }
+
+  const initTagList = async () => {
+    await initCurrentNode()
+    await initCurrentGroupName()
   }
 
   onMounted(async () => {
