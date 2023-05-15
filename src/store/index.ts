@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import { getToken, setToken, clearLocalStorage } from '@/utils/user'
+import { DEFAULT_LANG } from '@/utils/constants'
 
 interface paginationInfo {
   pageNum: number
@@ -22,9 +23,8 @@ interface State {
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
 const getDefaultLanguage = () => {
-  const browserLanguage = checkLanguage(navigator.language.substr(0, 2))
   const localStorageLanguage = checkLanguage(localStorage.getItem('language') || '')
-  return localStorageLanguage || browserLanguage || 'zh'
+  return localStorageLanguage || DEFAULT_LANG
 }
 
 export default createStore<State>({
