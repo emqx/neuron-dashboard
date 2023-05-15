@@ -75,6 +75,7 @@ import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
 import i18n from '@/i18n/index'
 import { qiankunActions } from '@/utils/forEKuiper'
+import { DEFAULT_LANG } from '@/utils/constants'
 
 const store = useStore()
 const router = useRouter()
@@ -95,30 +96,33 @@ const downloadLogsFile = () => {
   })
 }
 
+const { langList } = useLang()
+const { initLang } = setLang()
+const changeLang = (lang: string) => {
+  store.commit('SET_LANG', lang)
+  i18n.global.locale.value = lang
+  initLang()
+  // Trigger: notification microservice
+  qiankunActions.setGlobalState({ lang: store.state.lang })
+}
+const lang = computed({
+  get() {
+    return store.state.lang
+  },
+  set(val: string) {
+    changeLang(val)
+  },
+})
+
 const logout = async () => {
   try {
+    changeLang(DEFAULT_LANG)
     store.commit('LOGOUT')
     router.push({ name: 'Login' })
   } catch (error) {
     console.error(error)
   }
 }
-
-const { langList } = useLang()
-const { initLang } = setLang()
-
-const lang = computed({
-  get() {
-    return store.state.lang
-  },
-  set(val: string) {
-    store.commit('SET_LANG', val)
-    i18n.global.locale.value = val
-    initLang()
-    // Trigger: notification microservice
-    qiankunActions.setGlobalState({ lang: store.state.lang })
-  },
-})
 
 const langLabel = computed(() => langList.find((item) => item.value === lang.value)?.label || '')
 
