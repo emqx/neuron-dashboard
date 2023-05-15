@@ -1,8 +1,7 @@
-import { queryGroupList, queryTagList } from '@/api/config'
+import { queryGroupList, queryTagList, querySouthDriverList } from '@/api/config'
 import { getMonitoringData } from '@/api/data'
-import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
-import type { GroupData, TagForm } from '@/types/config'
+import type { GroupData, TagForm, RawDriverData } from '@/types/config'
 import type { TagDataInMonitoring } from '@/types/data'
 import { TagAttributeType, TagType } from '@/types/enums'
 import { paginate, listOrderByKey } from '@/utils/utils'
@@ -29,7 +28,7 @@ export default () => {
   const { t } = useI18n()
   const store = useStore()
 
-  const { totalSouthDriverList: nodeList } = useSouthDriver()
+  const nodeList: Ref<Array<RawDriverData>> = ref([])
   const groupList: Ref<Array<GroupData>> = ref([])
 
   const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
@@ -37,7 +36,9 @@ export default () => {
   let selectedGroup: undefined | { node: string; groupName: string; name: string }
 
   const currentGroup = computed({
-    get: () => store.state.nodeGroupMemory,
+    get: () => {
+      return store.state.nodeGroupMemory
+    },
     set: (val) => {
       const { node, groupName } = val
       store.commit('SET_NODE_GROUP', { node, groupName })
@@ -105,7 +106,7 @@ export default () => {
 
   const reSubAfterReturnError = async () => {
     const { groupName, lastTimestamp, count } = reSubCount
-    const { node, groupName: currentGroupName } = currentGroup.value
+    const { groupName: currentGroupName } = currentGroup.value
     let canReSubAndRequest = false
     if (Date.now() - lastTimestamp < 500 && groupName === currentGroupName && count < 3) {
       canReSubAndRequest = true
@@ -228,6 +229,25 @@ export default () => {
     keywordSearch.value = ''
   }
 
+  const initCurrentNode = () => {
+    const { node } = currentGroup.value
+
+    // reset default value when remove a node.
+    if (node && !currentNodeName.value) {
+      currentGroup.value = {
+        node: '',
+        groupName: '',
+      }
+    }
+  }
+
+  const initCurrentGroupName = () => {
+    const { groupName } = currentGroup.value
+    const group = groupList.value.find(({ name }) => name === groupName)
+    // reset default value when remove a node.
+    currentGroup.value.groupName = group?.name || ''
+  }
+
   // change node
   const selectedNodeChanged = async (nodeName: string) => {
     if (nodeName) {
@@ -237,10 +257,9 @@ export default () => {
         totalData.value = []
 
         const data = await queryGroupList(currentGroup.value.node.toString())
-        const isExistGroup = data.find((group) => group.name === currentGroup.value.groupName)
-        currentGroup.value.groupName = isExistGroup?.name || ''
-
         groupList.value = data
+
+        initCurrentGroupName()
       } catch (error) {
         groupList.value = []
       }
@@ -304,7 +323,19 @@ export default () => {
     return item.attribute && item.attribute.some((attr) => attr === TagAttributeType.Write)
   }
 
+  const getSouthNodeList = async () => {
+    try {
+      nodeList.value = await querySouthDriverList()
+      return Promise.resolve(nodeList.value)
+    } catch (error) {
+      nodeList.value = []
+      return Promise.reject(error)
+    }
+  }
+
   const initTagList = async () => {
+    initCurrentNode()
+
     const { node, groupName } = currentGroup.value
     if (node) {
       await selectedNodeChanged(node)
@@ -314,8 +345,9 @@ export default () => {
     }
   }
 
-  onMounted(() => {
-    initTagList()
+  onMounted(async () => {
+    await getSouthNodeList()
+    await initTagList()
   })
 
   onUnmounted(() => {
