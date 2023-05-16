@@ -54,7 +54,7 @@
               <i class="iconfont icon-import iconsubmit"></i>
             </AComWithDesc>
             <AComWithDesc :content="$t('common.delete')">
-              <i class="iconfont icondelete" @click.stop="deleteTemplate(row)" />
+              <i class="iconfont icondelete" @click.stop="removeTemplate(row)" />
             </AComWithDesc>
           </div>
         </template>
@@ -69,7 +69,7 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import useTemplateList from '@/composables/config/useTemplateList'
 
-const { templateList, isListLoading, goGroupPage, deleteTemplate } = useTemplateList()
+const { templateList, isListLoading, goGroupPage, removeTemplate } = useTemplateList()
 </script>
 
 <style lang="scss" scoped>

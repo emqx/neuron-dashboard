@@ -1,9 +1,14 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { RawTemplateDate } from '@/types/config'
-import { queryTemplateList } from '@/api/template'
+import { queryTemplateList, deleteTemplate } from '@/api/template'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { MessageBoxConfirm } from '@/utils/element'
 
 export default () => {
+  const { t } = useI18n()
+
   const templateList: Ref<Array<RawTemplateDate>> = ref([])
   const isListLoading = ref(false)
 
@@ -16,14 +21,22 @@ export default () => {
     }
   }
 
-  const goGroupPage = (row: RawTemplateDate) => {
-    console.log('row', row)
+  const goGroupPage = (rowData: RawTemplateDate) => {
+    console.log('row', rowData)
   }
-  const editTemplate = (row: RawTemplateDate) => {
-    console.log('row', row)
+  const editTemplate = (rowData: RawTemplateDate) => {
+    console.log('row', rowData)
   }
-  const deleteTemplate = (row: RawTemplateDate) => {
-    console.log('row', row)
+  const removeTemplate = async (rowData: RawTemplateDate) => {
+    try {
+      await MessageBoxConfirm() // Phase 2 support: t('template.deleteTemplateTip')
+      const { name } = rowData
+      await deleteTemplate(name)
+      EmqxMessage.success(t('common.operateSuccessfully'))
+      getTemplateList()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   getTemplateList()
@@ -32,7 +45,7 @@ export default () => {
     isListLoading,
     getTemplateList,
     goGroupPage,
-    deleteTemplate,
+    removeTemplate,
     editTemplate,
   }
 }
