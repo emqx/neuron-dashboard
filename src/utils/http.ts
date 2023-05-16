@@ -5,6 +5,8 @@ import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
 import { countBaseURL, popUpErrorMessage, dataType } from './utils'
+import i18n from '@/i18n/index'
+import { DEFAULT_LANG } from '@/utils/constants'
 
 const baseURL = countBaseURL()
 const option = {
@@ -73,6 +75,11 @@ export const handleError = (error: AxiosError) => {
   }
 }
 
+const setDefaultLang = () => {
+  i18n.global.locale.value = DEFAULT_LANG
+  store.commit('SET_LANG', DEFAULT_LANG)
+}
+
 axios.interceptors.request.use(
   (config) => {
     if (store.state.token) {
@@ -108,6 +115,7 @@ axios.interceptors.response.use(
     const isInLoginPage = whiteRoutes.includes(currrentRouteName)
 
     if ((error?.response?.status === 401 && !isInLoginPage) || error?.response?.status === 403) {
+      setDefaultLang()
       store.commit('LOGOUT')
       router.push({ name: 'Login' })
     } else if (!error.config._handleErrorSelf) {

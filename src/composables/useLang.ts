@@ -4,6 +4,7 @@ import locale from 'element-plus/lib/locale'
 import zhLang from 'element-plus/lib/locale/lang/zh-cn'
 import enLang from 'element-plus/lib/locale/lang/en'
 import store from '@/store'
+import i18n from '@/i18n/index'
 
 export const setLang = () => {
   const initLang = () => {
@@ -13,8 +14,14 @@ export const setLang = () => {
       locale.use(enLang)
     }
   }
+  const changeLang = (lang: string) => {
+    store.commit('SET_LANG', lang)
+    i18n.global.locale.value = lang
+    initLang()
+  }
   return {
     initLang,
+    changeLang,
   }
 }
 export default () => {
