@@ -165,7 +165,7 @@ export default (props: Props) => {
 
     // counts array parmas
     formComParmasRef.value.forEach((item: { arrayRef: any; validateArrayParam: any }) => {
-      const { arrayRef, validateArrayParam } = item
+      const { arrayRef, validateArrayParam } = item || {}
       if (arrayRef && validateArrayParam) {
         validateList.push(validateArrayParam())
       }
