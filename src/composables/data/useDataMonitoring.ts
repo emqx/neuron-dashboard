@@ -120,6 +120,45 @@ export default () => {
     }
   }
 
+  const getSouthNodeList = async () => {
+    try {
+      nodeList.value = await querySouthDriverList()
+      return Promise.resolve(nodeList.value)
+    } catch (error) {
+      nodeList.value = []
+      return Promise.reject(error)
+    }
+  }
+
+  const getGroupList = async (nodeName: string) => {
+    try {
+      const data = await queryGroupList(nodeName.toString())
+      groupList.value = data
+      return Promise.resolve(data)
+    } catch (error) {
+      groupList.value = []
+      return Promise.reject(error)
+    }
+  }
+
+  const groupIsDeleted = async () => {
+    currentGroup.value.groupName = ''
+    totalData.value = []
+    await getGroupList(currentGroup.value.node)
+  }
+
+  const nodeIsDeleted = async (reload = true) => {
+    currentGroup.value = {
+      node: '',
+      groupName: '',
+    }
+    groupList.value = []
+    totalData.value = []
+    if (reload) {
+      await getSouthNodeList()
+    }
+  }
+
   const getTagDetail = async () => {
     if (!selectedGroup?.node || !selectedGroup.groupName) {
       return {}
@@ -174,6 +213,14 @@ export default () => {
       if (error?.response?.data?.error === 2014) {
         reSubAfterReturnError()
       }
+
+      if (error?.response?.data?.error === 2003) {
+        nodeIsDeleted()
+      }
+
+      if (error?.response?.data?.error === 2106) {
+        groupIsDeleted()
+      }
     }
   }
 
@@ -227,18 +274,6 @@ export default () => {
     keywordSearch.value = ''
   }
 
-  const initCurrentGroupName = async () => {
-    const { node, groupName } = currentGroup.value
-
-    // reset default value when remove a node.
-    const group = groupList.value.find(({ name }) => name === groupName)
-    currentGroup.value.groupName = group?.name || ''
-
-    if (node && currentGroup.value.groupName) {
-      await getTagList()
-    }
-  }
-
   // change node
   const selectedNodeChanged = async (nodeName: string) => {
     if (nodeName) {
@@ -246,9 +281,7 @@ export default () => {
         currentGroup.value.node = nodeName
         selectedGroup = undefined
         totalData.value = []
-
-        const data = await queryGroupList(currentGroup.value.node.toString())
-        groupList.value = data
+        await getGroupList(currentGroup.value.node)
 
         await initCurrentGroupName()
       } catch (error) {
@@ -314,29 +347,30 @@ export default () => {
     return item.attribute && item.attribute.some((attr) => attr === TagAttributeType.Write)
   }
 
-  const getSouthNodeList = async () => {
-    try {
-      nodeList.value = await querySouthDriverList()
-      return Promise.resolve(nodeList.value)
-    } catch (error) {
-      nodeList.value = []
-      return Promise.reject(error)
-    }
-  }
-
   const initCurrentNode = async () => {
     const { node } = currentGroup.value
 
     // reset default value when remove a node.
     if (node && !currentNodeName.value) {
-      currentGroup.value = {
-        node: '',
-        groupName: '',
-      }
+      nodeIsDeleted(false)
     }
 
     if (currentGroup.value.node) {
       await selectedNodeChanged(node)
+    }
+  }
+
+  const initCurrentGroupName = async () => {
+    const { node, groupName } = currentGroup.value
+
+    // reset default value when remove a node.
+    const group = groupList.value.find(({ name }) => name === groupName)
+    if (groupName && !group) {
+      groupIsDeleted()
+    }
+
+    if (node && currentGroup.value.groupName) {
+      await getTagList()
     }
   }
 
