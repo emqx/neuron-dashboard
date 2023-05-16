@@ -132,6 +132,21 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  /** Template */
+  {
+    path: '/configuration/template',
+    name: 'Template',
+    meta: { title: 'config.plugin' },
+    component: Home,
+    children: [
+      {
+        path: '',
+        name: 'Template',
+        component: () => import('@/views/config/template/Index.vue'),
+        meta: { hiddenBreadcrumb: true },
+      },
+    ],
+  },
   /** Plugin */
   {
     path: '/configuration/plugin',

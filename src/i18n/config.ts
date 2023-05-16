@@ -155,6 +155,10 @@ export default {
     zh: '南向设备',
     en: 'South device',
   },
+  templateManagement: {
+    zh: '模板管理',
+    en: 'Template',
+  },
   plugin: {
     zh: '插件',
     en: 'Plugin',
