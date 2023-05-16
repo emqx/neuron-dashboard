@@ -197,3 +197,8 @@ export interface AddTagListForm {
 export interface TagData extends TagForm {
   group: string
 }
+
+export interface RawTemplateDate {
+  name: string
+  plugin: string
+}

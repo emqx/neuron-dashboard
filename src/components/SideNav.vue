@@ -97,6 +97,10 @@ const navList = computed(() => {
           label: 'config.northAppSetup',
         },
         {
+          to: '/configuration/template',
+          label: 'config.templateManagement',
+        },
+        {
           to: '/configuration/plugin',
           label: 'config.plugin',
         },
