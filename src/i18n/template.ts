@@ -27,8 +27,4 @@ export default {
     zh: '模板文档',
     en: 'Template document',
   },
-  deleteTemplateTip: {
-    zh: '操作不可撤回，删除后会导致模版关联的节点和组也被删除，是否确认删除？',
-    en: 'The operation is irreversible. After deleting, the nodes and groups associated with the template will also be deleted. Do you confirm the deletion?',
-  },
 }

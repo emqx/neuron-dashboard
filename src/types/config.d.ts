@@ -198,7 +198,16 @@ export interface TagData extends TagForm {
   group: string
 }
 
-export interface RawTemplateDate {
+// Template
+export interface RawTemplateData {
   name: string
   plugin: string
+}
+export interface TemplateGroup {
+  name: string
+  interval: number | null
+  tags?: Array<TagForm>
+}
+export interface TemplateFormData extends RawTemplateData {
+  groups: Array<TemplateGroup>
 }
