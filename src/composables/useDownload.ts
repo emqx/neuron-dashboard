@@ -17,7 +17,7 @@ export const useDownload = () => {
       // download
       if ('download' in document.createElement('a')) {
         // not IE
-        const url = window.URL.createObjectURL(new Blob([blobData]))
+        const url = window.URL.createObjectURL(new Blob([blobData], { type: 'application/json' }))
         const link = document.createElement('a')
         link.href = url
         link.setAttribute('download', name)

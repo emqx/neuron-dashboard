@@ -51,7 +51,7 @@
               <i class="el-icon-edit-outline" @click.stop="editTemplate(row)" />
             </AComWithDesc> -->
             <AComWithDesc :content="$t('common.export')">
-              <i class="iconfont icon-import iconsubmit"></i>
+              <i class="iconfont icon-import iconsubmit" @click.stop="exportTemplate(row)" />
             </AComWithDesc>
             <AComWithDesc :content="$t('common.delete')">
               <i class="iconfont icondelete" @click.stop="removeTemplate(row)" />
@@ -69,7 +69,7 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import useTemplateList from '@/composables/config/useTemplateList'
 
-const { templateList, isListLoading, goGroupPage, removeTemplate } = useTemplateList()
+const { templateList, isListLoading, goGroupPage, exportTemplate, removeTemplate } = useTemplateList()
 </script>
 
 <style lang="scss" scoped>
