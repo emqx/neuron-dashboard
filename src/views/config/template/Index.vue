@@ -15,7 +15,13 @@
 
     <ViewHeaderBar>
       <template v-slot:left>
-        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn">
+        <emqx-button
+          type="primary"
+          size="small"
+          icon="iconfont iconcreate"
+          class="header-item btn"
+          @click="showTemplateDialog"
+        >
           {{ $t('template.addTemplate') }}
         </emqx-button>
       </template>
@@ -61,6 +67,9 @@
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
+
+  <!-- add | edit -->
+  <TemplateDialog v-model="templateDialogVisible" @submitted="getTemplateList" />
 </template>
 
 <script lang="ts" setup>
@@ -68,8 +77,18 @@ import { ElLink } from 'element-plus'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import useTemplateList from '@/composables/config/useTemplateList'
+import TemplateDialog from './components/TemplateDialog.vue'
 
-const { templateList, isListLoading, goGroupPage, exportTemplate, removeTemplate } = useTemplateList()
+const {
+  templateList,
+  isListLoading,
+  getTemplateList,
+  templateDialogVisible,
+  showTemplateDialog,
+  goGroupPage,
+  exportTemplate,
+  removeTemplate,
+} = useTemplateList()
 </script>
 
 <style lang="scss" scoped>

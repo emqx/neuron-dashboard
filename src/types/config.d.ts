@@ -209,5 +209,5 @@ export interface TemplateGroup {
   tags?: Array<TagForm>
 }
 export interface TemplateFormData extends RawTemplateData {
-  groups: Array<TemplateGroup>
+  groups?: Array<TemplateGroup>
 }

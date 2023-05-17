@@ -10,6 +10,7 @@
         <PluginTypesSelector
           v-model="queryKeyword.plugin"
           :types="SOUTH_DRIVER_NODE_TYPE"
+          :size="'medium'"
           class="header-item"
           @change="dbGetSouthDriverList"
         />

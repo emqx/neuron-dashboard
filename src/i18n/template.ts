@@ -7,6 +7,10 @@ export default {
     zh: '添加模板',
     en: 'Add Template',
   },
+  editTemplate: {
+    zh: '编辑模板',
+    en: 'Edit Template',
+  },
   pluginName: {
     zh: '插件名称',
     en: 'Plugin name',
