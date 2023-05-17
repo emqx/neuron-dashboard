@@ -17,6 +17,7 @@
             filterable
             clearable
             class="filter-selector"
+            :placeholder="$t('common.pleaseSelect')"
             @change="selectedNodeChanged"
           >
             <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
