@@ -2,9 +2,9 @@
   <emqx-select
     v-model="pluginType"
     clearable
-    size="medium"
+    :size="size"
     class="plugin_select"
-    :placeholder="$t('config.pluginKindPlaceholder')"
+    :placeholder="selectorPlaceholder"
     @change="changePluginType"
   >
     <emqx-option v-for="item in directionPluginList" :key="item.name" :value="item.name" :label="item.name" />
@@ -15,12 +15,17 @@
 import { computed, defineEmits, defineProps } from 'vue'
 import usePlugin from '@/composables/config/usePlugin'
 import { PluginKind } from '@/types/enums'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
   types: { type: Array, default: () => [] },
+  placeholder: { type: String, default: '' },
+  size: { type: String, default: '' },
 })
 const emits = defineEmits(['update:modelValue', 'change'])
+
+const { t } = useI18n()
 
 const pluginType = computed({
   get: () => props.modelValue,
@@ -41,6 +46,10 @@ const directionPluginList = computed(() => {
     return exceptStaticPluginList.value.filter(({ node_type }) => props.types.some((type) => type === node_type))
   }
   return exceptStaticPluginList.value
+})
+
+const selectorPlaceholder = computed(() => {
+  return props.placeholder || t('config.pluginKindPlaceholder')
 })
 const changePluginType = (val: string) => {
   emits('change', val)

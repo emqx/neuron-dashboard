@@ -12,6 +12,7 @@ export default () => {
 
   const templateList: Ref<Array<RawTemplateData>> = ref([])
   const isListLoading = ref(false)
+  const templateDialogVisible = ref(false)
 
   const getTemplateList = async () => {
     try {
@@ -20,6 +21,10 @@ export default () => {
     } finally {
       isListLoading.value = false
     }
+  }
+
+  const showTemplateDialog = () => {
+    templateDialogVisible.value = true
   }
 
   const goGroupPage = (rowData: RawTemplateData) => {
@@ -58,6 +63,8 @@ export default () => {
     templateList,
     isListLoading,
     getTemplateList,
+    templateDialogVisible,
+    showTemplateDialog,
     goGroupPage,
     removeTemplate,
     editTemplate,

@@ -14,13 +14,13 @@ export const deleteTemplate = async (templateName?: string): Promise<AxiosRespon
   })
 }
 
-// export const createTemplate = async (data: TemplateFormData): Promise<AxiosResponse> => {
-//   return http.post('/template', data)
-// }
+export const createTemplate = async (data: TemplateFormData): Promise<AxiosResponse> => {
+  return http.post('/template', data)
+}
 
-// export const updateTemplate = async (data: TemplateFormData): Promise<AxiosResponse> => {
-//   return http.post('/template', data)
-// }
+export const updateTemplate = async (data: TemplateFormData): Promise<AxiosResponse> => {
+  return http.post('/template', data)
+}
 
 export const getTemplateDetailByName = async (templateName: string): Promise<AxiosResponse> => {
   return http.get('/template', { params: { name: templateName } })

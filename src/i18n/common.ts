@@ -133,11 +133,15 @@ export default {
   },
   submitSuccess: {
     zh: '提交成功',
-    en: 'Submit success!',
+    en: 'Submit success',
   },
   createSuccess: {
     zh: '创建成功',
     en: 'Create success',
+  },
+  updateSuccess: {
+    zh: '更新成功',
+    en: 'Update success',
   },
   operateConfirm: {
     zh: '操作确认',
@@ -374,5 +378,9 @@ export default {
   card: {
     zh: '卡片',
     en: 'Card',
+  },
+  importSuccess: {
+    zh: '导入成功',
+    en: 'Import success',
   },
 }
