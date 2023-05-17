@@ -74,7 +74,6 @@ import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
 import { qiankunActions } from '@/utils/forEKuiper'
-import { DEFAULT_LANG } from '@/utils/constants'
 
 const store = useStore()
 const router = useRouter()
@@ -113,7 +112,7 @@ const lang = computed({
 
 const logout = async () => {
   try {
-    changeCurrentLang(DEFAULT_LANG)
+    changeCurrentLang(lang.value)
     store.commit('LOGOUT')
     router.push({ name: 'Login' })
   } catch (error) {
