@@ -371,4 +371,8 @@ export default {
     zh: '序号',
     en: 'No.',
   },
+  jsonFormatError: {
+    zh: '数据格式发生错误，请检查数据',
+    en: 'Data format error, please check the data',
+  },
 }

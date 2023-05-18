@@ -129,8 +129,19 @@ export const dataType = (value: any) => {
     ['[object Symbol]', 'symbol'],
     ['[object JSON]', 'json'],
     ['[object Math]', 'math'],
+    ['[object File]', 'file'],
     ['[object Blob]', 'blob'],
     ['default', 'object'],
   ])
   return mapData.get(valueType) || mapData.get('default')
+}
+
+export const isJSONData = (data: string) => {
+  try {
+    JSON.parse(data)
+    return Promise.resolve()
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
 }

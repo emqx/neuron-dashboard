@@ -4,7 +4,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
-import { countBaseURL, popUpErrorMessage, dataType } from './utils'
+import { countBaseURL, popUpErrorMessage, dataType, isJSONData } from './utils'
 
 const baseURL = countBaseURL()
 const option = {
@@ -20,17 +20,30 @@ const option = {
 Object.assign(axios.defaults, option)
 
 export const handleBlobError = (data: Blob, statusInfo: { status: number; statusText: string }) => {
+  const { statusText, status } = statusInfo
+  const statusMsg = statusText || status
+
   const reader = new FileReader()
   reader.readAsText(data, 'utf-8')
   reader.onload = () => {
-    const jsonText = JSON.parse(reader.result as string)
-    const { error: errorNumber } = jsonText
-    if (errorNumber) {
-      popUpErrorMessage(errorNumber)
+    const msg = reader.result || ''
+
+    if (typeof msg === 'string') {
+      isJSONData(msg)
+        .then(() => {
+          const jsonText = JSON.parse(reader.result as string)
+          const { error: errorNumber } = jsonText
+          if (errorNumber) {
+            popUpErrorMessage(errorNumber)
+          } else {
+            EmqxMessage.error(statusMsg)
+          }
+        })
+        .catch(() => {
+          EmqxMessage.error(statusMsg)
+        })
     } else {
-      const { statusText, status } = statusInfo
-      const msg = statusText || status
-      EmqxMessage.error(`${JSON.stringify(msg)}`)
+      EmqxMessage.error(statusMsg)
     }
   }
 }
@@ -40,14 +53,21 @@ export const handleError = (error: AxiosError) => {
   if (response?.data?.error) {
     popUpErrorMessage(response.data.error)
   } else if (response?.data) {
+    const { statusText, status } = response.data
+
+    const newStatusText = statusText || response?.statusText
+    const newStatus = status || response?.status
+
     if (dataType(response.data) === 'blob') {
-      const { statusText, status } = response.data
-      handleBlobError(response.data, { statusText, status })
+      handleBlobError(response.data, { statusText: newStatusText, status: newStatus })
     } else {
-      EmqxMessage.error(`${JSON.stringify(response.data)}`)
+      const msg = newStatusText || newStatus
+      EmqxMessage.error(msg)
     }
   } else {
-    EmqxMessage.error(error.toString())
+    let msg = response?.statusText || response?.status
+    msg = msg || 'unknow'
+    EmqxMessage.error(msg)
   }
 }
 
