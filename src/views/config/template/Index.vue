@@ -26,10 +26,20 @@
         </emqx-button>
       </template>
       <template v-slot:right>
-        <emqx-button size="small" class="header-item btn">
-          <i class="iconfont icon-import icondownload"></i>
-          <span>{{ $t('template.importTemplate') }}</span>
-        </emqx-button>
+        <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
+          <emqx-upload
+            action=""
+            :before-upload="importFile"
+            :show-file-list="false"
+            :accept="'application/json'"
+            class="uploader"
+          >
+            <emqx-button size="small" class="header-item btn">
+              <i class="iconfont icon-import icondownload"></i>
+              <span>{{ $t('template.importTemplate') }}</span>
+            </emqx-button>
+          </emqx-upload>
+        </emqx-dropdown>
       </template>
     </ViewHeaderBar>
 
@@ -68,8 +78,15 @@
     </emqx-table>
   </emqx-card>
 
-  <!-- add | edit -->
-  <TemplateDialog v-model="templateDialogVisible" @submitted="getTemplateList" />
+  <!-- add | edit | import -->
+  <TemplateDialog
+    v-model="templateDialogVisible"
+    :isEdit="isEditTemplate"
+    :isImport="isImportTemplate"
+    :templateData="editTemplateData"
+    @submitted="getTemplateList"
+    @cancel="cancelOperateTemplate"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -88,6 +105,11 @@ const {
   goGroupPage,
   exportTemplate,
   removeTemplate,
+  importFile,
+  isImportTemplate,
+  editTemplateData,
+  isEditTemplate,
+  cancelOperateTemplate,
 } = useTemplateList()
 </script>
 

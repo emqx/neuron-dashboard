@@ -1,10 +1,3 @@
-/*
- * @Author: gezuxia
- * @Descripttion:
- * @Date: 2023-05-17 11:05:44
- * @LastEditors: gezuxia
- * @LastEditTime: 2023-05-17 11:52:29
- */
 export default {
   config: {
     zh: '配置',

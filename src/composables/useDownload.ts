@@ -1,4 +1,10 @@
+import { useI18n } from 'vue-i18n'
+import { dataType } from '@/utils/utils'
+import { ElMessage } from 'element-plus'
+
 export const useDownload = () => {
+  const { t } = useI18n()
+
   // must take the `responseType: 'blob'` when api request，such as `downloadLogs` api in `@/api/admin`
   const downloadFile = (responseHeaders: any, blobData: Blob, fileNameKey?: string) => {
     if (!responseHeaders) return
@@ -31,7 +37,30 @@ export const useDownload = () => {
     }
   }
 
+  const readTextFile = (file: File) => {
+    return new Promise((resolve, reject) => {
+      if (dataType(file) !== 'file') {
+        ElMessage.error(t('common.isNotFile'))
+        reject(t('common.isNotFile'))
+      } else {
+        let fileContent: string | ArrayBuffer | null = ''
+        const reader = new FileReader()
+        reader.readAsText(file, 'utf-8')
+        reader.onload = () => {
+          fileContent = reader?.result || ''
+          resolve(fileContent)
+        }
+        reader.onerror = () => {
+          ElMessage.error(t('common.readFileError'))
+          console.error(reader.error)
+          reject(reader.error)
+        }
+      }
+    })
+  }
+
   return {
     downloadFile,
+    readTextFile,
   }
 }

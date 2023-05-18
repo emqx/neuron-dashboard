@@ -383,4 +383,16 @@ export default {
     zh: '导入成功',
     en: 'Import success',
   },
+  isNotFile: {
+    zh: '不支持非文件类型',
+    en: 'Non-file types are not supported',
+  },
+  notJSONData: {
+    zh: '非 JSON 数据',
+    en: 'Non-JSON data',
+  },
+  jsonFormatError: {
+    zh: '数据格式发生错误，请检查数据',
+    en: 'Data format error, please check the data',
+  },
 }
