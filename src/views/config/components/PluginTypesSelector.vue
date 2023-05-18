@@ -5,6 +5,7 @@
     :size="size"
     class="plugin_select"
     :placeholder="selectorPlaceholder"
+    :disabled="disabled"
     @change="changePluginType"
   >
     <emqx-option v-for="item in directionPluginList" :key="item.name" :value="item.name" :label="item.name" />
@@ -22,6 +23,7 @@ const props = defineProps({
   types: { type: Array, default: () => [] },
   placeholder: { type: String, default: '' },
   size: { type: String, default: '' },
+  disabled: { type: Boolean, default: false },
 })
 const emits = defineEmits(['update:modelValue', 'change'])
 

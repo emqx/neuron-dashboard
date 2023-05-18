@@ -1,23 +1,32 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { RawTemplateData, TemplateFormData } from '@/types/config'
+import type { TemplateFormData } from '@/types/config'
 import { createTemplate, updateTemplate } from '@/api/template'
 import { EmqxMessage } from '@emqx/emqx-ui'
+import { cloneDeep } from 'lodash'
 
-const createTemplateForm = (): TemplateFormData => ({
-  name: '',
-  plugin: '',
-  groups: [],
-})
+export const useTemplateForm = () => {
+  const createTemplateForm = (): TemplateFormData => ({
+    name: '',
+    plugin: '',
+    groups: [],
+  })
+  return {
+    createTemplateForm,
+  }
+}
 
 interface TemplateProps {
   modelValue: boolean
-  formData?: TemplateFormData
+  isEdit?: boolean
   isImport?: boolean
+  templateData: TemplateFormData
 }
 export default (props: TemplateProps) => {
   const { t } = useI18n()
+
+  const { createTemplateForm } = useTemplateForm()
 
   const formRef = ref()
   const templateForm: Ref<TemplateFormData> = ref(createTemplateForm())
@@ -33,7 +42,7 @@ export default (props: TemplateProps) => {
     if (props.isImport) {
       title = t('template.importTemplate')
     } else {
-      title = !props.formData ? t('template.addTemplate') : t('template.editTemplate')
+      title = !props.isEdit ? t('template.addTemplate') : t('template.editTemplate')
     }
     return title
   })
@@ -47,22 +56,45 @@ export default (props: TemplateProps) => {
     try {
       await formRef.value.validate()
       isSubmitting.value = true
-      if (!props.formData || (props.formData && props.isImport)) {
-        await createTemplate(templateForm.value)
+
+      const data = templateForm.value
+      if (!props.isEdit || props.isImport) {
+        await createTemplate(data)
+
         const message = !props.isImport ? t('common.createSuccess') : t('common.importSuccess')
         EmqxMessage.success(message)
       } else {
         // TODO: edit
-        await updateTemplate(templateForm.value)
+        await updateTemplate(data)
         EmqxMessage.success(t('common.updateSuccess'))
       }
+      return Promise.resolve()
     } catch (error) {
       return Promise.reject()
     } finally {
       isSubmitting.value = false
     }
   }
+
+  const initTemplateData = () => {
+    if (props.isImport) {
+      templateForm.value = cloneDeep(props.templateData)
+    }
+  }
+
+  watch(
+    () => props.templateData.name,
+    (newV) => {
+      if (newV) {
+        nextTick(() => {
+          initTemplateData()
+        })
+      }
+    },
+    { immediate: true },
+  )
   return {
+    createTemplateForm,
     formRef,
     templateForm,
     dialogTitle,

@@ -179,6 +179,7 @@ export const dataType = (value: any) => {
     ['[object Symbol]', 'symbol'],
     ['[object JSON]', 'json'],
     ['[object Math]', 'math'],
+    ['[object File]', 'file'],
     ['[object Blob]', 'blob'],
     ['[object ArrayBuffer]', 'arrayBuffer'],
     ['default', 'object'],
@@ -192,4 +193,15 @@ export const isTheSameParentRoute = (from: any, to: any) => {
   const fromRouteName = fromMatched[0]?.name
   const toRouteName = toMatched[0]?.name
   return fromRouteName === toRouteName
+}
+
+export const isJSONData = (data: string) => {
+  try {
+    JSON.parse(data)
+    return true
+  } catch (error) {
+    console.error(error)
+    EmqxMessage.error(i18n.global.t('common.jsonFormatError'))
+    return false
+  }
 }

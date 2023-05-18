@@ -1,3 +1,10 @@
+/*
+ * @Author: gezuxia
+ * @Descripttion:
+ * @Date: 2023-05-18 15:18:50
+ * @LastEditors: gezuxia
+ * @LastEditTime: 2023-05-18 19:07:27
+ */
 export default {
   templateName: {
     zh: '模板名称',
@@ -30,5 +37,13 @@ export default {
   templateLink: {
     zh: '模板文档',
     en: 'Template document',
+  },
+  missingNameInFile: {
+    zh: '缺少名称，请补充名称',
+    en: 'The name is missing, please add the plugin',
+  },
+  missingPluginInFile: {
+    zh: '缺少插件，请补充插件',
+    en: 'The plugin is missing, please add the plugin',
   },
 }
