@@ -198,10 +198,9 @@ export const isTheSameParentRoute = (from: any, to: any) => {
 export const isJSONData = (data: string) => {
   try {
     JSON.parse(data)
-    return true
+    return Promise.resolve()
   } catch (error) {
     console.error(error)
-    EmqxMessage.error(i18n.global.t('common.jsonFormatError'))
-    return false
+    return Promise.reject(error)
   }
 }

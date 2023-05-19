@@ -4,7 +4,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
-import { countBaseURL, popUpErrorMessage, dataType } from './utils'
+import { countBaseURL, popUpErrorMessage, dataType, isJSONData } from './utils'
 
 const baseURL = countBaseURL()
 const option = {
@@ -19,7 +19,7 @@ const option = {
 
 Object.assign(axios.defaults, option)
 
-export const handleBlobError = (data: Blob, statusInfo: { status: number; statusText: string }) => {
+export const handleBlobError = async (data: Blob, statusInfo: { status: number; statusText: string }) => {
   const { statusText, status } = statusInfo
   const statusMsg = statusText || status
 
@@ -29,23 +29,22 @@ export const handleBlobError = (data: Blob, statusInfo: { status: number; status
     const msg = reader.result || ''
 
     if (typeof msg === 'string') {
-      const reg = /^\{[\s\S]*\}$/
-      const isJSON = reg.test(msg)
-      if (!isJSON) {
-        const newMsg = msg || statusMsg
-        EmqxMessage.error(newMsg)
-        return
-      }
-
-      const jsonText = JSON.parse(reader.result as string)
-      const { error: errorNumber } = jsonText
-      if (errorNumber) {
-        popUpErrorMessage(errorNumber)
-      } else {
-        EmqxMessage.error(statusMsg)
-      }
+      isJSONData(msg)
+        .then(() => {
+          const jsonText = JSON.parse(reader.result as string)
+          const { error: errorNumber } = jsonText
+          if (errorNumber) {
+            popUpErrorMessage(errorNumber)
+          } else {
+            EmqxMessage.error(statusMsg)
+          }
+        })
+        .catch(() => {
+          EmqxMessage.error(statusMsg)
+        })
+    } else {
+      EmqxMessage.error(statusMsg)
     }
-    // ToDo: arrayBuffer
   }
 }
 
@@ -67,7 +66,7 @@ export const handleError = (error: AxiosError) => {
       EmqxMessage.error(msg)
     }
   } else {
-    let msg = dataType(error) === 'string' ? error : response?.statusText || response?.status
+    let msg = response?.statusText || response?.status
     msg = msg || 'unknow'
     EmqxMessage.error(msg)
   }
