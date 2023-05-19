@@ -119,7 +119,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
   })
   const rules = {
     driver: [{ required: true, message: t('config.southDeviceRequired') }],
-    name: [{ required: true, message: createCommonErrorMessage('select', ' group') }],
+    group: [{ required: true, message: createCommonErrorMessage('select', ' group') }],
   }
   const subscriptionForm: Ref<SubscriptionDataForm> = ref(createRawSubscriptionForm())
   const isSubmitting = ref(false)
