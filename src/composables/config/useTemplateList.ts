@@ -76,7 +76,8 @@ export default () => {
     isImportTemplate.value = true
     const fileData: unknown = await readTextFile(file)
 
-    if (isJSONData(String(fileData))) {
+    try {
+      await isJSONData(String(fileData))
       const jsonData = JSON.parse(String(fileData)) || createTemplateForm()
 
       const { name, plugin } = jsonData
@@ -90,6 +91,8 @@ export default () => {
         editTemplateData.value = jsonData
         templateDialogVisible.value = true
       }
+    } catch (error) {
+      EmqxMessage.error(t('common.jsonFormatError'))
     }
 
     // Capture uploader action
