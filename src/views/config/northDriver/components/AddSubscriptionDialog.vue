@@ -6,6 +6,8 @@
     :title="$t('config.addSubscription')"
     :z-index="2000"
   >
+    <el-alert v-if="topicWarning" :title="topicWarning" type="warning" show-icon :closable="false" />
+
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
       <emqx-form-item prop="driver" :label="$t('config.southDevice')">
         <emqx-select
@@ -46,7 +48,7 @@
 
 <script lang="ts" setup>
 import { computed, defineProps, defineEmits, watch } from 'vue'
-import { ElDialog } from 'element-plus'
+import { ElDialog, ElAlert } from 'element-plus'
 import { useAddSubscription } from '@/composables/config/useSubscription'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 
@@ -71,6 +73,7 @@ const showDialog = computed({
 const {
   formCom,
   rules,
+  topicWarning,
   subscriptionForm,
   deviceList,
   groupList,

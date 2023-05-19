@@ -107,6 +107,16 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
   })
 
   const formCom = ref()
+
+  const topicWarning = computed(() => {
+    let warningContent = ''
+    const { topic } = subscriptionForm.value
+    if (topic) {
+      const isContainWildcard = topic.includes('#') || topic.includes('+')
+      warningContent = isContainWildcard ? t('config.topicContainWildcard') : ''
+    }
+    return warningContent
+  })
   const rules = {
     driver: [{ required: true, message: t('config.southDeviceRequired') }],
     name: [{ required: true, message: createCommonErrorMessage('select', ' group') }],
@@ -159,6 +169,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
   return {
     formCom,
     rules,
+    topicWarning,
     subscriptionForm,
     deviceList,
     groupList,
