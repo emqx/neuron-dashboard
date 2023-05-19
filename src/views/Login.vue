@@ -28,6 +28,8 @@ import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import useLang from '@/composables/useLang'
+import { DEFAULT_LANG } from '@/utils/constants'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -56,6 +58,7 @@ const rules = {
 }
 const isLoading = ref(false)
 
+const { currentLang } = useLang()
 const login = async () => {
   try {
     await formCom.value.validate()
@@ -63,6 +66,10 @@ const login = async () => {
     const { userName, password } = form
     const { data } = await requestLogin({ name: userName, pass: password })
     store.commit('SET_TOKEN', data.token)
+
+    const lang = localStorage.getItem('language') || currentLang.value || DEFAULT_LANG
+    store.commit('SET_LANG', lang)
+
     router.push({
       path: '/',
     })

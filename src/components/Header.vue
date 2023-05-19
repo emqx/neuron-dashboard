@@ -73,7 +73,6 @@ import { useRouter } from 'vue-router'
 import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
-import i18n from '@/i18n/index'
 import { qiankunActions } from '@/utils/forEKuiper'
 
 const store = useStore()
@@ -95,6 +94,25 @@ const downloadLogsFile = () => {
   })
 }
 
+const { langList } = useLang()
+
+const { changeLang } = setLang()
+const changeCurrentLang = (lang: string) => {
+  changeLang(lang)
+
+  // Trigger: notification microservice
+  qiankunActions.setGlobalState({ lang: store.state.lang })
+}
+
+const lang = computed({
+  get() {
+    return store.state.lang
+  },
+  set(val: string) {
+    changeCurrentLang(val)
+  },
+})
+
 const logout = async () => {
   try {
     store.commit('LOGOUT')
@@ -103,22 +121,6 @@ const logout = async () => {
     console.error(error)
   }
 }
-
-const { langList } = useLang()
-const { initLang } = setLang()
-
-const lang = computed({
-  get() {
-    return store.state.lang
-  },
-  set(val: string) {
-    store.commit('SET_LANG', val)
-    i18n.global.locale.value = val
-    initLang()
-    // Trigger: notification microservice
-    qiankunActions.setGlobalState({ lang: store.state.lang })
-  },
-})
 
 const langLabel = computed(() => langList.find((item) => item.value === lang.value)?.label || '')
 
