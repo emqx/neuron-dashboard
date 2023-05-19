@@ -1,8 +1,8 @@
-import { queryGroupList, queryTagList } from '@/api/config'
+import { queryGroupList, queryTagList, querySouthDriverList } from '@/api/config'
 import { getMonitoringData } from '@/api/data'
-import useSouthDriver from '@/composables/config/useSouthDriver'
+// import useSouthDriver from '@/composables/config/useSouthDriver'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
-import type { GroupData, TagForm } from '@/types/config'
+import type { GroupData, TagForm, RawDriverData } from '@/types/config'
 import type { TagDataInMonitoring } from '@/types/data'
 import { TagAttributeType, TagType } from '@/types/enums'
 import { paginate, listOrderByKey } from '@/utils/utils'
@@ -29,7 +29,7 @@ export default () => {
   const { t } = useI18n()
   const store = useStore()
 
-  const { totalSouthDriverList: nodeList } = useSouthDriver()
+  const nodeList: Ref<Array<RawDriverData>> = ref([])
   const groupList: Ref<Array<GroupData>> = ref([])
 
   const { findLabelByValue: findTagTypeLabelByValue } = useTagTypeSelect()
@@ -105,7 +105,7 @@ export default () => {
 
   const reSubAfterReturnError = async () => {
     const { groupName, lastTimestamp, count } = reSubCount
-    const { node, groupName: currentGroupName } = currentGroup.value
+    const { groupName: currentGroupName } = currentGroup.value
     let canReSubAndRequest = false
     if (Date.now() - lastTimestamp < 500 && groupName === currentGroupName && count < 3) {
       canReSubAndRequest = true
@@ -118,6 +118,45 @@ export default () => {
       reSubCount.count += 1
       reSubCount.lastTimestamp = Date.now()
       getTableData()
+    }
+  }
+
+  const getSouthNodeList = async () => {
+    try {
+      nodeList.value = await querySouthDriverList()
+      return Promise.resolve(nodeList.value)
+    } catch (error) {
+      nodeList.value = []
+      return Promise.reject(error)
+    }
+  }
+
+  const getGroupList = async (nodeName: string) => {
+    try {
+      const data = await queryGroupList(nodeName.toString())
+      groupList.value = data
+      return Promise.resolve(data)
+    } catch (error) {
+      groupList.value = []
+      return Promise.reject(error)
+    }
+  }
+
+  const groupIsDeleted = async () => {
+    currentGroup.value.groupName = ''
+    totalData.value = []
+    await getGroupList(currentGroup.value.node)
+  }
+
+  const nodeIsDeleted = async (reload = true) => {
+    currentGroup.value = {
+      node: '',
+      groupName: '',
+    }
+    groupList.value = []
+    totalData.value = []
+    if (reload) {
+      await getSouthNodeList()
     }
   }
 
@@ -175,6 +214,13 @@ export default () => {
       if (error?.response?.data?.error === 2014) {
         reSubAfterReturnError()
       }
+      if (error?.response?.data?.error === 2003) {
+        nodeIsDeleted()
+      }
+
+      if (error?.response?.data?.error === 2106) {
+        groupIsDeleted()
+      }
     }
   }
 
@@ -201,6 +247,7 @@ export default () => {
 
       selectedGroup = { node, groupName, name: keywordSearch.value }
       tagMsgMap = await getTagDetail()
+
       initPageController()
       getTableData()
 
@@ -236,11 +283,9 @@ export default () => {
         selectedGroup = undefined
         totalData.value = []
 
-        const data = await queryGroupList(currentGroup.value.node.toString())
-        const isExistGroup = data.find((group) => group.name === currentGroup.value.groupName)
-        currentGroup.value.groupName = isExistGroup?.name || ''
+        await getGroupList(currentGroup.value.node)
 
-        groupList.value = data
+        await initCurrentGroupName()
       } catch (error) {
         groupList.value = []
       }
@@ -304,18 +349,41 @@ export default () => {
     return item.attribute && item.attribute.some((attr) => attr === TagAttributeType.Write)
   }
 
-  const initTagList = async () => {
-    const { node, groupName } = currentGroup.value
-    if (node) {
+  const initCurrentNode = async () => {
+    const { node } = currentGroup.value
+
+    // reset default value when remove a node.
+    if (node && !currentNodeName.value) {
+      nodeIsDeleted(false)
+    }
+
+    if (currentGroup.value.node) {
       await selectedNodeChanged(node)
     }
-    if (node && groupName) {
+  }
+
+  const initCurrentGroupName = async () => {
+    const { node, groupName } = currentGroup.value
+
+    // reset default value when remove a node.
+    const group = groupList.value.find(({ name }) => name === groupName)
+    if (groupName && !group) {
+      groupIsDeleted()
+    }
+
+    if (node && currentGroup.value.groupName) {
       await getTagList()
     }
   }
 
-  onMounted(() => {
-    initTagList()
+  const initTagList = async () => {
+    await initCurrentNode()
+    await initCurrentGroupName()
+  }
+
+  onMounted(async () => {
+    await getSouthNodeList()
+    await initTagList()
   })
 
   onUnmounted(() => {
