@@ -448,4 +448,8 @@ export default {
     zh: '间隔',
     en: 'Interval',
   },
+  topicContainWildcard: {
+    zh: '不能向包含通配符 #、+ 的主题发布消息',
+    en: 'Cannot publish messages to topics containing wildcard characters #, +',
+  },
 }
