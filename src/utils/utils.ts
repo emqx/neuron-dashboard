@@ -193,3 +193,13 @@ export const isTheSameParentRoute = (from: any, to: any) => {
   const toRouteName = toMatched[0]?.name
   return fromRouteName === toRouteName
 }
+
+export const isJSONData = (data: string) => {
+  try {
+    JSON.parse(data)
+    return Promise.resolve()
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
