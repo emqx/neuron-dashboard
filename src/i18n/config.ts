@@ -477,4 +477,8 @@ export default {
     zh: '请选择插件',
     en: 'Select plugin',
   },
+  topicContainWildcard: {
+    zh: '不能向包含通配符 #、+ 的主题发布消息',
+    en: 'Cannot publish messages to topics containing wildcard characters #, +',
+  },
 }
