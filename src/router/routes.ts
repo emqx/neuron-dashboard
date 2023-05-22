@@ -136,7 +136,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/configuration/template',
     name: 'Template',
-    meta: { title: 'config.plugin' },
+    meta: { title: 'config.templateManagement' },
     component: Home,
     children: [
       {
@@ -144,6 +144,19 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Template',
         component: () => import('@/views/config/template/Index.vue'),
         meta: { hiddenBreadcrumb: true },
+      },
+      {
+        path: ':template',
+        name: 'TemplateGroupG',
+        component: () => import('@/components/LayoutContent.vue'),
+        meta: { title: 'config.groupList' },
+        children: [
+          {
+            path: '',
+            name: 'TemplateGroup',
+            component: () => import('@/views/config/template/Group.vue'),
+          },
+        ],
       },
     ],
   },

@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import type { RawTemplateData, TemplateFormData } from '@/types/config'
 import { queryTemplateList, deleteTemplate, getTemplateDetailByName } from '@/api/template'
 import { EmqxMessage } from '@emqx/emqx-ui'
@@ -10,6 +11,7 @@ import { useDownload } from '@/composables/useDownload'
 import { dataType, isJSONData } from '@/utils/utils'
 
 export default () => {
+  const router = useRouter()
   const { t } = useI18n()
   const { createTemplateForm } = useTemplateForm()
 
@@ -34,14 +36,20 @@ export default () => {
   }
 
   const goGroupPage = (rowData: RawTemplateData) => {
-    // TODO
-    console.log('row', rowData)
+    const { name } = rowData
+    router.push({
+      name: 'TemplateGroup',
+      params: {
+        template: name,
+      },
+    })
   }
   const editTemplate = (rowData: RawTemplateData) => {
     // TODO
     isEditTemplate.value = true
     console.log('row', rowData)
   }
+
   const removeTemplate = async (rowData: RawTemplateData) => {
     try {
       await MessageBoxConfirm() // Phase 2 support: t('template.deleteTemplateTip')
