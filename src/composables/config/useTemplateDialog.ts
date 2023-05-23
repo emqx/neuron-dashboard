@@ -32,10 +32,12 @@ export default (props: TemplateProps) => {
   const templateForm: Ref<TemplateFormData> = ref(createTemplateForm())
   const isSubmitting = ref(false)
 
-  const rules = {
-    name: [{ required: true, message: t('config.nameRequired') }],
-    plugin: [{ required: true, message: t('config.pluginRequired') }],
-  }
+  const rules = computed(() => {
+    return {
+      name: [{ required: true, message: t('config.nameRequired') }],
+      plugin: [{ required: true, message: t('config.pluginRequired') }],
+    }
+  })
 
   const dialogTitle = computed(() => {
     let title = ''

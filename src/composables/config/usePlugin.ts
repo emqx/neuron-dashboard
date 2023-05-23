@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage } from '@emqx/emqx-ui'
@@ -94,14 +94,16 @@ export const useAddPlugin = () => {
   const { t } = useI18n()
   const pluginForm = ref(createRawPluginForm())
   const pluginFormCom = ref()
-  const pluginFormRules = {
-    library: [
-      {
-        required: true,
-        message: createCommonErrorMessage('input', t('config.libName')),
-      },
-    ],
-  }
+  const pluginFormRules = computed(() => {
+    return {
+      library: [
+        {
+          required: true,
+          message: createCommonErrorMessage('input', t('config.libName')),
+        },
+      ],
+    }
+  })
   const isSubmitting = ref(false)
 
   const submitData = async () => {

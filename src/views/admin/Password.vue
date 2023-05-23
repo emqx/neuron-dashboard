@@ -87,34 +87,36 @@ const checkNewPassConfirmMatch = (rule: any, value: string, callback: any) => {
   }
 }
 
-const rules = {
-  oldPass: [
-    {
-      required: true,
-      message: createCommonErrorMessage('input', t('common.oldPassword')),
-    },
-  ],
-  newPass: [
-    {
-      required: true,
-      message: createCommonErrorMessage('input', t('common.newPassword')),
-    },
-    {
-      validator: checkNewPassMatch,
-      trigger: 'blur',
-    },
-  ],
-  newPassConfirm: [
-    {
-      required: true,
-      message: t('common.newPassConfirmRequired'),
-    },
-    {
-      validator: checkNewPassConfirmMatch,
-      trigger: 'blur',
-    },
-  ],
-}
+const rules = computed(() => {
+  return {
+    oldPass: [
+      {
+        required: true,
+        message: createCommonErrorMessage('input', t('common.oldPassword')),
+      },
+    ],
+    newPass: [
+      {
+        required: true,
+        message: createCommonErrorMessage('input', t('common.newPassword')),
+      },
+      {
+        validator: checkNewPassMatch,
+        trigger: 'blur',
+      },
+    ],
+    newPassConfirm: [
+      {
+        required: true,
+        message: t('common.newPassConfirmRequired'),
+      },
+      {
+        validator: checkNewPassConfirmMatch,
+        trigger: 'blur',
+      },
+    ],
+  }
+})
 
 const changeUserPassword = async () => {
   try {

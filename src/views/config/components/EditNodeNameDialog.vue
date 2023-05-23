@@ -42,9 +42,11 @@ const form = ref({
   name: '',
 })
 const formCom = ref()
-const rules = {
-  name: [{ required: true, message: t('config.nameRequired') }],
-}
+const rules = computed(() => {
+  return {
+    name: [{ required: true, message: t('config.nameRequired') }],
+  }
+})
 const isSubmitting = ref(false)
 
 const showDialog = computed({
