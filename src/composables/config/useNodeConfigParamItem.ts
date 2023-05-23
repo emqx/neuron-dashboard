@@ -1,8 +1,7 @@
 import type { NumberParamInfo, ParamInfo, StringParamInfo } from '@/types/config'
 import { ParamRequired, TypeOfPluginParam } from '@/types/enums'
 import { createCommonErrorMessage } from '@/utils/utils'
-import type { Ref } from 'vue'
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 type Props = Readonly<{
@@ -13,7 +12,6 @@ type Props = Readonly<{
 
 export default (props: Props) => {
   const { t } = useI18n()
-  const rules: Ref<Array<any> | Record<string, any>> = ref([])
 
   // valid number limit
   const checkNumberParamLimit = (rule: unknown, value: string, callback: any) => {
@@ -96,7 +94,7 @@ export default (props: Props) => {
     },
   ]
 
-  const fillRules = () => {
+  const rules = computed(() => {
     const createMap = {
       [TypeOfPluginParam.Int]: createNumberParamRules,
       [TypeOfPluginParam.String]: createStringParamRules,
@@ -105,9 +103,8 @@ export default (props: Props) => {
       [TypeOfPluginParam.Map]: createSelectParamRules,
       [TypeOfPluginParam.File]: createFileParamRules,
     }
-    rules.value = createMap[props.paramInfo.type] && createMap[props.paramInfo.type]()
-  }
+    return (createMap[props.paramInfo.type] && createMap[props.paramInfo.type]()) || []
+  })
 
-  fillRules()
   return { rules }
 }

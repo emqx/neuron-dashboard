@@ -43,10 +43,12 @@ export default (type: DriverDirection) => {
   const formCom = ref()
   const driverForm: Ref<NodeForm> = ref(createRawDriverForm())
   const isSubmitting = ref(false)
-  const groupFormRules = {
-    name: [{ required: true, message: t('config.nameRequired') }],
-    plugin: [{ required: true, message: t('config.pluginRequired') }],
-  }
+  const groupFormRules = computed(() => {
+    return {
+      name: [{ required: true, message: t('config.nameRequired') }],
+      plugin: [{ required: true, message: t('config.pluginRequired') }],
+    }
+  })
 
   const dialogTitle = computed(() => (type === DriverDirection.North ? t('config.addApp') : t('config.newDevice')))
 
