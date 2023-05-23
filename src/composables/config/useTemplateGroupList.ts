@@ -1,8 +1,10 @@
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
-// import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { queryGroupList } from '@/api/template'
+import { EmqxMessage } from '@emqx/emqx-ui'
+import { MessageBoxConfirm } from '@/utils/element'
+import { queryGroupList, deleteGroup } from '@/api/template'
 import type { GroupData } from '@/types/config'
 import { OmitArrayFields } from '@/utils/utils'
 // import useUploadTagList from '@/composables/config/useUploadTagList'
@@ -13,7 +15,7 @@ interface GroupDataInTable extends GroupData {
 }
 
 export default () => {
-  // const { t } = useI18n()
+  const { t } = useI18n()
   const route = useRoute()
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
@@ -22,6 +24,7 @@ export default () => {
   // const { isExporting, exportTable } = useExportTagTable()
 
   const template = computed(() => route.params.template.toString())
+
   const allChecked = computed({
     get() {
       if (groupList.value.length === 0) {
@@ -43,15 +46,23 @@ export default () => {
   })
 
   const getGroupList = async () => {
-    isListLoading.value = true
-    const data = await queryGroupList(template.value)
-    groupList.value = data.map((item) => Object.assign(item, { checked: false }))
-    isListLoading.value = false
+    try {
+      isListLoading.value = true
+      const data = await queryGroupList(template.value)
+      groupList.value = data.map((item) => Object.assign(item, { checked: false }))
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isListLoading.value = false
+    }
   }
 
   const delGroup = async ({ name }: GroupDataInTable) => {
-    // TODO
-    console.log('del', name)
+    await MessageBoxConfirm()
+
+    await deleteGroup(template.value, name)
+    EmqxMessage.success(t('common.operateSuccessfully'))
+    getGroupList()
   }
 
   const batchDeleteGroup = () => {
