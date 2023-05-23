@@ -57,6 +57,7 @@ export default () => {
     }
   }
 
+  /** Remove Group */
   const delGroup = async ({ name }: GroupDataInTable) => {
     await MessageBoxConfirm()
 
@@ -65,8 +66,16 @@ export default () => {
     getGroupList()
   }
 
-  const batchDeleteGroup = () => {
-    // TODO
+  const delGroupList = async (list: Array<GroupData>) => {
+    await Promise.all(list.map(({ name }) => deleteGroup(template.value, name)))
+    EmqxMessage.success(t('common.operateSuccessfully'))
+    getGroupList()
+  }
+
+  const batchDeleteGroup = async () => {
+    await MessageBoxConfirm()
+
+    delGroupList(groupCheckedList.value)
   }
 
   const clearGroup = () => {
