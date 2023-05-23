@@ -33,3 +33,9 @@ export const queryGroupList = async (templateName: string): Promise<Array<GroupD
   })
   return Promise.resolve((data?.groups || []).map((item) => ({ ...item, group: item.name })))
 }
+
+export const deleteGroup = async (templateName: string, groupName: string): Promise<AxiosResponse> => {
+  return http.delete('/template/group', {
+    data: { template: templateName, group: groupName },
+  })
+}
