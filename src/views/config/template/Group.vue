@@ -42,7 +42,7 @@
             <i class="iconfont icon-import iconsubmit"></i>
             <span>{{ $t('common.export') }}</span>
           </emqx-button>
-          <emqx-button size="small" type="primary" @click="addGroup">
+          <emqx-button size="small" type="primary" @click="handleAddGroup">
             {{ $t('common.create') }}
           </emqx-button>
           <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
@@ -95,16 +95,24 @@
       </emqx-table-column>
     </emqx-table>
   </emqx-card>
+
+  <GroupDialog
+    v-model="groupForm"
+    v-model:dialog-visible="groupDialogVisible"
+    :is-edit="isEditGroup"
+    :isSubmitting="isSubmitting"
+    @submitted="submitedForm"
+  />
 </template>
 
 <script lang="ts" setup>
-// import type { Ref } from 'vue'
-// import { ref } from 'vue'
 // import { useRouter } from 'vue-router'
 import { ElLink } from 'element-plus'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import GroupDialog from '@/views/config/components/GroupDialog.vue'
 import useGroupList from '@/composables/config/useTemplateGroupList'
 import type { GroupData } from '@/types/config'
+import useTemplateAddGroup from '@/composables/config/useTemplateGroupDialog'
 
 // const router = useRouter()
 
@@ -114,6 +122,7 @@ const {
   groupList,
   groupCheckedList,
   allChecked,
+  getGroupList,
 
   delGroup,
   batchDeleteGroup,
@@ -126,15 +135,7 @@ const {
   goTagPage,
 } = useGroupList()
 
-// const showGroupDialog = ref(false)
-// const isEditGroup = ref(false)
-// const currentGroup: Ref<GroupForm | undefined> = ref(undefined)
-
-const addGroup = () => {
-  // TODO
-  // currentGroup.value = undefined
-  // showGroupDialog.value = true
-}
+const { handleAddGroup, isEditGroup, groupDialogVisible, groupForm, isSubmitting, submitForm } = useTemplateAddGroup()
 
 // // view | edit group
 const operatorGroup = ({ name, interval, group }: GroupData, isEdit?: boolean) => {
@@ -149,6 +150,10 @@ const operatorGroup = ({ name, interval, group }: GroupData, isEdit?: boolean) =
   //   group,
   // }
   // showGroupDialog.value = true
+}
+const submitedForm = async () => {
+  await submitForm()
+  getGroupList()
 }
 </script>
 

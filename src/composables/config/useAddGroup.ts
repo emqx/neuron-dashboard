@@ -92,6 +92,7 @@ export default () => {
     await initMap()
     await initMsgIdMap()
     const pluginName = getNodeMsgById(node.value).plugin
+
     const nodePluginToLower = pluginName.toLocaleLowerCase()
     const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
 

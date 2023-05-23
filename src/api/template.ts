@@ -1,6 +1,6 @@
 import http from '@/utils/http'
 import type { AxiosResponse } from 'axios'
-import type { RawTemplateData, TemplateFormData, GroupData } from '@/types/config'
+import type { RawTemplateData, TemplateFormData, GroupData, TemplateGroupForm } from '@/types/config'
 
 export const queryTemplateList = async (): Promise<Array<RawTemplateData>> => {
   const { data }: AxiosResponse<{ error: number; templates: Array<RawTemplateData> }> = await http.get('/template')
@@ -37,5 +37,14 @@ export const queryGroupList = async (templateName: string): Promise<Array<GroupD
 export const deleteGroup = async (templateName: string, groupName: string): Promise<AxiosResponse> => {
   return http.delete('/template/group', {
     data: { template: templateName, group: groupName },
+  })
+}
+
+export const addGroup = async (data: TemplateGroupForm): Promise<AxiosResponse> => {
+  const { group, interval, template } = data
+  return http.post('/template/group', {
+    group,
+    template,
+    interval: Number(interval),
   })
 }

@@ -162,6 +162,13 @@ export interface PluginInfo {
   [propName: string]: ParamInfo
 }
 
+export interface GroupFormDefault {
+  /**
+   * Name
+   */
+  group: string
+  interval: number | null
+}
 export interface GroupForm {
   /**
    * Name
@@ -210,4 +217,8 @@ export interface TemplateGroup {
 }
 export interface TemplateFormData extends RawTemplateData {
   groups?: Array<TemplateGroup>
+}
+
+export interface TemplateGroupForm extends GroupFormDefault {
+  template: string | null
 }
