@@ -24,7 +24,7 @@
 import { login as requestLogin } from '@/api/common'
 import useCheckLicense from '@/composables/useCheckLicense'
 import { createCommonErrorMessage } from '@/utils/utils'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -40,20 +40,22 @@ const form = reactive({
   userName: '',
   password: '',
 })
-const rules = {
-  userName: [
-    {
-      required: true,
-      message: createCommonErrorMessage('input', t('common.username')),
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: createCommonErrorMessage('input', t('common.password')),
-    },
-  ],
-}
+const rules = computed(() => {
+  return {
+    userName: [
+      {
+        required: true,
+        message: createCommonErrorMessage('input', t('common.username')),
+      },
+    ],
+    password: [
+      {
+        required: true,
+        message: createCommonErrorMessage('input', t('common.password')),
+      },
+    ],
+  }
+})
 const isLoading = ref(false)
 
 const login = async () => {

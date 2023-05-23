@@ -117,10 +117,12 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     }
     return warningContent
   })
-  const rules = {
-    driver: [{ required: true, message: t('config.southDeviceRequired') }],
-    group: [{ required: true, message: createCommonErrorMessage('select', ' group') }],
-  }
+  const rules = computed(() => {
+    return {
+      driver: [{ required: true, message: t('config.southDeviceRequired') }],
+      group: [{ required: true, message: createCommonErrorMessage('select', ' group') }],
+    }
+  })
   const subscriptionForm: Ref<SubscriptionDataForm> = ref(createRawSubscriptionForm())
   const isSubmitting = ref(false)
   const { totalSouthDriverList: deviceList } = useSouthDriver()

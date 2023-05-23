@@ -1,5 +1,4 @@
-import { ref } from 'vue'
-import type { Ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { NumberParamInfo, ParamInfo, StringParamInfo, ArrayParamInfo } from '@/types/config'
 import { ParamRequired, TypeOfPluginParam } from '@/types/enums'
@@ -13,7 +12,6 @@ type Props = Readonly<{
 
 export default (props: Props) => {
   const { t } = useI18n()
-  const rules: Ref<Array<any> | Record<string, any>> = ref([])
 
   enum RangeErrorEnums {
     All = 'all',
@@ -182,7 +180,7 @@ export default (props: Props) => {
     { validator: checkArrayParamLength, trigger: ['blur', 'change'] },
   ]
 
-  const fillRules = () => {
+  const rules = computed(() => {
     const createMap = {
       [TypeOfPluginParam.Int]: createNumberParamRules,
       [TypeOfPluginParam.String]: createStringParamRules,
@@ -192,10 +190,8 @@ export default (props: Props) => {
       [TypeOfPluginParam.File]: createFileParamRules,
       [TypeOfPluginParam.Array]: createArrayParamRules,
     }
-    rules.value = createMap[props.paramInfo.type] && createMap[props.paramInfo.type]()
-  }
-
-  fillRules()
+    return (createMap[props.paramInfo.type] && createMap[props.paramInfo.type]()) || []
+  })
   return {
     rules,
   }

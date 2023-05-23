@@ -1,10 +1,3 @@
-/*
- * @Author: gezuxia
- * @Descripttion:
- * @Date: 2023-05-18 15:18:50
- * @LastEditors: gezuxia
- * @LastEditTime: 2023-05-18 19:07:27
- */
 export default {
   templateName: {
     zh: '模板名称',
