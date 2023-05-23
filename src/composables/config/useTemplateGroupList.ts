@@ -78,8 +78,10 @@ export default () => {
     delGroupList(groupCheckedList.value)
   }
 
-  const clearGroup = () => {
-    // TODO
+  const clearGroup = async () => {
+    await MessageBoxConfirm(t('common.confirmClear'))
+
+    delGroupList(groupList.value)
   }
 
   const downloadTemplate = () => {
