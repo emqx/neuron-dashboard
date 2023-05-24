@@ -147,12 +147,7 @@ export const useTagDecimal = () => {
     tagDecimalValue,
   }
 }
-
-export default () => {
-  const route = useRoute()
-  const router = useRouter()
-  const { t } = useI18n()
-
+export const createTagForm = () => {
   const createRawTagForm = (): TagFormItem => ({
     name: '',
     address: '',
@@ -165,6 +160,17 @@ export default () => {
     precision: undefined,
     value: undefined,
   })
+
+  return {
+    createRawTagForm,
+  }
+}
+
+export default () => {
+  const route = useRoute()
+  const router = useRouter()
+  const { t } = useI18n()
+  const { createRawTagForm } = createTagForm()
 
   const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])
   const tagList: Ref<Array<TagFormItem>> = ref([createRawTagForm()])

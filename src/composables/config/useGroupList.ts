@@ -4,13 +4,15 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { MessageBoxConfirm } from '@/utils/element'
-import { queryGroupList, deleteGroup, queryTagList } from '@/api/config'
+import { queryGroupList, deleteGroup, queryTagList, addTag } from '@/api/config'
 import type { GroupData } from '@/types/config'
 import { OmitArrayFields } from '@/utils/utils'
 import useUploadTagList from '@/composables/config/useUploadTagList'
 import useExportTagTable from '@/composables/config/useExportTagTable'
 import { useDownload } from '@/composables/useDownload'
+import useAddTag from '@/composables/config/useAddTag'
 import http from '@/utils/http'
+import { groupBy } from 'lodash'
 
 interface GroupDataInTable extends GroupData {
   checked: boolean
@@ -22,7 +24,9 @@ export default () => {
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
-  const { uploadTag } = useUploadTagList()
+  const { nodePluginInfo } = useAddTag()
+
+  const { readTagListFile, handleTagListInTableFile, batchAddTags } = useUploadTagList(nodePluginInfo.value)
   const { isExporting, exportTable } = useExportTagTable()
 
   const node = computed(() => route.params.node.toString())
@@ -94,17 +98,30 @@ export default () => {
   }
 
   // import file
-  const importTagsByGroups = (file: File) => {
-    uploadTag(file, node.value)
-      .then(() => {
+  const importTagsByGroups = async (file: File) => {
+    try {
+      const tagList = await readTagListFile(file)
+
+      const tagsByGroupName = groupBy(tagList, (item) => item.group)
+      const groupNames = Object.keys(tagsByGroupName)
+      const requestList = groupNames.map((groupName: string) => {
+        const groupTags: any = tagsByGroupName[groupName]
+        let rqs = null
+        return handleTagListInTableFile(groupTags).then((tags) => {
+          rqs = addTag({ tags, node: node.value, group: groupName })
+          return rqs
+        })
+      })
+
+      await batchAddTags(requestList)
+      getGroupList()
+    } catch (error) {
+      // no upload empty content file
+      if (error) {
         getGroupList()
-      })
-      .catch((error) => {
-        // no upload empty content file
-        if (error) {
-          getGroupList()
-        }
-      })
+      }
+    }
+
     return Promise.reject()
   }
 
