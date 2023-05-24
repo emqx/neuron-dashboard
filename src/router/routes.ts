@@ -194,7 +194,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/about',
     name: 'AboutPage',
-    meta: { title: 'common.about' },
+    meta: { hiddenBreadcrumb: true },
     component: Home,
     children: [
       {

@@ -5,7 +5,7 @@ import store from '@/store/index'
 // ❗️If you are developing and debugging ekuiper, please replace this with the address of ekuiper
 const { origin, pathname } = window.location
 const kuiperEntry = pathname === '/' ? `${origin}/ekuiper/` : `${origin}${pathname}/ekuiper/` // production
-// const kuiperEntry = pathname === '/' ? `h ttp://localhost:3002/ekuiper/` : `http://localhost:3002${pathname}ekuiper/` // dev
+// const kuiperEntry = pathname === '/' ? `http://localhost:3002/ekuiper/` : `http://localhost:3002${pathname}ekuiper/` // dev
 
 const defaultEnv = 'production'
 
