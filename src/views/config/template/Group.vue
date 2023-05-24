@@ -85,7 +85,7 @@
         <template #default="{ row }">
           <div class="operator-wrap">
             <AComWithDesc :content="$t('common.edit')">
-              <i class="el-icon-edit-outline" @click.stop="operatorGroup(row, true)" />
+              <i class="el-icon-edit-outline" @click.stop="handleEditGroup(row)" />
             </AComWithDesc>
             <AComWithDesc :content="$t('common.delete')">
               <i class="iconfont icondelete" @click.stop="delGroup(row)" />
@@ -106,15 +106,11 @@
 </template>
 
 <script lang="ts" setup>
-// import { useRouter } from 'vue-router'
 import { ElLink } from 'element-plus'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import GroupDialog from '@/views/config/components/GroupDialog.vue'
 import useGroupList from '@/composables/config/useTemplateGroupList'
-import type { GroupData } from '@/types/config'
 import useTemplateAddGroup from '@/composables/config/useTemplateGroupDialog'
-
-// const router = useRouter()
 
 const {
   template,
@@ -135,22 +131,9 @@ const {
   goTagPage,
 } = useGroupList()
 
-const { handleAddGroup, isEditGroup, groupDialogVisible, groupForm, isSubmitting, submitForm } = useTemplateAddGroup()
+const { handleAddGroup, handleEditGroup, isEditGroup, groupDialogVisible, groupForm, isSubmitting, submitForm } =
+  useTemplateAddGroup()
 
-// // view | edit group
-const operatorGroup = ({ name, interval, group }: GroupData, isEdit?: boolean) => {
-  // TODO
-  console.log('name, interval, group', name, interval, group, isEdit)
-
-  // isEditGroup.value = !!isEdit
-  // currentGroup.value = {
-  //   interval,
-  //   name,
-  //   template: template.value,
-  //   group,
-  // }
-  // showGroupDialog.value = true
-}
 const submitedForm = async () => {
   await submitForm()
   getGroupList()

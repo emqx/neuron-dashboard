@@ -11,7 +11,7 @@
         <emqx-input v-model.trim="groupForm.group" :disabled="isEdit" />
       </emqx-form-item>
       <emqx-form-item prop="interval" :label="$t('config.interval')" required>
-        <emqx-input v-model.number="groupForm.interval" :disabled="isEdit && !isEdit">
+        <emqx-input v-model.number="groupForm.interval">
           <template #append>ms</template>
         </emqx-input>
       </emqx-form-item>
@@ -24,19 +24,13 @@
         <emqx-button size="small" @click="close">
           {{ $t('common.cancel') }}
         </emqx-button>
-        <!-- view -->
-        <!-- <template>
-          <emqx-button type="primary" size="small" @click="close" :loading="isSubmitting">
-            {{ $t('common.close') }}
-          </emqx-button>
-        </template> -->
       </span>
     </template>
   </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, defineProps, defineEmits, watch } from 'vue'
+import { ref, computed, defineProps, defineEmits } from 'vue'
 import type { PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElDialog } from 'element-plus'
@@ -69,17 +63,6 @@ const props = defineProps({
 
 const { t } = useI18n()
 
-const showDialog = computed({
-  get: () => props.dialogVisible,
-  set: (val: boolean) => {
-    if (!val) {
-      resetFields()
-      initForm()
-    }
-    emit('update:dialogVisible', val)
-  },
-})
-
 const formRef = ref()
 const groupForm = computed({
   get: () => props.modelValue,
@@ -87,8 +70,6 @@ const groupForm = computed({
     emit('update:modelValue', val)
   },
 })
-
-// const groupForm = ref(createRawForm())
 
 const groupRules = computed(() => {
   return {
@@ -138,14 +119,16 @@ const initForm = () => {
   groupForm.value = createRawForm()
 }
 
-watch(
-  () => props.isEdit,
-  (newV) => {
-    if (!newV) {
+const showDialog = computed({
+  get: () => props.dialogVisible,
+  set: (val: boolean) => {
+    if (!val) {
+      resetFields()
       initForm()
     }
+    emit('update:dialogVisible', val)
   },
-)
+})
 
 const submit = async () => {
   await formRef.value.validate()
