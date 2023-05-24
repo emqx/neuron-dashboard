@@ -4,12 +4,12 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { MessageBoxConfirm } from '@/utils/element'
-import { queryGroupList, deleteGroup } from '@/api/template'
+import { queryGroupList, deleteGroup, queryTagList } from '@/api/template'
 import type { GroupData } from '@/types/config'
 import { OmitArrayFields } from '@/utils/utils'
 import useGroupCommon from '@/composables/config/useGroupCommon'
 // import useUploadTagList from '@/composables/config/useUploadTagList'
-// import useExportTagTable from '@/composables/config/useExportTagTable'
+import useExportTagTable from '@/composables/config/useExportTagTable'
 
 interface GroupDataInTable extends GroupData {
   checked: boolean
@@ -21,12 +21,13 @@ export default () => {
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
-  const { downloadTemplate } = useGroupCommon()
+  const { downloadTemplate, getTagsByGroups } = useGroupCommon()
   // const { uploadTag } = useUploadTagList()
-  // const { isExporting, exportTable } = useExportTagTable()
+  const { isExporting, exportTable } = useExportTagTable()
 
   const template = computed(() => route.params.template.toString())
 
+  // selected all groups
   const allChecked = computed({
     get() {
       if (groupList.value.length === 0) {
@@ -41,12 +42,16 @@ export default () => {
     },
   })
 
+  // selected groups
   const groupCheckedList = computed(() => {
     const checkedList: Array<GroupDataInTable> = groupList.value.filter(({ checked }) => checked)
     const newCheckedList: Array<GroupData> = OmitArrayFields(checkedList, ['checked'])
     return newCheckedList
   })
 
+  /**
+   * Get group list
+   */
   const getGroupList = async () => {
     try {
       isListLoading.value = true
@@ -86,12 +91,24 @@ export default () => {
     delGroupList(groupList.value)
   }
 
+  /** TODO
+   * Import Groups
+   */
   const importTagsByGroups = () => {
-    // TODO
+    //
   }
 
-  const ExportTagsByGroups = () => {
-    // TODO
+  /**
+   * Export Groups
+   */
+  const ExportTagsByGroups = async () => {
+    const requesList = groupCheckedList.value.map((group: GroupData) =>
+      queryTagList({ template: template.value, group: group.name }),
+    )
+
+    const tags = await getTagsByGroups(requesList, groupCheckedList.value)
+
+    exportTable(tags, template.value)
   }
 
   const goTagPage = ({ name }: GroupData) => {
@@ -115,6 +132,7 @@ export default () => {
 
     downloadTemplate,
     importTagsByGroups,
+    isExporting,
     ExportTagsByGroups,
 
     goTagPage,

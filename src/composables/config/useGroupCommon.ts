@@ -1,6 +1,6 @@
 import http from '@/utils/http'
 import { useDownload } from '@/composables/useDownload'
-import type { GroupData, TagFormItem } from '@/types/config'
+import type { GroupData, TagForm } from '@/types/config'
 
 export default () => {
   const { downloadFile } = useDownload()
@@ -18,13 +18,14 @@ export default () => {
   }
 
   // Get all tags by  the groups
-  const getTagsByGroups = async (requesList: Array<TagFormItem>, checkedGroupList: Array<GroupData>) => {
+  const getTagsByGroups = async (requesList: Array<Promise<any>>, groupList: Array<GroupData>) => {
     const AllTags: any = []
-    Promise.all(requesList).then((res: Array<any>) => {
+    return Promise.all(requesList).then(async (res: Array<any>) => {
       for (let i = 0; i < res.length; i += 1) {
-        const groupName: string = checkedGroupList[i].name
-        res[i].forEach((item: any) => {
-          // console.log('e', item)
+        const groupName: string = groupList[i].name
+        const tags = res[i] || []
+
+        tags.forEach((item: TagForm) => {
           const tag = {
             ...item,
             group: groupName,
@@ -32,6 +33,7 @@ export default () => {
           AllTags.push(tag)
         })
       }
+
       return Promise.resolve(AllTags)
     })
   }
