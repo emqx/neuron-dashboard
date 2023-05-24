@@ -1,13 +1,12 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <article class="page-noraml-card" v-emqx-loading="isListLoading">
+    <PageTitle :title="$t('config.northAppSetup')"></PageTitle>
     <ViewHeaderBar>
-      <template v-slot:left>
-        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
+      <template v-slot:right>
+        <ListCardSwitch class="header-item" v-model="showType" />
+        <emqx-button type="primary" size="small" class="header-item btn" icon="iconfont iconcreate" @click="addConfig">
           {{ $t('config.addApplication') }}
         </emqx-button>
-      </template>
-      <template v-slot:right>
-        <ListCardSwitch v-model="showType" />
       </template>
     </ViewHeaderBar>
 
@@ -115,7 +114,7 @@
     </emqx-table>
 
     <emqx-empty v-if="!isListLoading && northDriverList.length === 0" />
-  </emqx-card>
+  </article>
 
   <DriverDialog v-model="showDialog" :type="DriverDirection.North" @submitted="getNorthDriverList" />
 
@@ -159,6 +158,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import ListCardSwitch from '@/components/ListCardSwitch.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import PageTitle from '@/components/PageTitle.vue'
 import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 import { isTheSameParentRoute } from '@/utils/utils'
 
@@ -166,7 +166,7 @@ export default defineComponent({
   beforeRouteEnter(to, from, next) {
     const isSameParentRoute = isTheSameParentRoute(from, to)
     if (!isSameParentRoute) {
-      store.commit('SET_LIST_SHOW_TYPE', 'list')
+      store.commit('SET_LIST_SHOW_TYPE', 'card')
     }
     next()
   },

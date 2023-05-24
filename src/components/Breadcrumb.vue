@@ -1,5 +1,5 @@
 <template>
-  <emqx-breadcrumb separator="/">
+  <emqx-breadcrumb v-if="isShowBreadcrumbs" separator="/" class="breadcrumb">
     <transition-group name="breadcrumb" mode="out-in">
       <emqx-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, watch, reactive, toRefs } from 'vue'
+import { defineComponent, onBeforeMount, watch, reactive, toRefs, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { setBreadcrumbFullPaths, getBreadcrumbFullPaths } from '@/utils/user'
 
@@ -41,6 +41,8 @@ watch(
   },
   { immediate: false },
 )
+
+const isShowBreadcrumbs = computed(() => !$route.meta.hiddenBreadcrumb)
 
 // get localstorage breadcrumbs && exchan
 const getBreadcrumbsToMap = (): Map<string, string> => {
@@ -125,6 +127,11 @@ const onHandleLink = (item: any) => {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/edge-layout-variables.scss';
+
+.breadcrumb {
+  padding-bottom: $--padding-tb-normal;
+}
 .nav-breadcrumb {
   height: 32px;
   background: #fff;

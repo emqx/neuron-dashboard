@@ -1,6 +1,6 @@
 <template>
   <div class="node-config" v-emqx-loading="isLoading">
-    <emqx-card shadow="none" class="node-config-bd">
+    <article shadow="none" class="node-config-bd">
       <h3 class="card-title">{{ cardTitle }}</h3>
       <div class="bar-left common-flex">
         <p class="driver-name">
@@ -31,12 +31,12 @@
           <emqx-button @click="cancel" size="small">{{ $t('common.back') }}</emqx-button>
         </div>
       </template>
-    </emqx-card>
-    <emqx-card shadow="none" class="node-config-ft" v-if="!isLoading && fieldList.length > 0">
+    </article>
+    <article shadow="none" class="node-config-ft" v-if="!isLoading && fieldList.length > 0">
       <emqx-button type="primary" :loading="isSubmitting" @click="submit">{{ $t('common.submit') }}</emqx-button>
       <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
       <emqx-button @click.stop="reset">{{ $t('common.reset') }}</emqx-button>
-    </emqx-card>
+    </article>
   </div>
 </template>
 
@@ -86,6 +86,7 @@ const {
 .node-config {
   .node-config-ft {
     text-align: center;
+    padding: 40px 0;
     .emqx-button {
       width: 130px;
     }

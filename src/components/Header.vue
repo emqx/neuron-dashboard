@@ -1,7 +1,10 @@
 <template>
   <emqx-header class="header">
     <template #title>
-      <img src="../assets/images/logo.png" alt="neuron-logo" width="141" />
+      <div class="logo-wrap">
+        <img src="../assets/images/logo.png" alt="logo" width="40" />
+        <span class="title">{{ TITLE }}</span>
+      </div>
     </template>
 
     <template v-slot:right>
@@ -13,10 +16,10 @@
           </span>
           <template #dropdown>
             <emqx-dropdown-menu class="header-menu">
-              <emqx-dropdown-item @click="goLicense">
+              <!-- <emqx-dropdown-item @click="goLicense">
                 <i class="iconfont iconLicense"></i>
                 <span>License</span>
-              </emqx-dropdown-item>
+              </emqx-dropdown-item> -->
               <emqx-dropdown-item @click="goAbout">
                 <i class="iconfont iconabout"></i>
                 <span> {{ $t('common.about') }}</span>
@@ -51,7 +54,7 @@
         <emqx-dropdown>
           <span class="el-dropdown-link">
             <span class="user-bg">
-              <i class="iconfont iconAdministration1"></i>
+              {{ username }}
             </span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -73,14 +76,16 @@ import { useRouter } from 'vue-router'
 import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
+import { qiankunActions } from '@/utils/forEKuiper'
 import { EN_LANG } from '@/config/index'
+import { TITLE } from '@/utils/constants'
 
 const store = useStore()
 const router = useRouter()
 
-const goLicense = () => {
-  router.push({ name: 'License' })
-}
+// const goLicense = () => {
+//   router.push({ name: 'License' })
+// }
 
 const goAbout = () => {
   router.push({ name: 'About' })
@@ -98,6 +103,8 @@ const { langList } = useLang()
 const { changeLang } = setLang()
 const changeCurrentLang = (lang: string) => {
   changeLang(lang)
+  // Trigger: notification microservice
+  qiankunActions.setGlobalState({ lang: store.state.lang })
 }
 const lang = computed({
   get() {
@@ -123,14 +130,26 @@ const langLabel = computed(() => langList.find((item) => item.value === lang.val
 const changeLanguage = (command: string) => {
   lang.value = command
 }
+
+const username = computed(() => store.state.username)
 </script>
 
 <style lang="scss">
 @import '@/styles/emqx-ui-variables.scss';
+@import '@/styles/mixins.scss';
 
 .header {
   .el-dropdown {
     color: #fff;
+  }
+  .logo-wrap {
+    @include display-flex();
+  }
+  .title {
+    color: #23c2f4;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 0 10px;
   }
 }
 .dropdown-item {
@@ -184,8 +203,6 @@ const changeLanguage = (command: string) => {
   width: 28px;
   height: 28px;
   line-height: 28px;
-  background: #104d7c;
-  border-radius: 50%;
   text-align: center;
 }
 </style>

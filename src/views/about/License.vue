@@ -1,5 +1,5 @@
 <template>
-  <emqx-card v-emqx-loading="isDataLoading">
+  <article v-emqx-loading="isDataLoading">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('admin.license') }}</h3>
     </div>
@@ -79,7 +79,7 @@
         </emqx-upload>
       </div>
     </div>
-  </emqx-card>
+  </article>
 </template>
 
 <script setup lang="ts">
@@ -134,22 +134,22 @@ const getLicense = async () => {
   }
 }
 
-const licenseStatus = computed(() => {
-  if (!licenseData.value) {
-    return ''
-  }
-  const { valid_since, valid_until } = licenseData.value
-  const startTime = new Date(valid_since).getTime()
-  const endTime = new Date(valid_until).getTime()
-  const now = Date.now()
-  if (startTime > now) {
-    return t('admin.notYetValid')
-  }
-  if (now > endTime) {
-    return t('admin.expired')
-  }
-  return t('admin.inEffect')
-})
+// const licenseStatus = computed(() => {
+//   if (!licenseData.value) {
+//     return ''
+//   }
+//   const { valid_since, valid_until } = licenseData.value
+//   const startTime = new Date(valid_since).getTime()
+//   const endTime = new Date(valid_until).getTime()
+//   const now = Date.now()
+//   if (startTime > now) {
+//     return t('admin.notYetValid')
+//   }
+//   if (now > endTime) {
+//     return t('admin.expired')
+//   }
+//   return t('admin.inEffect')
+// })
 
 const { readFile } = useUploadFileAndRead()
 const handleUpload = async (file: any) => {
