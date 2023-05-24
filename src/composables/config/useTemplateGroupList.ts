@@ -7,6 +7,7 @@ import { MessageBoxConfirm } from '@/utils/element'
 import { queryGroupList, deleteGroup } from '@/api/template'
 import type { GroupData } from '@/types/config'
 import { OmitArrayFields } from '@/utils/utils'
+import useGroupCommon from '@/composables/config/useGroupCommon'
 // import useUploadTagList from '@/composables/config/useUploadTagList'
 // import useExportTagTable from '@/composables/config/useExportTagTable'
 
@@ -20,6 +21,7 @@ export default () => {
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
+  const { downloadTemplate } = useGroupCommon()
   // const { uploadTag } = useUploadTagList()
   // const { isExporting, exportTable } = useExportTagTable()
 
@@ -84,9 +86,6 @@ export default () => {
     delGroupList(groupList.value)
   }
 
-  const downloadTemplate = () => {
-    // TODO
-  }
   const importTagsByGroups = () => {
     // TODO
   }
