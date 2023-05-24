@@ -1,4 +1,5 @@
 @import './emqx-ui-variables.scss';
+@import './layout-variables.scss';
 
 :root {
   --color-main-bg: #f4f9fc;
@@ -11,12 +12,16 @@
   --color-border-tab: #e2e7ea;
 }
 
+*, :after, :before {
+  box-sizing: border-box;
+}
+
 #neuron-dashboard {
   font-family: 'PingFang SC', 'Source Han Sans CN';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  min-width: 1250px;
+  min-width: $--view-min-width;
 }
 
 body,
@@ -99,86 +104,128 @@ label {
   top: 0;
   left: 0;
   width: 100%;
+  margin: 0;
   background: #0c283e;
-}
-
-.side-nav {
-  padding-right: 20px;
-  border-right: none;
-  background-color: transparent;
-  height: calc(100vh - 100px); // 100px = top with position fixed
-  overflow-y: auto;
-  .nav-item,
-  .el-submenu__title {
-    height: 48px;
-    padding: 0;
-  }
-  .el-submenu__title {
-    margin-bottom: 12px;
-    padding-left: 0 !important;
-  }
-  .nav-item {
-    min-width: auto;
-    margin-bottom: 12px;
-
-    &.is-active {
-      .nav-label,
-      .nav-icon {
-        color: #fff;
-      }
-    }
-  }
-  .iconstream {
-    flex-shrink: 0;
-    background-image: url('~@/assets/images/stream.png');
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
-  }
-  .nav-label {
-    display: block;
-    padding-right: 20px;
-  }
-  .nav-item-content {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
-    line-height: 1;
-    text-decoration: none;
-    .nav-icon {
-      margin-right: 15px;
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
-    }
-    span {
-      display: inline-block;
-      vertical-align: top;
-      padding-top: calc((48px - 20px) / 2);
-      padding-bottom: calc((48px - 20px) / 2);
-      padding-right: 20px;
-      font-size: 14px;
-      color: $--regular-text;
-      font-weight: 500;
-    }
-  }
-  .el-menu {
-    background-color: transparent;
-  }
-  .emqx-menu-item.el-menu-item.is-active {
-    background: $--color-primary;
-    box-shadow: 0px 10px 18px -6px #189bfe85;
+  .emqx-header-container {
+    max-width: none;
+    margin: 0 $--margin-lr-default;
   }
 }
-
 .body {
-  padding: 40px 0;
   margin-top: 60px;
-  .el-main {
-    padding: 0;
+  display: flex;
+
+  .nav-container {
+    width: $--sidebar-width;
   }
+  .sidebar {
+    width: $--sidebar-width;;
+    height: calc(100vh - $--header-heigth); 
+    position: fixed;
+    top: $--header-heigth;
+    background-color: transparent;
+    padding: $--padding-tb-normal $--padding-lr-content;
+    overflow-y: auto;
+    border-right: none;
+
+      .nav-item,
+      .el-submenu__title {
+        height: 48px;
+        padding: 0;
+      }
+      .el-submenu__title {
+        margin-bottom: 12px;
+        padding-left: 0 !important;
+      }
+      .nav-item {
+        min-width: auto;
+        &:not(:last-child) {
+          margin-bottom: 12px;
+        }
+    
+        &.is-active {
+          .nav-label,
+          .nav-icon {
+            color: #037ba0;
+          }
+        }
+      }
+      .iconstream {
+        flex-shrink: 0;
+        background-image: url('~@/assets/images/stream.png');
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+      }
+      .nav-label {
+        display: block;
+        padding-right: 20px;
+      }
+      .nav-item-content {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+        line-height: 1;
+        text-decoration: none;
+        .nav-icon {
+          margin-right: 15px;
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
+        span {
+          display: inline-block;
+          vertical-align: top;
+          padding-top: calc((48px - 20px) / 2);
+          padding-bottom: calc((48px - 20px) / 2);
+          padding-right: 20px;
+          font-size: 14px;
+          color: $--regular-text;
+          font-weight: 500;
+        }
+      }
+      .el-menu {
+        background-color: transparent;
+      }
+      .emqx-menu-item.el-menu-item {
+        border-radius: 0px !important;
+      }
+      
+      .emqx-menu-item.el-menu-item.is-active {
+        background: #e5f3ff;
+        box-shadow: none;
+      }
+      
+  }
+  
+  .neuron-content-container{
+    background-color: #fff;
+    min-width: calc($--view-min-width - $--sidebar-width);
+    width: calc(100vw - $--sidebar-width);
+    padding: 24px $--padding-lr-normal;
+    overflow: auto;
+    height: calc(100vh - $--header-heigth);
+
+    .neuron-page-title {
+      color:#1D1D1D;
+      font-family: "PingFang SC";
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: $--margin-tb-normal;
+    }
+    .mr-5 {
+      margin-right: 5px;
+    }
+  }
+  .breadcrumb {
+    padding: $--padding-tb-normal 0;
+  }
+}
+
+.page-noraml-card {
+  border-radius: 0;
 }
 
 .clearfix::after {

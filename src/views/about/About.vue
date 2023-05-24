@@ -1,13 +1,17 @@
 <template>
-  <emqx-card class="about" v-emqx-loading="isDataLoading">
-    <div class="card-hd-with-btn">
-      <h3 class="card-title">{{ $t('common.about') }}</h3>
-    </div>
+  <arcticle class="about" v-emqx-loading="isDataLoading">
+    <div class="neuron-page-title">{{ $t('common.about') }}</div>
+
     <div>
       <emqx-descriptions :column="1">
         <emqx-descriptions-item :label="$t('admin.version')">
           {{ versionData.version }}
         </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.ekuiperVersion')">
+          {{ ekuiperData.version }}
+        </emqx-descriptions-item>
+        <!-- TODO: get it from api -->
+        <emqx-descriptions-item :label="$t('admin.ecpVersion')">1.0.0</emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.systemStatus')">{{
           $t(`${systemStatusText}`)
         }}</emqx-descriptions-item>
@@ -21,6 +25,7 @@
             :percentage="generalStatistics.memPercent"
             status="success"
             class="progress-bar"
+            color="#23C2F4"
           >
             <span class="progress-text">
               {{ generalStatistics.memUsedBytes }} / {{ generalStatistics.memTotalBytes }}</span
@@ -35,13 +40,13 @@
         </emqx-descriptions-item>
       </emqx-descriptions>
     </div>
-  </emqx-card>
+  </arcticle>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed, onUnmounted } from 'vue'
 import { ElProgress } from 'element-plus'
-import { queryVersion, queryHardwareToken } from '@/api/admin'
+import { queryVersion, queryHardwareToken, queryEkuiperVersion } from '@/api/admin'
 import { getStatisticByType } from '@/api/statistics'
 import { secondToTime } from '@/utils/time'
 import { formatMemory } from '@/utils/utils'
@@ -57,6 +62,9 @@ const versionData = ref({
   build_date: '',
 })
 const hwToken = ref('')
+const ekuiperData = ref({
+  version: '',
+})
 
 const generalStatistics = reactive({
   systemRunningTime: '', // neuron running seconds
@@ -79,7 +87,7 @@ const systemStatusText = computed(() => {
 })
 
 const labelWidth = computed(() => {
-  return currentLang.value === 'zh' ? '90px' : '120px'
+  return currentLang.value === 'zh' ? '140px' : '150px'
 })
 
 if (Promise && !Promise.allSettled) {
@@ -141,13 +149,15 @@ const setTimer = () => {
 const init = () => {
   try {
     isDataLoading.value = true
-    Promise.allSettled([queryVersion(), queryHardwareToken(), getStatistic()])
+    Promise.allSettled([queryVersion(), queryHardwareToken(), getStatistic(), queryEkuiperVersion()])
       .then((values: any) => {
         const { data: versionInfo } = values[0]?.value || { version: '', build_date: '' }
         const { data: hwTokenInfo } = values[1]?.value || {}
+        const { data: ekuiperInfo } = values[3]?.value || { version: '' }
 
         versionData.value = versionInfo
         hwToken.value = hwTokenInfo?.token || ''
+        ekuiperData.value = ekuiperInfo
       })
       .finally(() => {
         isDataLoading.value = false

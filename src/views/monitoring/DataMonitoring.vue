@@ -1,23 +1,23 @@
 <template>
-  <emqx-card class="data-monitoring">
+  <arcticle class="data-monitoring page-noraml-card">
+    <div class="neuron-page-title">{{ $t('data.dataMonitoring') }}</div>
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <span v-if="currentGroup.groupName" class="header-item">
           <label class="label">{{ $t('data.updated') }}</label>
           <span>{{ dateformat(updated, 'yyyy-mm-dd HH:MM:ss') }}</span>
         </span>
       </template>
 
-      <template v-slot:right>
+      <template v-slot:left>
         <div class="header-item search-group">
-          <label class="label">{{ $t('config.southDevice') }}</label>
           <emqx-select
             v-model="currentGroup.node"
             size="medium"
             filterable
             clearable
             class="filter-selector"
-            :placeholder="$t('common.pleaseSelect')"
+            :placeholder="$t('common.selectorPlaceholder', { name: $t('config.southDevice') })"
             @change="selectedNodeChanged"
           >
             <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
@@ -25,14 +25,13 @@
         </div>
 
         <div class="header-item search-group">
-          <label class="label">{{ $t('config.groupName') }}</label>
           <emqx-select
             v-model="currentGroup.groupName"
             filterable
             clearable
             size="medium"
             class="filter-selector"
-            :placeholder="$t('common.pleaseSelect')"
+            :placeholder="$t('common.selectorPlaceholder', { name: $t('config.group') })"
             @change="selectedGroupChanged"
           >
             <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
@@ -94,7 +93,9 @@
 
         <emqx-table-column width="100" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
-            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
+            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">
+              <i class="iconfont iconwrite" />
+            </emqx-button>
           </template>
         </emqx-table-column>
       </emqx-table>
@@ -108,7 +109,7 @@
       :page-size="pageController.size"
       @size-change="handleSizeChange"
     />
-  </emqx-card>
+  </arcticle>
   <WriteDialog
     v-model="showWriteDialog"
     :group="currentGroup.groupName"

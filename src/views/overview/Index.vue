@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="overview" v-emqx-loading="isLoading">
+  <arcticle class="overview" v-emqx-loading="isLoading">
     <div class="block">
       <div class="block-hd">
         <h3 class="card-title">Neuron Gateway</h3>
@@ -60,7 +60,7 @@
         </emqx-col>
       </emqx-row>
     </div>
-  </emqx-card>
+  </arcticle>
   <DriverDialog v-model="showNorthDialog" :type="DriverDirection.North" @submitted="getNorthDriverList" />
   <DriverDialog v-model="showSouthDialog" :type="DriverDirection.South" @submitted="getSouthDriverList" />
 </template>
