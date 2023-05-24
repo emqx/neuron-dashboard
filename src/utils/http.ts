@@ -49,7 +49,7 @@ export const handleBlobError = async (data: Blob, statusInfo: { status: number; 
 }
 
 export const handleError = (error: AxiosError) => {
-  const { response } = error
+  const { response, message } = error
 
   if (response?.data?.error) {
     popUpErrorMessage(response.data.error)
@@ -62,12 +62,12 @@ export const handleError = (error: AxiosError) => {
     if (dataType(response.data) === 'blob') {
       handleBlobError(response.data, { statusText: newStatusText, status: newStatus })
     } else {
-      const msg = newStatusText || newStatus
+      const msg = newStatusText || newStatus || message
       EmqxMessage.error(msg)
     }
   } else {
-    let msg = response?.statusText || response?.status
-    msg = msg || 'unknow'
+    // void timeout
+    const msg = response?.statusText || response?.status || message || 'unknow'
     EmqxMessage.error(msg)
   }
 }
