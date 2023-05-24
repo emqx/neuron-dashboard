@@ -1,11 +1,11 @@
 <template>
   <div class="add-tag">
-    <emqx-card shadow="none">
+    <section class="title-wrap">
       <h3 class="card-title">{{ $t('config.addTags') }}</h3>
-    </emqx-card>
+    </section>
 
     <!-- table -->
-    <emqx-card shadow="none">
+    <section class="form-wrap">
       <TagListForm
         ref="tagFormRef"
         :data="formData"
@@ -16,14 +16,14 @@
         <i class="iconfont iconcreate" />
         <span>{{ $t('common.add') }}</span>
       </emqx-button>
-    </emqx-card>
+    </section>
 
-    <emqx-card shadow="none" class="footer add-tag-ft">
+    <section class="footer add-tag-ft">
       <emqx-button type="primary" @click="submit" :disabled="formData.tagList.length === 0" :loading="isSubmitting">{{
         $t('common.create')
       }}</emqx-button>
       <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
-    </emqx-card>
+    </section>
   </div>
 </template>
 
@@ -60,7 +60,11 @@ const { nodePluginInfo, formData, isSubmitting, addTagItem, deleteTagItem, tagFo
       margin-bottom: 16px;
     }
   }
+  .title-wrap {
+    padding-bottom: 24px;
+  }
   .add-tag-ft {
+    margin: 24px 0;
     text-align: center;
     .emqx-button {
       width: 130px;

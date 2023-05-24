@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="log">
+  <article class="log">
     <h3 class="card-title">{{ $t('admin.log') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div>
@@ -41,7 +41,7 @@
       @current-change="getLogs"
       @size-change="handleSizeChange"
     />
-  </emqx-card>
+  </article>
 </template>
 
 <script setup lang="ts">

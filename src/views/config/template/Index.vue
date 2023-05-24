@@ -1,5 +1,7 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <article v-emqx-loading="isListLoading">
+    <PageTitle :title="$t('config.templateManagement')" />
+
     <ViewHeaderBar class="tempalte-remark">
       <template v-slot:left>
         <span class="header-item">{{ $t('template.templateRemark') }}</span>
@@ -14,7 +16,7 @@
     </ViewHeaderBar>
 
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <emqx-button
           type="primary"
           size="small"
@@ -25,7 +27,7 @@
           {{ $t('template.addTemplate') }}
         </emqx-button>
       </template>
-      <template v-slot:right>
+      <template v-slot:left>
         <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
           <emqx-upload
             action=""
@@ -76,7 +78,7 @@
         </template>
       </emqx-table-column>
     </emqx-table>
-  </emqx-card>
+  </article>
 
   <!-- add | edit | import -->
   <TemplateDialog
@@ -95,6 +97,7 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import useTemplateList from '@/composables/config/useTemplateList'
 import TemplateDialog from './components/TemplateDialog.vue'
+import PageTitle from '@/components/PageTitle.vue'
 
 const {
   templateList,

@@ -34,6 +34,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
+import { isShowEkuiper } from '@/config/index'
 
 export default defineComponent({
   name: 'SideNav',
@@ -42,27 +43,39 @@ export default defineComponent({
 
 <script lang="ts" setup>
 const navList = computed(() => {
+  const ekuiperNav = {
+    to: '/ekuiper',
+    label: 'ekuiper.streamProcessing',
+    icon: 'iconstreamsvg',
+    subMenus: [
+      {
+        to: '/ekuiper/nodes/single-node/source',
+        label: 'ekuiper.sources',
+      },
+      {
+        to: '/ekuiper/nodes/single-node/rules',
+        label: 'ekuiper.rule',
+      },
+      {
+        to: '/ekuiper/nodes/single-node/extension',
+        label: 'ekuiper.extension',
+      },
+      {
+        to: '/ekuiper/nodes/single-node/configuration',
+        label: 'ekuiper.configuration',
+      },
+    ],
+  }
   const navs = [
-    // {
-    //   to: '/overview',
-    //   label: 'common.home',
-    //   icon: 'iconattributed',
-    // },
     {
       to: '/monitoring/data',
-      label: 'data.monitoring',
-      icon: 'iconstatus',
-      subMenus: [
-        {
-          to: '/monitoring/data',
-          label: 'data.dataMonitoring',
-        },
-      ],
+      label: 'data.dataMonitoring',
+      icon: 'iconsmonitor',
     },
     {
       to: '/configuration',
       label: 'config.config',
-      icon: 'iconconfig',
+      icon: 'iconconfigssvg',
       subMenus: [
         {
           to: '/configuration/south-driver',
@@ -83,25 +96,14 @@ const navList = computed(() => {
       ],
     },
     {
-      to: '/admin',
-      label: 'admin.admin',
-      icon: 'iconAdministration1',
-      subMenus: [
-        {
-          to: '/admin/change-password',
-          label: 'common.changePassword',
-        },
-        // {
-        //   to: '/admin/account-settings',
-        //   label: 'common.accountSettings',
-        // },
-        // {
-        //   to: '/admin/log',
-        //   label: ('admin.log'),
-        // },
-      ],
+      to: '/admin/change-password',
+      label: 'common.changePassword',
+      icon: 'iconpwdsvg',
     },
   ]
+  if (isShowEkuiper) {
+    navs.splice(navs.length - 1, 0, ekuiperNav)
+  }
   return navs
 })
 

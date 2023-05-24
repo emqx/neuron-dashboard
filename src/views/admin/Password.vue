@@ -1,8 +1,7 @@
 <template>
-  <emqx-card class="about">
-    <div class="card-hd-with-btn">
-      <h3 class="card-title">{{ $t('common.changePassword') }}</h3>
-    </div>
+  <article class="about page-noraml-card">
+    <PageTitle :title="$t('common.changePassword')" />
+
     <emqx-form ref="formRef" :model="formData" :rules="rules" class="pw-form" @submit.prevent>
       <emqx-form-item prop="oldPass" :label="$t('common.oldPassword')" required>
         <emqx-input
@@ -35,7 +34,7 @@
         {{ $t('common.submit') }}
       </emqx-button>
     </footer>
-  </emqx-card>
+  </article>
 </template>
 
 <script lang="ts" setup>
@@ -45,6 +44,7 @@ import { changePassword } from '@/api/common'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { createCommonErrorMessage } from '@/utils/utils'
 import { useStore } from 'vuex'
+import PageTitle from '@/components/PageTitle.vue'
 
 const { t } = useI18n()
 const store = useStore()

@@ -241,7 +241,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/about',
     name: 'AboutPage',
-    meta: { title: 'common.about' },
+    meta: { hiddenBreadcrumb: true },
     component: Home,
     children: [
       {
@@ -258,6 +258,14 @@ const routes: Array<RouteRecordRaw> = [
     name: LOGIN_ROUTE_NAME,
     component: Login,
     meta: { hiddenBreadcrumb: true },
+  },
+]
+
+export const ekuiperRoute: Array<RouteRecordRaw> = [
+  {
+    meta: { hiddenBreadcrumb: true }, // if need to display ekuiper onbreadcrumb, add 'meta.title'、'name'
+    path: '/:ekuiper(.*)*',
+    component: Home,
   },
 ]
 

@@ -1,10 +1,10 @@
 <template>
   <el-radio-group v-model="type" size="medium" @change="changeType">
-    <el-radio-button label="list">
-      <i class="icon-item el-icon-s-unfold"></i>
-    </el-radio-button>
     <el-radio-button label="card">
       <i class="icon-item el-icon-menu"></i>
+    </el-radio-button>
+    <el-radio-button label="list">
+      <i class="icon-item el-icon-s-unfold"></i>
     </el-radio-button>
   </el-radio-group>
 </template>
@@ -14,7 +14,7 @@ import { computed, defineProps, defineEmits } from 'vue'
 import { ElRadioGroup, ElRadioButton } from 'element-plus'
 
 const props = defineProps({
-  modelValue: { type: String, default: 'list' },
+  modelValue: { type: String, default: 'card' },
 })
 const emits = defineEmits(['update:modelValue', 'change'])
 

@@ -395,4 +395,8 @@ export default {
     zh: '数据格式发生错误，请检查数据',
     en: 'Data format error, please check the data',
   },
+  selectorPlaceholder: {
+    zh: '请选择{name}',
+    en: 'Select {name}',
+  },
 }
