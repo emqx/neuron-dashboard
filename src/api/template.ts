@@ -1,7 +1,10 @@
 import http from '@/utils/http'
 import type { AxiosResponse } from 'axios'
-import type { RawTemplateData, TemplateFormData, GroupData, TemplateGroupForm } from '@/types/config'
+import type { RawTemplateData, TemplateFormData, GroupData, TemplateGroupForm, TagData } from '@/types/config'
 
+/**
+ * Template
+ */
 export const queryTemplateList = async (): Promise<Array<RawTemplateData>> => {
   const { data }: AxiosResponse<{ error: number; templates: Array<RawTemplateData> }> = await http.get('/template')
   return Promise.resolve(data?.templates || [])
@@ -26,7 +29,9 @@ export const getTemplateDetailByName = async (templateName: string): Promise<Axi
   return http.get('/template', { params: { name: templateName } })
 }
 
-/* GROUP */
+/**
+ * Group
+ */
 export const queryGroupList = async (templateName: string): Promise<Array<GroupData>> => {
   const { data }: AxiosResponse<{ error: number; groups: Array<GroupData> }> = await http.get('/template/group', {
     params: { name: templateName },
@@ -56,4 +61,12 @@ export const updateGroup = async (data: TemplateGroupForm): Promise<AxiosRespons
     template,
     interval: Number(interval),
   })
+}
+
+/**
+ * Tags
+ */
+export const queryTagList = async (params = {}): Promise<Array<TagData>> => {
+  const { data } = await http.get('/template/tag', { params })
+  return Promise.resolve(data.tags || [])
 }
