@@ -149,3 +149,33 @@
   content: "\e695";
 }
 
+
+.iconsmonitor:before {
+  content: url('../images/monitor.png');
+}
+.is-active .iconsmonitor:before{
+  content: url('../images/monitorActive.png');
+}
+
+.iconconfigssvg:before {
+  content: url('../images/config.png');
+}
+
+.iconstreamsvg:before {
+  content: url('../images/ekuiperStream.png');
+}
+
+.iconpwdsvg:before {
+  content: url('../images/setPwd.png');
+}
+
+.is-active .iconpwdsvg:before{
+  content: url('../images/setPwdActive.png');
+}
+
+.iconwrite:before {
+  content: url('../images/editpen.png');
+}
+
+
+

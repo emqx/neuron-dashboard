@@ -1,17 +1,24 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import routes from './routes'
+import routes, { ekuiperRoute } from './routes'
 import store from '@/store/index'
+import { handleEKuiper, isKuiperPath, isExitEKuiper, handleExitEKuiper } from '@/utils/forEKuiper'
+import { isShowEkuiper } from '@/config/index'
+
+const routers = isShowEkuiper ? routes.concat(ekuiperRoute) : routes
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
-  routes,
+  routes: routers,
 })
 
 router.beforeEach((to, from, next) => {
   // cancel all requests， when leaving the router
   const axiosCancels = store.state.axiosPromiseCancel
 
-  if (axiosCancels.length) {
+  // TODO: why trigger twice there, find the reason
+  if (to.path === from.path) {
+    store.commit('SET_AXIOS_PROMISE_CANCEL', [])
+  } else if (axiosCancels.length) {
     axiosCancels.forEach(async (e) => e && e())
     store.commit('SET_AXIOS_PROMISE_CANCEL', [])
   }
@@ -20,6 +27,16 @@ router.beforeEach((to, from, next) => {
     next({ name: 'Login' })
   } else if (store.state.token && to.name === 'Login') {
     next('/')
+  } else if (isKuiperPath(to.path)) {
+    // TODO: why trigger twice there, find the reason
+    if (to.path === from.path) {
+      return
+    }
+    next()
+    handleEKuiper()
+  } else if (isExitEKuiper(from.path, to.path)) {
+    handleExitEKuiper()
+    next()
   } else {
     next()
   }

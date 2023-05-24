@@ -1,21 +1,23 @@
 <template>
-  <emqx-card class="data-monitoring">
+  <article class="data-monitoring page-noraml-card">
+    <PageTitle :title="$t('data.dataMonitoring')" />
+
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <span v-if="currentGroup.groupName" class="header-item">
           <label class="label">{{ $t('data.updated') }}</label>
           <span>{{ dateformat(updated, 'yyyy-mm-dd HH:MM:ss') }}</span>
         </span>
       </template>
 
-      <template v-slot:right>
+      <template v-slot:left>
         <emqx-select
           v-model="currentGroup.node"
           size="medium"
           filterable
           clearable
           class="header-item search-group filter-selector"
-          :placeholder="$t('config.southDevicePlaceholder')"
+          :placeholder="$t('common.selectorPlaceholder', { name: $t('config.southDevice') })"
           @change="selectedNodeChanged"
         >
           <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
@@ -27,7 +29,7 @@
           clearable
           size="medium"
           class="header-item search-group filter-selector"
-          :placeholder="$t('config.groupPlaceholder')"
+          :placeholder="$t('common.selectorPlaceholder', { name: $t('config.group') })"
           @change="selectedGroupChanged"
         >
           <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
@@ -88,7 +90,9 @@
 
         <emqx-table-column width="100" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
-            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
+            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">
+              <i class="iconfont iconwrite" />
+            </emqx-button>
           </template>
         </emqx-table-column>
       </emqx-table>
@@ -102,7 +106,7 @@
       :page-size="pageController.size"
       @size-change="handleSizeChange"
     />
-  </emqx-card>
+  </article>
   <WriteDialog
     v-model="showWriteDialog"
     :group="currentGroup.groupName"
@@ -124,6 +128,7 @@ import { getErrorMsg } from '@/utils/utils'
 import WriteDialog from './components/WriteDialog.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
+import PageTitle from '@/components/PageTitle.vue'
 
 const {
   nodeList,

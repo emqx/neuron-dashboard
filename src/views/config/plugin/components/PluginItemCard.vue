@@ -75,7 +75,7 @@ const deletePlugin = async () => {
 .plugin-item-card {
   padding: 24px;
   border-radius: 4px;
-  background-color: #f4f9fc;
+  background-color: #f3f4fa;
   .plugin-item-icon {
     flex-basis: 60px;
     flex-grow: 0;
