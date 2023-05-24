@@ -1,21 +1,17 @@
-import { addTag } from '@/api/config'
 import useTableFileReader from '@/composables/useTableFileReader'
-import type { TagForm, TagData } from '@/types/config'
+import type { TagForm, TagData, PluginInfo } from '@/types/config'
 import type { TagType } from '@/types/enums'
 import { TagAttributeType } from '@/types/enums'
 import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
 import { getErrorMsg, matchObjShape, popUpErrorMessage, dataType } from '@/utils/utils'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
-import useAddTag, { useTagAttributeTypeSelect, useTagTypeSelect } from './useAddTag'
-import { groupBy } from 'lodash'
+import { createTagForm, useTagAttributeTypeSelect, useTagTypeSelect } from './useAddTag'
 
-export default () => {
+export default (pluginInfo: PluginInfo) => {
   const { fileReader } = useTableFileReader()
-  const { createRawTagForm, nodePluginInfo } = useAddTag()
+  const { createRawTagForm } = createTagForm()
   const { t } = useI18n()
-  const route = useRoute()
 
   const { findValueByLabel: findTypeValueByLabel, findLabelByValue: findTypeLabelByValue } = useTagTypeSelect()
   const { getTotalValueByStr: getAttrTotalValueByStr, isAttrsIncludeTheValue } = useTagAttributeTypeSelect()
@@ -42,7 +38,7 @@ export default () => {
     return true
   }
 
-  const checkTagType = (type: TagType) => nodePluginInfo.value?.tag_type?.some((item) => item === type) || true
+  const checkTagType = (type: TagType) => pluginInfo?.tag_type?.some((item) => item === type) || true
 
   // when a filed is added to tag（refer to the `createRawTagForm` in useAddTag.ts）, sync here.
   const handleTagListInTableFile = async (tagList: Array<Record<string, any>>): Promise<Array<TagForm>> => {
@@ -71,7 +67,7 @@ export default () => {
         if (!checkTagType(type)) {
           EmqxMessage.error(
             t('config.tagTypeError', {
-              typesStr: nodePluginInfo.value.tag_type.map((item) => findTypeLabelByValue(item)).join(', '),
+              typesStr: pluginInfo.tag_type.map((item) => findTypeLabelByValue(item)).join(', '),
             }),
           )
           reject()
@@ -121,31 +117,24 @@ export default () => {
    * batch add tags by node
    * TODO: after the import tag api is modified to batch，call that api at once && params without ‘group’
    */
-  const batchAddTags = (tagList: Array<TagData>, node: string) => {
+  const batchAddTags = (requestList: Array<Promise<any>>) => {
     return new Promise((resolve, reject) => {
-      const tagsByGroupName = groupBy(tagList, (item) => item.group)
-      const groupNames = Object.keys(tagsByGroupName)
-      const requestList = groupNames.map((groupName: string) => {
-        const groupTags: any = tagsByGroupName[groupName]
-        let rqs = null
-        return handleTagListInTableFile(groupTags).then((tags) => {
-          rqs = addTag({ tags, node, group: groupName })
-          return rqs
-        })
-      })
       Promise.all(requestList)
         .then(() => {
           EmqxMessage.success(t('config.uploadSuc'))
           resolve(true)
         })
         .catch((error: any) => {
+          const { data = {} } = error
+          if (data.index !== undefined && data.error !== undefined) {
+            handlePartialSuc(data.index, data.error)
+          }
           reject(error)
         })
     })
   }
 
-  // Upload all tags for all groups under the node.
-  const uploadTag = async (file: File, node?: string) => {
+  const readTagListFile = async (file: File) => {
     try {
       const data = await fileReader(file)
       const tagList = ((data[0] && data[0].sheet) || []) as Array<TagData>
@@ -153,12 +142,7 @@ export default () => {
         return Promise.reject()
       }
 
-      const nodeName = node || route.params.node.toString()
-
-      // after the add tag api is changed to batch add, modify this function to batch api
-      await batchAddTags(tagList, nodeName)
-
-      return Promise.resolve()
+      return Promise.resolve(tagList)
     } catch (error: any) {
       const { data = {} } = error
       if (data.index !== undefined && data.error !== undefined) {
@@ -168,6 +152,8 @@ export default () => {
     }
   }
   return {
-    uploadTag,
+    handleTagListInTableFile,
+    readTagListFile,
+    batchAddTags,
   }
 }
