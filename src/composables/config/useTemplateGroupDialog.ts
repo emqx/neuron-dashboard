@@ -3,10 +3,10 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { queryPluginConfigInfo } from '@/api/config'
-import { addGroup } from '@/api/template'
+import { addGroup, updateGroup } from '@/api/template'
 import useTemplateList from '@/composables/config/useTemplateList'
 import { useGetPluginMsgIdMap } from './usePlugin'
-import type { TemplateGroupForm } from '@/types/config'
+import type { TemplateGroup, TemplateGroupForm } from '@/types/config'
 
 export default () => {
   const createRawForm = (): TemplateGroupForm => ({
@@ -19,18 +19,17 @@ export default () => {
   const route = useRoute()
 
   const { templateList } = useTemplateList()
-
-  const groupDialogVisible = ref(false)
-  const groupForm = ref(createRawForm())
-  const isEditGroup = ref(false)
-  const isSubmitting = ref(false)
-
   // get template& its plugin
   const template = computed(() => route.params.template.toString())
   const templatePlugin = computed(() => {
     const tem = templateList.value.find(({ name }) => name === template.value)
     return tem?.plugin || ''
   })
+
+  const groupDialogVisible = ref(false)
+  const groupForm = ref(createRawForm())
+  const isEditGroup = ref(false)
+  const isSubmitting = ref(false)
 
   const showDialog = () => {
     groupDialogVisible.value = true
@@ -53,7 +52,7 @@ export default () => {
     }
   }
 
-  // Add group
+  // Handle add group
   const handleAddGroup = () => {
     showDialog()
     isEditGroup.value = false
@@ -61,19 +60,36 @@ export default () => {
     getPluginConfigInfo()
   }
 
+  // Handle edit group
+  const handleEditGroup = (groupRowData: TemplateGroup) => {
+    const { name, interval } = groupRowData
+
+    isEditGroup.value = true
+    showDialog()
+
+    groupForm.value = {
+      ...groupForm.value,
+      group: name,
+      interval,
+    }
+  }
+
+  /**
+   * Create or Update group
+   */
   const submitForm = async () => {
     try {
       isSubmitting.value = true
 
-      const data = { ...groupForm.value }
+      const data = { ...groupForm.value, template: template.value }
       if (!isEditGroup.value) {
         await addGroup(data)
       } else {
-        // TODO: edit
+        await updateGroup(data)
       }
 
-      groupDialogVisible.value = false
       EmqxMessage.success(t('common.submitSuccess'))
+      groupDialogVisible.value = false
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()
@@ -83,13 +99,13 @@ export default () => {
   }
 
   return {
-    getPluginConfigInfo,
-    handleAddGroup,
-
-    groupDialogVisible,
     groupForm,
 
+    groupDialogVisible,
     isEditGroup,
+    getPluginConfigInfo,
+    handleAddGroup,
+    handleEditGroup,
 
     isSubmitting,
     submitForm,
