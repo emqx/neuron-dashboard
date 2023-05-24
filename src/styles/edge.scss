@@ -1,0 +1,56 @@
+@import './edge-layout-variables.scss';
+
+.body {
+  display: flex;
+  .neuron-content-container{
+    background-color: #fff;
+    min-width: calc($--view-min-width - $--sidebar-width);
+    width: calc(100vw - $--sidebar-width);
+    padding: $--padding-lr-content $--padding-lr-normal;
+    overflow: auto;
+    height: calc(100vh - $--header-heigth);
+
+    .neuron-page-title {
+      color:#1D1D1D;
+      font-family: "PingFang SC";
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: $--margin-tb-normal;
+    }
+    .mr-5 {
+      margin-right: 5px;
+    }
+  }
+}
+
+.header {
+  .emqx-header-container {
+    max-width: none;
+    margin: 0 $--margin-lr-default;
+  }
+}
+
+.nav-container {
+  width: $--sidebar-width;
+}
+
+.sidebar {
+  width: $--sidebar-width;;
+  height: calc(100vh - $--header-heigth); 
+  position: fixed;
+  top: $--header-heigth;
+  padding: $--padding-tb-normal $--padding-lr-content;
+  border-right: none;
+    
+  .emqx-menu-item.el-menu-item {
+    border-radius: 0px !important;
+  }
+  .emqx-menu-item.el-menu-item.is-active {
+    background: #e5f3ff;
+    box-shadow: none;
+  }
+}
+
+.page-noraml-card {
+  border-radius: 0;
+}

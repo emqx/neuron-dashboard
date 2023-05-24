@@ -42,11 +42,12 @@ defineProps({
   :deep(.header-item.btn),
   :deep(.header-left .header-item) {
     margin-left: 0px !important;
-    margin-right: 6px !important;
+    margin-right: 10px !important;
   }
 
-  :deep(.header-right .header-item:not(:last-child)) {
-    margin-right: 6px;
+  :deep(.header-right .header-item) {
+    margin-left: 10px !important;
+    margin-right: 0px !important;
   }
 
   /* search */
@@ -56,16 +57,16 @@ defineProps({
 
   :deep(.search-group.margin20) {
     display: inline-block;
-    margin: 0 16px;
+    margin: 0 20px;
   }
 
   :deep(.search-group.margin10) {
     display: inline-block;
-    margin: 0 6px;
+    margin: 0 10px;
   }
 
   :deep(.search-group .group-item:not(:last-child)) {
-    margin-right: 6px;
+    margin-right: 10px;
   }
 
   :deep(.search-group .group-item.btn) {

@@ -1,12 +1,13 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <article class="page-noraml-card" v-emqx-loading="isListLoading">
+    <PageTitle :title="$t('config.southDeviceManagement')" />
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
           {{ $t('config.addDevice') }}
         </emqx-button>
       </template>
-      <template v-slot:right>
+      <template v-slot:left>
         <PluginListSelector
           v-model="queryKeyword.plugin"
           :type="DriverDirection.South"
@@ -140,8 +141,7 @@
         @size-change="handleSizeChange"
       />
     </div>
-  </emqx-card>
-
+  </article>
   <!-- Data Statistics -->
   <DataStatisticsDrawer
     v-if="dataStatisticsVisiable"
@@ -189,6 +189,7 @@ import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
 import PluginListSelector from '../components/PluginListSelector.vue'
 import ListCardSwitch from '@/components/ListCardSwitch.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import PageTitle from '@/components/PageTitle.vue'
 import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 import { isTheSameParentRoute } from '@/utils/utils'
 
@@ -198,7 +199,7 @@ export default defineComponent({
     if (!isSameParentRoute) {
       const paginationData = { pageNum: 1, pageSize: 30, total: 0 }
       store.commit('SET_PAGINATION', paginationData)
-      store.commit('SET_LIST_SHOW_TYPE', 'list')
+      store.commit('SET_LIST_SHOW_TYPE', 'card')
     }
     next()
   },

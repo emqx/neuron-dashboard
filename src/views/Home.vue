@@ -1,17 +1,22 @@
 <template>
   <div class="main">
     <Header class="header" />
-    <emqx-container normal fixed-nav class="body" :page-min-width="1250">
-      <template #nav>
+    <main class="body">
+      <div class="nav-container">
         <side-nav class="sidebar"></side-nav>
-      </template>
-      <template #page-content>
-        <div>
-          <Breadcrumb />
-          <router-view />
-        </div>
-      </template>
-    </emqx-container>
+      </div>
+      <div class="neuron-content-container">
+        <Breadcrumb class="breadcrumb" />
+        <router-view />
+        <!-- For eKuiper -->
+        <section class="page-noraml-card" v-if="isKuiperPage" v-emqx-loading="isSubAppLoading">
+          <!-- <h3 class="card-title">{{ pageTitle }}</h3> -->
+          <div id="page-content">
+            <div></div>
+          </div>
+        </section>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -21,6 +26,8 @@ import Header from '@/components/Header.vue'
 import SideNav from '@/components/SideNav.vue'
 import { useStore } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb.vue'
+import { isKuiperPath } from '@/utils/forEKuiper'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'Home',
@@ -31,10 +38,18 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    const route = useRoute()
+
+    const isKuiperPage = computed(() => isKuiperPath(route.path))
+
+    // const { pageTitle } = useEKuiper()
+
     const isSubAppLoading = computed(() => store.state.isSubAppLoading)
 
     return {
+      isKuiperPage,
       isSubAppLoading,
+      // pageTitle,
     }
   },
 })

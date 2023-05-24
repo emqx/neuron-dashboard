@@ -1,5 +1,5 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading" class="tag-page">
+  <article v-emqx-loading="isListLoading" class="tag-page">
     <h3 class="card-title">{{ $t('config.tagList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left">
@@ -87,7 +87,7 @@
       @submitted="refreshTable"
       :group="groupName"
     />
-  </emqx-card>
+  </article>
 </template>
 
 <script lang="ts" setup>

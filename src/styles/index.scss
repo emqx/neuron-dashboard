@@ -1,9 +1,11 @@
 @import  './emqx-ui-variables.scss';
 @import  './colors.scss';
 
-/* If you need to change the layout and other styles, just replace the `layout-variables.scss` and `base.scss` */
-@import './layout-variables.scss';
-@import  './base.scss';
+@import './edge-layout-variables.scss';
+@import './edge.scss';
+
+// @import './layout-variables.scss';
+// @import  './base.scss';
 
 
 :root {

@@ -1,5 +1,7 @@
 import { DriverDirection } from '@/types/enums'
 
+export const TITLE = 'EMQX ECP Edge'
+
 /* Possible node type values for North Driver */
 export const NORTH_DRIVER_NODE_TYPE = [DriverDirection.North]
 

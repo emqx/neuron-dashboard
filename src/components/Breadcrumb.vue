@@ -1,5 +1,5 @@
 <template>
-  <emqx-breadcrumb v-if="isShowBreadcrumbs" separator="/">
+  <emqx-breadcrumb v-if="isShowBreadcrumbs" separator="/" class="breadcrumb">
     <transition-group name="breadcrumb" mode="out-in">
       <emqx-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
@@ -127,6 +127,11 @@ const onHandleLink = (item: any) => {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/edge-layout-variables.scss';
+
+.breadcrumb {
+  padding-bottom: $--padding-tb-normal;
+}
 .nav-breadcrumb {
   height: 32px;
   background: #fff;

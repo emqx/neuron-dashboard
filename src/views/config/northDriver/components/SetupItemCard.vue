@@ -132,7 +132,7 @@ const { isNotSupportRemoveNode, isMonitorNode } = useDriverName()
 @import '~@/styles/mixins.scss';
 
 .setup-item-card {
-  background-color: #f4f9fc;
+  background-color: #eef8ff;
 }
 .setup-item-handlers {
   @include display-flex();
