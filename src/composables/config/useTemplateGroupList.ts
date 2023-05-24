@@ -4,12 +4,14 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { MessageBoxConfirm } from '@/utils/element'
-import { queryGroupList, deleteGroup, queryTagList } from '@/api/template'
+import { queryGroupList, deleteGroup, addGroup, queryTagList, addTag } from '@/api/template'
 import type { GroupData } from '@/types/config'
 import { OmitArrayFields } from '@/utils/utils'
 import useGroupCommon from '@/composables/config/useGroupCommon'
-// import useUploadTagList from '@/composables/config/useUploadTagList'
+import useUploadTagList from '@/composables/config/useUploadTagList'
 import useExportTagTable from '@/composables/config/useExportTagTable'
+import useTemplateAddTag from '@/composables/config/useTemplateAddTag'
+import { groupBy } from 'lodash'
 
 interface GroupDataInTable extends GroupData {
   checked: boolean
@@ -21,8 +23,9 @@ export default () => {
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
+  const { pluginInfo } = useTemplateAddTag()
   const { downloadTemplate, getTagsByGroups } = useGroupCommon()
-  // const { uploadTag } = useUploadTagList()
+  const { readTagListFile, handleTagListInTableFile, batchAddTags } = useUploadTagList(pluginInfo.value)
   const { isExporting, exportTable } = useExportTagTable()
 
   const template = computed(() => route.params.template.toString())
@@ -91,11 +94,40 @@ export default () => {
     delGroupList(groupList.value)
   }
 
-  /** TODO
+  /**
    * Import Groups
    */
-  const importTagsByGroups = () => {
-    //
+  const importTagsByGroups = async (file: File) => {
+    try {
+      const tagList = await readTagListFile(file)
+
+      const tagsByGroupName = groupBy(tagList, (item) => item.group)
+      const groupNames = Object.keys(tagsByGroupName)
+      const requestList = groupNames.map(async (groupName: string) => {
+        // if the group doesn't exist, create the group first. and default interval is 3000
+        const group = groupList.value.find(({ name }) => name === groupName)
+        if (!group) {
+          await addGroup({ group: groupName, template: template.value, interval: 3000 })
+        }
+
+        const groupTags: any = tagsByGroupName[groupName]
+        let rqs = null
+        return handleTagListInTableFile(groupTags).then((tags) => {
+          rqs = addTag({ tags, template: template.value, group: groupName })
+          return rqs
+        })
+      })
+      await batchAddTags(requestList)
+
+      getGroupList()
+    } catch (error) {
+      // no upload empty content file
+      if (error) {
+        getGroupList()
+      }
+    }
+
+    return Promise.reject()
   }
 
   /**

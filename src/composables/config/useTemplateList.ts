@@ -10,6 +10,23 @@ import { useTemplateForm } from '@/composables/config/useTemplateDialog'
 import { useDownload } from '@/composables/useDownload'
 import { dataType, isJSONData } from '@/utils/utils'
 
+export const useTemplateListMap = () => {
+  const templateListMap: Ref<Array<RawTemplateData>> = ref([])
+
+  const getAllTemplates = async () => {
+    try {
+      templateListMap.value = await queryTemplateList()
+      return Promise.resolve(templateListMap.value)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  return {
+    templateListMap,
+    getAllTemplates,
+  }
+}
+
 export default () => {
   const router = useRouter()
   const { t } = useI18n()
@@ -22,10 +39,11 @@ export default () => {
   const isImportTemplate = ref(false)
   const editTemplateData: Ref<TemplateFormData> = ref(createTemplateForm())
 
+  const { getAllTemplates } = useTemplateListMap()
   const getTemplateList = async () => {
     try {
       isListLoading.value = true
-      templateList.value = await queryTemplateList()
+      templateList.value = await getAllTemplates()
     } finally {
       isListLoading.value = false
     }

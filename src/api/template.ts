@@ -1,6 +1,6 @@
 import http from '@/utils/http'
-import type { AxiosResponse } from 'axios'
-import type { RawTemplateData, TemplateFormData, GroupData, TemplateGroupForm, TagData } from '@/types/config'
+import type { AxiosResponse, AxiosRequestConfig } from 'axios'
+import type { RawTemplateData, TemplateFormData, GroupData, TemplateGroupForm, TagData, TagForm } from '@/types/config'
 
 /**
  * Template
@@ -69,4 +69,8 @@ export const updateGroup = async (data: TemplateGroupForm): Promise<AxiosRespons
 export const queryTagList = async (params = {}): Promise<Array<TagData>> => {
   const { data } = await http.get('/template/tag', { params })
   return Promise.resolve(data.tags || [])
+}
+
+export const addTag = (data: { template: string; group: string; tags: Array<TagForm> }) => {
+  return http.post('/template/tag', data, { _handleCustomError: true } as AxiosRequestConfig)
 }
