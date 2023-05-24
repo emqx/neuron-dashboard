@@ -1,13 +1,12 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <arcticle class="page-noraml-card" v-emqx-loading="isListLoading">
+    <div class="neuron-page-title">{{ $t('config.northAppSetup') }}</div>
     <ViewHeaderBar>
-      <template v-slot:left>
-        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
+      <template v-slot:right>
+        <ListCardSwitch class="mr-5" v-model="showType" />
+        <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addConfig">
           {{ $t('config.addApplication') }}
         </emqx-button>
-      </template>
-      <template v-slot:right>
-        <ListCardSwitch v-model="showType" />
       </template>
     </ViewHeaderBar>
 
@@ -94,7 +93,7 @@
     </emqx-table>
 
     <emqx-empty v-if="!isListLoading && northDriverList.length === 0" />
-  </emqx-card>
+  </arcticle>
 
   <DriverDialog v-model="showDialog" :type="DriverDirection.North" @submitted="getNorthDriverList" />
 
@@ -136,7 +135,7 @@ export default defineComponent({
   beforeRouteEnter(to, from, next) {
     const isSameParentRoute = isTheSameParentRoute(from, to)
     if (!isSameParentRoute) {
-      store.commit('SET_LIST_SHOW_TYPE', 'list')
+      store.commit('SET_LIST_SHOW_TYPE', 'card')
     }
     next()
   },

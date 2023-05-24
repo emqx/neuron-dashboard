@@ -127,7 +127,7 @@ const handleClickOperator = async (command: string) => {
 
 <style lang="scss" scoped>
 .south-drive-item-card {
-  background-color: #f3f3ff;
+  background-color: #f0eeff;
   label {
     display: inline-block;
   }

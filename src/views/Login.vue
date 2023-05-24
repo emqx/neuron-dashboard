@@ -4,7 +4,10 @@
       <emqx-card shadow="never">
         <img class="img-login" src="~@/assets/images/img-login.png" />
         <div class="login-main">
-          <img class="img-logo" src="~@/assets/images/logo.png" alt="neuron-logo" width="141" />
+          <div class="logo-wrap">
+            <img class="img-logo" src="~@/assets/images/logo.png" alt="logo" width="60" />
+            <span class="title">{{ TITLE }}</span>
+          </div>
           <emqx-form ref="formCom" :model="form" :rules="rules" @keyup.enter="login">
             <emqx-form-item prop="userName">
               <emqx-input v-model.trim="form.userName" type="text" :placeholder="$t('common.username')" />
@@ -29,7 +32,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import useLang from '@/composables/useLang'
-import { DEFAULT_LANG } from '@/utils/constants'
+import { DEFAULT_LANG, TITLE } from '@/utils/constants'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -68,6 +71,7 @@ const login = async () => {
     const { userName, password } = form
     const { data } = await requestLogin({ name: userName, pass: password })
     store.commit('SET_TOKEN', data.token)
+    store.commit('SET_USERNAME', userName)
 
     const lang = localStorage.getItem('language') || currentLang.value || DEFAULT_LANG
     store.commit('SET_LANG', lang)
@@ -85,6 +89,8 @@ const login = async () => {
 </script>
 
 <style lang="scss">
+@import '@/styles/mixins.scss';
+
 .login-page {
   position: fixed;
   top: 0;
@@ -98,6 +104,18 @@ const login = async () => {
   color: #888;
   text-align: center;
   background-color: #f4f9fc;
+
+  .logo-wrap {
+    @include display-flex();
+    margin-bottom: 20px;
+
+    .title {
+      color: #23c2f4;
+      font-size: 24px;
+      font-weight: 600;
+      padding: 0 10px;
+    }
+  }
 
   .container {
     width: 768px;
@@ -131,9 +149,6 @@ const login = async () => {
     left: 0;
   }
 
-  .img-logo {
-    margin: 0 auto 46px;
-  }
   .emqx-form-item {
     margin-bottom: 30px;
   }

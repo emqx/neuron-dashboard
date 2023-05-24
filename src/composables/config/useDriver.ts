@@ -189,7 +189,6 @@ export const useListShowType = () => {
       store.commit('SET_LIST_SHOW_TYPE', val)
     },
   })
-
   return {
     showType,
   }
