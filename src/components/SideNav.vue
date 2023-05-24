@@ -46,7 +46,7 @@ const navList = computed(() => {
   const ekuiperNav = {
     to: '/ekuiper',
     label: 'ekuiper.streamProcessing',
-    icon: 'iconstream',
+    icon: 'iconstreamsvg',
     subMenus: [
       {
         to: '/ekuiper/nodes/single-node/source',
@@ -72,21 +72,26 @@ const navList = computed(() => {
     //   label: 'common.home',
     //   icon: 'iconattributed',
     // },
+    // {
+    //   to: '/monitoring/data',
+    //   label: 'data.monitoring',
+    //   icon: 'iconstatus',
+    //   subMenus: [
+    //     {
+    //       to: '/monitoring/data',
+    //       label: 'data.dataMonitoring',
+    //     },
+    //   ],
+    // },
     {
       to: '/monitoring/data',
-      label: 'data.monitoring',
-      icon: 'iconstatus',
-      subMenus: [
-        {
-          to: '/monitoring/data',
-          label: 'data.dataMonitoring',
-        },
-      ],
+      label: 'data.dataMonitoring',
+      icon: 'iconsmonitor',
     },
     {
       to: '/configuration',
       label: 'config.config',
-      icon: 'iconconfig',
+      icon: 'iconconfigssvg',
       subMenus: [
         {
           to: '/configuration/south-driver',
@@ -102,24 +107,29 @@ const navList = computed(() => {
         },
       ],
     },
+    // {
+    //   to: '/admin',
+    //   label: 'admin.admin',
+    //   icon: 'iconAdministration1',
+    //   subMenus: [
+    //     {
+    //       to: '/admin/change-password',
+    //       label: 'common.changePassword',
+    //     },
+    //     // {
+    //     //   to: '/admin/account-settings',
+    //     //   label: 'common.accountSettings',
+    //     // },
+    //     // {
+    //     //   to: '/admin/log',
+    //     //   label: ('admin.log'),
+    //     // },
+    //   ],
+    // },
     {
-      to: '/admin',
-      label: 'admin.admin',
-      icon: 'iconAdministration1',
-      subMenus: [
-        {
-          to: '/admin/change-password',
-          label: 'common.changePassword',
-        },
-        // {
-        //   to: '/admin/account-settings',
-        //   label: 'common.accountSettings',
-        // },
-        // {
-        //   to: '/admin/log',
-        //   label: ('admin.log'),
-        // },
-      ],
+      to: '/admin/change-password',
+      label: 'common.changePassword',
+      icon: 'iconpwdsvg',
     },
   ]
   if (isShowEkuiper) {

@@ -40,3 +40,7 @@ export const downloadLogs = (): Promise<AxiosResponse<any>> => {
     timeout: 1800000,
   })
 }
+
+export const queryEkuiperVersion = (): Promise<AxiosResponse<any>> => {
+  return http.get('/ekuiper/')
+}
