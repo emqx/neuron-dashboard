@@ -104,8 +104,16 @@ export default {
     en: 'Expired',
   },
   version: {
-    zh: '版本',
-    en: 'Version',
+    zh: 'Neuron 版本',
+    en: 'Neuron Version',
+  },
+  ekuiperVersion: {
+    zh: 'eKuiper 版本',
+    en: 'eKuiper Version',
+  },
+  ecpVersion: {
+    zh: 'ECP Edge 版本',
+    en: 'ECP Edge Version',
   },
   builtDate: {
     zh: '项目构建日期',

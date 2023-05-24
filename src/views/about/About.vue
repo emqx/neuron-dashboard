@@ -8,6 +8,11 @@
         <emqx-descriptions-item :label="$t('admin.version')">
           {{ versionData.version }}
         </emqx-descriptions-item>
+        <emqx-descriptions-item :label="$t('admin.ekuiperVersion')">
+          {{ versionData.version }}
+        </emqx-descriptions-item>
+        <!-- TODO: get it from api -->
+        <emqx-descriptions-item :label="$t('admin.ecpVersion')">1.0.0</emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.systemStatus')">{{
           $t(`${systemStatusText}`)
         }}</emqx-descriptions-item>
@@ -79,7 +84,7 @@ const systemStatusText = computed(() => {
 })
 
 const labelWidth = computed(() => {
-  return currentLang.value === 'zh' ? '90px' : '120px'
+  return currentLang.value === 'zh' ? '140px' : '150px'
 })
 
 if (Promise && !Promise.allSettled) {
