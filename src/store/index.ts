@@ -19,6 +19,7 @@ interface State {
   listShowType: string
   paginationData: paginationInfo
   nodeGroupMemory: NodeGroup
+  axiosPromiseCancel: Array<any>
 }
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
@@ -46,6 +47,7 @@ export default createStore<State>({
         node: '',
         groupName: '',
       },
+      axiosPromiseCancel: [],
     }
   },
 
@@ -76,6 +78,12 @@ export default createStore<State>({
     },
     SET_NODE_GROUP(state, data: NodeGroup) {
       state.nodeGroupMemory = data
+    },
+    ADD_AXIOS_PROMISE_CANCEL(state, data: any) {
+      state.axiosPromiseCancel.push(data)
+    },
+    SET_AXIOS_PROMISE_CANCEL(state, data: Array<any>) {
+      state.axiosPromiseCancel = data
     },
   },
 })
