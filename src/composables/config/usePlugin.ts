@@ -48,17 +48,21 @@ export default () => {
   // })
 
   const getPluginList = async () => {
-    isListLoading.value = true
-    const { data } = await queryPluginList()
-    pluginList.value = data.plugins.length
-      ? data.plugins.map((item) => {
-          return {
-            ...item,
-            // doc_link: pluginLinkURL.value(item.name),
-          }
-        })
-      : []
-    isListLoading.value = false
+    try {
+      isListLoading.value = true
+      const { data } = await queryPluginList()
+      pluginList.value = data.plugins.length
+        ? data.plugins.map((item) => {
+            return {
+              ...item,
+              // doc_link: pluginLinkURL.value(item.name),
+            }
+          })
+        : []
+      isListLoading.value = false
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   getPluginList()
