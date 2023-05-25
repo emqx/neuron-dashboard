@@ -56,22 +56,23 @@ export const handleError = (error: AxiosError) => {
   } else if (response?.data) {
     const { statusText, status } = response.data
 
-    const newStatusText = statusText || response?.statusText
+    const newStatusText = statusText || response?.statusText || message
     const newStatus = status || response?.status
 
     if (dataType(response.data) === 'blob') {
       handleBlobError(response.data, { statusText: newStatusText, status: newStatus })
     } else {
-      const msg = newStatusText || newStatus || message
+      const msg = newStatusText || message || newStatus
       EmqxMessage.error(msg)
     }
   } else {
     // void timeout
-    const msg = response?.statusText || response?.status || message || 'unknow'
+    const msg = response?.statusText || message || response?.status || 'unknow'
     EmqxMessage.error(msg)
   }
 }
 
+const { CancelToken } = axios
 axios.interceptors.request.use(
   (config) => {
     if (store.state.token) {
@@ -80,6 +81,11 @@ axios.interceptors.request.use(
         Authorization: `Bearer ${store.state.token}`,
       }
     }
+
+    config.cancelToken = new CancelToken((cancel: any) => {
+      store.commit('ADD_AXIOS_PROMISE_CANCEL', cancel)
+    })
+
     return config
   },
   (error) => Promise.reject(error),
@@ -109,9 +115,13 @@ axios.interceptors.response.use(
     if ((error?.response?.status === 401 && !isInLoginPage) || error?.response?.status === 403) {
       store.commit('LOGOUT')
       router.push({ name: 'Login' })
-    } else if (!error.config._handleErrorSelf) {
+    } else if (axios.isCancel(error)) {
+      // Finalizing the promise chain，will not trigger error messages
+      return Promise.resolve()
+    } else if (!error?.config?._handleErrorSelf) {
       handleError(error)
     }
+
     return Promise.reject(error)
   },
 )
