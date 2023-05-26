@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { MessageBoxConfirm } from '@/utils/element'
 import { queryGroupList, deleteGroup, addGroup, queryTagList, addTag } from '@/api/template'
@@ -20,6 +20,8 @@ interface GroupDataInTable extends GroupData {
 export default () => {
   const { t } = useI18n()
   const route = useRoute()
+  const router = useRouter()
+
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
@@ -144,8 +146,10 @@ export default () => {
   }
 
   const goTagPage = ({ name }: GroupData) => {
-    // TODO
-    console.log('go to tag', name)
+    router.push({
+      name: 'TemplateGroupTag',
+      params: { group: name },
+    })
   }
 
   getGroupList()

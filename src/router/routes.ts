@@ -156,6 +156,19 @@ const routes: Array<RouteRecordRaw> = [
             name: 'TemplateGroup',
             component: () => import('@/views/config/template/Group.vue'),
           },
+          {
+            path: ':group',
+            name: 'TemplateTags',
+            meta: { title: 'config.tagList' },
+            component: () => import('@/components/LayoutContent.vue'),
+            children: [
+              {
+                path: '',
+                name: 'TemplateGroupTag',
+                component: () => import('@/views/config/template/Tag.vue'),
+              },
+            ],
+          },
         ],
       },
     ],
