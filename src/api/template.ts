@@ -71,6 +71,10 @@ export const queryTagList = async (params = {}): Promise<Array<TagData>> => {
   return Promise.resolve(data.tags || [])
 }
 
+export const deleteTag = (data: { template: string; group: string; tags: Array<string> }): Promise<AxiosResponse> => {
+  return http.delete('/template/tag', { data })
+}
+
 export const addTag = (data: { template: string; group: string; tags: Array<TagForm> }) => {
   return http.post('/template/tag', data, { _handleCustomError: true } as AxiosRequestConfig)
 }
