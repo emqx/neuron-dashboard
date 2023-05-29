@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { debounce } from 'lodash'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { deleteTag, queryTagList } from '@/api/template'
@@ -16,6 +16,7 @@ interface TagDataInTable extends TagData {
 
 export default () => {
   const route = useRoute()
+  const router = useRouter()
   const { t } = useI18n()
 
   const tagList: Ref<Array<TagDataInTable>> = ref([])
@@ -124,7 +125,7 @@ export default () => {
   }
 
   const goCreatePage = () => {
-    // TODO
+    router.push({ name: 'TemplateGroupAddTag' })
   }
 
   // TODO: Edit tag

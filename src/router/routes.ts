@@ -167,6 +167,12 @@ const routes: Array<RouteRecordRaw> = [
                 name: 'TemplateGroupTag',
                 component: () => import('@/views/config/template/Tag.vue'),
               },
+              {
+                path: 'add',
+                name: 'TemplateGroupAddTag',
+                component: () => import('@/views/config/template/AddTag.vue'),
+                meta: { title: 'config.addTags' },
+              },
             ],
           },
         ],
