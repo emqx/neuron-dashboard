@@ -153,6 +153,7 @@ const props = defineProps({
     type: Object as PropType<AddTagListForm>,
     required: true,
   },
+  // useTagForm(props): need nodePluginInfo
   nodePluginInfo: {
     type: Object as PropType<PluginInfo>,
   },
