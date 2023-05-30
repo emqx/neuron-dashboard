@@ -78,3 +78,11 @@ export const deleteTag = (data: { template: string; group: string; tags: Array<s
 export const addTag = (data: { template: string; group: string; tags: Array<TagForm> }) => {
   return http.post('/template/tag', data, { _handleCustomError: true } as AxiosRequestConfig)
 }
+
+export const updateTag = (template: string, group: string, tag: TagForm) => {
+  return http.put('/template/tag', {
+    template,
+    group,
+    tags: [tag],
+  })
+}

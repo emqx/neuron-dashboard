@@ -56,6 +56,7 @@ export default () => {
   })
 
   const currentTag: Ref<TagForm> = ref({} as TagForm)
+  const showEditDialog = ref(false)
 
   const { totalData, setTotalData, getAPageData } = usePaging()
 
@@ -128,9 +129,10 @@ export default () => {
     router.push({ name: 'TemplateGroupAddTag' })
   }
 
-  // TODO: Edit tag
+  // Edit tag
   const editTag = (tag: TagDataInTable) => {
-    console.log('edit tag', tag)
+    currentTag.value = OmitArrayFields([tag], ['checked'])[0]
+    showEditDialog.value = true
   }
 
   getTagList()
@@ -162,5 +164,6 @@ export default () => {
     goCreatePage,
     currentTag,
     editTag,
+    showEditDialog,
   }
 }

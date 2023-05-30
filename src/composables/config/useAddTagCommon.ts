@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import type { TagFormItem, TagForm } from '@/types/config'
+import type { TagFormItem, TagForm, TagData } from '@/types/config'
 import { TagType, TagAttributeType } from '@/types/enums'
 import { getErrorMsg, popUpErrorMessage, dataType, createRandomString } from '@/utils/utils'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
@@ -162,6 +162,25 @@ export const createTagForm = () => {
   }
 }
 
+export const useHandleTagValue = () => {
+  const { parseWriteData } = useWriteDataCheckNParse()
+
+  const handleTagValue = (tag: TagForm | TagData) => {
+    const { type, value } = tag
+
+    if (value !== undefined && value !== null) {
+      /** let it go, when the tags value use hexadecimal, , and sync useAddTag.ts
+       * const newValue = isUseHexadecimal.value ? await transToDecimal({ ...tagData, value } as TagDataInTable): value
+       */
+      tag.value = parseWriteData(Number(type), String(value))
+    }
+    return tag
+  }
+
+  return {
+    handleTagValue,
+  }
+}
 export default () => {
   const route = useRoute()
   const { t } = useI18n()
