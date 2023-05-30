@@ -87,11 +87,11 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
 import useTemplateTagList from '@/composables/config/useTemplateTagList'
 import {
-  useTagAttributeTypeSelect,
   useTagTypeSelect,
+  useTagAttributeTypeSelect,
   useTagPrecision,
   useTagDecimal,
-} from '@/composables/config/useAddTag'
+} from '@/composables/config/useAddTagCommon'
 
 const {
   template,

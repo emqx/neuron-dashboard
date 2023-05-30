@@ -88,11 +88,11 @@
 
 <script lang="ts" setup>
 import {
-  useTagAttributeTypeSelect,
   useTagTypeSelect,
+  useTagAttributeTypeSelect,
   useTagPrecision,
   useTagDecimal,
-} from '@/composables/config/useAddTag'
+} from '@/composables/config/useAddTagCommon'
 import EditTagDialog from './components/EditTagDialog.vue'
 import useTagList from '@/composables/config/useTagList'
 import { useRouter } from 'vue-router'

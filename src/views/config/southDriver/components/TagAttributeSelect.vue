@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { defineProps, computed, defineEmits } from 'vue'
-import { useTagAttributeTypeSelect } from '@/composables/config/useAddTag'
+import { useTagAttributeTypeSelect } from '@/composables/config/useAddTagCommon'
 
 const props = defineProps({
   modelValue: { type: [Number] },

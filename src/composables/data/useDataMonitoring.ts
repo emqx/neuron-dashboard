@@ -9,7 +9,7 @@ import type { Ref } from 'vue'
 import { computed, onUnmounted, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { useTagAttributeTypeSelect, useTagTypeSelect } from '../config/useAddTag'
+import { useTagTypeSelect, useTagAttributeTypeSelect } from '@/composables/config/useAddTagCommon'
 import { debounce, cloneDeep } from 'lodash'
 
 export interface TagDataInTable extends TagDataInMonitoring {

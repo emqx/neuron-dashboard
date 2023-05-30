@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useTagTypeSelect, useTagAttributeTypeSelect } from '@/composables/config/useAddTag'
+import { useTagTypeSelect, useTagAttributeTypeSelect } from '@/composables/config/useAddTagCommon'
 import type { PluginInfo, TagRegex } from '@/types/config'
 import useWriteDataCheckNParse, { WriteDataErrorCode } from '@/composables/data/useWriteDataCheckNParse'
 import { TagType, TagAttributeType } from '@/types/enums'
@@ -71,7 +71,7 @@ export default (props: any) => {
   }
 
   // checkFloat,
-  const { checkWriteData, parseWriteData } = useWriteDataCheckNParse()
+  const { checkWriteData } = useWriteDataCheckNParse()
   const createErrorMsg = (type: number, prefix: string, suffix: string) => {
     if (!type) return ''
     return prefix + TagType[type] + suffix
