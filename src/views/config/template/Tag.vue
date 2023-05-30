@@ -79,12 +79,21 @@
       @current-change="getAPageTagData"
       @size-change="handleSizeChange"
     />
+    <!-- Edit tag -->
+    <EditTagDialog
+      v-model="showEditDialog"
+      :tag="currentTag"
+      :template="template"
+      @submitted="refreshTable"
+      :group="groupName"
+    />
   </emqx-card>
 </template>
 
 <script lang="ts" setup>
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
+import EditTagDialog from './components/EditTagDialog.vue'
 import useTemplateTagList from '@/composables/config/useTemplateTagList'
 import {
   useTagTypeSelect,
@@ -95,6 +104,7 @@ import {
 
 const {
   template,
+  groupName,
 
   isListLoading,
   tagList,
@@ -111,9 +121,12 @@ const {
 
   queryKeyword,
   dbGetTagList,
+  refreshTable,
 
   goCreatePage,
   editTag,
+  showEditDialog,
+  currentTag,
 } = useTemplateTagList()
 const { tagPrecisionValue } = useTagPrecision()
 const { tagDecimalValue } = useTagDecimal()
