@@ -77,7 +77,7 @@
 <script lang="ts" setup>
 import type { PropType, WritableComputedRef } from 'vue'
 import { defineExpose, computed, defineProps, defineEmits, nextTick } from 'vue'
-import { useTagPrecision } from '@/composables/config/useAddTag'
+import { useTagPrecision } from '@/composables/config/useAddTagCommon'
 import TagAttributeSelect from './TagAttributeSelect.vue'
 import type { PluginInfo, TagForm } from '@/types/config'
 import useTagForm from '@/composables/config/useTagForm'

@@ -2,7 +2,8 @@ import { ref } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { exportExcelData } from '@/utils/utils'
-import { useTagAttributeTypeSelect, useTagTypeSelect } from './useAddTag'
+import { useTagTypeSelect, useTagAttributeTypeSelect } from './useAddTagCommon'
+
 import type { TagData } from '@/types/config'
 import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
 

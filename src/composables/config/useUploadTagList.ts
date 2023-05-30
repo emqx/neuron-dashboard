@@ -6,7 +6,7 @@ import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
 import { getErrorMsg, matchObjShape, popUpErrorMessage, dataType } from '@/utils/utils'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
-import { createTagForm, useTagAttributeTypeSelect, useTagTypeSelect } from './useAddTag'
+import { useTagTypeSelect, useTagAttributeTypeSelect, createTagForm } from '@/composables/config/useAddTagCommon'
 
 export default (pluginInfo: PluginInfo) => {
   const { fileReader } = useTableFileReader()
