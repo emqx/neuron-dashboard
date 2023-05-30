@@ -1,12 +1,11 @@
 import { ref, computed } from 'vue'
 import type { GroupForm } from '@/types/config'
-import useNodeList, { useNodeMsgMap } from './useNodeList'
-import { addGroup, updateGroup, queryPluginConfigInfo } from '@/api/config'
+import useNodeList from './useNodeList'
+import { addGroup, updateGroup } from '@/api/config'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { useGetPluginMsgIdMap } from './usePlugin'
-import { DriverDirection } from '@/types/enums'
+import { useNodePluginInfo } from './usePluginInfo'
 
 export default () => {
   const createRawForm = (): GroupForm => ({
@@ -88,17 +87,10 @@ export default () => {
 
   // get node plugin schema
   const node = computed(() => route.params.node.toString())
-  const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
-  const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
+  const { getNodePluginInfo } = useNodePluginInfo(node.value)
+
   const getPluginConfigInfo = async () => {
-    await initMap()
-    await initMsgIdMap()
-    const pluginName = getNodeMsgById(node.value).plugin
-
-    const nodePluginToLower = pluginName.toLocaleLowerCase()
-    const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
-
-    const { data } = await queryPluginConfigInfo(schemaName)
+    const data = await getNodePluginInfo()
     const { group_interval } = data
 
     if (group_interval !== undefined || group_interval !== null) {

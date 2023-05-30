@@ -2,10 +2,8 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import { queryPluginConfigInfo } from '@/api/config'
 import { addGroup, updateGroup } from '@/api/template'
-import useTemplateList from '@/composables/config/useTemplateList'
-import { useGetPluginMsgIdMap } from './usePlugin'
+import { useTemplatePluginInfo } from '@/composables/config/usePluginInfo'
 import type { TemplateGroup, TemplateGroupForm } from '@/types/config'
 
 export default () => {
@@ -18,13 +16,8 @@ export default () => {
   const { t } = useI18n()
   const route = useRoute()
 
-  const { templateList } = useTemplateList()
   // get template& its plugin
   const template = computed(() => route.params.template.toString())
-  const templatePlugin = computed(() => {
-    const tem = templateList.value.find(({ name }) => name === template.value)
-    return tem?.plugin || ''
-  })
 
   const groupDialogVisible = ref(false)
   const groupForm = ref(createRawForm())
@@ -37,14 +30,9 @@ export default () => {
   }
 
   // Get group default interval
-  const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
+  const { getTemplatePluginInfo } = useTemplatePluginInfo()
   const getPluginConfigInfo = async () => {
-    await initMsgIdMap()
-    const pluginName = templatePlugin.value
-    const nodePluginToLower = pluginName.toLocaleLowerCase()
-    const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
-
-    const { data } = await queryPluginConfigInfo(schemaName)
+    const data = await getTemplatePluginInfo()
     const { group_interval } = data
 
     if (group_interval !== undefined || group_interval !== null) {

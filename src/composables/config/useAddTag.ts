@@ -1,6 +1,5 @@
-import { addTag, queryPluginConfigInfo } from '@/api/config'
-import type { PluginInfo, TagFormItem, AddTagListForm, TagForm } from '@/types/config'
-import { DriverDirection } from '@/types/enums'
+import { addTag } from '@/api/config'
+import type { TagFormItem, AddTagListForm, TagForm } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -8,10 +7,9 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
 import { dataType, getErrorMsg, popUpErrorMessage } from '@/utils/utils'
-import { useNodeMsgMap } from './useNodeList'
-import { useGetPluginMsgIdMap } from './usePlugin'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 import { createTagForm } from '@/composables/config/useAddTagCommon'
+import { useNodePluginInfo } from './usePluginInfo'
 
 export default () => {
   const route = useRoute()
@@ -27,26 +25,8 @@ export default () => {
   const isSubmitting = ref(false)
 
   const node = computed(() => route.params.node.toString())
-  const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
-  // Limit the type of tag
-  const nodePluginInfo: Ref<PluginInfo> = ref({} as PluginInfo)
 
-  const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
-
-  const getNodePluginInfo = async () => {
-    await initMap()
-    await initMsgIdMap()
-    const pluginName = getNodeMsgById(node.value).plugin
-    const nodePluginToLower = pluginName.toLocaleLowerCase()
-
-    const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
-
-    const { data } = await queryPluginConfigInfo(schemaName)
-    const plugin: PluginInfo = data
-    if (plugin) {
-      nodePluginInfo.value = plugin
-    }
-  }
+  const { nodePluginInfo, getNodePluginInfo } = useNodePluginInfo()
 
   const tagFormRef = ref()
   const setFormRef = (com: typeof TagFormCom) => {
@@ -75,7 +55,6 @@ export default () => {
   const { parseWriteData } = useWriteDataCheckNParse()
   const addTags = async () => {
     try {
-      const nodeName = route.params.node.toString()
       const groupName: string = route.params.group as string
       const tags: TagForm[] = formData.value.tagList.map(({ id, ...tagData }) => {
         const data = tagData
@@ -89,7 +68,7 @@ export default () => {
 
         return data
       })
-      await addTag({ tags, node: nodeName, group: groupName })
+      await addTag({ tags, node: node.value, group: groupName })
       return Promise.resolve()
     } catch (error: any) {
       const { data = {} } = error
