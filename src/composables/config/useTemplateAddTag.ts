@@ -3,13 +3,11 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import { queryPluginConfigInfo } from '@/api/config'
 import { addTag } from '@/api/template'
 import type { PluginInfo, TagFormItem, AddTagListForm } from '@/types/config'
 import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
-import { useGetPluginMsgIdMap } from '@/composables/config/usePlugin'
-import { useTemplateListMap } from '@/composables/config/useTemplateList'
 import AddTagCommon, { createTagForm } from '@/composables/config/useAddTagCommon'
+import { useTemplatePluginInfo } from '@/composables/config/usePluginInfo'
 
 export default () => {
   const route = useRoute()
@@ -28,34 +26,14 @@ export default () => {
   })
   const isSubmitting = ref(false)
 
-  const { getAllTemplates, templateListMap } = useTemplateListMap()
-  // Limit the type of tag
-  const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   const pluginInfo: Ref<PluginInfo> = ref({} as PluginInfo)
 
-  // get template & its plugin
   const template = computed(() => route.params.template.toString())
-  const templatePlugin = computed(() => {
-    const tem = templateListMap.value.find(({ name }) => name === template.value)
-    return tem?.plugin || ''
-  })
 
-  const getTemplatePluginInfo = async () => {
-    await getAllTemplates()
-    await initMsgIdMap()
+  const { getTemplatePluginInfo } = useTemplatePluginInfo()
 
-    const pluginName = templatePlugin.value
-    const nodePluginToLower = pluginName.toLocaleLowerCase()
-
-    const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
-
-    if (schemaName) {
-      const { data } = await queryPluginConfigInfo(schemaName)
-      const plugin: PluginInfo = data
-      if (plugin) {
-        pluginInfo.value = plugin
-      }
-    }
+  const getTemplatePluginConfigInfo = async () => {
+    pluginInfo.value = await getTemplatePluginInfo()
   }
 
   const setFormRef = (com: typeof TagFormCom) => {
@@ -118,7 +96,7 @@ export default () => {
     router.back()
   }
 
-  getTemplatePluginInfo()
+  getTemplatePluginConfigInfo()
   return {
     pluginInfo,
 

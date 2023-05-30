@@ -25,12 +25,10 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import { ElDialog } from 'element-plus'
 import TagFormCom from './TagForm.vue'
 import type { PluginInfo, TagData } from '@/types/config'
-import { queryPluginConfigInfo, updateTag } from '@/api/config'
+import { updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
-import { useNodeMsgMap } from '@/composables/config/useNodeList'
-import { useGetPluginMsgIdMap } from '@/composables/config/usePlugin'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
-import { DriverDirection } from '@/types/enums'
+import { useNodePluginInfo } from '@/composables/config/usePluginInfo'
 
 const props = defineProps({
   modelValue: {
@@ -55,8 +53,12 @@ const emit = defineEmits(['update:modelValue', 'submitted'])
 const { t } = useI18n()
 const { parseWriteData } = useWriteDataCheckNParse()
 
-const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
+const { getNodePluginInfo } = useNodePluginInfo()
 const pluginMsg: Ref<undefined | PluginInfo> = ref(undefined)
+
+const getPluginInfo = async () => {
+  pluginMsg.value = await getNodePluginInfo()
+}
 
 const tagData: Ref<TagData> = ref({} as TagData)
 const isSubmitting = ref(false)
@@ -72,6 +74,7 @@ const showDialog = computed({
 watch(showDialog, (val) => {
   if (val) {
     tagData.value = { ...props.tag }
+
     if (!pluginMsg.value) {
       getPluginInfo()
     }
@@ -79,18 +82,6 @@ watch(showDialog, (val) => {
     formRef.value.resetFields()
   }
 })
-
-const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
-const getPluginInfo = async () => {
-  await initMap()
-  await initMsgIdMap()
-  const pluginName = getNodeMsgById(props.node).plugin
-  const nodePluginToLower = pluginName.toLocaleLowerCase()
-  const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
-
-  const { data } = await queryPluginConfigInfo(schemaName)
-  pluginMsg.value = data
-}
 
 const submit = async () => {
   try {
