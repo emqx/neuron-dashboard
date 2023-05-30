@@ -29,6 +29,7 @@ import { updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 import { useNodePluginInfo } from '@/composables/config/usePluginInfo'
+import { useHandleTagValue } from '@/composables/config/useAddTagCommon'
 
 const props = defineProps({
   modelValue: {
@@ -83,22 +84,15 @@ watch(showDialog, (val) => {
   }
 })
 
+const { handleTagValue } = useHandleTagValue()
 const submit = async () => {
   try {
     await formRef.value.validate()
     isSubmitting.value = true
 
-    const bodyData = tagData.value
-    const { type, value } = bodyData
-
-    if (value !== undefined && value !== null) {
-      /** let it go, when the tags value use hexadecimal, , and sync useAddTag.ts
-       * const newValue = isUseHexadecimal.value ? await transToDecimal({ ...tagData, value } as TagDataInTable): value
-       */
-      bodyData.value = parseWriteData(Number(type), String(value))
-    }
-
+    const bodyData = handleTagValue(tagData.value)
     await updateTag(props.node, props.group, bodyData)
+
     showDialog.value = false
     EmqxMessage.success(t('common.submitSuccess'))
     emit('submitted')
