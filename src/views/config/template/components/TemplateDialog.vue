@@ -5,12 +5,13 @@
         <emqx-input v-model.trim="templateForm.name" />
       </emqx-form-item>
       <emqx-form-item prop="plugin" :label="$t('config.plugin')" required>
-        <PluginTypesSelector
+        <!-- :types="SOUTH_DRIVER_NODE_TYPE" -->
+        <PluginListSelector
           v-model="templateForm.plugin"
-          :types="SOUTH_DRIVER_NODE_TYPE"
-          :placeholder="$t('config.selectPlugin')"
+          :type="DriverDirection.South"
           :disabled="isEdit || isImport"
-          class="plugin_selector"
+          width="100%"
+          :placeholder="$t('config.selectPlugin')"
         />
       </emqx-form-item>
     </emqx-form>
@@ -30,9 +31,9 @@ import { computed, defineProps, defineEmits, watch } from 'vue'
 import type { PropType } from 'vue'
 import { ElDialog } from 'element-plus'
 import useTemplateDialog from '@/composables/config/useTemplateDialog'
-import { SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
-import PluginTypesSelector from '@/views/config/components/PluginTypesSelector.vue'
+import PluginListSelector from '@/views/config/components/PluginListSelector.vue'
 import type { TemplateFormData } from '@/types/config'
+import { DriverDirection } from '@/types/enums'
 
 const props = defineProps({
   modelValue: {
@@ -84,9 +85,3 @@ const cancel = () => {
   showDialog.value = false
 }
 </script>
-
-<style lang="scss" scoped>
-.plugin_selector {
-  width: 100%;
-}
-</style>
