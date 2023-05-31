@@ -134,7 +134,12 @@
     :node-name="nodeItemData.name"
   />
 
-  <DriverDialog v-model="showDialog" :type="DriverDirection.South" @submitted="getSouthDriverList" />
+  <DriverDialog
+    v-model="showDialog"
+    :type="DriverDirection.South"
+    :is-dual-mode="true"
+    @submitted="getSouthDriverList"
+  />
 </template>
 
 <script lang="ts">
