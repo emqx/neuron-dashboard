@@ -13,17 +13,20 @@
 </template>
 
 <script lang="ts" setup>
+import type { PropType } from 'vue'
 import { computed, defineEmits, defineProps } from 'vue'
-import usePlugin from '@/composables/config/usePlugin'
-import { PluginKind } from '@/types/enums'
 import { useI18n } from 'vue-i18n'
+import usePlugin from '@/composables/config/usePlugin'
+import { PluginKind, DriverDirection } from '@/types/enums'
+import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
-  types: { type: Array, default: () => [] },
+  type: { type: Number as PropType<DriverDirection>, required: true },
   placeholder: { type: String, default: '' },
   size: { type: String, default: '' },
   disabled: { type: Boolean, default: false },
+  width: { type: String, default: '220px' },
 })
 const emits = defineEmits(['update:modelValue', 'change'])
 
@@ -42,10 +45,11 @@ const exceptStaticPluginList = computed(() => {
   return pluginList.value.filter(({ kind }) => kind !== PluginKind.Static)
 })
 
+const types = computed(() => (props.type === DriverDirection.South ? SOUTH_DRIVER_NODE_TYPE : NORTH_DRIVER_NODE_TYPE))
+
 const directionPluginList = computed(() => {
-  const { types } = props
-  if (Array.isArray(types) && types.length) {
-    return exceptStaticPluginList.value.filter(({ node_type }) => props.types.some((type) => type === node_type))
+  if (Array.isArray(types.value) && types.value.length) {
+    return exceptStaticPluginList.value.filter(({ node_type }) => types.value.some((type) => type === node_type))
   }
   return exceptStaticPluginList.value
 })
@@ -60,6 +64,6 @@ const changePluginType = (val: string) => {
 
 <style lang="scss" scoped>
 .plugin_select {
-  width: 220px;
+  width: v-bind(width);
 }
 </style>

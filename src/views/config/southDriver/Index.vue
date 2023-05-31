@@ -7,9 +7,9 @@
         </emqx-button>
       </template>
       <template v-slot:right>
-        <PluginTypesSelector
+        <PluginListSelector
           v-model="queryKeyword.plugin"
-          :types="SOUTH_DRIVER_NODE_TYPE"
+          :type="DriverDirection.South"
           :size="'medium'"
           class="header-item"
           @change="dbGetSouthDriverList"
@@ -155,10 +155,9 @@ import DriverDialog from '@/views/config/components/DriverDialog.vue'
 import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
-import PluginTypesSelector from '../components/PluginTypesSelector.vue'
+import PluginListSelector from '../components/PluginListSelector.vue'
 import ListCardSwitch from '@/components/ListCardSwitch.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
-import { SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 import { isTheSameParentRoute } from '@/utils/utils'
 

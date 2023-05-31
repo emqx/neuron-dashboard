@@ -1,35 +1,12 @@
-import { addDriver, queryPluginList } from '@/api/config'
-import type { CreatedPlugin, NodeForm } from '@/types/config'
-import { DriverDirection, PluginKind } from '@/types/enums'
-import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
+import { addDriver } from '@/api/config'
+import type { NodeForm } from '@/types/config'
+import { DriverDirection } from '@/types/enums'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import type { Ref } from 'vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
-
-export const usePluginList = (type: DriverDirection) => {
-  const pluginList: Ref<Array<CreatedPlugin>> = ref([])
-
-  const getPluginList = async () => {
-    const { data } = await queryPluginList()
-    const list = data.plugins || []
-    pluginList.value = list
-      .filter(({ node_type }) =>
-        type === DriverDirection.South
-          ? SOUTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type)
-          : NORTH_DRIVER_NODE_TYPE.some((typeItem) => typeItem === node_type),
-      )
-      .filter(({ kind }) => kind !== PluginKind.Static)
-  }
-
-  getPluginList()
-
-  return {
-    pluginList,
-  }
-}
 
 const createRawDriverForm = (): NodeForm => ({
   name: '',
@@ -38,7 +15,6 @@ const createRawDriverForm = (): NodeForm => ({
 
 export default (type: DriverDirection) => {
   const { t } = useI18n()
-  const { pluginList } = usePluginList(type)
 
   const formCom = ref()
   const driverForm: Ref<NodeForm> = ref(createRawDriverForm())
@@ -84,7 +60,6 @@ export default (type: DriverDirection) => {
   }
   return {
     dialogTitle,
-    pluginList,
     formCom,
     driverForm,
     isSubmitting,
