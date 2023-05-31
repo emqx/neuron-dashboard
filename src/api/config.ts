@@ -12,7 +12,7 @@ import type {
   RawDriverData,
   GroupData,
   GroupForm,
-  NodeForm,
+  NodeFormWithPlugin,
   PluginInfo,
   PluginForm,
   ResponseDriverListData,
@@ -82,10 +82,13 @@ export const queryWebDriver = async (): Promise<RawDriverData> => {
   }
 }
 
-export const addDriver = (driverData: NodeForm) => {
+export const addDriverByPlugin = (driverData: NodeFormWithPlugin) => {
   return http.post('/node', driverData)
 }
 
+export const addDriverByTemplate = (driverData: { node: string; name: string }) => {
+  return http.post('/template/inst', driverData)
+}
 export const deleteDriver = (node: string) => {
   return http.delete('/node', { data: { name: node } })
 }
