@@ -332,6 +332,10 @@ export default {
     zh: '请选择插件',
     en: 'Please select the plugin',
   },
+  templateRequired: {
+    zh: '请选择模板',
+    en: 'Please select the template',
+  },
   southDeviceRequired: {
     zh: '请选择南向设备',
     en: 'Please select south device',
@@ -480,5 +484,21 @@ export default {
   topicContainWildcard: {
     zh: '不能向包含通配符 #、+ 的主题发布消息',
     en: 'Cannot publish messages to topics containing wildcard characters #, +',
+  },
+  addDriverMode: {
+    zh: '方式',
+    en: 'Mode',
+  },
+  templateMode: {
+    zh: '模板',
+    en: 'Template',
+  },
+  pluginMode: {
+    zh: '插件',
+    en: 'Plugin',
+  },
+  templatesSelectorPlaceholder: {
+    zh: '请选择模板',
+    en: 'Select template',
   },
 }

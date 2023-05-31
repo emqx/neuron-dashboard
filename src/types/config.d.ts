@@ -23,7 +23,10 @@ export interface CreatedPlugin extends PluginForm {
 export interface NodeForm {
   name: string
   plugin: string
+  template: string
 }
+export type NodeFormWithTemplate = Pick<NodeForm, 'name' | 'template'>
+export type NodeFormWithPlugin = Pick<NodeForm, 'name' | 'plugin'>
 
 export interface SubscriptionDataForm {
   app: string | null

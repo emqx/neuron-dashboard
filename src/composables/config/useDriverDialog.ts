@@ -1,4 +1,4 @@
-import { addDriver } from '@/api/config'
+import { addDriverByPlugin, addDriverByTemplate } from '@/api/config'
 import type { NodeForm } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import { EmqxMessage } from '@emqx/emqx-ui'
@@ -11,6 +11,7 @@ import useSouthDriver from '@/composables/config/useSouthDriver'
 const createRawDriverForm = (): NodeForm => ({
   name: '',
   plugin: '',
+  template: '',
 })
 
 export default (type: DriverDirection) => {
@@ -19,10 +20,16 @@ export default (type: DriverDirection) => {
   const formCom = ref()
   const driverForm: Ref<NodeForm> = ref(createRawDriverForm())
   const isSubmitting = ref(false)
+
+  // If you modify the sorting, please modify the logic of `changeMode` and `submitData`
+  const addDriverModes = ['plugin', 'template']
+  const activeDriverMode = ref('plugin')
+
   const groupFormRules = computed(() => {
     return {
       name: [{ required: true, message: t('config.nameRequired') }],
       plugin: [{ required: true, message: t('config.pluginRequired') }],
+      template: [{ required: true, message: t('config.templateRequired') }],
     }
   })
 
@@ -45,11 +52,40 @@ export default (type: DriverDirection) => {
     }
   }
 
+  const changeMode = (mode: string) => {
+    if (mode === addDriverModes[0]) {
+      driverForm.value.template = ''
+    } else {
+      driverForm.value.plugin = ''
+    }
+  }
+
+  const addDriverByTemplateMode = async () => {
+    try {
+      const { name, template } = driverForm.value
+      const { data } = await addDriverByTemplate({ node: name, name: template })
+
+      if (data.error !== 0) {
+        return Promise.reject(data)
+      }
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
   const submitData = async () => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
-      await addDriver(driverForm.value)
+
+      if (activeDriverMode.value === addDriverModes[0]) {
+        const { name, plugin } = driverForm.value
+        await addDriverByPlugin({ name, plugin })
+      } else {
+        await addDriverByTemplateMode()
+      }
+
       EmqxMessage.success(t('common.createSuccess'))
       goNodeConfigPage()
     } catch (error) {
@@ -58,11 +94,17 @@ export default (type: DriverDirection) => {
       isSubmitting.value = false
     }
   }
+
   return {
     dialogTitle,
     formCom,
     driverForm,
     isSubmitting,
+
+    addDriverModes,
+    activeDriverMode,
+    changeMode,
+
     groupFormRules,
     initForm,
     submitData,
