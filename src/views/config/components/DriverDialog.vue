@@ -5,9 +5,13 @@
         <emqx-input v-model.trim="driverForm.name" :disabled="driver" />
       </emqx-form-item>
       <emqx-form-item prop="plugin" :label="$t('config.plugin')" required>
-        <emqx-select v-model="driverForm.plugin" :disabled="driver" :placeholder="$t('common.pleaseSelect')">
-          <emqx-option v-for="item in pluginList" :key="item.name" :value="item.name" :label="item.name" />
-        </emqx-select>
+        <PluginListSelector
+          v-model="driverForm.plugin"
+          :type="type"
+          :disabled="!!driver"
+          width="100%"
+          :placeholder="$t('config.selectPlugin')"
+        />
       </emqx-form-item>
     </emqx-form>
     <template #footer>
@@ -27,6 +31,7 @@ import { computed, defineEmits, defineProps, watch } from 'vue'
 import { ElDialog } from 'element-plus'
 import useDriverDialog from '@/composables/config/useDriverDialog'
 import type { DriverDirection } from '@/types/enums'
+import PluginListSelector from '@/views/config/components/PluginListSelector.vue'
 
 const props = defineProps({
   modelValue: {
@@ -42,8 +47,9 @@ const props = defineProps({
   },
 })
 
-const { dialogTitle, pluginList, formCom, driverForm, isSubmitting, groupFormRules, initForm, submitData } =
-  useDriverDialog(props.type)
+const { dialogTitle, formCom, driverForm, isSubmitting, groupFormRules, initForm, submitData } = useDriverDialog(
+  props.type,
+)
 
 const emit = defineEmits(['update:modelValue', 'submitted'])
 
