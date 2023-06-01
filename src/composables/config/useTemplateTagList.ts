@@ -131,7 +131,15 @@ export default () => {
 
   // Edit tag
   const editTag = (tag: TagDataInTable) => {
-    currentTag.value = OmitArrayFields([tag], ['checked'])[0]
+    const { checked, decimal, ...restData } = tag
+    const tagData: TagData = { ...restData }
+
+    // When the decimal value is 0, does not display its value on the UI
+    if (!decimal) {
+      tagData.decimal = undefined
+    }
+
+    currentTag.value = tagData
     showEditDialog.value = true
   }
 
