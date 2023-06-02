@@ -27,7 +27,8 @@ export default (props: Props) => {
 
   const { initMap, getNodeMsgById } = useNodeMsgMap(props.direction, false)
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
-  const { initParamDefaultValueByType } = useNodeConfigParamCommon()
+  const { initParamDefaultValueByType, isParamHexadecimalBase, transToHexadecimal, transToDecimal } =
+    useNodeConfigParamCommon()
 
   const configForm: Ref<Record<string, any>> = ref({})
   const defaultConfigData: Ref<Record<string, any>> = ref({})
@@ -45,14 +46,31 @@ export default (props: Props) => {
 
   const node = computed(() => route.params.node.toString())
 
+  /**
+   * Handle Hexadecimal
+   * Transfer int number to hexadecimal, when type = init & base = 16
+   *  */
+  const transValueToHexadecimal = (data: Record<any, any>) => {
+    const objData = data
+    const keys = Object.keys(objData)
+    keys.forEach((key) => {
+      const value = objData[key]
+      const field = fieldList.value.find(({ key: fieldKey }) => fieldKey === key)
+      if (field?.info && isParamHexadecimalBase(field.info)) {
+        objData[key] = transToHexadecimal(String(value))
+      }
+    })
+    return objData
+  }
   // get node config
   const getNodeConfig = async () => {
     try {
       const { data } = await queryNodeConfig(node.value)
 
       if (data && data?.params && typeof data.params === 'object') {
-        configuredData.value = data.params
+        configuredData.value = transValueToHexadecimal(data.params)
       }
+
       return Promise.resolve()
     } catch (error) {
       return Promise.reject(error)
@@ -62,6 +80,7 @@ export default (props: Props) => {
   // init the plugin default data field value
   const createInitValue = (param: ParamInfo) => {
     const defaultValue = param.default
+
     if (defaultValue !== undefined) {
       let newDefaultValue = defaultValue
       const nodeNameReg = /\$\{node-name\}/
@@ -77,6 +96,15 @@ export default (props: Props) => {
           newDefaultValue = defaultValue.replace(clientIdReg, node.value)
         }
       }
+
+      /**
+       * Handle Hexadecimal
+       * Transfer int number to hexadecimal, when type = init & base = 16
+       *  */
+      if (isParamHexadecimalBase(param)) {
+        newDefaultValue = transToHexadecimal(String(param.default))
+      }
+
       return newDefaultValue
     }
 
@@ -125,13 +153,15 @@ export default (props: Props) => {
       fieldList.value = []
       return
     }
+
     const pluginInitInfo = initFormFromPluginInfo(pluginInfo)
     defaultConfigData.value = cloneDeep(pluginInitInfo)
+
     fieldList.value = createFieldListFormPluginInfo(pluginInfo)
   }
 
   // init data
-  const initData = () => {
+  const initData = async () => {
     const defaultConfigDatakeys = Object.keys(defaultConfigData.value) // according fieldList value
     const defaultConfigDataL = defaultConfigDatakeys.length
 
@@ -182,27 +212,36 @@ export default (props: Props) => {
       const valid = await validateAll()
 
       if (valid) {
-        // // delete `tag_regex`
-        const { tag_regex } = configForm.value
+        const bodyData = cloneDeep(configForm.value)
+        // delete `tag_regex`
+        const { tag_regex } = bodyData
         if (tag_regex !== undefined) {
-          delete configForm.value.tag_regex
+          delete bodyData.tag_regex
         }
-        // if configForm value is '' or 'undefined' or null, change its value to `default` value or delete it.
-        const dataKeys = Object.keys(configForm.value)
+
+        const dataKeys = Object.keys(bodyData)
         dataKeys.forEach((key) => {
-          const value = configForm.value[key]
+          const value = bodyData[key]
+          const field = fieldList.value.find((item: { key: string; info: any }) => item.key === key)
+
+          // if configForm value is '' or 'undefined' or null, change its value to `default` value or delete it.
           if (value === '' || value === undefined || value == null) {
-            const field = fieldList.value.find((item: { key: string; info: any }) => item.key === key)
             const isOptional = field?.info?.attribute
             const isDefaultValue = field?.info?.default !== undefined
             if (isOptional && isDefaultValue) {
-              configForm.value[key] = defaultConfigData.value[key]
+              bodyData[key] = defaultConfigData.value[key]
             } else {
-              delete configForm.value[key]
+              delete bodyData[key]
             }
           }
+
+          // if base = 16, transefer value to 10
+          if (field && field.info && isParamHexadecimalBase(field.info)) {
+            bodyData[key] = transToDecimal(value)
+          }
         })
-        await submitNodeConfig(node.value, configForm.value)
+
+        await submitNodeConfig(node.value, bodyData)
         EmqxMessage.success(t('common.submitSuccess'))
         router.back()
       }
@@ -221,7 +260,7 @@ export default (props: Props) => {
     isLoading.value = true
     await Promise.all([initMap(), initMsgIdMap()])
     await Promise.all([getPluginInfo(), getNodeConfig()])
-    initData()
+    await initData()
     isLoading.value = false
   })
 

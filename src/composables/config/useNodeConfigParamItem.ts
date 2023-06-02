@@ -1,8 +1,9 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { NumberParamInfo, ParamInfo, StringParamInfo, ArrayParamInfo } from '@/types/config'
-import { ParamRequired, TypeOfPluginParam } from '@/types/enums'
+import { ParamRequired, TypeOfPluginParam, SchameBase } from '@/types/enums'
 import { createCommonErrorMessage, dataType } from '@/utils/utils'
+import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
 
 type Props = Readonly<{
   paramKey: string
@@ -54,12 +55,15 @@ export default (props: Props) => {
     }
   }
 
+  const { isParamHexadecimalBase, checkHexadecimalValue, transToDecimal } = useNodeConfigParamCommon()
   // valid number limit
-  const checkNumberParamLimit = (rule: unknown, value: string, callback: any) => {
+  const checkNumberParamLimit = async (rule: unknown, value: string, callback: any) => {
+    const trueValue = isParamHexadecimalBase(props.paramInfo) ? transToDecimal(value) : value
+
     const { valid, attribute } = props.paramInfo as NumberParamInfo
     const { max, min } = valid
 
-    const isInRange = comparisonRange(Number(value), { min, max })
+    const isInRange = comparisonRange(Number(trueValue), { min, max })
 
     const { inRange, errorMsgType } = isInRange
 
@@ -77,11 +81,32 @@ export default (props: Props) => {
       } else {
         callback()
       }
-    } else if (value !== '' && !inRange) {
+    } else if (trueValue !== '' && !inRange) {
       const errorMsg = errorMsgMap.get(errorMsgType)
       callback(new Error(errorMsg))
     }
     callback()
+  }
+
+  // check number hexadecimal | decimal
+  const checkNumberParamHexadecimal = async (rule: unknown, value: string, callback: any) => {
+    const { base } = props.paramInfo as NumberParamInfo
+
+    const trueVlue = String(value).replace(/\s/g, '')
+    if (base === SchameBase.hexadecimal) {
+      if (!checkHexadecimalValue(trueVlue)) {
+        callback(new Error(t('config.hexadecimalFormatError')))
+      } else {
+        callback()
+      }
+    } else {
+      const isDecimalValue = /^[1-9]\d*$/.test(trueVlue)
+      if (!isDecimalValue) {
+        callback(new Error(t('config.decimalFormatError')))
+      } else {
+        callback()
+      }
+    }
   }
 
   // valid string length
@@ -141,9 +166,12 @@ export default (props: Props) => {
       message: createCommonErrorMessage('input', props.paramInfo.name),
     },
     {
-      type: 'number',
-      message: t('config.numberFormatError'),
+      type: isParamHexadecimalBase(props.paramInfo) ? 'string' : 'number',
+      message: isParamHexadecimalBase(props.paramInfo)
+        ? t('config.hexadecimalFormatError')
+        : t('config.numberFormatError'),
     },
+    { validator: checkNumberParamHexadecimal, trigger: 'blur' },
     { validator: checkNumberParamLimit, trigger: 'blur' },
   ]
 
