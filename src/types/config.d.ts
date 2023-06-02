@@ -1,5 +1,13 @@
 import type { Merge } from 'type-fest'
-import type { DriverDirection, NodeLinkState, NodeState, ParamRequired, PluginKind, TypeOfPluginParam } from './enums'
+import type {
+  DriverDirection,
+  NodeLinkState,
+  NodeState,
+  ParamRequired,
+  PluginKind,
+  TypeOfPluginParam,
+  SchameBase,
+} from './enums'
 
 /**
  * Params get from API
@@ -82,6 +90,7 @@ interface ParamBaseInfo {
   name: string
   name_zh: string
   attribute: ParamRequired
+  base?: SchameBase
   condition?: {
     field: string
     value: boolean | number | string

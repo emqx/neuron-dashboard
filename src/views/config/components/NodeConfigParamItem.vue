@@ -16,11 +16,15 @@
         </el-popover>
       </template>
       <!-- Number -->
-      <emqx-input
-        v-if="paramInfo.type === TypeOfPluginParam.Int"
-        v-model.number="inputValue"
-        :placeholder="String(defaultData[paramKey])"
-      />
+      <span v-if="paramInfo.type === TypeOfPluginParam.Int">
+        <emqx-input
+          v-if="!isParamHexadecimalBase(paramInfo)"
+          v-model.number="inputValue"
+          :placeholder="String(defaultData[paramKey])"
+        />
+        <emqx-input v-else v-model="inputValue" :placeholder="String(defaultData[paramKey])" />
+      </span>
+
       <!-- String -->
       <emqx-input
         v-else-if="paramInfo.type === TypeOfPluginParam.String"
@@ -120,10 +124,11 @@ const emit = defineEmits(['update:modelValue', 'validateFileds'])
 
 const { t } = useI18n()
 const { currentLang, i18nContent } = useLang()
-const { upperFirstLetter, showLabel } = useNodeConfigParamCommon()
+const { upperFirstLetter, showLabel, isParamHexadecimalBase } = useNodeConfigParamCommon()
 
 const arrayRef = ref()
 
+// if base is 16, show hexadecimal
 const inputValue = computed({
   get() {
     return props.modelValue
