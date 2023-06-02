@@ -364,6 +364,14 @@ export default {
     zh: '请输入不大于 {max} 的数字',
     en: 'Please enter a number no greater than {max}',
   },
+  hexadecimalFormatError: {
+    zh: '请输入格式正确的 16 进制数',
+    en: 'Please enter a hexadecimal number in the correct format',
+  },
+  decimalFormatError: {
+    zh: '请输入格式正确的 10 进制数',
+    en: 'Please enter a decimal number in the correct format',
+  },
 
   lengthRangeErrorMsg: {
     zh: '请输入长度在 {min} - {max} 之间的数据',
