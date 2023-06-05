@@ -1,14 +1,15 @@
 <template>
-  <emqx-card class="data-monitoring">
+  <div class="neuron-page-title">{{ $t('data.dataMonitoring') }}</div>
+  <div class="data-monitoring">
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <span v-if="currentGroup.groupName" class="header-item">
           <label class="label">{{ $t('data.updated') }}</label>
           <span>{{ dateformat(updated, 'yyyy-mm-dd HH:MM:ss') }}</span>
         </span>
       </template>
 
-      <template v-slot:right>
+      <template v-slot:left>
         <div class="header-item search-group">
           <label class="label">{{ $t('config.southDevice') }}</label>
           <emqx-select
@@ -108,7 +109,7 @@
       :page-size="pageController.size"
       @size-change="handleSizeChange"
     />
-  </emqx-card>
+  </div>
   <WriteDialog
     v-model="showWriteDialog"
     :group="currentGroup.groupName"
@@ -166,6 +167,7 @@ const { tagDecimalValue } = useTagDecimal()
 
 <style lang="scss">
 .data-monitoring {
+  margin: 16px 0;
   .filter-selector {
     width: 220px;
   }
