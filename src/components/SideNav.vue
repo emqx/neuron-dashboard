@@ -72,16 +72,21 @@ const navList = computed(() => {
     //   label: 'common.home',
     //   icon: 'iconattributed',
     // },
+    // {
+    //   to: '/monitoring/data',
+    //   label: 'data.monitoring',
+    //   icon: 'iconstatus',
+    //   subMenus: [
+    //     {
+    //       to: '/monitoring/data',
+    //       label: 'data.dataMonitoring',
+    //     },
+    //   ],
+    // },
     {
       to: '/monitoring/data',
-      label: 'data.monitoring',
+      label: 'data.dataMonitoring',
       icon: 'iconstatus',
-      subMenus: [
-        {
-          to: '/monitoring/data',
-          label: 'data.dataMonitoring',
-        },
-      ],
     },
     {
       to: '/configuration',
@@ -102,24 +107,29 @@ const navList = computed(() => {
         },
       ],
     },
+    // {
+    //   to: '/admin',
+    //   label: 'admin.admin',
+    //   icon: 'iconAdministration1',
+    //   subMenus: [
+    //     {
+    //       to: '/admin/change-password',
+    //       label: 'common.changePassword',
+    //     },
+    //     // {
+    //     //   to: '/admin/account-settings',
+    //     //   label: 'common.accountSettings',
+    //     // },
+    //     // {
+    //     //   to: '/admin/log',
+    //     //   label: ('admin.log'),
+    //     // },
+    //   ],
+    // },
     {
-      to: '/admin',
-      label: 'admin.admin',
-      icon: 'iconAdministration1',
-      subMenus: [
-        {
-          to: '/admin/change-password',
-          label: 'common.changePassword',
-        },
-        // {
-        //   to: '/admin/account-settings',
-        //   label: 'common.accountSettings',
-        // },
-        // {
-        //   to: '/admin/log',
-        //   label: ('admin.log'),
-        // },
-      ],
+      to: '/admin/change-password',
+      label: 'common.changePassword',
+      icon: 'iconpassword',
     },
   ]
   if (isShowEkuiper) {
