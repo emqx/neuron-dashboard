@@ -135,6 +135,4 @@ export const UserLevels = [
   },
 ]
 
-export const isShowEkuiper = !(process.env.VUE_APP_SHOW_EKUIPER === 'false')
-
 export const multiLangMode = process.env.VUE_APP_MULTI_LANG === 'true'
