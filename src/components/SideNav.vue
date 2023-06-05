@@ -34,7 +34,6 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import { isShowEkuiper } from '@/config/index'
 
 export default defineComponent({
   name: 'SideNav',
@@ -43,29 +42,6 @@ export default defineComponent({
 
 <script lang="ts" setup>
 const navList = computed(() => {
-  const ekuiperNav = {
-    to: '/ekuiper',
-    label: 'ekuiper.streamProcessing',
-    icon: 'iconstream',
-    subMenus: [
-      {
-        to: '/ekuiper/nodes/single-node/source',
-        label: 'ekuiper.sources',
-      },
-      {
-        to: '/ekuiper/nodes/single-node/rules',
-        label: 'ekuiper.rule',
-      },
-      {
-        to: '/ekuiper/nodes/single-node/extension',
-        label: 'ekuiper.extension',
-      },
-      {
-        to: '/ekuiper/nodes/single-node/configuration',
-        label: 'ekuiper.configuration',
-      },
-    ],
-  }
   const navs = [
     // {
     //   to: '/overview',
@@ -126,9 +102,6 @@ const navList = computed(() => {
       ],
     },
   ]
-  if (isShowEkuiper) {
-    navs.splice(navs.length - 1, 0, ekuiperNav)
-  }
   return navs
 })
 
