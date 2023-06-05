@@ -6,11 +6,11 @@
         <side-nav></side-nav>
       </template>
       <template #page-content>
-        <div>
+        <div class="neuron-content-container">
           <Breadcrumb />
           <router-view />
           <!-- For eKuiper -->
-          <emqx-card v-if="isKuiperPage" v-emqx-loading="isSubAppLoading">
+          <emqx-card class="page-noraml-card" v-if="isKuiperPage" v-emqx-loading="isSubAppLoading">
             <!-- <h3 class="card-title">{{ pageTitle }}</h3> -->
             <div id="page-content">
               <div></div>
