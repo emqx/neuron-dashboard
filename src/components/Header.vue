@@ -73,7 +73,6 @@ import { useRouter } from 'vue-router'
 import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
-import { qiankunActions } from '@/utils/forEKuiper'
 import { multiLangMode } from '@/config/index'
 
 const store = useStore()
@@ -99,8 +98,6 @@ const { langList } = useLang()
 const { changeLang } = setLang()
 const changeCurrentLang = (lang: string) => {
   changeLang(lang)
-  // Trigger: notification microservice
-  qiankunActions.setGlobalState({ lang: store.state.lang })
 }
 const lang = computed({
   get() {
