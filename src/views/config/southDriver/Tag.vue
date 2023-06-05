@@ -1,5 +1,5 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading" class="tag-page">
+  <emqx-card v-emqx-loading="isListLoading" class="tag-page page-noraml-card">
     <h3 class="card-title">{{ $t('config.tagList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left">

@@ -1,12 +1,13 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <div class="neuron-page-title">{{ $t('config.southDeviceManagement') }}</div>
+  <emqx-card class="page-noraml-card" v-emqx-loading="isListLoading">
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
           {{ $t('config.addDevice') }}
         </emqx-button>
       </template>
-      <template v-slot:right>
+      <template v-slot:left>
         <PluginTypesSelector
           v-model="queryKeyword.plugin"
           :types="SOUTH_DRIVER_NODE_TYPE"
@@ -124,7 +125,6 @@
       />
     </div>
   </emqx-card>
-
   <!-- Data Statistics -->
   <DataStatisticsDrawer
     v-if="dataStatisticsVisiable"
