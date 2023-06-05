@@ -102,16 +102,16 @@ label {
   background: #0c283e;
 }
 .body{
-  // padding: 40px 0;
-  // margin-top: 60px;
+  padding: 40px 0;
+  margin-top: 60px;
   display: flex;
   .side-nav {
-    padding-top: 60px;
-    // padding-right: 20px;
     border-right: none;
     background-color: #f4f6fa;
     height: calc(100vh - 1px); // 100px = top with position fixed
     overflow-y: auto;
+    padding-right: 20px;
+    border-right: none;
       .nav-item,
       .el-submenu__title {
         height: 48px;
@@ -179,10 +179,9 @@ label {
   .el-main {
     padding: 0;
     flex: 1;
-    // background-color: #fff;
     .neuron-content-container{
-      margin-top: 60px;
-      padding: 0 24px;
+      // margin-top: 60px;
+      // padding: 0 24px;
       overflow: hidden;
       .neuron-page-title {
         color:#1D1D1D;
