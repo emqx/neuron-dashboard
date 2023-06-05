@@ -26,6 +26,7 @@
             :percentage="generalStatistics.memPercent"
             status="success"
             class="progress-bar"
+            color="#23C2F4"
           >
             <span class="progress-text">
               {{ generalStatistics.memUsedBytes }} / {{ generalStatistics.memTotalBytes }}</span
