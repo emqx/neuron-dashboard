@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="north-driver-group" v-emqx-loading="isListLoading">
+  <emqx-card class="north-driver-group page-noraml-card" v-emqx-loading="isListLoading">
     <h3 class="card-title">{{ $t('config.groupList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left common-flex">
