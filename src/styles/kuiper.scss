@@ -1,4 +1,7 @@
+@import './emqx-ui-variables.scss';
+
 #ekuiper-dashboard {
+  background-color: #fff;
   .layout {
     background-color: #fff;
   }
@@ -6,11 +9,13 @@
     color: #96999c;
   }
   .ivu-btn-primary {
-    background-color: #189bfe;
-    border-color: #189bfe;
+    background-color: $--color-primary;
+    border-color: $--color-primary;
   }
   .ivu-btn-ghost.ivu-btn-primary {
-    color: #fff;
+    background-color: #fff;
+    border-color: $--color-primary;
+    color: $--color-primary;
   }
   .ivu-card-bordered {
     border: 1px solid #ebeef5;
@@ -44,5 +49,123 @@
   ::-webkit-scrollbar-thumb:hover {
     cursor: pointer !important;
     background-color: #0000004d;
+  }
+  .ivu-tabs-ink-bar {
+    background-color: $--color-primary;
+  }
+  .ivu-tabs-nav .ivu-tabs-tab-active {
+    color:  $--color-primary;
+  }
+  .ivu-tabs-nav .ivu-tabs-tab:hover {
+    color:  $--color-primary;
+  }
+  .ivu-btn:hover {
+    color:  $--color-primary;
+    background-color: #fff;
+    border-color:  $--color-primary;
+  }
+  .title-in-subapp {
+    color:#1D1D1D;
+    font-family: "PingFang SC";
+    font-size: 32px;
+    font-weight: 600;
+  }
+  .ivu-breadcrumb a:hover {
+    color:  $--color-primary;
+  }
+  // tab
+  .ivu-tabs {
+    .ivu-tabs-bar {
+      background: transparent;
+      border-bottom: 1px solid #EEEEF7;
+    }
+    .ivu-tabs-tabpane {
+      .tab-body{
+        padding: 24px 0;
+      }
+      .ivu-card.ivu-card-bordered {
+        border: none;
+        border-radius: 0;
+      }
+    }
+  }
+  // radio-group-btn
+  .ivu-radio-group-button {
+    .ivu-radio-wrapper-checked {
+      border: $--color-primary;
+      box-shadow: -1px 0 0 0 $--color-primary;
+    }
+    .ivu-radio-wrapper:hover {
+      color:  $--color-primary;
+    }
+  }
+  .ivu-radio-group-button-solid {
+    .ivu-radio-wrapper-checked:not(.ivu-radio-wrapper-disabled) {
+      background: $--color-primary;
+      color: #fff;
+    }
+  }
+  // table
+  .ivu-table {
+    .ivu-table-tbody {
+      .ivu-table-cell {
+        a {
+          color:  $--color-primary; 
+        }
+        .ivu-table-cell-tree {
+          margin-right: 5px;
+          background-color: $--color-primary; 
+          border: 1px solid $--color-primary; 
+        }
+      }
+    }
+  }
+  // radio-group
+  .ivu-radio-group {
+    .ivu-radio-wrapper-checked {
+      .ivu-radio-inner {
+        border-color: $--color-primary;
+      }
+      .ivu-radio-inner:after {
+        background-color: $--color-primary;
+      }
+    }
+  }
+  // input 
+  .ivu-input:hover{
+    border-color: $--color-primary;
+  }
+  .ivu-input:focus {
+    border-color: $--color-primary;
+    box-shadow: none;
+  }
+  // input number 
+  .ivu-input-number:hover, .ivu-input-number:focus {
+    border-color: $--color-primary;
+    box-shadow: none;
+  }
+  // select
+  .ivu-select-item-selected, .ivu-select-item-selected:hover {
+    color: $--color-primary;
+  }
+  .ivu-select-visible {
+    .ivu-select-selection {
+      border-color: $--color-primary;
+    }
+  }
+  .ivu-select-selection:hover {
+    border-color: $--color-primary;
+  }
+  // iuv-form
+  .ivu-form {
+    .ivu-row {
+      .ivu-form-item {
+        .ivu-form-item-content {
+          a {
+              color: $--color-primary;
+            }
+        }
+      }
+    }
   }
 }
