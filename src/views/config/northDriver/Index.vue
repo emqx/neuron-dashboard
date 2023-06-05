@@ -1,13 +1,12 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <div class="neuron-page-title">{{ $t('config.northAppSetup') }}</div>
+  <emqx-card class="page-noraml-card" v-emqx-loading="isListLoading">
     <ViewHeaderBar>
-      <template v-slot:left>
-        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
+      <template v-slot:right>
+        <ListCardSwitch class="mr-5" v-model="showType" />
+        <emqx-button type="primary" size="small" icon="iconfont iconcreate" @click="addConfig">
           {{ $t('config.addApplication') }}
         </emqx-button>
-      </template>
-      <template v-slot:right>
-        <ListCardSwitch v-model="showType" />
       </template>
     </ViewHeaderBar>
 
