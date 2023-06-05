@@ -134,5 +134,3 @@ export const UserLevels = [
     key: 7,
   },
 ]
-
-export const isShowEkuiper = !(process.env.VUE_APP_SHOW_EKUIPER === 'false')
