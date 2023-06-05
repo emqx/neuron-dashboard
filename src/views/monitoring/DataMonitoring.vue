@@ -1,6 +1,6 @@
 <template>
-  <div class="neuron-page-title">{{ $t('data.dataMonitoring') }}</div>
-  <div class="data-monitoring">
+  <emqx-card class="data-monitoring page-noraml-card">
+    <div class="neuron-page-title">{{ $t('data.dataMonitoring') }}</div>
     <ViewHeaderBar>
       <template v-slot:right>
         <span v-if="currentGroup.groupName" class="header-item">
@@ -109,7 +109,7 @@
       :page-size="pageController.size"
       @size-change="handleSizeChange"
     />
-  </div>
+  </emqx-card>
   <WriteDialog
     v-model="showWriteDialog"
     :group="currentGroup.groupName"

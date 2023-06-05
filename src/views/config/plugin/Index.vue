@@ -1,6 +1,6 @@
 <template>
-  <div class="neuron-page-title">{{ $t('config.plugin') }}</div>
   <emqx-card class="plugin page-noraml-card" v-emqx-loading="isListLoading">
+    <div class="neuron-page-title">{{ $t('config.plugin') }}</div>
     <ViewHeaderBar>
       <template v-slot:right>
         <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addPlugin">

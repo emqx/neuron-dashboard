@@ -1,7 +1,6 @@
 @import './emqx-ui-variables.scss';
 
 #ekuiper-dashboard {
-  background-color: #fff;
   .layout {
     background-color: #fff;
   }
@@ -11,6 +10,10 @@
   .ivu-btn-primary {
     background-color: $--color-primary;
     border-color: $--color-primary;
+  }
+  .ivu-btn-text{
+    border-color: $--color-primary;
+    color: $--color-primary;
   }
   .ivu-btn-ghost.ivu-btn-primary {
     background-color: #fff;

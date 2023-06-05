@@ -1,6 +1,6 @@
 <template>
-  <div class="neuron-page-title">{{ $t('config.northAppSetup') }}</div>
   <emqx-card class="page-noraml-card" v-emqx-loading="isListLoading">
+    <div class="neuron-page-title">{{ $t('config.northAppSetup') }}</div>
     <ViewHeaderBar>
       <template v-slot:right>
         <ListCardSwitch class="mr-5" v-model="showType" />

@@ -1,6 +1,6 @@
 <template>
-  <div class="neuron-page-title">{{ $t('config.southDeviceManagement') }}</div>
   <emqx-card class="page-noraml-card" v-emqx-loading="isListLoading">
+    <div class="neuron-page-title">{{ $t('config.southDeviceManagement') }}</div>
     <ViewHeaderBar>
       <template v-slot:right>
         <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
