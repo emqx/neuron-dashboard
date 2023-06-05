@@ -9,7 +9,7 @@
           {{ versionData.version }}
         </emqx-descriptions-item>
         <emqx-descriptions-item :label="$t('admin.ekuiperVersion')">
-          {{ versionData.version }}
+          {{ ekuiperData.version }}
         </emqx-descriptions-item>
         <!-- TODO: get it from api -->
         <emqx-descriptions-item :label="$t('admin.ecpVersion')">1.0.0</emqx-descriptions-item>
@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onUnmounted } from 'vue'
 import { ElProgress } from 'element-plus'
-import { queryVersion, queryHardwareToken } from '@/api/admin'
+import { queryVersion, queryHardwareToken, queryEkuiperVersion } from '@/api/admin'
 import { getStatisticByType } from '@/api/statistics'
 import { secondToTime } from '@/utils/time'
 import { formatMemory } from '@/utils/utils'
@@ -62,6 +62,9 @@ const versionData = ref({
   build_date: '',
 })
 const hwToken = ref('')
+const ekuiperData = ref({
+  version: '',
+})
 
 const generalStatistics = reactive({
   systemRunningTime: '', // neuron running seconds
@@ -146,13 +149,16 @@ const setTimer = () => {
 const init = () => {
   try {
     isDataLoading.value = true
-    Promise.allSettled([queryVersion(), queryHardwareToken(), getStatistic()])
+    Promise.allSettled([queryVersion(), queryHardwareToken(), getStatistic(), queryEkuiperVersion()])
       .then((values: any) => {
+        console.log(values[3].value, '======')
         const { data: versionInfo } = values[0]?.value || { version: '', build_date: '' }
         const { data: hwTokenInfo } = values[1]?.value || {}
+        const { data: ekuiperInfo } = values[3]?.value || { version: '' }
 
         versionData.value = versionInfo
         hwToken.value = hwTokenInfo?.token || ''
+        ekuiperData.value = ekuiperInfo
       })
       .finally(() => {
         isDataLoading.value = false
