@@ -95,7 +95,9 @@
 
         <emqx-table-column width="100" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
-            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
+            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">
+              <i class="iconfont iconwrite" />
+            </emqx-button>
           </template>
         </emqx-table-column>
       </emqx-table>
