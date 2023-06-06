@@ -15,11 +15,14 @@
       </el-popover>
     </template>
     <!-- Number -->
-    <emqx-input
-      v-if="paramInfo.type === TypeOfPluginParam.Int"
-      v-model.number="inputValue"
-      :placeholder="String(defaultData[paramKey])"
-    />
+    <span v-if="paramInfo.type === TypeOfPluginParam.Int">
+      <emqx-input
+        v-if="!isParamHexadecimalBase(paramInfo)"
+        v-model.number="inputValue"
+        :placeholder="String(defaultData[paramKey])"
+      />
+      <emqx-input v-else v-model="inputValue" :placeholder="String(defaultData[paramKey])" />
+    </span>
     <!-- String -->
     <emqx-input
       v-else-if="paramInfo.type === TypeOfPluginParam.String"
@@ -75,6 +78,7 @@ import { fromByteArray } from 'base64-js'
 import md5 from 'blueimp-md5'
 import { ElPopover } from 'element-plus'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
+import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import useLang from '@/composables/useLang'
 import type { ParamInfo } from '@/types/config'
@@ -103,6 +107,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const { i18nContent } = useLang()
+const { isParamHexadecimalBase } = useNodeConfigParamCommon()
 
 const inputValue = computed({
   get() {
