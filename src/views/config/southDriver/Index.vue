@@ -167,7 +167,7 @@ export default defineComponent({
     if (!isSameParentRoute) {
       const paginationData = { pageNum: 1, pageSize: 30, total: 0 }
       store.commit('SET_PAGINATION', paginationData)
-      store.commit('SET_LIST_SHOW_TYPE', 'list')
+      store.commit('SET_LIST_SHOW_TYPE', 'card')
     }
     next()
   },
