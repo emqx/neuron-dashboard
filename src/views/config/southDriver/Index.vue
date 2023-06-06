@@ -96,7 +96,7 @@
               <AComWithDesc :content="$t('config.dataStatistics')">
                 <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(row)" />
               </AComWithDesc>
-              <AComWithDesc :content="$t('config.updateDebugLogLevel')">
+              <!-- <AComWithDesc :content="$t('config.updateDebugLogLevel')">
                 <img
                   class="img-debug-log"
                   src="~@/assets/images/debug-log-icon.png"
@@ -107,7 +107,26 @@
               </AComWithDesc>
               <AComWithDesc :content="$t('common.delete')">
                 <i class="iconfont icondelete" @click.stop="deleteDriver(row)" />
-              </AComWithDesc>
+              </AComWithDesc> -->
+              <emqx-dropdown trigger="click" @command="handleClickOperator">
+                <AComWithDesc :content="$t('common.more')">
+                  <span class="el-dropdown-link" @click.stop>
+                    <i class="el-icon-more" />
+                  </span>
+                </AComWithDesc>
+                <template #dropdown>
+                  <emqx-dropdown-menu>
+                    <emqx-dropdown-item :command="{ command: 'debugLogLevel', row }">
+                      <img class="img-debug-log" src="~@/assets/images/debug-log-icon.png" alt="debug-log" width="14" />
+                      <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
+                    </emqx-dropdown-item>
+                    <emqx-dropdown-item :command="{ command: 'delete', row }">
+                      <i class="iconfont icondelete icon-delete" />
+                      <span>{{ $t(`common.delete`) }}</span>
+                    </emqx-dropdown-item>
+                  </emqx-dropdown-menu>
+                </template>
+              </emqx-dropdown>
             </div>
           </template>
         </emqx-table-column>
@@ -219,6 +238,16 @@ const setNodeStartStopStatus = async (node: DriverItemInList, status: boolean, n
 const getNodeValue = (node: DriverItemInList) => {
   const useDriverStatusSet = useDriverStatus({ data: node })
   return useDriverStatusSet
+}
+
+const handleClickOperator = async (params: any) => {
+  const { command, row } = params
+  console.log(command, '====')
+  if (command === 'delete') {
+    await deleteDriver(row)
+  } else if (command === 'debugLogLevel') {
+    await modifyNodeLogLevel(row)
+  }
 }
 </script>
 

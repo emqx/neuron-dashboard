@@ -135,7 +135,7 @@ export default defineComponent({
   beforeRouteEnter(to, from, next) {
     const isSameParentRoute = isTheSameParentRoute(from, to)
     if (!isSameParentRoute) {
-      store.commit('SET_LIST_SHOW_TYPE', 'list')
+      store.commit('SET_LIST_SHOW_TYPE', 'card')
     }
     next()
   },
