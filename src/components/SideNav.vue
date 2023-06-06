@@ -46,7 +46,7 @@ const navList = computed(() => {
   const ekuiperNav = {
     to: '/ekuiper',
     label: 'ekuiper.streamProcessing',
-    icon: 'iconstream',
+    icon: 'iconstreamsvg',
     subMenus: [
       {
         to: '/ekuiper/nodes/single-node/source',
@@ -86,12 +86,12 @@ const navList = computed(() => {
     {
       to: '/monitoring/data',
       label: 'data.dataMonitoring',
-      icon: 'iconstatus',
+      icon: 'iconsmonitor',
     },
     {
       to: '/configuration',
       label: 'config.config',
-      icon: 'iconconfig',
+      icon: 'iconconfigssvg',
       subMenus: [
         {
           to: '/configuration/south-driver',
@@ -129,7 +129,7 @@ const navList = computed(() => {
     {
       to: '/admin/change-password',
       label: 'common.changePassword',
-      icon: 'iconpassword',
+      icon: 'iconpwdsvg',
     },
   ]
   if (isShowEkuiper) {
