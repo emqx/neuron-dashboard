@@ -130,13 +130,15 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
 
   const selectedNodeChanged = async () => {
     subscriptionForm.value.group = ''
+    subscriptionForm.value.topic = ''
     const data = await queryGroupList(subscriptionForm.value.driver as string)
     groupList.value = data
   }
   const changeGroup = (val: string) => {
     const nodeName = props.currentNode
     const groupName = val
-    subscriptionForm.value.topic = val && nodeName ? `/neuron/${nodeName}/${groupName}` : ''
+    const driverName = subscriptionForm.value.driver
+    subscriptionForm.value.topic = val && nodeName ? `/neuron/${nodeName}/${driverName}/${groupName}` : ''
   }
   const initForm = async () => {
     subscriptionForm.value = createRawSubscriptionForm()
