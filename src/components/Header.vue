@@ -29,7 +29,7 @@
           </template>
         </emqx-dropdown>
 
-        <emqx-dropdown class="dropdown-item" @command="changeLanguage">
+        <emqx-dropdown v-if="multiLangMode" class="dropdown-item" @command="changeLanguage">
           <span class="el-dropdown-link">
             {{ langLabel }}
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -74,6 +74,7 @@ import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
 import { qiankunActions } from '@/utils/forEKuiper'
+import { multiLangMode } from '@/config/index'
 
 const store = useStore()
 const router = useRouter()
