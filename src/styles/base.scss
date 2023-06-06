@@ -107,7 +107,7 @@ label {
   display: flex;
   .side-nav {
     border-right: none;
-    background-color: #f4f6fa;
+    background-color: transparent;
     height: calc(100vh - 1px); // 100px = top with position fixed
     overflow-y: auto;
     padding-right: 20px;
@@ -189,19 +189,6 @@ label {
         font-size: 32px;
         font-weight: 600;
         margin-bottom: 24px;
-      }
-      .el-card.is-always-shadow.emqx-card.page-noraml-card{
-        // page-noraml-card 消除emqx-card 的样式
-        // box-shadow: none;
-        // border-radius: 4px;
-        // border: none;
-        // background-color:#fff;
-        // color: #303133;
-        // transition: none;
-        // margin: 16px 0;
-        // .el-card__body{
-        //   padding: 0;
-        // }
       }
       .mr-5 {
         margin-right: 5px;
