@@ -17,12 +17,16 @@
           </AComWithDesc>
           <template #dropdown>
             <emqx-dropdown-menu>
-              <emqx-dropdown-item command="debugLogLevel">
-                <img class="img-debug-log" src="~@/assets/images/debug-log-icon.png" alt="debug-log" width="14" />
+              <emqx-dropdown-item v-if="!isMonitorNode(data.name)" class="operation-item-wrap" command="edit">
+                <i class="el-icon-edit-outline operation-icon" />
+                <span>{{ $t(`common.edit`) }}</span>
+              </emqx-dropdown-item>
+              <emqx-dropdown-item class="operation-item-wrap" command="debugLogLevel">
+                <img class="operation-image" src="~@/assets/images/debug-log-icon.png" alt="debug-log" />
                 <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
               </emqx-dropdown-item>
-              <emqx-dropdown-item command="delete">
-                <i class="iconfont icondelete icon-delete" />
+              <emqx-dropdown-item class="operation-item-wrap" command="delete">
+                <i class="iconfont icondelete operation-icon" />
                 <span>{{ $t(`common.delete`) }}</span>
               </emqx-dropdown-item>
             </emqx-dropdown-menu>
@@ -72,13 +76,7 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue'
 import { computed, defineEmits, defineProps } from 'vue'
-import useDeleteDriver from '@/composables/config/useDeleteDriver'
-import {
-  useDriverStatus,
-  useNodeStartStopStatus,
-  dataStatistics,
-  useNodeDebugLogLevel,
-} from '@/composables/config/useDriver'
+import { useDriverStatus, useNodeStartStopStatus, dataStatistics, useDriverName } from '@/composables/config/useDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import type { DriverItemInList } from '@/types/config'
 import { NodeCatogery } from '@/types/enums'
@@ -92,12 +90,13 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['updated', 'toggleStatus', 'reload'])
+const emit = defineEmits(['toggleStatus', 'clickOperation'])
 
 const { goGroupPage, goNodeConfig } = useSouthDriver(true, true)
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
 
 const { countNodeStartStopStatus } = useNodeStartStopStatus()
+const { isMonitorNode } = useDriverName()
 
 const nodeStartStopStatus = computed({
   get() {
@@ -112,17 +111,8 @@ const nodeStartStopStatus = computed({
 const { isShowDataStatistics, dataStatisticsVisiable } = dataStatistics()
 
 // more operators
-const { deleteDriverByNode } = useDeleteDriver()
-const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
-
 const handleClickOperator = async (command: string) => {
-  if (command === 'delete') {
-    await deleteDriverByNode(NodeCatogery.South, props.data)
-  } else if (command === 'debugLogLevel') {
-    await modifyNodeLogLevelToDebug(props.data.name)
-  }
-
-  emit('reload')
+  emit('clickOperation', command)
 }
 </script>
 
@@ -133,12 +123,19 @@ const handleClickOperator = async (command: string) => {
     display: inline-block;
   }
 }
-.img-debug-log {
+.operation-item-wrap {
+  display: flex;
+  align-items: center;
+}
+.operation-image {
   margin-right: 8px;
   position: relative;
-  top: 2px;
+  left: 2px;
+  width: 18px;
+  cursor: pointer;
 }
-.icon-delete {
+.operation-icon {
+  font-size: 20px;
   color: #20466c;
 }
 </style>
