@@ -1,12 +1,13 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <emqx-card class="page-noraml-card" v-emqx-loading="isListLoading">
+    <div class="neuron-page-title">{{ $t('config.southDeviceManagement') }}</div>
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
           {{ $t('config.addDevice') }}
         </emqx-button>
       </template>
-      <template v-slot:right>
+      <template v-slot:left>
         <PluginTypesSelector
           v-model="queryKeyword.plugin"
           :types="SOUTH_DRIVER_NODE_TYPE"
@@ -95,18 +96,25 @@
               <AComWithDesc :content="$t('config.dataStatistics')">
                 <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(row)" />
               </AComWithDesc>
-              <AComWithDesc :content="$t('config.updateDebugLogLevel')">
-                <img
-                  class="img-debug-log"
-                  src="~@/assets/images/debug-log-icon.png"
-                  alt="debug-log"
-                  width="22"
-                  @click.stop="modifyNodeLogLevel(row)"
-                />
-              </AComWithDesc>
-              <AComWithDesc :content="$t('common.delete')">
-                <i class="iconfont icondelete" @click.stop="deleteDriver(row)" />
-              </AComWithDesc>
+              <emqx-dropdown trigger="click" @command="handleClickOperator">
+                <AComWithDesc :content="$t('common.more')">
+                  <span class="el-dropdown-link" @click.stop>
+                    <i class="el-icon-more" />
+                  </span>
+                </AComWithDesc>
+                <template #dropdown>
+                  <emqx-dropdown-menu>
+                    <emqx-dropdown-item :command="{ command: 'debugLogLevel', row }">
+                      <img class="img-debug-log" src="~@/assets/images/debug-log-icon.png" alt="debug-log" width="14" />
+                      <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
+                    </emqx-dropdown-item>
+                    <emqx-dropdown-item :command="{ command: 'delete', row }">
+                      <i class="iconfont icondelete icon-delete" />
+                      <span>{{ $t(`common.delete`) }}</span>
+                    </emqx-dropdown-item>
+                  </emqx-dropdown-menu>
+                </template>
+              </emqx-dropdown>
             </div>
           </template>
         </emqx-table-column>
@@ -124,7 +132,6 @@
       />
     </div>
   </emqx-card>
-
   <!-- Data Statistics -->
   <DataStatisticsDrawer
     v-if="dataStatisticsVisiable"
@@ -167,7 +174,7 @@ export default defineComponent({
     if (!isSameParentRoute) {
       const paginationData = { pageNum: 1, pageSize: 30, total: 0 }
       store.commit('SET_PAGINATION', paginationData)
-      store.commit('SET_LIST_SHOW_TYPE', 'list')
+      store.commit('SET_LIST_SHOW_TYPE', 'card')
     }
     next()
   },
@@ -219,6 +226,15 @@ const setNodeStartStopStatus = async (node: DriverItemInList, status: boolean, n
 const getNodeValue = (node: DriverItemInList) => {
   const useDriverStatusSet = useDriverStatus({ data: node })
   return useDriverStatusSet
+}
+
+const handleClickOperator = async (params: any) => {
+  const { command, row } = params
+  if (command === 'delete') {
+    await deleteDriver(row)
+  } else if (command === 'debugLogLevel') {
+    await modifyNodeLogLevel(row)
+  }
 }
 </script>
 

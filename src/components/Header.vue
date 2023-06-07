@@ -1,7 +1,10 @@
 <template>
   <emqx-header class="header">
     <template #title>
-      <img src="../assets/images/logo.png" alt="neuron-logo" width="141" />
+      <div class="logo-wrap">
+        <img src="../assets/images/logo.svg" alt="neuron-logo" width="40" />
+        <span class="title">{{ TITLE }}</span>
+      </div>
     </template>
 
     <template v-slot:right>
@@ -13,10 +16,10 @@
           </span>
           <template #dropdown>
             <emqx-dropdown-menu class="header-menu">
-              <emqx-dropdown-item @click="goLicense">
+              <!-- <emqx-dropdown-item @click="goLicense">
                 <i class="iconfont iconLicense"></i>
                 <span>License</span>
-              </emqx-dropdown-item>
+              </emqx-dropdown-item> -->
               <emqx-dropdown-item @click="goAbout">
                 <i class="iconfont iconabout"></i>
                 <span> {{ $t('common.about') }}</span>
@@ -74,6 +77,7 @@ import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
 import { qiankunActions } from '@/utils/forEKuiper'
+import { TITLE } from '@/utils/constants'
 
 const store = useStore()
 const router = useRouter()
@@ -131,10 +135,20 @@ const changeLanguage = (command: string) => {
 
 <style lang="scss">
 @import '@/styles/emqx-ui-variables.scss';
+@import '@/styles/mixins.scss';
 
 .header {
   .el-dropdown {
     color: #fff;
+  }
+  .logo-wrap {
+    @include display-flex();
+  }
+  .title {
+    color: #23c2f4;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 0 10px;
   }
 }
 .dropdown-item {

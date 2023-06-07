@@ -1,14 +1,15 @@
 <template>
-  <emqx-card class="data-monitoring">
+  <emqx-card class="data-monitoring page-noraml-card">
+    <div class="neuron-page-title">{{ $t('data.dataMonitoring') }}</div>
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <span v-if="currentGroup.groupName" class="header-item">
           <label class="label">{{ $t('data.updated') }}</label>
           <span>{{ dateformat(updated, 'yyyy-mm-dd HH:MM:ss') }}</span>
         </span>
       </template>
 
-      <template v-slot:right>
+      <template v-slot:left>
         <div class="header-item search-group">
           <label class="label">{{ $t('config.southDevice') }}</label>
           <emqx-select
@@ -94,7 +95,9 @@
 
         <emqx-table-column width="100" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
-            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
+            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">
+              <i class="iconfont iconwrite" />
+            </emqx-button>
           </template>
         </emqx-table-column>
       </emqx-table>

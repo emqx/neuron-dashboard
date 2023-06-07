@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="about">
+  <emqx-card class="about page-noraml-card">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('common.changePassword') }}</h3>
     </div>

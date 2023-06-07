@@ -37,7 +37,7 @@ export default createStore<State>({
       subAppInstances: {
         ekuiper: undefined,
       },
-      listShowType: 'list',
+      listShowType: 'card',
       paginationData: {
         pageNum: 1,
         pageSize: 30,

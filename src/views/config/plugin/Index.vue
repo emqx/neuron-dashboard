@@ -1,12 +1,13 @@
 <template>
-  <emqx-card class="plugin" v-emqx-loading="isListLoading">
+  <emqx-card class="plugin page-noraml-card" v-emqx-loading="isListLoading">
+    <div class="neuron-page-title">{{ $t('config.plugin') }}</div>
     <ViewHeaderBar>
-      <template v-slot:left>
+      <template v-slot:right>
         <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addPlugin">
           {{ $t('config.addPlugin') }}
         </emqx-button>
       </template>
-      <template v-slot:right>
+      <template v-slot:left>
         <emqx-select
           v-model="filterNodeType"
           clearable
