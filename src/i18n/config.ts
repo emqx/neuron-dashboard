@@ -27,6 +27,10 @@ export default {
     zh: '添加应用',
     en: 'Add App',
   },
+  editApp: {
+    zh: '编辑应用',
+    en: 'Edit App',
+  },
   workStatus: {
     zh: '工作状态',
     en: 'Status',
@@ -106,6 +110,10 @@ export default {
   newDevice: {
     zh: '新增设备',
     en: 'New Device',
+  },
+  editDevice: {
+    zh: '编辑设备',
+    en: 'Edit Device',
   },
   addr: {
     zh: '地址',

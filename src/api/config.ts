@@ -93,8 +93,7 @@ export const deleteDriver = (node: string) => {
   return http.delete('/node', { data: { name: node } })
 }
 
-// USELESS
-export const updateDriver = (data: { id: number; name: string }) => {
+export const updateDriver = (data: { name: string; new_name: string }) => {
   return http.put('/node', data)
 }
 

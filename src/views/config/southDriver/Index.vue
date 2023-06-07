@@ -33,9 +33,8 @@
           <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.name" tag="li" class="setup-item">
             <SouthDriveItemCard
               :data="item"
-              @updated="dbGetSouthDriverList"
-              @reload="dbGetSouthDriverList"
               @toggle-status="setNodeStartStopStatus(item, $event, index)"
+              @clickOperation="handleClickOperator($event, item)"
             />
           </emqx-col>
         </emqx-row>
@@ -81,7 +80,7 @@
           <template #default="{ row }"> {{ row.rtt }} {{ $t('common.ms') }} </template>
         </emqx-table-column>
         <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable="custom" />
-        <emqx-table-column align="left" :label="$t('common.oper')" width="220px">
+        <emqx-table-column align="left" :label="$t('common.oper')" width="180px">
           <template #default="{ row, index }">
             <div class="operator-wrap">
               <AComWithDesc :content="countNodeStartStopStatus(row) ? $t('common.stop') : $t('common.start')">
@@ -93,21 +92,38 @@
               <AComWithDesc :content="$t('config.deviceConfig')">
                 <i class="iconfont iconsetting" @click.stop="goNodeConfig(row)" />
               </AComWithDesc>
-              <AComWithDesc :content="$t('config.dataStatistics')">
-                <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(row)" />
-              </AComWithDesc>
-              <AComWithDesc :content="$t('config.updateDebugLogLevel')">
-                <img
-                  class="img-debug-log"
-                  src="~@/assets/images/debug-log-icon.png"
-                  alt="debug-log"
-                  width="22"
-                  @click.stop="modifyNodeLogLevel(row)"
-                />
-              </AComWithDesc>
-              <AComWithDesc :content="$t('common.delete')">
-                <i class="iconfont icondelete" @click.stop="deleteDriver(row)" />
-              </AComWithDesc>
+
+              <emqx-dropdown trigger="click" @command="handleClickOperator($event, row)">
+                <AComWithDesc :content="$t('common.more')">
+                  <span class="el-dropdown-link" @click.stop>
+                    <i class="el-icon-more" />
+                  </span>
+                </AComWithDesc>
+                <template #dropdown>
+                  <emqx-dropdown-menu>
+                    <emqx-dropdown-item v-if="!isMonitorNode(row.name)" class="operation-item-wrap" command="edit">
+                      <i class="el-icon-edit-outline operation-icon" />
+                      <span>{{ $t(`common.edit`) }}</span>
+                    </emqx-dropdown-item>
+                    <emqx-dropdown-item class="operation-item-wrap" command="dataStatistics">
+                      <i class="iconfont iconstatus operation-icon" />
+                      <span>{{ $t(`config.dataStatistics`) }}</span>
+                    </emqx-dropdown-item>
+                    <emqx-dropdown-item class="operation-item-wrap" command="debugLogLevel">
+                      <img
+                        class="operation-image img-debug-log"
+                        src="~@/assets/images/debug-log-icon.png"
+                        alt="debug-log"
+                      />
+                      <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
+                    </emqx-dropdown-item>
+                    <emqx-dropdown-item class="operation-item-wrap" command="delete">
+                      <i class="iconfont icondelete operation-icon" />
+                      <span>{{ $t(`common.delete`) }}</span>
+                    </emqx-dropdown-item>
+                  </emqx-dropdown-menu>
+                </template>
+              </emqx-dropdown>
             </div>
           </template>
         </emqx-table-column>
@@ -140,10 +156,18 @@
     :is-dual-mode="true"
     @submitted="getSouthDriverList"
   />
+
+  <EditNodeNameDialog
+    v-model="showEditDialog"
+    :type="DriverDirection.South"
+    :node-name="editDriverData.name"
+    :node="editDriverData"
+    @updated="reloadDriverList"
+  />
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import store from '@/store'
 import { ElLink } from 'element-plus'
 import {
@@ -152,11 +176,13 @@ import {
   useNodeStartStopStatus,
   dataStatistics,
   useListShowType,
+  useDriverName,
 } from '@/composables/config/useDriver'
 import useSouthDriver from '@/composables/config/useSouthDriver'
 import type { DriverItemInList } from '@/types/config'
 import { DriverDirection, NodeCatogery } from '@/types/enums'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
+import EditNodeNameDialog from '@/views/config/components/EditNodeNameDialog.vue'
 import SouthDriveItemCard from './components/SouthDriveItemCard.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import KeywordSerachInput from '@/components/KeywordSearchInput.vue'
@@ -189,21 +215,24 @@ const {
   isListLoading,
   getSouthDriverList,
   dbGetSouthDriverList,
+  reloadDriverList,
+
   goGroupPage,
   goNodeConfig,
   deleteDriver,
   modifyNodeLogLevel,
   sortDataByKey,
+
+  addConfig,
+  showDialog,
+  editDialog,
+  showEditDialog,
+  editDriverData,
 } = useSouthDriver(true, true)
 
 const { isShowDataStatistics, dataStatisticsVisiable, nodeItemData } = dataStatistics()
 
 const { showType } = useListShowType()
-
-const showDialog = ref(false)
-const addConfig = () => {
-  showDialog.value = true
-}
 
 const { toggleNodeStartStopStatus } = useToggleNodeStartStopStatus()
 const { countNodeStartStopStatus } = useNodeStartStopStatus()
@@ -225,6 +254,21 @@ const getNodeValue = (node: DriverItemInList) => {
   const useDriverStatusSet = useDriverStatus({ data: node })
   return useDriverStatusSet
 }
+
+const { isMonitorNode } = useDriverName()
+
+const handleClickOperator = async (command: string, row: DriverItemInList) => {
+  const apiMap = new Map([
+    ['edit', editDialog],
+    ['dataStatistics', isShowDataStatistics],
+    ['debugLogLevel', modifyNodeLogLevel],
+    ['delete', deleteDriver],
+  ])
+  const apiFunc = apiMap.get(command)
+  if (apiFunc && typeof apiFunc === 'function') {
+    apiFunc(row)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -235,9 +279,19 @@ const getNodeValue = (node: DriverItemInList) => {
     margin-bottom: 24px;
   }
 }
-.img-debug-log {
+.operation-item-wrap {
+  display: flex;
+  align-items: center;
+}
+.operation-icon {
+  font-size: 24px;
+  color: #20466c;
+}
+.operation-image {
   margin-right: 8px;
   position: relative;
-  top: 2px;
+  left: 2px;
+  width: 22px;
+  cursor: pointer;
 }
 </style>
