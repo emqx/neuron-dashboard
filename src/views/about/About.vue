@@ -152,7 +152,6 @@ const init = () => {
     isDataLoading.value = true
     Promise.allSettled([queryVersion(), queryHardwareToken(), getStatistic(), queryEkuiperVersion()])
       .then((values: any) => {
-        console.log(values[3].value, '======')
         const { data: versionInfo } = values[0]?.value || { version: '', build_date: '' }
         const { data: hwTokenInfo } = values[1]?.value || {}
         const { data: ekuiperInfo } = values[3]?.value || { version: '' }
