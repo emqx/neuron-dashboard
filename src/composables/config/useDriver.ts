@@ -167,12 +167,12 @@ export const useNodeDebugLogLevel = () => {
 
 export const useDriverName = () => {
   const isNotSupportRemoveNode = computed(() => (nodeName: string) => {
-    const nodeNameLowerCase = nodeName.toLocaleLowerCase()
+    const nodeNameLowerCase = nodeName?.toLocaleLowerCase()
     const whiteList = ['data-stream-processing', 'monitor']
     return whiteList.includes(nodeNameLowerCase)
   })
 
-  const isMonitorNode = (nodeName: string) => nodeName.toLowerCase() === 'monitor'
+  const isMonitorNode = (nodeName: string) => nodeName?.toLowerCase() === 'monitor'
 
   return {
     isNotSupportRemoveNode,

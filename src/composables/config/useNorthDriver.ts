@@ -33,6 +33,17 @@ export default (autoLoad = true, needRefreshStatus = false) => {
 
   let refreshStatusTimer: undefined | number
 
+  const showDialog = ref(false)
+  const showEditDialog = ref(false)
+  const editDriverData: Ref<{ name: string }> = ref({ name: '' })
+  const addConfig = () => {
+    showDialog.value = true
+  }
+  const editDialog = (node: DriverItemInList) => {
+    showEditDialog.value = true
+    editDriverData.value = { name: node.name }
+  }
+
   const nodePlugin = computed(
     () => (nodeName: string) => northDriverList.value.find((item: DriverItemInList) => item.name === nodeName)?.plugin,
   )
@@ -61,6 +72,11 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const dbGetNorthDriverList = debounce(() => {
     getNorthDriverList()
   }, 500)
+
+  const reloadDriverList = () => {
+    getNorthDriverList()
+    editDriverData.value = { name: '' }
+  }
 
   const startTimer = () => {
     refreshStatusTimer = window.setInterval(async () => {
@@ -144,6 +160,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     isListLoading,
     getNorthDriverList,
     dbGetNorthDriverList,
+    reloadDriverList,
     isMQTTPugin,
     nodePlugin,
     goGroupPage,
@@ -151,5 +168,11 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     modifyNodeLogLevel,
     deleteDriver,
     sortDataByKey,
+
+    addConfig,
+    showDialog,
+    editDialog,
+    showEditDialog,
+    editDriverData,
   }
 }

@@ -28,6 +28,18 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const southDriverList: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
 
+  // add | edit driver
+  const showDialog = ref(false)
+  const showEditDialog = ref(false)
+  const editDriverData: Ref<{ name: string }> = ref({ name: '' })
+  const addConfig = () => {
+    showDialog.value = true
+  }
+  const editDialog = (node: DriverItemInList) => {
+    showEditDialog.value = true
+    editDriverData.value = { name: node.name }
+  }
+
   const pageController = computed({
     get: () => store.state.paginationData,
     set: (val) => {
@@ -159,6 +171,11 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     dbGetSouthDriverList()
   }
 
+  const reloadDriverList = () => {
+    getSouthDriverList()
+    editDriverData.value = { name: '' }
+  }
+
   if (autoLoad) {
     getSouthDriverList()
   }
@@ -183,10 +200,18 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     isListLoading,
     getSouthDriverList,
     dbGetSouthDriverList,
+    reloadDriverList,
+
     goGroupPage,
     goNodeConfig,
     modifyNodeLogLevel,
     deleteDriver,
     sortDataByKey,
+
+    addConfig,
+    showDialog,
+    editDialog,
+    showEditDialog,
+    editDriverData,
   }
 }

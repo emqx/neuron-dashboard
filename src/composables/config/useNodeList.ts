@@ -52,7 +52,7 @@ export const useFillNodeListStatusData = () => {
         const itemStatusData: DriverStateData = {
           running: !itemStatus ? 1 : itemStatus.running,
           link: !itemStatus ? 0 : itemStatus.link,
-          rtt: Number(itemStatus.rtt) || 0,
+          rtt: Number(itemStatus?.rtt) || 0,
         }
         const node = Object.assign(item, itemStatusData)
         return Promise.resolve(node)
