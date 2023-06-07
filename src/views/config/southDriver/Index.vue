@@ -96,18 +96,6 @@
               <AComWithDesc :content="$t('config.dataStatistics')">
                 <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(row)" />
               </AComWithDesc>
-              <!-- <AComWithDesc :content="$t('config.updateDebugLogLevel')">
-                <img
-                  class="img-debug-log"
-                  src="~@/assets/images/debug-log-icon.png"
-                  alt="debug-log"
-                  width="22"
-                  @click.stop="modifyNodeLogLevel(row)"
-                />
-              </AComWithDesc>
-              <AComWithDesc :content="$t('common.delete')">
-                <i class="iconfont icondelete" @click.stop="deleteDriver(row)" />
-              </AComWithDesc> -->
               <emqx-dropdown trigger="click" @command="handleClickOperator">
                 <AComWithDesc :content="$t('common.more')">
                   <span class="el-dropdown-link" @click.stop>
@@ -242,7 +230,6 @@ const getNodeValue = (node: DriverItemInList) => {
 
 const handleClickOperator = async (params: any) => {
   const { command, row } = params
-  console.log(command, '====')
   if (command === 'delete') {
     await deleteDriver(row)
   } else if (command === 'debugLogLevel') {
