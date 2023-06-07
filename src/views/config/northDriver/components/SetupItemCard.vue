@@ -13,12 +13,13 @@
         <AComWithDesc :content="$t('config.dataStatistics')">
           <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(data)"></i>
         </AComWithDesc>
-        <AComWithDesc v-if="isNotSupportRemoveNode(data.name)" :content="$t('config.updateDebugLogLevel')">
+
+        <!-- monitor driver does not support deletion and editing -->
+        <AComWithDesc v-if="isMonitorNode(data.name)" :content="$t('config.updateDebugLogLevel')">
           <img
             class="img-debug-log-large"
             src="~@/assets/images/debug-log-icon.png"
             alt="debug-log"
-            width="16"
             @click.stop="handleClickOperator('debugLogLevel')"
           />
         </AComWithDesc>
@@ -30,15 +31,21 @@
           </AComWithDesc>
           <template #dropdown>
             <emqx-dropdown-menu>
-              <emqx-dropdown-item command="debugLogLevel">
-                <img class="img-debug-log" src="~@/assets/images/debug-log-icon.png" alt="debug-log" width="14" />
+              <emqx-dropdown-item v-if="!isMonitorNode(data.name)" class="operation-item-wrap" command="edit">
+                <i class="el-icon-edit-outline operation-icon" />
+                <span>{{ $t(`common.edit`) }}</span>
+              </emqx-dropdown-item>
+              <emqx-dropdown-item class="operation-item-wrap" command="debugLogLevel">
+                <img class="operation-image" src="~@/assets/images/debug-log-icon.png" alt="debug-log" />
                 <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
               </emqx-dropdown-item>
               <emqx-dropdown-item
+                v-if="!isNotSupportRemoveNode(data.name)"
+                class="operation-item-wrap"
                 command="delete"
                 :disabled="data.pluginKind === PluginKind.Static"
-                icon="iconfont icondelete"
               >
+                <i class="iconfont icondelete operation-icon" />
                 <span>{{ $t(`common.delete`) }}</span>
               </emqx-dropdown-item>
             </emqx-dropdown-menu>
@@ -83,21 +90,14 @@
 <script lang="ts" setup>
 import { computed, defineEmits, defineProps } from 'vue'
 import type { PropType } from 'vue'
-import useDeleteDriver from '@/composables/config/useDeleteDriver'
-import {
-  useDriverStatus,
-  useNodeStartStopStatus,
-  dataStatistics,
-  useNodeDebugLogLevel,
-  useDriverName,
-} from '@/composables/config/useDriver'
+import { useDriverStatus, useNodeStartStopStatus, dataStatistics, useDriverName } from '@/composables/config/useDriver'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import { PluginKind, NodeCatogery } from '@/types/enums'
 import type { DriverItemInList } from '@/types/config'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import DataStatisticsDrawer from '../../components/dataStatisticsDrawer.vue'
 
-const emit = defineEmits(['reload', 'updated', 'toggleStatus'])
+const emit = defineEmits(['toggleStatus', 'clickOperation'])
 
 const props = defineProps({
   data: { type: Object as PropType<DriverItemInList>, required: true },
@@ -121,17 +121,8 @@ const nodeStartStopStatus = computed({
 const { isShowDataStatistics, dataStatisticsVisiable } = dataStatistics()
 
 // more operators
-const { deleteDriverByNode } = useDeleteDriver()
-const { modifyNodeLogLevelToDebug } = useNodeDebugLogLevel()
-
 const handleClickOperator = async (command: string) => {
-  if (command === 'delete') {
-    await deleteDriverByNode(NodeCatogery.North, props.data)
-  } else if (command === 'debugLogLevel') {
-    await modifyNodeLogLevelToDebug(props.data.name)
-  }
-
-  emit('reload')
+  emit('clickOperation', command)
 }
 
 const { isNotSupportRemoveNode, isMonitorNode } = useDriverName()
@@ -143,15 +134,27 @@ const { isNotSupportRemoveNode, isMonitorNode } = useDriverName()
 .setup-item-card {
   background-color: #f4f9fc;
 }
-.img-debug-log {
-  margin-right: 8px;
-  position: relative;
-  top: 2px;
-}
 .setup-item-handlers {
   @include display-flex();
 }
 .img-debug-log-large {
+  cursor: pointer;
+  width: 18px;
+}
+
+.operation-item-wrap {
+  display: flex;
+  align-items: center;
+}
+.operation-icon {
+  font-size: 20px;
+  color: #20466c;
+}
+.operation-image {
+  margin-right: 8px;
+  position: relative;
+  left: 2px;
+  width: 18px;
   cursor: pointer;
 }
 </style>
