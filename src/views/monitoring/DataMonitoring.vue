@@ -169,7 +169,6 @@ const { tagDecimalValue } = useTagDecimal()
 
 <style lang="scss">
 .data-monitoring {
-  margin: 16px 0;
   .filter-selector {
     width: 220px;
   }
