@@ -100,7 +100,7 @@ export default (props: Props) => {
         callback()
       }
     } else {
-      const isDecimalValue = /^[1-9]\d*$/.test(trueVlue)
+      const isDecimalValue = /^[0-9]\d*$/.test(trueVlue)
       if (!isDecimalValue) {
         callback(new Error(t('config.decimalFormatError')))
       } else {
