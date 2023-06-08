@@ -125,16 +125,21 @@ export default (props: Props) => {
   }
   // valid string regex
   const checkStringParamRegex = (rule: unknown, value: string, callback: any) => {
-    const { valid } = props.paramInfo as StringParamInfo
-    if (valid?.regex) {
+    const { valid, attribute } = props.paramInfo as StringParamInfo
+    const { regex: stringRegex } = valid || {}
+    if (attribute === ParamRequired.False && (!value || (value && !stringRegex))) {
+      callback()
+    } else if (stringRegex) {
       const regex = valid.regex.slice(1, valid.regex.length - 1)
       const newRegex = new RegExp(regex)
       if (!newRegex.test(value)) {
         callback(new Error(`${t('config.validHostError')}`))
+      } else {
+        callback()
       }
+    } else {
       callback()
     }
-    callback()
   }
 
   const checkArrayParamLength = (rule: unknown, value: string, callback: any) => {
