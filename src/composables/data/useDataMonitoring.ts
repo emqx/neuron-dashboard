@@ -291,8 +291,9 @@ export default () => {
 
   const handleShowValueByHexadecimalChanged = async () => {
     try {
-      totalData.value.forEach(async (item) => {
+      totalData.value.forEach(async (item, index) => {
         item.valueToShow = await valueToShow(item)
+        totalData.value.splice(index, 1, item)
       })
       return Promise.resolve(totalData.value)
     } catch (error) {

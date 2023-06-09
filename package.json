@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "dev:pc": "export VUE_APP_HOST=http://localhost:7003 && yarn serve",
     "dev:norules": "export VUE_APP_HOST=http://localhost:7003 && export VUE_APP_SHOW_EKUIPER=false && yarn serve",
-    "dev:sub-app": "export VUE_APP_HOST=http://124.70.166.104:7000 && export VUE_APP_SHOW_EKUIPER=false && export VUE_APP_SUB_APP=true && yarn serve",
+    "dev:sub-app": "export VUE_APP_HOST=http://140.210.200.105:32000 && export VUE_APP_SHOW_EKUIPER=false && export VUE_APP_SUB_APP=true && yarn serve",
     "dev:server": "export VUE_APP_HOST=ws://iot-platform.cloud:6170 && yarn serve",
     "dev:test": "export VUE_APP_HOST=http://124.70.166.104:7000 && yarn serve",
     "build": "VUE_APP_SHOW_EKUIPER=false VUE_APP_SUB_APP=true vue-cli-service build",
