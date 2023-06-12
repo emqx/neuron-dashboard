@@ -9,35 +9,29 @@
       </template>
 
       <template v-slot:right>
-        <div class="header-item search-group">
-          <label class="label">{{ $t('config.southDevice') }}</label>
-          <emqx-select
-            v-model="currentGroup.node"
-            size="medium"
-            filterable
-            clearable
-            class="filter-selector"
-            :placeholder="$t('common.pleaseSelect')"
-            @change="selectedNodeChanged"
-          >
-            <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
-          </emqx-select>
-        </div>
+        <emqx-select
+          v-model="currentGroup.node"
+          size="medium"
+          filterable
+          clearable
+          class="header-item search-group filter-selector"
+          :placeholder="$t('config.southDevicePlaceholder')"
+          @change="selectedNodeChanged"
+        >
+          <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
+        </emqx-select>
 
-        <div class="header-item search-group">
-          <label class="label">{{ $t('config.groupName') }}</label>
-          <emqx-select
-            v-model="currentGroup.groupName"
-            filterable
-            clearable
-            size="medium"
-            class="filter-selector"
-            :placeholder="$t('common.pleaseSelect')"
-            @change="selectedGroupChanged"
-          >
-            <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
-          </emqx-select>
-        </div>
+        <emqx-select
+          v-model="currentGroup.groupName"
+          filterable
+          clearable
+          size="medium"
+          class="header-item search-group filter-selector"
+          :placeholder="$t('config.groupPlaceholder')"
+          @change="selectedGroupChanged"
+        >
+          <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
+        </emqx-select>
         <KeywordSerachInput
           v-model="keywordSearch"
           class="header-item search_input"
