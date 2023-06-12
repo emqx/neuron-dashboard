@@ -2,13 +2,13 @@
   <emqx-col :span="paramInfo.type === TypeOfPluginParam.Array ? 24 : 12">
     <emqx-form-item class="node-config-param-item" :rules="rules" :prop="paramKey" :required="isFieldRequired">
       <template #label>
-        <span>{{ paramName }}</span>
+        <span>{{ showLabel(paramInfo) }}</span>
         <el-popover
           v-if="paramInfo.description"
           placement="top-start"
           :width="300"
           trigger="hover"
-          :content="paramDescripton"
+          :content="i18nContent(paramInfo, 'description')"
         >
           <template #reference>
             <i class="iconfont iconalarm" />
@@ -96,7 +96,6 @@ import useLang from '@/composables/useLang'
 import type { ParamInfo } from '@/types/config'
 import { FileType, TypeOfPluginParam } from '@/types/enums'
 import DynamicTable from '@/components/DynamicTable.vue'
-import { IGNORE_PLUGINS } from '@/utils/constants'
 
 const props = defineProps({
   modelValue: {
@@ -114,16 +113,12 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  plugin: {
-    type: String,
-    required: true,
-  },
 })
 
 const emit = defineEmits(['update:modelValue', 'validateFileds'])
 
 const { t } = useI18n()
-const { currentLang, i18nContent } = useLang()
+const { i18nContent } = useLang()
 const { upperFirstLetter, showLabel, isParamHexadecimalBase } = useNodeConfigParamCommon()
 
 const arrayRef = ref()
@@ -140,43 +135,6 @@ const inputValue = computed({
 
 const isFieldRequired = computed(() => {
   return props.paramInfo?.attribute === 'required'
-})
-
-const pluginNameLowerCase = computed(() => {
-  let pluginName = props.plugin.toLocaleLowerCase().replaceAll(' ', '')
-  pluginName = pluginName.replace(/_|-/g, '')
-  return pluginName
-})
-
-const paramKeyLowerCase = computed(() => {
-  let keyName = props.paramKey.toLocaleLowerCase()
-
-  let lineRegx = /-(\w)/g
-  if (props.paramKey.includes('_')) {
-    lineRegx = /_(\w)/g
-  }
-  keyName = upperFirstLetter(keyName.replace(lineRegx, ($0, $1) => $1.toUpperCase()))
-  return keyName
-})
-
-// If the subsequent English also needs front-end support, please modify the logic and i18/schema.ts
-const paramName = computed(() => {
-  let desc = showLabel(props.paramInfo)
-
-  if (IGNORE_PLUGINS.includes(pluginNameLowerCase.value)) {
-    const i18nKey = `${pluginNameLowerCase.value}${paramKeyLowerCase.value}`
-    desc = currentLang.value === 'zh' ? t(`schema.${i18nKey}`) : showLabel(props.paramInfo)
-  }
-  return desc
-})
-const paramDescripton = computed(() => {
-  let desc = i18nContent(props.paramInfo, 'description')
-  if (IGNORE_PLUGINS.includes(pluginNameLowerCase.value) && currentLang.value === 'zh') {
-    const i18nKey = `${pluginNameLowerCase.value}${paramKeyLowerCase.value}`
-    desc = t(`schema.${i18nKey}Desc`)
-  }
-
-  return desc
 })
 
 const { rules } = useNodeConfigParamItem(props)
