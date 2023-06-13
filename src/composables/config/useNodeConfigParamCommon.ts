@@ -3,6 +3,7 @@ import { dataType } from '@/utils/utils'
 import { TypeOfPluginParam, SchameBase } from '@/types/enums'
 import useLang from '@/composables/useLang'
 import { HEXADECIMAL_PREFIX } from '@/utils/constants'
+import { HEXADECIMAL_REGEX } from '@/utils/regexps'
 import { transIntHexToDecimalNum, transPositiveIntegerToHex } from '@/composables/data/convert'
 
 export default () => {
@@ -77,7 +78,7 @@ export default () => {
     const str = value.toString().replace(/\s/g, '')
     const trueVlue =
       str.slice(0, HEXADECIMAL_PREFIX.length).toLowerCase() === HEXADECIMAL_PREFIX ? str : HEXADECIMAL_PREFIX + str
-    const isHexadecimalValue = /^0(x|X)[0-9a-f]+$/.test(trueVlue)
+    const isHexadecimalValue = HEXADECIMAL_REGEX.test(trueVlue)
     return isHexadecimalValue
   }
 
