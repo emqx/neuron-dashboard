@@ -21,6 +21,7 @@ STRING    15  string
 
 import { TagType } from '@/types/enums'
 import { HEXADECIMAL_PREFIX } from '@/utils/constants'
+import { HEXADECIMAL_REGEX } from '@/utils/regexps'
 import {
   transFloatNumberToHex,
   transNegativeNumberToHex,
@@ -69,7 +70,7 @@ export default () => {
   const UINT64_RANGE = createUIntTypeRange(64)
 
   const checkByte = (value: string): Promise<boolean | Error> =>
-    /^0(x|X)[0-9a-f]+$/.test(value.replace(/\s/g, ''))
+    HEXADECIMAL_REGEX.test(value.replace(/\s/g, ''))
       ? Promise.resolve(true)
       : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
 
