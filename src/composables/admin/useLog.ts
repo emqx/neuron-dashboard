@@ -4,6 +4,7 @@ import { LogType } from '@/types/enums'
 import { queryLog } from '@/api/admin'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
+import { UPPER_LOWERCASE_REGEX } from '@/utils/regexps'
 
 export default () => {
   const startTime: Ref<number | undefined> = ref(new Date(Date.now() - 1000 * 60 * 60 * 24).getTime())
@@ -41,7 +42,7 @@ export default () => {
   })
 
   const initLogTypeOptions = () => {
-    const keyReg = /^[A-Z][a-z]+$/
+    const keyReg = UPPER_LOWERCASE_REGEX
     Object.keys(LogType).forEach((key) => {
       if (keyReg.test(key)) {
         logTypeOptions.push({
