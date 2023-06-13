@@ -1,4 +1,5 @@
 import { TagType } from '@/types/enums'
+import { BINARY_STRING_REGEX } from '@/utils/regexps'
 
 const floatMsgMap = {
   [TagType.FLOAT]: {
@@ -97,7 +98,7 @@ const fillString = (str: string, filler: string, length: number, isFillFront: bo
 
 const getSignBit = (isNegative: boolean) => (isNegative ? 1 : 0)
 
-const checkBinaryStr = (str: string) => /^(0|1)+$/.test(str)
+const checkBinaryStr = (str: string) => BINARY_STRING_REGEX.test(str)
 
 /**
  * https://en.wikipedia.org/wiki/Two%27s_complement

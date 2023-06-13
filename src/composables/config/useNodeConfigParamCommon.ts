@@ -3,7 +3,7 @@ import { dataType } from '@/utils/utils'
 import { TypeOfPluginParam, SchameBase } from '@/types/enums'
 import useLang from '@/composables/useLang'
 import { HEXADECIMAL_PREFIX } from '@/utils/constants'
-import { HEXADECIMAL_REGEX } from '@/utils/regexps'
+import { HEXADECIMAL_REGEX, LOWERCASE_INITIAL_REGEX } from '@/utils/regexps'
 import { transIntHexToDecimalNum, transPositiveIntegerToHex } from '@/composables/data/convert'
 
 export default () => {
@@ -57,7 +57,7 @@ export default () => {
   }
 
   const upperFirstLetter = (str: string) => {
-    if (/^[a-z]/.test(str)) {
+    if (LOWERCASE_INITIAL_REGEX.test(str)) {
       return str.slice(0, 1).toUpperCase() + str.slice(1)
     }
     return str

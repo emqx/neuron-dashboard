@@ -4,6 +4,7 @@ import type { NumberParamInfo, ParamInfo, StringParamInfo, ArrayParamInfo } from
 import { ParamRequired, TypeOfPluginParam, SchameBase } from '@/types/enums'
 import { createCommonErrorMessage, dataType } from '@/utils/utils'
 import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
+import { DECIMAL_POSITIVE_REGEX } from '@/utils/regexps'
 
 type Props = Readonly<{
   paramKey: string
@@ -100,7 +101,7 @@ export default (props: Props) => {
         callback()
       }
     } else {
-      const isDecimalValue = /^[0-9]\d*$/.test(trueVlue)
+      const isDecimalValue = DECIMAL_POSITIVE_REGEX.test(trueVlue)
       if (!isDecimalValue) {
         callback(new Error(t('config.decimalFormatError')))
       } else {

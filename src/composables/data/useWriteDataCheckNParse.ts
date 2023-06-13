@@ -21,7 +21,7 @@ STRING    15  string
 
 import { TagType } from '@/types/enums'
 import { HEXADECIMAL_PREFIX } from '@/utils/constants'
-import { HEXADECIMAL_REGEX } from '@/utils/regexps'
+import { HEXADECIMAL_REGEX, FLOAT_REGEX, BIT_REGEX, INT_REGEX } from '@/utils/regexps'
 import {
   transFloatNumberToHex,
   transNegativeNumberToHex,
@@ -75,11 +75,11 @@ export default () => {
       : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
 
   const checkBit = (value: string): Promise<boolean | Error> =>
-    /^[0-9a-f]+$/.test(value)
+    BIT_REGEX.test(value)
       ? Promise.resolve(true)
       : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
 
-  const checkIsInt = (value: string): boolean => /^-?\d+$/.test(value)
+  const checkIsInt = (value: string): boolean => INT_REGEX.test(value)
   const checkLessThanMinimumSafeNumber = (value: string) => Number(value) < Number.MIN_SAFE_INTEGER
   const checkGreaterThanMaximumSafeNumber = (value: string): boolean => Number(value) > Number.MAX_SAFE_INTEGER
   const checkInt = (rangeObj: RangeObj, value: string): Promise<Error | boolean> => {
@@ -107,7 +107,7 @@ export default () => {
   }
 
   // Support scientific notation
-  const checkIsFloat = (value: string): boolean => /^-?\d*\.?\d+(e-?\d+)?$/.test(value)
+  const checkIsFloat = (value: string): boolean => FLOAT_REGEX.test(value)
   // const checkIsFloat = (value: string): boolean => /^-?\d*(\.[1-9]\d*)$/.test(value)
   const checkFloat = (value: string): Promise<Error | boolean> => {
     if (!checkIsFloat(value)) {
