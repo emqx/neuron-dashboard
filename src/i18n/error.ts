@@ -106,6 +106,10 @@ export default {
     zh: 'Node 不允许订阅',
     en: 'Node not allow subscribe',
   },
+  2013: {
+    zh: 'Node 不允许更新',
+    en: 'Node not allow update',
+  },
   2101: {
     zh: '组已经被订阅',
     en: 'Group already subscribed',
@@ -170,6 +174,10 @@ export default {
     zh: '点位精度无效',
     en: 'Tag precision invalid',
   },
+  2210: {
+    zh: '点位已存在',
+    en: 'Tag exist',
+  },
   2301: {
     zh: '库未找到',
     en: 'Library not found',
@@ -230,6 +238,22 @@ export default {
     zh: 'License 检测到时钟异常',
     en: 'License detect bad clock',
   },
+  2408: {
+    zh: 'License 模块无效',
+    en: 'License module invalid',
+  },
+  2500: {
+    zh: '模板已存在',
+    en: 'Template exist',
+  },
+  2501: {
+    zh: '模板未找到',
+    en: 'Template not found',
+  },
+  2502: {
+    zh: '模板名称太长',
+    en: 'Template name too long',
+  },
   3000: {
     zh: '插件读失败',
     en: 'Plugin read failure',
@@ -274,9 +298,29 @@ export default {
     zh: '插件报文乱序',
     en: 'Plugin packet out of order',
   },
+  3013: {
+    zh: '插件名称太长',
+    en: 'Plugin name too long',
+  },
+  3014: {
+    zh: '插件未找到',
+    en: 'Plugin not found',
+  },
+  3015: {
+    zh: '插件设备未回复',
+    en: 'Plugin device not response',
+  },
+  3016: {
+    zh: '插件不支持模板',
+    en: 'Plugin not support template',
+  },
+  3017: {
+    zh: '插件不支持写点位',
+    en: 'Plugin not support write tags',
+  },
   4100: {
-    zh: '文件内容过长',
-    en: 'File too long',
+    zh: '字符串太长',
+    en: 'String too long',
   },
   4101: {
     zh: '打开文件失败',
@@ -289,6 +333,30 @@ export default {
   4103: {
     zh: '写文件失败',
     en: 'File write failure',
+  },
+  10001: {
+    zh: 'Opcua 点位不存在',
+    en: 'Opcua tag does not exist',
+  },
+  10002: {
+    zh: 'Opcua 连接配置错误',
+    en: 'Opcua connection configuration error',
+  },
+  10003: {
+    zh: 'Opcua 访问超时',
+    en: 'Opcua access timeout',
+  },
+  10004: {
+    zh: 'Opcua 点位不可读',
+    en: 'Opcua tag is not readable',
+  },
+  10005: {
+    zh: 'Opcua 点位不可写',
+    en: 'Opcua tag is not writable',
+  },
+  10006: {
+    zh: 'Opcua 点位不支持',
+    en: 'Opcua tag is not supported',
   },
   10101: {
     zh: '硬件错误',
@@ -321,6 +389,14 @@ export default {
   10151: {
     zh: 'S7 连接断开',
     en: 'S7comm disconnected',
+  },
+  10152: {
+    zh: '没有值',
+    en: 'S7comm no value',
+  },
+  10153: {
+    zh: '值长度太短',
+    en: 'S7comm value too short',
   },
   10200: {
     zh: '设备不存在',
@@ -402,34 +478,18 @@ export default {
     zh: '中止',
     en: 'Fins abort',
   },
-  10001: {
-    zh: 'Opcua tag 不存在',
-    en: 'Opcua tag does not exist',
-  },
-  10002: {
-    zh: 'Opcua 连接配置错误',
-    en: 'Opcua connection configuration error',
-  },
-  10003: {
-    zh: 'Opcua 访问超时',
-    en: 'Opcua access timeout',
-  },
-  10004: {
-    zh: 'Opcua tag 不可读',
-    en: 'Opcua tag is not readable',
-  },
-  10005: {
-    zh: 'Opcua tag 不可写',
-    en: 'Opcua tag is not writable',
-  },
-  10006: {
-    zh: 'Opcua tag 不支持',
-    en: 'Opcua tag is not supported',
+  10600: {
+    zh: 'Focas 错误',
+    en: 'Focas error',
   },
   // 10701 - 10744
   10701: {
     zh: 'EtherNet/IP 错误',
     en: 'EtherNet/IP error',
+  },
+  10797: {
+    zh: 'EtherNet/IP 没有 CIP 连接',
+    en: 'EtherNet/IP no CIP connection',
   },
   10798: {
     zh: 'EtherNet/IP 数据类型不匹配',
@@ -438,5 +498,30 @@ export default {
   10799: {
     zh: 'EtherNet/IP 未注册session',
     en: 'EtherNet/IP no session',
+  },
+  // Profinet IO
+  10800: {
+    zh: 'Profinet IO 未识别',
+    en: 'Profinet IO unidentified',
+  },
+  10801: {
+    zh: 'Profinet IO 未连接',
+    en: 'Profinet IO not connected',
+  },
+  10802: {
+    zh: 'Profinet IO 未准备好',
+    en: 'Profinet IO not ready',
+  },
+  10803: {
+    zh: 'Profinet IO 参数未准备好',
+    en: 'Profinet IO not param end',
+  },
+  10804: {
+    zh: 'Profinet IO 没有写入权限',
+    en: 'Profinet IO not DWRITE',
+  },
+  10805: {
+    zh: 'Profinet IO 等待 HELLO 响应',
+    en: 'Profinet IO wait HELLO',
   },
 }
