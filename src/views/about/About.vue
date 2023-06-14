@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="about" v-emqx-loading="isDataLoading">
+  <arcticle class="about" v-emqx-loading="isDataLoading">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('common.about') }}</h3>
     </div>
@@ -41,7 +41,7 @@
         </emqx-descriptions-item>
       </emqx-descriptions>
     </div>
-  </emqx-card>
+  </arcticle>
 </template>
 
 <script setup lang="ts">

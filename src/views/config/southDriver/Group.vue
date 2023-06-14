@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="group page-noraml-card" v-emqx-loading="isListLoading">
+  <arcticle class="group page-noraml-card" v-emqx-loading="isListLoading">
     <h3 class="card-title">{{ $t('config.groupList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left common-flex">
@@ -94,7 +94,7 @@
         </template>
       </emqx-table-column>
     </emqx-table>
-  </emqx-card>
+  </arcticle>
 
   <GroupDialog
     v-model="showGroupDialog"

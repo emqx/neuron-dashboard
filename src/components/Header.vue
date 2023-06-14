@@ -54,7 +54,7 @@
         <emqx-dropdown>
           <span class="el-dropdown-link">
             <span class="user-bg">
-              <i class="iconfont iconAdministration1"></i>
+              {{ username }}
             </span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -131,6 +131,8 @@ const langLabel = computed(() => langList.find((item) => item.value === lang.val
 const changeLanguage = (command: string) => {
   lang.value = command
 }
+
+const username = computed(() => store.state.username)
 </script>
 
 <style lang="scss">
@@ -202,8 +204,6 @@ const changeLanguage = (command: string) => {
   width: 28px;
   height: 28px;
   line-height: 28px;
-  background: #104d7c;
-  border-radius: 50%;
   text-align: center;
 }
 </style>

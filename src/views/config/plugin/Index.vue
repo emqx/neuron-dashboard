@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="plugin page-noraml-card" v-emqx-loading="isListLoading">
+  <arcticle class="plugin page-noraml-card" v-emqx-loading="isListLoading">
     <div class="neuron-page-title">{{ $t('config.plugin') }}</div>
     <ViewHeaderBar>
       <template v-slot:right>
@@ -29,7 +29,7 @@
       </emqx-row>
     </ul>
     <emqx-empty v-if="!isListLoading && listToShow.length === 0" />
-  </emqx-card>
+  </arcticle>
   <PluginDialog v-model="showDialog" :plugin="currentPlugin" @submitted="getPluginList" />
 </template>
 

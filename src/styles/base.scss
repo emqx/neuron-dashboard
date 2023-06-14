@@ -1,4 +1,5 @@
 @import './emqx-ui-variables.scss';
+@import './layout-variables.scss';
 
 :root {
   --color-main-bg: #f4f9fc;
@@ -11,12 +12,16 @@
   --color-border-tab: #e2e7ea;
 }
 
+*, :after, :before {
+    box-sizing: border-box;
+}
+
 #neuron-dashboard {
   font-family: 'PingFang SC', 'Source Han Sans CN';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  min-width: 1250px;
+  min-width: $--view-min-width;
 }
 
 body,
@@ -99,19 +104,30 @@ label {
   top: 0;
   left: 0;
   width: 100%;
+  margin: 0;
   background: #0c283e;
+  .emqx-header-container {
+    max-width: none;
+    margin: 0 $--margin-lr-default;
+  }
 }
-.body{
-  padding: 40px 0;
+.body {
   margin-top: 60px;
   display: flex;
-  .side-nav {
-    border-right: none;
+
+  .nav-container {
+    width: $--sidebar-width;
+  }
+  .sidebar {
+    width: $--sidebar-width;;
+    height: calc(100vh - $--header-heigth); 
+    position: fixed;
+    top: $--header-heigth;
     background-color: transparent;
-    height: calc(100vh - 1px); // 100px = top with position fixed
+    padding: $--padding-tb-normal $--padding-lr-content;
     overflow-y: auto;
-    padding-right: 20px;
     border-right: none;
+
       .nav-item,
       .el-submenu__title {
         height: 48px;
@@ -123,7 +139,9 @@ label {
       }
       .nav-item {
         min-width: auto;
-        margin-bottom: 12px;
+        &:not(:last-child) {
+          margin-bottom: 12px;
+        }
     
         &.is-active {
           .nav-label,
@@ -171,28 +189,43 @@ label {
       .el-menu {
         background-color: transparent;
       }
+      .emqx-menu-item.el-menu-item {
+        border-radius: 0px !important;
+      }
+      
       .emqx-menu-item.el-menu-item.is-active {
         background: #e5f3ff;
         box-shadow: none;
       }
+      
   }
-  .el-main {
-    padding: 0;
-    flex: 1;
-    .neuron-content-container{
-      overflow: hidden;
-      .neuron-page-title {
-        color:#1D1D1D;
-        font-family: "PingFang SC";
-        font-size: 32px;
-        font-weight: 600;
-        margin-bottom: 24px;
-      }
-      .mr-5 {
-        margin-right: 5px;
-      }
+  
+  .neuron-content-container{
+    background-color: #fff;
+    min-width: calc($--view-min-width - $--sidebar-width - 64px);
+    width: calc(100vw - $--sidebar-width - 64px); // 64 = padding * 2
+    padding: 0 $--padding-lr-normal;
+    overflow: auto;
+    height: calc(100vh - $--header-heigth);
+
+    .neuron-page-title {
+      color:#1D1D1D;
+      font-family: "PingFang SC";
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: $--margin-tb-normal;
+    }
+    .mr-5 {
+      margin-right: 5px;
     }
   }
+  .breadcrumb {
+    padding: $--padding-tb-normal 0;
+  }
+}
+
+.page-noraml-card {
+  border-radius: 0;
 }
 
 .clearfix::after {

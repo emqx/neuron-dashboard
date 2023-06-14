@@ -1,5 +1,5 @@
 <template>
-  <emqx-card v-emqx-loading="isDataLoading">
+  <arcticle v-emqx-loading="isDataLoading">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('admin.license') }}</h3>
     </div>
@@ -79,7 +79,7 @@
         </emqx-upload>
       </div>
     </div>
-  </emqx-card>
+  </arcticle>
 </template>
 
 <script setup lang="ts">

@@ -375,4 +375,8 @@ export default {
     zh: '卡片',
     en: 'Card',
   },
+  selectorPlaceholder: {
+    zh: '请选择{name}',
+    en: 'Select {name}',
+  },
 }

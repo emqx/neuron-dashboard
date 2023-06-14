@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="north-driver-group page-noraml-card" v-emqx-loading="isListLoading">
+  <arcticle class="north-driver-group page-noraml-card" v-emqx-loading="isListLoading">
     <h3 class="card-title">{{ $t('config.groupList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left common-flex">
@@ -50,7 +50,7 @@
         </template>
       </emqx-table-column>
     </emqx-table>
-  </emqx-card>
+  </arcticle>
   <AddSubscriptionDialog v-model="showAddSubscriptionDialog" :current-node="node" @submitted="getSubscriptionList" />
 </template>
 
