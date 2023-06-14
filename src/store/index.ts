@@ -12,6 +12,7 @@ interface NodeGroup {
   groupName: string
 }
 interface State {
+  username: string
   lang: string
   token: string
   isSubAppLoading: boolean
@@ -31,6 +32,7 @@ const getDefaultLanguage = () => {
 export default createStore<State>({
   state() {
     return {
+      username: localStorage.getItem('username') || '',
       lang: getDefaultLanguage(),
       token: getToken() ?? '',
       isSubAppLoading: false,
@@ -52,6 +54,10 @@ export default createStore<State>({
   },
 
   mutations: {
+    SET_USERNAME(state: State, name: string) {
+      state.username = name
+      localStorage.setItem('username', name)
+    },
     SET_LANG(state: State, payload: string) {
       state.lang = payload
       localStorage.setItem('language', payload)

@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="page-noraml-card" v-emqx-loading="isListLoading">
+  <arcticle class="page-noraml-card" v-emqx-loading="isListLoading">
     <div class="neuron-page-title">{{ $t('config.northAppSetup') }}</div>
     <ViewHeaderBar>
       <template v-slot:right>
@@ -93,7 +93,7 @@
     </emqx-table>
 
     <emqx-empty v-if="!isListLoading && northDriverList.length === 0" />
-  </emqx-card>
+  </arcticle>
 
   <DriverDialog v-model="showDialog" :type="DriverDirection.North" @submitted="getNorthDriverList" />
 

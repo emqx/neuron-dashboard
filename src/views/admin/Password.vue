@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="about page-noraml-card">
+  <arcticle class="about page-noraml-card">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('common.changePassword') }}</h3>
     </div>
@@ -35,7 +35,7 @@
         {{ $t('common.submit') }}
       </emqx-button>
     </footer>
-  </emqx-card>
+  </arcticle>
 </template>
 
 <script lang="ts" setup>

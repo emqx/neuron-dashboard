@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="data-monitoring page-noraml-card">
+  <arcticle class="data-monitoring page-noraml-card">
     <div class="neuron-page-title">{{ $t('data.dataMonitoring') }}</div>
     <ViewHeaderBar>
       <template v-slot:right>
@@ -11,14 +11,13 @@
 
       <template v-slot:left>
         <div class="header-item search-group">
-          <label class="label">{{ $t('config.southDevice') }}</label>
           <emqx-select
             v-model="currentGroup.node"
             size="medium"
             filterable
             clearable
             class="filter-selector"
-            :placeholder="$t('common.pleaseSelect')"
+            :placeholder="$t('common.selectorPlaceholder', { name: $t('config.southDevice') })"
             @change="selectedNodeChanged"
           >
             <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
@@ -26,14 +25,13 @@
         </div>
 
         <div class="header-item search-group">
-          <label class="label">{{ $t('config.groupName') }}</label>
           <emqx-select
             v-model="currentGroup.groupName"
             filterable
             clearable
             size="medium"
             class="filter-selector"
-            :placeholder="$t('common.pleaseSelect')"
+            :placeholder="$t('common.selectorPlaceholder', { name: $t('config.group') })"
             @change="selectedGroupChanged"
           >
             <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
@@ -111,7 +109,7 @@
       :page-size="pageController.size"
       @size-change="handleSizeChange"
     />
-  </emqx-card>
+  </arcticle>
   <WriteDialog
     v-model="showWriteDialog"
     :group="currentGroup.groupName"

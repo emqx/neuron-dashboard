@@ -1,6 +1,6 @@
 <!-- Discard，this page has been moved to th Header.vue -->
 <template>
-  <emqx-card class="account-setting">
+  <arcticle class="account-setting">
     <h3 class="card-title">{{ $t('common.accountSettings') }}</h3>
     <div>
       <h6 class="sub-block-title">{{ $t('common.lang') }}</h6>
@@ -12,7 +12,7 @@
         </emqx-col>
       </emqx-row>
     </div>
-  </emqx-card>
+  </arcticle>
 </template>
 
 <script lang="ts" setup>

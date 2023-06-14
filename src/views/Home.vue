@@ -1,24 +1,22 @@
 <template>
   <div class="main">
-    <Header />
-    <emqx-container normal fixed-nav class="body" :page-min-width="1250">
-      <template #nav>
-        <side-nav></side-nav>
-      </template>
-      <template #page-content>
-        <div class="neuron-content-container">
-          <Breadcrumb />
-          <router-view />
-          <!-- For eKuiper -->
-          <emqx-card class="page-noraml-card" v-if="isKuiperPage" v-emqx-loading="isSubAppLoading">
-            <!-- <h3 class="card-title">{{ pageTitle }}</h3> -->
-            <div id="page-content">
-              <div></div>
-            </div>
-          </emqx-card>
-        </div>
-      </template>
-    </emqx-container>
+    <Header class="header" />
+    <el-main class="main-container body">
+      <div class="nav-container">
+        <side-nav class="sidebar"></side-nav>
+      </div>
+      <div class="neuron-content-container">
+        <Breadcrumb class="breadcrumb" />
+        <router-view />
+        <!-- For eKuiper -->
+        <section class="page-noraml-card" v-if="isKuiperPage" v-emqx-loading="isSubAppLoading">
+          <!-- <h3 class="card-title">{{ pageTitle }}</h3> -->
+          <div id="page-content">
+            <div></div>
+          </div>
+        </section>
+      </div>
+    </el-main>
   </div>
 </template>
 
@@ -31,6 +29,7 @@ import { isKuiperPath } from '@/utils/forEKuiper'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb.vue'
+import { ElMain } from 'element-plus'
 
 export default defineComponent({
   name: 'Home',

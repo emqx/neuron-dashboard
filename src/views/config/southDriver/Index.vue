@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="page-noraml-card" v-emqx-loading="isListLoading">
+  <arcticle class="page-noraml-card" v-emqx-loading="isListLoading">
     <div class="neuron-page-title">{{ $t('config.southDeviceManagement') }}</div>
     <ViewHeaderBar>
       <template v-slot:right>
@@ -131,7 +131,7 @@
         @size-change="handleSizeChange"
       />
     </div>
-  </emqx-card>
+  </arcticle>
   <!-- Data Statistics -->
   <DataStatisticsDrawer
     v-if="dataStatisticsVisiable"

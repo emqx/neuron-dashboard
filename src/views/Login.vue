@@ -71,6 +71,7 @@ const login = async () => {
     const { userName, password } = form
     const { data } = await requestLogin({ name: userName, pass: password })
     store.commit('SET_TOKEN', data.token)
+    store.commit('SET_USERNAME', userName)
 
     const lang = localStorage.getItem('language') || currentLang.value || DEFAULT_LANG
     store.commit('SET_LANG', lang)
