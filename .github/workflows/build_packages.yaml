@@ -53,24 +53,24 @@ jobs:
           asset_path: ./neuron-dashboard.zip
           asset_name: neuron-dashboard.zip
           asset_content_type: application/zip
-      - name: build-lite
+      - name: build-cn
         run: |
           yarn
-          yarn build:norules
-      - name: create lite package
+          yarn build:cn
+      - name: create cn package
         run: |
           touch dist/version
           echo "github_ref: $GITHUB_REF" >> dist/version
           echo "github_sha: $GITHUB_SHA" >> dist/version
-          zip -rq neuron-dashboard-lite.zip ./dist
-      - name: Upload Lite Release Asset
+          zip -rq neuron-dashboard-cn.zip ./dist
+      - name: Upload CN Release Asset
         if: startsWith(github.ref, 'refs/tags/')
-        id: upload-lite-release-asset
+        id: upload-cn-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./neuron-dashboard-lite.zip
-          asset_name: neuron-dashboard-lite.zip
+          asset_path: ./neuron-dashboard-cn.zip
+          asset_name: neuron-dashboard-cn.zip
           asset_content_type: application/zip
