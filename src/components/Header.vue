@@ -2,7 +2,7 @@
   <emqx-header class="header">
     <template #title>
       <div class="logo-wrap">
-        <img src="../assets/images/logo.svg" alt="neuron-logo" width="40" />
+        <img src="~@/assets/images/logo.png" alt="logo" width="40" />
         <span class="title">{{ TITLE }}</span>
       </div>
     </template>
