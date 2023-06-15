@@ -50,7 +50,7 @@ export default createStore<State>({
 
   mutations: {
     SET_LANG(state: State, payload: string) {
-      state.lang = payload
+      state.lang = payload || DEFAULT_LANG
       localStorage.setItem('language', payload)
     },
     SET_TOKEN(state: State, payload: string) {

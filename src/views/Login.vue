@@ -65,6 +65,8 @@ const login = async () => {
     const { userName, password } = form
     const { data } = await requestLogin({ name: userName, pass: password })
     store.commit('SET_TOKEN', data.token)
+    store.commit('SET_LANG', store.state.lang)
+
     router.push({
       path: '/',
     })
