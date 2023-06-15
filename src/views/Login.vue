@@ -5,7 +5,7 @@
         <img class="img-login" src="~@/assets/images/img-login.png" />
         <div class="login-main">
           <div class="logo-wrap">
-            <img class="img-logo" src="~@/assets/images/logo.svg" alt="neuron-logo" width="60" />
+            <img class="img-logo" src="~@/assets/images/logo.png" alt="logo" width="60" />
             <span class="title">{{ TITLE }}</span>
           </div>
           <emqx-form ref="formCom" :model="form" :rules="rules" @keyup.enter="login">
