@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { getToken, setToken, clearLocalStorage } from '@/utils/user'
+import { getToken, setToken, clearLocalStorage, getNodeGroupData } from '@/utils/user'
 import { DEFAULT_LANG } from '@/utils/constants'
 
 interface paginationInfo {
@@ -43,10 +43,7 @@ export default createStore<State>({
         pageSize: 30,
         total: 0,
       },
-      nodeGroupMemory: {
-        node: '',
-        groupName: '',
-      },
+      nodeGroupMemory: getNodeGroupData(),
       axiosPromiseCancel: [],
     }
   },

@@ -11,6 +11,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useTagTypeSelect, useTagAttributeTypeSelect } from '@/composables/config/useAddTagCommon'
 import { debounce, cloneDeep } from 'lodash'
+import { setNodeGroupData } from '@/utils/user'
 
 export interface TagDataInTable extends TagDataInMonitoring {
   attribute: Array<number>
@@ -276,6 +277,7 @@ export default () => {
 
   // change node
   const selectedNodeChanged = async (nodeName: string) => {
+    setNodeGroupData(currentGroup.value)
     if (nodeName) {
       try {
         currentGroup.value.node = nodeName
@@ -299,6 +301,8 @@ export default () => {
 
   // change group
   const selectedGroupChanged = async (groupName: string) => {
+    setNodeGroupData(currentGroup.value)
+
     resetKeywordSearch()
 
     if (groupName) {
