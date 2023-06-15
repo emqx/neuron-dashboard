@@ -62,6 +62,10 @@ export default {
     zh: '执行指令失败',
     en: 'Command execution failed',
   },
+  1015: {
+    zh: ' IP 地址无效',
+    en: 'Invalid ip address',
+  },
   2002: {
     zh: 'Node 已存在',
     en: 'Node exist',
@@ -109,6 +113,10 @@ export default {
   2013: {
     zh: 'Node 不允许更新',
     en: 'Node not allow update',
+  },
+  2015: {
+    zh: 'Node 名称不允许为空',
+    en: 'Node name is empty',
   },
   2101: {
     zh: '组已经被订阅',
