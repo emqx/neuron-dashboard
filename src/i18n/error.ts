@@ -114,6 +114,10 @@ export default {
     zh: 'Node 不允许更新',
     en: 'Node not allow update',
   },
+  2014: {
+    zh: 'Node 不支持图',
+    en: 'Node not allow map',
+  },
   2015: {
     zh: 'Node 名称不允许为空',
     en: 'Node name is empty',
