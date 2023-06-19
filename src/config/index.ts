@@ -135,4 +135,4 @@ export const UserLevels = [
   },
 ]
 
-export const multiLangMode = process.env.VUE_APP_MULTI_LANG === 'true'
+export const EN_LANG = process.env.VUE_APP_LANG_EN === 'true'
