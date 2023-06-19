@@ -204,3 +204,21 @@ export const isJSONData = (data: string) => {
     return Promise.reject(error)
   }
 }
+
+export const spliceKeywords = (objData: Record<string, string>, keywords: Record<string, string>) => {
+  let resData = objData
+
+  const keys = Object.keys(keywords)
+  if (!keys.length) return resData
+
+  keys.forEach((key) => {
+    const value = keywords[key]
+    if (value) {
+      resData = {
+        ...resData,
+        [key]: value,
+      }
+    }
+  })
+  return resData
+}

@@ -7,7 +7,7 @@ import { useRoute } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { MessageBoxConfirm } from '@/utils/element'
 import usePaging from '@/composables/usePaging'
-import { OmitArrayFields } from '@/utils/utils'
+import { OmitArrayFields, spliceKeywords } from '@/utils/utils'
 import { debounce } from 'lodash'
 
 interface TagDataInTable extends TagData {
@@ -67,11 +67,14 @@ export default () => {
 
   const getTagList = async () => {
     isListLoading.value = true
-    const params = {
-      node: node.value,
-      group: groupName.value,
-      ...queryKeyword.value,
-    }
+
+    const params = spliceKeywords(
+      {
+        node: node.value,
+        group: groupName.value,
+      },
+      queryKeyword.value,
+    )
     const data = await queryTagList(params)
     setTotalData(data.map((item) => Object.assign(item, { checked: false })))
     getAPageTagData()
