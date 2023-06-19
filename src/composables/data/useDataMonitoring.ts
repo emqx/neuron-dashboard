@@ -4,7 +4,7 @@ import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 import type { GroupData, TagForm, RawDriverData } from '@/types/config'
 import type { TagDataInMonitoring } from '@/types/data'
 import { TagAttributeType, TagType } from '@/types/enums'
-import { paginate, listOrderByKey } from '@/utils/utils'
+import { paginate, listOrderByKey, spliceKeywords } from '@/utils/utils'
 import type { Ref } from 'vue'
 import { computed, onUnmounted, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -164,11 +164,14 @@ export default () => {
     if (!selectedGroup?.node || !selectedGroup.groupName) {
       return {}
     }
-    const params = {
-      node: selectedGroup?.node,
-      group: selectedGroup.groupName,
-      name: selectedGroup.name,
-    }
+
+    const params = spliceKeywords(
+      {
+        node: selectedGroup?.node,
+        group: selectedGroup.groupName,
+      },
+      { name: selectedGroup.name },
+    )
     const tags = await queryTagList(params)
     const tagNameMap: any[] = tags.map((item: TagForm) => {
       const { attribute, name, ...restData } = item

@@ -8,7 +8,7 @@ import { deleteTag, queryTagList } from '@/api/template'
 import type { TagData, TagForm } from '@/types/config'
 import usePaging from '@/composables/usePaging'
 import { MessageBoxConfirm } from '@/utils/element'
-import { OmitArrayFields } from '@/utils/utils'
+import { OmitArrayFields, spliceKeywords } from '@/utils/utils'
 
 interface TagDataInTable extends TagData {
   checked: boolean
@@ -68,11 +68,14 @@ export default () => {
 
   const getTagList = async () => {
     isListLoading.value = true
-    const params = {
-      template: template.value,
-      group: groupName.value,
-      ...queryKeyword.value,
-    }
+
+    const params = spliceKeywords(
+      {
+        template: template.value,
+        group: groupName.value,
+      },
+      queryKeyword.value,
+    )
     const data = await queryTagList(params)
     setTotalData(data.map((item) => Object.assign(item, { checked: false })))
     getAPageTagData()
