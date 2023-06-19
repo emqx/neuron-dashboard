@@ -29,7 +29,7 @@
           </template>
         </emqx-dropdown>
 
-        <emqx-dropdown v-if="multiLangMode" class="dropdown-item" @command="changeLanguage">
+        <emqx-dropdown v-if="!EN_LANG" class="dropdown-item" @command="changeLanguage">
           <span class="el-dropdown-link">
             {{ langLabel }}
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -73,7 +73,7 @@ import { useRouter } from 'vue-router'
 import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
 import useLang, { setLang } from '@/composables/useLang'
-import { multiLangMode } from '@/config/index'
+import { EN_LANG } from '@/config/index'
 
 const store = useStore()
 const router = useRouter()
