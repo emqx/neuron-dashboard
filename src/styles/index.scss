@@ -1,0 +1,281 @@
+@import  './emqx-ui-variables.scss';
+@import  './colors.scss';
+
+/* If you need to change the layout and other styles, just replace the `layout-variables.scss` and `base.scss` */
+@import './layout-variables.scss';
+@import  './base.scss';
+
+
+:root {
+  --color-main-bg: #f4f9fc;
+  --color-left-bg: transparent;
+  --color-deep-bg: #fff;
+  --color-header-bg: #f4f9fc;
+  --color-text-title: var(--card-title-color);
+  --color-text-normal: #303133;
+  --color-border-normal: #e2e7ea;
+  --color-border-tab: #e2e7ea;
+}
+
+*, :after, :before {
+  box-sizing: border-box;
+}
+
+#neuron-dashboard {
+  font-family: 'PingFang SC', 'Source Han Sans CN';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  min-width: $--view-min-width;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f4f9fc;
+  font-size: 14px;
+}
+
+label {
+  color: var(--main-label-color);
+  margin-right: 10px;
+}
+
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+:focus-visible {
+  outline: none;
+}
+
+.body {
+  margin-top: $--header-heigth;
+}
+
+.header {
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #0c283e;
+}
+
+.sidebar {
+  background-color: transparent;
+  overflow-y: auto;
+  .nav-item,
+  .el-submenu__title {
+    height: 48px;
+    padding: 0;
+  }
+  .el-submenu__title {
+    margin-bottom: 12px;
+    padding-left: 0 !important;
+  }
+  .nav-item {
+    min-width: auto;
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+
+    &.is-active {
+      .nav-label,
+      .nav-icon {
+        color: $--menu-active-color;
+      }
+    }
+  }
+
+  .iconstream {
+    flex-shrink: 0;
+    background-image: url('~@/assets/images/stream.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  .nav-label {
+    display: block;
+    padding-right: 20px;
+  }
+
+  .nav-item-content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 1;
+    text-decoration: none;
+    .nav-icon {
+      margin-right: 15px;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+    span {
+      display: inline-block;
+      vertical-align: top;
+      padding-top: calc((48px - 20px) / 2);
+      padding-bottom: calc((48px - 20px) / 2);
+      padding-right: 20px;
+      font-size: 14px;
+      color: $--regular-text;
+      font-weight: 500;
+    }
+  }
+  .el-menu {
+    background-color: transparent;
+  }
+}
+
+.icon-svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+h3.card-title {
+  color: var(--card-title-color);
+  font-size: 24px;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+.card-hd-with-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  h3.card-title {
+    margin-bottom: 0;
+  }
+}
+
+.card-bar-under-title {
+  margin-bottom: 24px;
+}
+
+.emqx-breadcrumb {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 6px;
+}
+
+.common-page-block {
+  .common-page-block-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1d1d1d;
+    line-height: 25px;
+    margin-bottom: 32px;
+  }
+}
+
+.table-with-pagination {
+  margin-bottom: 32px;
+}
+
+.pagination-container {
+  text-align: right;
+}
+
+.pagination {
+  margin: 16px 0;
+}
+
+.right {
+  text-align: right;
+}
+
+.el-icon-edit-outline {
+  opacity: 0.9;
+  transform: scale(0.8);
+}
+
+.node-card {
+  padding: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  .node-item-hd {
+    margin-bottom: 24px;
+    font-size: 16px;
+  }
+  .iconfont {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .setup-item-handlers {
+    // visibility: hidden;
+    flex-shrink: 0;
+    .iconfont {
+      color: #20466c;
+      cursor: pointer;
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+      &.disabled {
+        opacity: 0.2;
+        cursor: not-allowed;
+      }
+    }
+  }
+  &:hover {
+    box-shadow: 0px 4px 10px -2px rgba(72, 128, 170, 0.23);
+    // .setup-item-handlers {
+    //   visibility: visible;
+    // }
+  }
+  .node-item-info-row {
+    span,
+    label {
+      line-height: 20px;
+      height: 20px;
+    }
+    label,
+    span {
+      vertical-align: middle;
+    }
+    .iconfont {
+      margin-right: 8px;
+    }
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+}
