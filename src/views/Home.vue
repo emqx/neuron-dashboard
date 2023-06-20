@@ -1,9 +1,9 @@
 <template>
   <div class="main">
-    <Header />
+    <Header class="header" />
     <emqx-container normal fixed-nav class="body" :page-min-width="1250">
       <template #nav>
-        <side-nav></side-nav>
+        <side-nav class="sidebar"></side-nav>
       </template>
       <template #page-content>
         <div>
