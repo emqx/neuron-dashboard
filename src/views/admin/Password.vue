@@ -39,13 +39,15 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, toRefs, computed } from 'vue'
+import { reactive, ref, toRefs, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { changePassword } from '@/api/common'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { createCommonErrorMessage } from '@/utils/utils'
+import { useStore } from 'vuex'
 
 const { t } = useI18n()
+const store = useStore()
 
 const formRef = ref()
 const formState = reactive({
@@ -117,6 +119,23 @@ const rules = computed(() => {
     ],
   }
 })
+
+watch(
+  () => store.state.lang,
+  () => {
+    nextTick(() => {
+      const keys = Object.keys(formState.formData)
+      keys.forEach((key: string) => {
+        const value = formState.formData[key]
+        if (!value) {
+          formRef.value.form.clearValidate()
+        } else {
+          formRef.value.form.validateField(key)
+        }
+      })
+    })
+  },
+)
 
 const changeUserPassword = async () => {
   try {
