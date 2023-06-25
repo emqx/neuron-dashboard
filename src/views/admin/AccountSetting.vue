@@ -1,7 +1,7 @@
 <!-- Discard，this page has been moved to th Header.vue -->
 <template>
   <article class="account-setting">
-    <h3 class="card-title">{{ $t('common.accountSettings') }}</h3>
+    <PageTitle :title="$t('common.accountSettings')" />
     <div>
       <h6 class="sub-block-title">{{ $t('common.lang') }}</h6>
       <emqx-row>
@@ -20,6 +20,7 @@ import { computed } from 'vue'
 import store from '@/store'
 import i18n from '../../i18n/index'
 import { setLang } from '@/composables/useLang'
+import PageTitle from '@/components/PageTitle.vue'
 // import { useI18n } from 'vue-i18n'
 // const { locale } = useI18n()
 

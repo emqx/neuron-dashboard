@@ -9,9 +9,11 @@
     "dev:test": "export VUE_APP_HOST=http://124.70.166.104:7000 && yarn serve",
     "dev:en": "export VUE_APP_HOST=http://124.70.166.104:7000 && export VUE_APP_LANG_EN=true && yarn serve",
     "dev:lite": "export VUE_APP_HOST=http://124.70.166.104:7000 && export VUE_APP_SHOW_EKUIPER=false && yarn serve",
+    "dev:sub-app": "export VUE_APP_HOST=http://124.70.166.104:7000 && export VUE_APP_SHOW_EKUIPER=false && export VUE_APP_SUB_APP=true && yarn serve",
     "build": "vue-cli-service build",
     "build:en": "VUE_APP_LANG_EN=true vue-cli-service build",
     "build:lite": "VUE_APP_SHOW_EKUIPER=false vue-cli-service build",
+    "build:sub-app": "VUE_APP_SHOW_EKUIPER=false VUE_APP_SUB_APP=true vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

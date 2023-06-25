@@ -4,16 +4,18 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
-import { countBaseURL, popUpErrorMessage, dataType, isJSONData } from './utils'
+import { popUpErrorMessage, dataType, isJSONData } from './utils'
+import asSubAppAction from './asSubAppAction'
+import { IntegratePublicPath, getIntegratedAPI } from '@/utils/forToBeSubApp'
 
-const baseURL = countBaseURL()
+// const baseURL = countBaseURL()
 const option = {
   headers: {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
     Accept: 'application/json',
   },
-  baseURL,
+  // baseURL,
   timeout: 10000,
 }
 
@@ -86,6 +88,23 @@ axios.interceptors.request.use(
       store.commit('ADD_AXIOS_PROMISE_CANCEL', cancel)
     })
 
+    // For ECP
+    const { serviceId } = store.state
+    const { url, isStatic } = config as any
+
+    const isIncludesTemplate = url?.includes('template')
+    const isIncludesEdgeservice = url?.includes('edgeservice')
+    const isIncludesIntegration = url?.includes('integration')
+    if (
+      (!isIncludesTemplate && !isIncludesEdgeservice) ||
+      (isIncludesTemplate && !isStatic && !isIncludesIntegration)
+    ) {
+      config.url = getIntegratedAPI(serviceId, url)
+    } else if (isIncludesTemplate && isStatic && !isIncludesIntegration) {
+      // fixed the conflict when `downloading` tempate file in the group and `template` function
+      config.url = `${IntegratePublicPath}${config.url}`
+    }
+
     return config
   },
   (error) => Promise.reject(error),
@@ -106,6 +125,8 @@ axios.interceptors.response.use(
     return response
   },
   (error) => {
+    const { response, message } = error
+
     // when requesting login, the interface will return 401 if the password or username is error, handle it
     const whiteRoutes = [LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME]
 
@@ -113,11 +134,15 @@ axios.interceptors.response.use(
     const isInLoginPage = whiteRoutes.includes(currrentRouteName)
 
     if ((error?.response?.status === 401 && !isInLoginPage) || error?.response?.status === 403) {
-      store.commit('LOGOUT')
-      router.push({ name: 'Login' })
+      asSubAppAction.setGlobalState({
+        refreshToken: true,
+      })
     } else if (axios.isCancel(error)) {
       // Finalizing the promise chain，will not trigger error messages
       return Promise.resolve()
+    } else if (response?.data?.code) {
+      // for ecp
+      EmqxMessage.error(response?.data?.message || message)
     } else if (!error?.config?._handleErrorSelf) {
       handleError(error)
     }
