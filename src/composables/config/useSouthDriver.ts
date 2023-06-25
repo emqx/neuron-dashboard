@@ -156,7 +156,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
 
   const modifyNodeLogLevel = async (node: DriverItemInList) => {
     await modifyNodeLogLevelToDebug(node.name)
-    dbGetSouthDriverList()
   }
 
   if (autoLoad) {
