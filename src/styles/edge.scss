@@ -2,7 +2,7 @@
 
 .body {
   display: flex;
-  .neuron-content-container{
+  .neuron-content-container {
     background-color: #fff;
     min-width: calc($--view-min-width - $--sidebar-width);
     width: calc(100vw - $--sidebar-width);
@@ -21,6 +21,13 @@
       margin-right: 5px;
     }
   }
+
+  // sub app
+  .neuron-content-container.as-sub-app {
+    height: auto;
+    padding: 10px;
+    overflow: unset;
+  }
 }
 
 .header {
@@ -36,12 +43,12 @@
 
 .sidebar {
   width: $--sidebar-width;;
-  height: calc(100vh - $--header-heigth); 
+  height: calc(100vh - $--header-heigth);
   position: fixed;
   top: $--header-heigth;
   padding: $--padding-tb-normal $--padding-lr-content;
   border-right: none;
-    
+
   .emqx-menu-item.el-menu-item {
     border-radius: 0px !important;
   }

@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import { getToken, setToken, clearLocalStorage, getNodeGroupData } from '@/utils/user'
 import { DEFAULT_LANG } from '@/utils/constants'
+import { isSubApp } from '@/utils/forToBeSubApp'
 
 interface paginationInfo {
   pageNum: number
@@ -21,6 +22,14 @@ interface State {
   paginationData: paginationInfo
   nodeGroupMemory: NodeGroup
   axiosPromiseCancel: Array<any>
+  // ECP
+  isSubApp: boolean
+  tabsNeedBeHidden: boolean
+  orgId: string
+  projectId: string
+  serviceId: string
+  version: string
+  isAdmin: boolean
 }
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
@@ -47,6 +56,15 @@ export default createStore<State>({
       },
       nodeGroupMemory: getNodeGroupData(),
       axiosPromiseCancel: [],
+
+      // ECP
+      isSubApp: isSubApp || false,
+      tabsNeedBeHidden: false,
+      orgId: '',
+      projectId: '',
+      serviceId: '',
+      version: '',
+      isAdmin: false,
     }
   },
 
@@ -87,6 +105,26 @@ export default createStore<State>({
     },
     SET_AXIOS_PROMISE_CANCEL(state, data: Array<any>) {
       state.axiosPromiseCancel = data
+    },
+
+    // ECP
+    SET_IS_ADMIN(state: State, payload: boolean) {
+      state.isAdmin = payload
+    },
+    SET_HIDDEN_TAB(state: State, payload: boolean) {
+      state.tabsNeedBeHidden = payload
+    },
+    SET_ORG_ID(state: State, payload: string) {
+      state.orgId = payload
+    },
+    SET_PROJECT_ID(state: State, payload: string) {
+      state.projectId = payload
+    },
+    SET_SERVICE_ID(state: State, payload: string) {
+      state.serviceId = payload
+    },
+    SET_VERSION(state: State, payload: string) {
+      state.version = payload
     },
   },
 })

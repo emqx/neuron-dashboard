@@ -1,6 +1,7 @@
 import http from '@/utils/http'
 import { useDownload } from '@/composables/useDownload'
 import type { GroupData, TagForm } from '@/types/config'
+import type { AxiosRequestConfig } from 'axios'
 
 export default () => {
   const { downloadFile } = useDownload()
@@ -10,7 +11,11 @@ export default () => {
     try {
       const { pathname } = window.location
       const fileURL = `${pathname.slice(-1) === '/' ? pathname.slice(0, -1) : pathname}/template/${fileName}`
-      const { data } = await http.get(fileURL, { responseType: 'blob', baseURL: '' })
+      const { data } = await http.get(fileURL, {
+        responseType: 'blob',
+        baseURL: '',
+        isStatic: true,
+      } as AxiosRequestConfig)
       downloadFile({ 'content-type': 'application/octet-stream', 'content-disposition': `filename=${fileName}` }, data)
     } catch (error) {
       console.error(error)

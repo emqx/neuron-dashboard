@@ -83,15 +83,20 @@ label {
 .body {
   margin-top: $--header-heigth;
 }
-
-.header {
-  position: fixed;
-  z-index: 9;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #0c283e;
+// sub app
+.body.as-sub-app {
+  margin: 0px -10px;
 }
+
+// no need in ECP when as sub app
+// .header {
+//   position: fixed;
+//   z-index: 9;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   background: #0c283e;
+// }
 
 .sidebar {
   background-color: transparent;

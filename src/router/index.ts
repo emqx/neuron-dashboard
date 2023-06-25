@@ -3,6 +3,7 @@ import routes, { ekuiperRoute } from './routes'
 import store from '@/store/index'
 import { handleEKuiper, isKuiperPath, isExitEKuiper, handleExitEKuiper } from '@/utils/forEKuiper'
 import { isShowEkuiper } from '@/config/index'
+import { isSubApp } from '@/utils/forToBeSubApp'
 
 const routers = isShowEkuiper ? routes.concat(ekuiperRoute) : routes
 
@@ -23,7 +24,7 @@ router.beforeEach((to, from, next) => {
     store.commit('SET_AXIOS_PROMISE_CANCEL', [])
   }
 
-  if (!store.state.token && to.name !== 'Login') {
+  if (!store.state.token && to.name !== 'Login' && !isSubApp) {
     next({ name: 'Login' })
   } else if (store.state.token && to.name === 'Login') {
     next('/')
