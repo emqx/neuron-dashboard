@@ -22,7 +22,7 @@
     </ViewHeaderBar>
 
     <ul class="setup-list">
-      <emqx-row :gutter="24">
+      <emqx-row :gutter="20">
         <emqx-col :span="8" v-for="item in listToShow" :key="item.name" tag="li" class="setup-item">
           <PluginItemCard :data="item" @deleted="getPluginList" @edit="editPlugin(item)" />
         </emqx-col>

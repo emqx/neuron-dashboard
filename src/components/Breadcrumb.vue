@@ -131,6 +131,7 @@ const onHandleLink = (item: any) => {
 
 .breadcrumb {
   padding-bottom: $--padding-tb-normal;
+  padding-top: 0;
 }
 .nav-breadcrumb {
   height: 32px;

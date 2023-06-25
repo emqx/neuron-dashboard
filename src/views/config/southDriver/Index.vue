@@ -30,7 +30,7 @@
     <div v-else>
       <!-- card show -->
       <ul v-if="showType === 'card'" class="setup-list">
-        <emqx-row :gutter="24">
+        <emqx-row :gutter="20">
           <emqx-col :span="8" v-for="(item, index) in southDriverList" :key="item.name" tag="li" class="setup-item">
             <SouthDriveItemCard
               :data="item"

@@ -11,8 +11,10 @@ import useUploadTagList from '@/composables/config/useUploadTagList'
 import useExportTagTable from '@/composables/config/useExportTagTable'
 import { useDownload } from '@/composables/useDownload'
 import useAddTag from '@/composables/config/useAddTag'
+import useGroupCommon from '@/composables/config/useGroupCommon'
 import http from '@/utils/http'
 import { groupBy } from 'lodash'
+import type { AxiosRequestConfig } from 'axios'
 
 interface GroupDataInTable extends GroupData {
   checked: boolean
@@ -23,6 +25,8 @@ export default () => {
   const route = useRoute()
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
+
+  const { downloadTemplate } = useGroupCommon()
 
   const { nodePluginInfo } = useAddTag()
 
@@ -81,20 +85,6 @@ export default () => {
     await MessageBoxConfirm(t('common.confirmClear'))
 
     delGroupList(groupList.value)
-  }
-
-  // download template file
-  const { downloadFile } = useDownload()
-  const fileName = 'upload-tag-template.xlsx'
-  const downloadTemplate = async () => {
-    try {
-      const { pathname } = window.location
-      const fileURL = `${pathname.slice(-1) === '/' ? pathname.slice(0, -1) : pathname}/template/${fileName}`
-      const { data } = await http.get(fileURL, { responseType: 'blob', baseURL: '' })
-      downloadFile({ 'content-type': 'application/octet-stream', 'content-disposition': `filename=${fileName}` }, data)
-    } catch (error) {
-      //
-    }
   }
 
   // import file
