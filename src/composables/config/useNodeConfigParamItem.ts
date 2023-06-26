@@ -5,6 +5,7 @@ import { ParamRequired, TypeOfPluginParam, SchameBase } from '@/types/enums'
 import { createCommonErrorMessage, dataType } from '@/utils/utils'
 import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
 import { DECIMAL_POSITIVE_REGEX } from '@/utils/regexps'
+import useLang from '@/composables/useLang'
 
 type Props = Readonly<{
   paramKey: string
@@ -14,6 +15,7 @@ type Props = Readonly<{
 
 export default (props: Props) => {
   const { t } = useI18n()
+  const { i18nContent } = useLang()
 
   enum RangeErrorEnums {
     All = 'all',
@@ -169,7 +171,7 @@ export default (props: Props) => {
     {
       // required: !!props.paramInfo.default,
       required: props.paramInfo.attribute === ParamRequired.True,
-      message: createCommonErrorMessage('input', props.paramInfo.name),
+      message: createCommonErrorMessage('input', i18nContent(props.paramInfo, 'name')),
     },
     {
       type: isParamHexadecimalBase(props.paramInfo) ? 'string' : 'number',
@@ -186,7 +188,7 @@ export default (props: Props) => {
       type: 'string',
       // required: !!props.paramInfo.default,
       required: props.paramInfo.attribute === ParamRequired.True,
-      message: createCommonErrorMessage('input', props.paramInfo.name),
+      message: createCommonErrorMessage('input', i18nContent(props.paramInfo, 'name')),
     },
     { validator: checkStringParamLength, trigger: 'blur' },
     { validator: checkStringParamRegex, trigger: 'blur' },
@@ -195,7 +197,7 @@ export default (props: Props) => {
   const createSelectParamRules = () => ({
     // required: !!props.paramInfo.default,
     required: props.paramInfo.attribute === ParamRequired.True,
-    message: createCommonErrorMessage('select', props.paramInfo.name),
+    message: createCommonErrorMessage('select', i18nContent(props.paramInfo, 'name')),
   })
 
   const createFileParamRules = () => [
@@ -209,7 +211,7 @@ export default (props: Props) => {
   const createArrayParamRules = () => [
     {
       required: props.paramInfo.attribute === ParamRequired.True,
-      message: createCommonErrorMessage('input', props.paramInfo.name),
+      message: createCommonErrorMessage('input', i18nContent(props.paramInfo, 'name')),
     },
     { validator: checkArrayParamLength, trigger: ['blur', 'change'] },
   ]
@@ -226,6 +228,7 @@ export default (props: Props) => {
     }
     return (createMap[props.paramInfo.type] && createMap[props.paramInfo.type]()) || []
   })
+
   return {
     rules,
   }
