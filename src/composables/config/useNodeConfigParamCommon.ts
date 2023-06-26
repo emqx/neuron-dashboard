@@ -45,7 +45,7 @@ export default () => {
 
   const initParamDefaultValueByType = (type: TypeOfPluginParam) => {
     const initValueMap = {
-      [TypeOfPluginParam.Int]: null,
+      [TypeOfPluginParam.Int]: undefined,
       [TypeOfPluginParam.String]: '',
       [TypeOfPluginParam.Boolean]: null,
       [TypeOfPluginParam.Enum]: '',
