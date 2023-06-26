@@ -32,6 +32,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const isSubAppLoading = computed(() => store.state.isSubAppLoading)
+
     return {
       isSubAppLoading,
     }
