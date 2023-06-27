@@ -51,6 +51,10 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       )
       northDriverListBackup.value = cloneDeep(northDriverList.value)
 
+      // fixed: get sort after remove or start or stop node
+      const { prop, order } = sortBy.value
+      await sortDataByKey({ prop, order })
+
       isListLoading.value = false
       return Promise.resolve(northDriverList.value)
     } catch (error) {
