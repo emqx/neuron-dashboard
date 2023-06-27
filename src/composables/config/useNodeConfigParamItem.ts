@@ -4,6 +4,7 @@ import { createCommonErrorMessage } from '@/utils/utils'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
+import useLang from '@/composables/useLang'
 
 type Props = Readonly<{
   paramKey: string
@@ -13,6 +14,8 @@ type Props = Readonly<{
 
 export default (props: Props) => {
   const { t } = useI18n()
+  const { i18nContent } = useLang()
+
   const { isParamHexadecimalBase, checkHexadecimalValue, transToDecimal } = useNodeConfigParamCommon()
 
   // valid number limit
@@ -89,7 +92,7 @@ export default (props: Props) => {
     {
       // required: !!props.paramInfo.default,
       required: props.paramInfo.attribute === ParamRequired.True,
-      message: createCommonErrorMessage('input', props.paramInfo.name),
+      message: createCommonErrorMessage('input', i18nContent(props.paramInfo, 'name')),
     },
     {
       type: isParamHexadecimalBase(props.paramInfo) ? 'string' : 'number',
@@ -105,7 +108,7 @@ export default (props: Props) => {
     {
       // required: !!props.paramInfo.default,
       required: props.paramInfo.attribute === ParamRequired.True,
-      message: createCommonErrorMessage('input', props.paramInfo.name),
+      message: createCommonErrorMessage('input', i18nContent(props.paramInfo, 'name')),
     },
     { validator: checkStringParamLength, trigger: 'blur' },
     { validator: checkStringParamRegex, trigger: 'blur' },
@@ -114,7 +117,7 @@ export default (props: Props) => {
   const createSelectParamRules = () => ({
     // required: !!props.paramInfo.default,
     required: props.paramInfo.attribute === ParamRequired.True,
-    message: createCommonErrorMessage('select', props.paramInfo.name),
+    message: createCommonErrorMessage('select', i18nContent(props.paramInfo, 'name')),
   })
 
   const createFileParamRules = () => [
