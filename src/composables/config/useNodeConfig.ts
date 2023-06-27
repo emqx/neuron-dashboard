@@ -250,6 +250,7 @@ export default (props: Props) => {
     await Promise.all([getPluginInfo(), getNodeConfig()])
     await initData()
     isLoading.value = false
+    formCom.value.form.clearValidate()
   })
 
   return {

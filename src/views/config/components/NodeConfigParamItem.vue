@@ -19,7 +19,7 @@
       <emqx-input
         v-if="!isParamHexadecimalBase(paramInfo)"
         v-model.number="inputValue"
-        :placeholder="String(defaultData[paramKey])"
+        :placeholder="String(defaultData[paramKey] || '')"
       />
       <emqx-input v-else v-model="inputValue" :placeholder="String(defaultData[paramKey])" />
     </span>
