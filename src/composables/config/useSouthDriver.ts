@@ -86,8 +86,9 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       totalSouthDriverList.value = totalList
       totalSouthDriverListBackup.value = cloneDeep(totalSouthDriverList.value)
 
-      setTotalData(totalList)
-      await getAPageTagData()
+      // fixed: get sort after remove or start or stop node
+      const { prop, order } = sortBy.value
+      await sortDataByKey({ prop, order })
     } finally {
       isListLoading.value = false
     }
