@@ -14,7 +14,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // cancel all requests， when leaving the router
   const axiosCancels = store.state.axiosPromiseCancel
-  if (axiosCancels.length) {
+  // TODO: why trigger twice there, find the reason
+  if (to.path === from.path) {
+    store.commit('SET_AXIOS_PROMISE_CANCEL', [])
+  } else if (axiosCancels.length) {
     axiosCancels.forEach(async (e) => e && e())
     store.commit('SET_AXIOS_PROMISE_CANCEL', [])
   }
