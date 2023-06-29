@@ -9,9 +9,8 @@ import type { GroupData } from '@/types/config'
 import { OmitArrayFields } from '@/utils/utils'
 import useUploadTagList from '@/composables/config/useUploadTagList'
 import useExportTagTable from '@/composables/config/useExportTagTable'
-import { useDownload } from '@/composables/useDownload'
 import useAddTag from '@/composables/config/useAddTag'
-import http from '@/utils/http'
+import useGroupCommon from '@/composables/config/useGroupCommon'
 import { groupBy } from 'lodash'
 
 interface GroupDataInTable extends GroupData {
@@ -26,6 +25,8 @@ export default () => {
 
   const { nodePluginInfo } = useAddTag()
 
+  // download | import | export
+  const { downloadTemplate, getTagsByGroups } = useGroupCommon()
   const { readTagListFile, handleTagListInTableFile, batchAddTags } = useUploadTagList(nodePluginInfo.value)
   const { isExporting, exportTable } = useExportTagTable()
 
@@ -83,20 +84,6 @@ export default () => {
     delGroupList(groupList.value)
   }
 
-  // download template file
-  const { downloadFile } = useDownload()
-  const fileName = 'upload-tag-template.xlsx'
-  const downloadTemplate = async () => {
-    try {
-      const { pathname } = window.location
-      const fileURL = `${pathname.slice(-1) === '/' ? pathname.slice(0, -1) : pathname}/template/${fileName}`
-      const { data } = await http.get(fileURL, { responseType: 'blob', baseURL: '' })
-      downloadFile({ 'content-type': 'application/octet-stream', 'content-disposition': `filename=${fileName}` }, data)
-    } catch (error) {
-      //
-    }
-  }
-
   // import file
   const importTagsByGroups = async (file: File) => {
     try {
@@ -130,20 +117,10 @@ export default () => {
     const requesList = groupCheckedList.value.map((group: GroupData) =>
       queryTagList({ node: node.value, group: group.name }),
     )
-    const AllNodeTags: any = []
-    Promise.all(requesList).then((res) => {
-      for (let i = 0; i < res.length; i += 1) {
-        const groupName: string = groupCheckedList.value[i].name
-        res[i].forEach((item) => {
-          const tag = {
-            ...item,
-            group: groupName,
-          }
-          AllNodeTags.push(tag)
-        })
-      }
-      exportTable(AllNodeTags, node.value)
-    })
+
+    const tags = await getTagsByGroups(requesList, groupCheckedList.value)
+
+    exportTable(tags, node.value)
   }
 
   getGroupList()

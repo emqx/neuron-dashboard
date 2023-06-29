@@ -26,6 +26,8 @@ export default () => {
   const isListLoading = ref(false)
 
   const { pluginInfo } = useTemplateAddTag()
+
+  // download | import | export
   const { downloadTemplate, getTagsByGroups } = useGroupCommon()
   const { readTagListFile, handleTagListInTableFile, batchAddTags } = useUploadTagList(pluginInfo.value)
   const { isExporting, exportTable } = useExportTagTable()
