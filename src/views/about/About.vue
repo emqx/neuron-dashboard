@@ -1,8 +1,7 @@
 <template>
   <arcticle class="about" v-emqx-loading="isDataLoading">
-    <div class="card-hd-with-btn">
-      <h3 class="card-title">{{ $t('common.about') }}</h3>
-    </div>
+    <div class="neuron-page-title">{{ $t('common.about') }}</div>
+
     <div>
       <emqx-descriptions :column="1">
         <emqx-descriptions-item :label="$t('admin.version')">

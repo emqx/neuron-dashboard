@@ -13,7 +13,7 @@
 }
 
 *, :after, :before {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #neuron-dashboard {
@@ -202,9 +202,9 @@ label {
   
   .neuron-content-container{
     background-color: #fff;
-    min-width: calc($--view-min-width - $--sidebar-width - 64px);
-    width: calc(100vw - $--sidebar-width - 64px); // 64 = padding * 2
-    padding: 0 $--padding-lr-normal;
+    min-width: calc($--view-min-width - $--sidebar-width);
+    width: calc(100vw - $--sidebar-width);
+    padding: 24px $--padding-lr-normal;
     overflow: auto;
     height: calc(100vh - $--header-heigth);
 
