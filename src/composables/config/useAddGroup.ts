@@ -4,7 +4,6 @@ import useNodeList from './useNodeList'
 import { addGroup, updateGroup } from '@/api/config'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 import { useNodePluginInfo } from './usePluginInfo'
 
 export default () => {
@@ -15,7 +14,6 @@ export default () => {
   })
 
   const { t } = useI18n()
-  const route = useRoute()
 
   const formCom = ref()
   const groupForm = ref(createRawForm())
@@ -86,8 +84,7 @@ export default () => {
   }
 
   // get node plugin schema
-  const node = computed(() => route.params.node.toString())
-  const { getNodePluginInfo } = useNodePluginInfo(node.value)
+  const { getNodePluginInfo } = useNodePluginInfo()
 
   const getPluginConfigInfo = async () => {
     const data = await getNodePluginInfo()

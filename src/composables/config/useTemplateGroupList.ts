@@ -25,6 +25,7 @@ export default () => {
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
+  // for upload tags
   const { pluginInfo } = useTemplateAddTag()
 
   // download | import | export
@@ -52,7 +53,7 @@ export default () => {
   // selected groups
   const groupCheckedList = computed(() => {
     const checkedList: Array<GroupDataInTable> = groupList.value.filter(({ checked }) => checked)
-    const newCheckedList: Array<GroupData> = OmitArrayFields(checkedList, ['checked'])
+    const newCheckedList: Array<GroupData> = checkedList.length ? OmitArrayFields(checkedList, ['checked']) : []
     return newCheckedList
   })
 

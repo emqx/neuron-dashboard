@@ -44,11 +44,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     editDriverData.value = { name: node.name }
   }
 
-  const nodePlugin = computed(
-    () => (nodeName: string) => northDriverList.value.find((item: DriverItemInList) => item.name === nodeName)?.plugin,
-  )
-  const isMQTTPugin = computed(() => (plugin: string | undefined) => plugin && plugin.toLocaleLowerCase() === 'mqtt')
-
   const getNorthDriverList = async () => {
     try {
       isListLoading.value = true
@@ -126,6 +121,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
         name: 'NorthDriverGroup',
         params: {
           node: node.name,
+          plugin: node.plugin,
         },
       })
     }
@@ -164,8 +160,6 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     getNorthDriverList,
     dbGetNorthDriverList,
     reloadDriverList,
-    isMQTTPugin,
-    nodePlugin,
     goGroupPage,
     goNodeConfig,
     modifyNodeLogLevel,
