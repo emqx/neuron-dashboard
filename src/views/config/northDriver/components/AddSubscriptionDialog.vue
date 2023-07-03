@@ -19,7 +19,6 @@
           <emqx-option v-for="{ name } in deviceList" :key="name" :value="name" :label="name" />
         </emqx-select>
       </emqx-form-item>
-
       <emqx-form-item prop="group" :label="$t('config.group')">
         <emqx-select
           v-model="subscriptionForm.group"
@@ -30,8 +29,7 @@
           <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
         </emqx-select>
       </emqx-form-item>
-
-      <emqx-form-item v-if="isMQTTPugin(nodePlugin(currentNode))" :label="$t('config.topic')">
+      <emqx-form-item v-if="isMQTTPugin" :label="$t('config.topic')">
         <emqx-input v-model="subscriptionForm.topic" />
       </emqx-form-item>
     </emqx-form>
@@ -50,7 +48,7 @@
 import { computed, defineProps, defineEmits, watch } from 'vue'
 import { ElDialog, ElAlert } from 'element-plus'
 import { useAddSubscription } from '@/composables/config/useSubscription'
-import useNorthDriver from '@/composables/config/useNorthDriver'
+import { useDriverInfo } from '@/composables/config/useDriver'
 
 const props = defineProps({
   modelValue: {
@@ -85,7 +83,7 @@ const {
   submitData,
 } = useAddSubscription(props)
 
-const { isMQTTPugin, nodePlugin } = useNorthDriver()
+const { isMQTTPugin } = useDriverInfo()
 
 const submit = async () => {
   await submitData()

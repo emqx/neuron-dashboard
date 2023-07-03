@@ -6,32 +6,24 @@ import type { PluginInfo } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
 import { useNodeMsgMap } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
-import { useTemplateListMap } from '@/composables/config/useTemplateList'
 
-export const useTemplatePluginInfo = (template?: string) => {
+export const useTemplatePluginInfo = (plugin?: string) => {
   const route = useRoute()
 
-  const { getAllTemplates, templateListMap } = useTemplateListMap()
   const templatePluginInfo: Ref<PluginInfo> = ref({} as PluginInfo)
 
-  const templateName = computed(() => template || route.params.template.toString())
-
-  const templatePlugin = computed(() => {
-    const tem = templateListMap.value.find(({ name }) => name === templateName.value)
-    return tem?.plugin || ''
+  const pluginName = computed(() => {
+    return plugin || route.params?.plugin?.toString() || ''
   })
 
   // Limit the type of tag
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
   const getTemplatePluginInfo = async () => {
     try {
-      await getAllTemplates()
       await initMsgIdMap()
 
-      const pluginName = templatePlugin.value
-      const nodePluginToLower = pluginName.toLocaleLowerCase()
-
-      const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
+      const nodePluginToLower = pluginName.value.toLocaleLowerCase()
+      const schemaName = pluginMsgIdMap[pluginName.value]?.schema || nodePluginToLower
 
       const { data } = await queryPluginConfigInfo(schemaName)
       templatePluginInfo.value = data || {}
@@ -47,22 +39,22 @@ export const useTemplatePluginInfo = (template?: string) => {
   }
 }
 
-export const useNodePluginInfo = (node?: string) => {
+export const useNodePluginInfo = (plugin?: string) => {
   const route = useRoute()
 
+  const pluginName = computed(() => {
+    return plugin || route.params?.plugin?.toString() || ''
+  })
+
   const nodePluginInfo: Ref<PluginInfo> = ref({} as PluginInfo)
-  const { getNodeMsgById, initMap } = useNodeMsgMap(DriverDirection.South, false)
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
 
-  const nodeName = computed(() => node || route.params.node.toString())
   const getNodePluginInfo = async () => {
     try {
-      await initMap()
       await initMsgIdMap()
-      const pluginName = getNodeMsgById(nodeName.value).plugin
-      const nodePluginToLower = pluginName.toLocaleLowerCase()
 
-      const schemaName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
+      const nodePluginToLower = pluginName.value.toLocaleLowerCase()
+      const schemaName = pluginMsgIdMap[pluginName.value]?.schema || nodePluginToLower
 
       const { data } = await queryPluginConfigInfo(schemaName)
       nodePluginInfo.value = data || {}

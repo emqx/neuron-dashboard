@@ -40,8 +40,8 @@ export default (type: DriverDirection) => {
     driverForm.value = createRawDriverForm()
   }
 
-  const { goNodeConfig: goNorthNodeConfig } = useNorthDriver()
-  const { goNodeConfig: goSouthNodeConfig } = useSouthDriver()
+  const { goNodeConfig: goNorthNodeConfig } = useNorthDriver(false)
+  const { goNodeConfig: goSouthNodeConfig } = useSouthDriver(false)
 
   const goNodeConfigPage = () => {
     const { name } = driverForm.value
