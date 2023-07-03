@@ -23,6 +23,7 @@ export default () => {
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
+  // for upload tags
   const { nodePluginInfo } = useAddTag()
 
   // download | import | export

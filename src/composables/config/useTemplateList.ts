@@ -54,18 +54,18 @@ export default () => {
   }
 
   const goGroupPage = (rowData: RawTemplateData) => {
-    const { name } = rowData
+    const { name, plugin } = rowData
     router.push({
       name: 'TemplateGroup',
       params: {
         template: name,
+        plugin,
       },
     })
   }
   const editTemplate = (rowData: RawTemplateData) => {
     // TODO
     isEditTemplate.value = true
-    console.log('row', rowData)
   }
 
   const removeTemplate = async (rowData: RawTemplateData) => {
