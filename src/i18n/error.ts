@@ -63,9 +63,22 @@ export default {
     en: 'Command execution failed',
   },
   1015: {
-    zh: ' IP 地址无效',
+    zh: 'IP 地址无效',
     en: 'Invalid ip address',
   },
+  1016: {
+    zh: 'IP 地址已占用',
+    en: 'IP address in use',
+  },
+  1017: {
+    zh: '用户名无效',
+    en: 'Invalid user',
+  },
+  1018: {
+    zh: '密码无效',
+    en: 'Invalid password',
+  },
+
   2002: {
     zh: 'Node 已存在',
     en: 'Node exist',
@@ -217,6 +230,10 @@ export default {
   2307: {
     zh: '插件不允许实例化',
     en: 'Library not allow create instance',
+  },
+  2308: {
+    zh: '插件不支持此架构',
+    en: 'Library arch not support',
   },
   2400: {
     zh: 'License 未找到',
