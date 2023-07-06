@@ -7,7 +7,7 @@
         </emqx-button>
       </template>
       <template v-slot:right>
-        <ListCardSwitch v-model="showType" />
+        <ListCardSwitch v-model="showType" @change="changeListShowMode" />
       </template>
     </ViewHeaderBar>
 
@@ -28,6 +28,7 @@
       :data="northDriverList"
       :empty-text="$t('common.emptyData')"
       :row-class-name="rowClassName"
+      :default-sort="{ prop: sortBy.prop, order: `${sortBy.order}ending` }"
       @sort-change="sortDataByKey"
       @row-click="goGroupPage"
     >
@@ -185,7 +186,10 @@ const {
   goNodeConfig,
   modifyNodeLogLevel,
   deleteDriver,
+
+  sortBy,
   sortDataByKey,
+  changeListShowMode,
 
   addConfig,
   showDialog,
