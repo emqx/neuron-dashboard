@@ -4,7 +4,7 @@ import type { DriverItemInList } from '@/types/config'
 import { NodeCatogery } from '@/types/enums'
 import type { PluginKind } from '@/types/enums'
 import type { Ref } from 'vue'
-import { ref, onUnmounted, computed } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import { useFillNodeListStatusData } from './useNodeList'
 import { useGetPluginMsgIdMap } from './usePlugin'
 import { debounce, cloneDeep } from 'lodash'
@@ -96,6 +96,10 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     })
     return list
   }
+
+  const setDefaultSort = async () => {
+    northDriverList.value = cloneDeep(northDriverListBackup.value)
+  }
   const sortDataByKey = async (data: { prop: string | null; order: string | null }) => {
     const { prop, order } = data
 
@@ -111,8 +115,16 @@ export default (autoLoad = true, needRefreshStatus = false) => {
         order: '',
         prop: '',
       }
-      northDriverList.value = cloneDeep(northDriverListBackup.value)
+      await setDefaultSort()
     }
+  }
+
+  const changeListShowMode = async () => {
+    sortBy.value = {
+      order: '',
+      prop: '',
+    }
+    await sortDataByKey(sortBy.value)
   }
 
   const goGroupPage = (node: DriverItemInList) => {
@@ -164,7 +176,10 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     goNodeConfig,
     modifyNodeLogLevel,
     deleteDriver,
+
+    sortBy,
     sortDataByKey,
+    changeListShowMode,
 
     addConfig,
     showDialog,

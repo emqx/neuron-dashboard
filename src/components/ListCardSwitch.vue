@@ -16,7 +16,7 @@ import { ElRadioGroup, ElRadioButton } from 'element-plus'
 const props = defineProps({
   modelValue: { type: String, default: 'list' },
 })
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'change'])
 
 const type = computed({
   get: () => props.modelValue,
@@ -27,6 +27,7 @@ const type = computed({
 
 const changeType = (val: string) => {
   type.value = val
+  emits('change', val)
 }
 </script>
 
