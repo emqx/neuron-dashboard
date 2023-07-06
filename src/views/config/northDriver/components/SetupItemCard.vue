@@ -103,7 +103,7 @@ const props = defineProps({
   data: { type: Object as PropType<DriverItemInList>, required: true },
 })
 
-const { goNodeConfig, goGroupPage } = useNorthDriver(true, true)
+const { goNodeConfig, goGroupPage } = useNorthDriver(false)
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
 
 const { countNodeStartStopStatus } = useNodeStartStopStatus()
