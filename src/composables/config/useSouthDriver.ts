@@ -27,6 +27,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   // after pagination, for show in list page
   const southDriverList: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
+  const isSwitchListLoading: Ref<boolean> = ref(false)
 
   const pageController = computed({
     get: () => store.state.paginationData,
@@ -99,6 +100,11 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     })
     return list
   }
+  const setDefaultSort = async () => {
+    totalSouthDriverList.value = cloneDeep(totalSouthDriverListBackup.value)
+    setTotalData(totalSouthDriverList.value)
+    await getAPageTagData()
+  }
   const sortDataByKey = async (data: { prop: string | null; order: string | null }) => {
     const { prop, order } = data
 
@@ -115,14 +121,28 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       setTotalData(totalList)
       await getAPageTagData()
     } else {
+      // When sorting manually, set default sort
       sortBy.value = {
         order: '',
         prop: '',
       }
-      totalSouthDriverList.value = cloneDeep(totalSouthDriverListBackup.value)
-      setTotalData(totalSouthDriverList.value)
-      await getAPageTagData()
+      await setDefaultSort()
     }
+  }
+
+  const changeListShowMode = async () => {
+    // avoid data legacy, resulting in instant interaction when switching list show type
+    southDriverList.value = []
+    pageController.value.pageNum = 1
+
+    isSwitchListLoading.value = true
+    sortBy.value = {
+      order: '',
+      prop: '',
+    }
+    await sortDataByKey(sortBy.value)
+
+    isSwitchListLoading.value = false
   }
 
   const handleSizeChange = (size: number) => {
@@ -187,6 +207,10 @@ export default (autoLoad = true, needRefreshStatus = false) => {
     goNodeConfig,
     modifyNodeLogLevel,
     deleteDriver,
+
+    sortBy,
     sortDataByKey,
+    isSwitchListLoading,
+    changeListShowMode,
   }
 }

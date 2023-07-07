@@ -20,11 +20,11 @@
           @clear="dbGetSouthDriverList"
           @enter="dbGetSouthDriverList"
         />
-        <ListCardSwitch v-model="showType" />
+        <ListCardSwitch v-model="showType" @change="changeListShowMode" />
       </template>
     </ViewHeaderBar>
 
-    <emqx-empty v-if="!isListLoading && southDriverList.length === 0" class="empty" />
+    <emqx-empty v-if="!isListLoading && southDriverList.length === 0 && !isSwitchListLoading" class="empty" />
     <div v-else>
       <!-- card show -->
       <ul v-if="showType === 'card'" class="setup-list">
@@ -46,6 +46,7 @@
         :data="southDriverList"
         :empty-text="$t('common.emptyData')"
         :row-class-name="'table-row-click'"
+        :default-sort="{ prop: sortBy.prop, order: `${sortBy.order}ending` }"
         @sort-change="sortDataByKey"
         @row-click="goGroupPage"
       >
@@ -188,7 +189,11 @@ const {
   goNodeConfig,
   deleteDriver,
   modifyNodeLogLevel,
+
+  sortBy,
   sortDataByKey,
+  isSwitchListLoading,
+  changeListShowMode,
 } = useSouthDriver(true, true)
 
 const { isShowDataStatistics, dataStatisticsVisiable, nodeItemData } = dataStatistics()
