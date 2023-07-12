@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits, watch } from 'vue'
+import { computed, defineProps, defineEmits, watch, nextTick } from 'vue'
 import type { PropType } from 'vue'
 import { ElDialog } from 'element-plus'
 import useTemplateDialog from '@/composables/config/useTemplateDialog'
@@ -66,6 +66,9 @@ const showDialog = computed({
 })
 
 watch(showDialog, (val) => {
+  nextTick(() => {
+    formRef.value.form.clearValidate()
+  })
   if (!val) {
     initForm()
     emit('cancel')

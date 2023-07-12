@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, defineProps, defineEmits } from 'vue'
+import { ref, computed, defineProps, defineEmits, nextTick, watch } from 'vue'
 import type { PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElDialog } from 'element-plus'
@@ -122,12 +122,18 @@ const initForm = () => {
 const showDialog = computed({
   get: () => props.dialogVisible,
   set: (val: boolean) => {
-    if (!val) {
-      resetFields()
-      initForm()
-    }
     emit('update:dialogVisible', val)
   },
+})
+
+watch(showDialog, async (val) => {
+  nextTick(() => {
+    formRef.value.form.clearValidate()
+  })
+  if (!val) {
+    resetFields()
+    initForm()
+  }
 })
 
 const submit = async () => {
