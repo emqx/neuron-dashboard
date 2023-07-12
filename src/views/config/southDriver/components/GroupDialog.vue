@@ -8,7 +8,7 @@
   >
     <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
       <emqx-form-item prop="group" :label="$t('config.groupName')" required>
-        <emqx-input v-model.trim="groupForm.group" :disabled="group" />
+        <emqx-input v-model.trim="groupForm.group" :disabled="!!group" />
       </emqx-form-item>
       <emqx-form-item prop="interval" :label="$t('config.interval')" required>
         <emqx-input v-model.number="groupForm.interval" :disabled="group && !isEdit">
@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import { computed, defineProps, defineEmits, watch } from 'vue'
+import { computed, defineProps, defineEmits, watch, nextTick } from 'vue'
 import { ElDialog } from 'element-plus'
 import useAddGroup from '@/composables/config/useAddGroup'
 import type { GroupForm } from '@/types/config'
@@ -78,6 +78,9 @@ const confirmBtnText = computed(() => {
 })
 
 watch(showDialog, async (val) => {
+  nextTick(() => {
+    formCom.value.form.clearValidate()
+  })
   if (!val) {
     resetFields()
     initForm()
