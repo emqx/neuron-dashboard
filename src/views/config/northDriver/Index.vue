@@ -196,7 +196,7 @@ const getNodeValue = (node: DriverItemInList) => {
 
 const rowClassName = (data: { row: DriverItemInList; rowIndex: number }) => {
   const { row: node } = data
-  return isMonitorNode(node.name) ? 'row-disabled' : ''
+  return isMonitorNode(node.name) ? 'row-disabled' : 'table-row-click'
 }
 </script>
 
