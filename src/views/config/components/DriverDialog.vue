@@ -47,7 +47,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import { computed, defineEmits, defineProps, watch } from 'vue'
+import { computed, defineEmits, defineProps, watch, nextTick } from 'vue'
 import { ElDialog } from 'element-plus'
 import useDriverDialog from '@/composables/config/useDriverDialog'
 import type { DriverDirection } from '@/types/enums'
@@ -97,6 +97,9 @@ const showDialog = computed({
 })
 
 watch(showDialog, (val) => {
+  nextTick(() => {
+    formCom.value.form.clearValidate()
+  })
   if (!val) {
     initForm()
   }
