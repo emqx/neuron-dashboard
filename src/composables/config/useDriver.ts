@@ -13,9 +13,11 @@ import { statusIconClassMap, statusTextMap, connectionStatusTextMap } from '@/ut
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
   const { t } = useI18n()
 
-  const statusIcon = computed(() => statusIconClassMap[props.data.running])
-  const statusText = computed(() => t(`${statusTextMap[props.data.running]}`) || '-')
-  const connectionStatusText = computed(() => t(`${connectionStatusTextMap[props.data.link]}`))
+  const statusIcon = computed(() => (props.data?.running ? statusIconClassMap[props.data.running] : ''))
+  const statusText = computed(() => (props.data?.running ? t(`${statusTextMap[props.data.running]}`) || '-' : ''))
+  const connectionStatusText = computed(() =>
+    Number(props.data?.link) >= 0 ? t(`${connectionStatusTextMap[props.data.link]}`) : '',
+  )
 
   return {
     statusIconClassMap,
