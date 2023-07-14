@@ -58,6 +58,10 @@ const rules = computed(() => {
 })
 const isLoading = ref(false)
 
+const setLang = () => {
+  store.commit('SET_LANG', store.state.lang)
+}
+
 const login = async () => {
   try {
     await formCom.value.validate()
@@ -65,7 +69,7 @@ const login = async () => {
     const { userName, password } = form
     const { data } = await requestLogin({ name: userName, pass: password })
     store.commit('SET_TOKEN', data.token)
-    store.commit('SET_LANG', store.state.lang)
+    setLang()
 
     router.push({
       path: '/',
@@ -77,6 +81,8 @@ const login = async () => {
     isLoading.value = false
   }
 }
+
+setLang()
 </script>
 
 <style lang="scss">
