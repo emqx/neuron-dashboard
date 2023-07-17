@@ -18,6 +18,7 @@
     <ViewHeaderBar>
       <template v-slot:right>
         <emqx-button
+          v-if="isAdminUser"
           type="primary"
           size="small"
           icon="iconfont iconcreate"
@@ -28,7 +29,7 @@
         </emqx-button>
       </template>
       <template v-slot:left>
-        <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
+        <emqx-dropdown v-if="isAdminUser" :hide-timeout="512" popper-class="btn-download-temp-popper">
           <emqx-upload
             action=""
             :before-upload="importFile"
@@ -65,13 +66,13 @@
         <template #default="{ row }">
           <div class="operator-wrap">
             <!-- TODO -->
-            <!-- <AComWithDesc :content="$t('common.edit')">
+            <!-- <AComWithDesc v-if="isAdminUser" :content="$t('common.edit')">
               <i class="el-icon-edit-outline" @click.stop="editTemplate(row)" />
             </AComWithDesc> -->
             <AComWithDesc :content="$t('common.export')">
               <i class="iconfont icon-import iconsubmit" @click.stop="exportTemplate(row)" />
             </AComWithDesc>
-            <AComWithDesc :content="$t('common.delete')">
+            <AComWithDesc v-if="isAdminUser" :content="$t('common.delete')">
               <i class="iconfont icondelete" @click.stop="removeTemplate(row)" />
             </AComWithDesc>
           </div>
@@ -98,6 +99,9 @@ import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import useTemplateList from '@/composables/config/useTemplateList'
 import TemplateDialog from './components/TemplateDialog.vue'
 import PageTitle from '@/components/PageTitle.vue'
+import useUser from '@/composables/useUser'
+
+const { isAdminUser } = useUser()
 
 const {
   templateList,

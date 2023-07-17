@@ -4,7 +4,14 @@
     <ViewHeaderBar>
       <template v-slot:right>
         <ListCardSwitch class="header-item" v-model="showType" />
-        <emqx-button type="primary" size="small" class="header-item btn" icon="iconfont iconcreate" @click="addConfig">
+        <emqx-button
+          v-if="isAdminUser"
+          type="primary"
+          size="small"
+          class="header-item btn"
+          icon="iconfont iconcreate"
+          @click="addConfig"
+        >
           {{ $t('config.addApplication') }}
         </emqx-button>
       </template>
@@ -62,7 +69,7 @@
       <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable="custom" />
       <emqx-table-column align="left" :label="$t('common.oper')" width="180px">
         <template #default="{ row, index }">
-          <div class="operator-wrap">
+          <div v-if="isAdminUser" class="operator-wrap">
             <AComWithDesc :content="countNodeStartStopStatus(row) ? $t('common.stop') : $t('common.start')">
               <i
                 :class="countNodeStartStopStatus(row) ? 'el-icon-video-pause' : 'el-icon-video-play'"
@@ -82,6 +89,7 @@
               </AComWithDesc>
               <template #dropdown>
                 <emqx-dropdown-menu>
+                  <!-- `monitor` driver and user role not `admin` does not support deletion and editing -->
                   <emqx-dropdown-item v-if="!isMonitorNode(row.name)" class="operation-item-wrap" command="edit">
                     <i class="el-icon-edit-outline operation-icon" />
                     <span>{{ $t(`common.edit`) }}</span>
@@ -109,6 +117,11 @@
                 </emqx-dropdown-menu>
               </template>
             </emqx-dropdown>
+          </div>
+          <div v-else class="operator-wrap">
+            <AComWithDesc :content="$t('config.dataStatistics')">
+              <i class="iconfont iconstatus operation-icon" @click.stop="handleClickOperator('dataStatistics', row)" />
+            </AComWithDesc>
           </div>
         </template>
       </emqx-table-column>
@@ -162,6 +175,7 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import PageTitle from '@/components/PageTitle.vue'
 import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 import { isTheSameParentRoute } from '@/utils/utils'
+import useUser from '@/composables/useUser'
 
 export default defineComponent({
   beforeRouteEnter(to, from, next) {
@@ -176,6 +190,8 @@ export default defineComponent({
 
 <script lang="ts" setup>
 const { t } = useI18n()
+const { isAdminUser } = useUser()
+
 const {
   northDriverList,
   isListLoading,

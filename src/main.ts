@@ -23,6 +23,7 @@ import { isShowEkuiper } from '@/config/index'
 import { isSubApp, replacePath } from '@/utils/forToBeSubApp'
 import routes, { ekuiperRoute } from './router/routes'
 import asSubAppAction from '@/utils/asSubAppAction'
+import { dataType } from '@/utils/utils'
 
 let instance: any = null
 const neuronRoutes = isShowEkuiper ? routes.concat(ekuiperRoute) : routes
@@ -116,9 +117,9 @@ function setSomeDataAndRender(props: any) {
   if (token) {
     store.commit('SET_TOKEN', token)
   }
-  if (isAdmin) {
-    store.commit('SET_IS_ADMIN', isAdmin)
-  }
+
+  const userRole = isAdmin !== undefined && isAdmin !== null ? Number(isAdmin) : 0
+  store.commit('SET_USER_ROLE', Number(userRole))
 
   // render
   routerForConfig = createRouter({

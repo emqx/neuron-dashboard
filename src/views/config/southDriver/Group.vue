@@ -11,7 +11,7 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
+          <emqx-dropdown v-if="isAdminUser" :hide-timeout="512" popper-class="btn-download-temp-popper">
             <emqx-upload
               class="uploader-tag"
               :before-upload="importTagsByGroups"
@@ -42,15 +42,17 @@
             <i class="iconfont icon-import iconsubmit"></i>
             <span>{{ $t('common.export') }}</span>
           </emqx-button>
-          <emqx-button size="small" type="primary" @click="addGroup">
-            {{ $t('common.create') }}
-          </emqx-button>
-          <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
-            $t('common.clear')
-          }}</emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
-            $t('common.delete')
-          }}</emqx-button>
+          <template v-if="isAdminUser">
+            <emqx-button size="small" type="primary" @click="addGroup">
+              {{ $t('common.create') }}
+            </emqx-button>
+            <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
+              $t('common.clear')
+            }}</emqx-button>
+            <emqx-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
+              $t('common.delete')
+            }}</emqx-button>
+          </template>
         </div>
       </div>
     </div>
@@ -81,7 +83,7 @@
       </emqx-table-column>
       <emqx-table-column :label="$t('config.tagCounts')" prop="tag_count"></emqx-table-column>
       <emqx-table-column :label="$t('config.interval')" prop="interval"></emqx-table-column>
-      <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
+      <emqx-table-column v-if="isAdminUser" align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <div class="operator-wrap">
             <AComWithDesc :content="$t('common.edit')">
@@ -112,8 +114,11 @@ import { useRouter } from 'vue-router'
 import { ElLink } from 'element-plus'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import useGroupList from '@/composables/config/useGroupList'
+import useUser from '@/composables/useUser'
 import type { GroupData, GroupForm } from '@/types/config'
 import GroupDialog from './components/GroupDialog.vue'
+
+const { isAdminUser } = useUser()
 
 const router = useRouter()
 

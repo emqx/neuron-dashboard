@@ -3,7 +3,14 @@
     <PageTitle :title="$t('config.plugin')" />
     <ViewHeaderBar>
       <template v-slot:right>
-        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addPlugin">
+        <emqx-button
+          v-if="isAdminUser"
+          type="primary"
+          size="small"
+          icon="iconfont iconcreate"
+          class="header-item btn"
+          @click="addPlugin"
+        >
           {{ $t('config.addPlugin') }}
         </emqx-button>
       </template>
@@ -45,6 +52,9 @@ import PluginDialog from './components/PluginDialog.vue'
 import PluginItemCard from './components/PluginItemCard.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import PageTitle from '@/components/PageTitle.vue'
+import useUser from '@/composables/useUser'
+
+const { isAdminUser } = useUser()
 
 const { pluginList, isListLoading, getPluginList } = usePlugin()
 const { nodeTypeList } = useNodeTypeSelect()
