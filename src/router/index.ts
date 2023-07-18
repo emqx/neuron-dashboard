@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import routes, { ekuiperRoute } from './routes'
+import routes, { ekuiperRoute, LOGIN_ROUTE_NAME } from './routes'
 import store from '@/store/index'
 import { handleEKuiper, isKuiperPath, isExitEKuiper, handleExitEKuiper } from '@/utils/forEKuiper'
 import { isShowEkuiper } from '@/config/index'
@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
   // cancel all requests， when leaving the router
   const axiosCancels = store.state.axiosPromiseCancel
   // TODO: why trigger twice there, find the reason
-  if (to.path === from.path) {
+  if (to.path === from.path || from.name === LOGIN_ROUTE_NAME) {
     store.commit('SET_AXIOS_PROMISE_CANCEL', [])
   } else if (axiosCancels.length) {
     axiosCancels.forEach(async (e) => e && e())
