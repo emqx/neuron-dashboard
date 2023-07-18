@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import routes from './routes'
+import routes, { LOGIN_ROUTE_NAME } from './routes'
 import store from '@/store/index'
 
 const router = createRouter({
@@ -11,7 +11,9 @@ router.beforeEach((to, from, next) => {
   // cancel all requests， when leaving the router
   const axiosCancels = store.state.axiosPromiseCancel
 
-  if (axiosCancels.length) {
+  if (to.path === from.path || from.name === LOGIN_ROUTE_NAME) {
+    store.commit('SET_AXIOS_PROMISE_CANCEL', [])
+  } else if (axiosCancels.length) {
     axiosCancels.forEach(async (e) => e && e())
     store.commit('SET_AXIOS_PROMISE_CANCEL', [])
   }
