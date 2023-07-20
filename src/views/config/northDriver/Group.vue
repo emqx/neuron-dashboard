@@ -39,7 +39,7 @@
       <emqx-table-column :label="$t('config.deviceName')" prop="name">
         <template #default="{ row }">{{ row.driver }}</template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.topic')">
+      <emqx-table-column v-if="isShowTopic" :label="$t('config.topic')">
         <template #default="{ row }">{{ row?.params?.topic }}</template>
       </emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
@@ -66,6 +66,8 @@ const {
   subCheckedList,
   isListLoading,
   allChecked,
+  isShowTopic,
+
   unsubscribeGroup,
   clearSubscription,
   batchUnsubscribeGroups,
