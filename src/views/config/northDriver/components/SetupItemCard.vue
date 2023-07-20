@@ -6,7 +6,7 @@
   >
     <div class="node-item-hd common-flex">
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
-      <div class="setup-item-handlers">
+      <div v-if="isAdminUser" class="setup-item-handlers">
         <AComWithDesc :content="$t('config.appConfig')">
           <i class="iconfont iconsetting" @click.stop="goNodeConfig(data)"></i>
         </AComWithDesc>
@@ -14,7 +14,7 @@
           <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(data)"></i>
         </AComWithDesc>
 
-        <!-- monitor driver does not support deletion and editing -->
+        <!-- `monitor` driver and user role not `admin` does not support deletion and editing -->
         <AComWithDesc v-if="isMonitorNode(data.name)" :content="$t('config.updateDebugLogLevel')">
           <img
             class="img-debug-log-large"
@@ -23,6 +23,7 @@
             @click.stop="handleClickOperator('debugLogLevel')"
           />
         </AComWithDesc>
+
         <emqx-dropdown v-else trigger="click" @command="handleClickOperator">
           <AComWithDesc :content="$t('common.more')">
             <span class="el-dropdown-link" @click.stop>
@@ -31,7 +32,7 @@
           </AComWithDesc>
           <template #dropdown>
             <emqx-dropdown-menu>
-              <emqx-dropdown-item v-if="!isMonitorNode(data.name)" class="operation-item-wrap" command="edit">
+              <emqx-dropdown-item class="operation-item-wrap" command="edit">
                 <i class="el-icon-edit-outline operation-icon" />
                 <span>{{ $t(`common.edit`) }}</span>
               </emqx-dropdown-item>
@@ -52,6 +53,11 @@
           </template>
         </emqx-dropdown>
       </div>
+      <div v-else class="setup-item-handlers">
+        <AComWithDesc :content="$t('config.dataStatistics')">
+          <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(data)"></i>
+        </AComWithDesc>
+      </div>
     </div>
 
     <div class="node-item-info-row common-flex">
@@ -64,7 +70,7 @@
           <span>{{ statusText }}</span>
         </div>
       </div>
-      <div class="common-flex">
+      <div v-if="isAdminUser" class="common-flex">
         <emqx-switch v-model="nodeStartStopStatus" @click.stop />
       </div>
     </div>
@@ -96,12 +102,15 @@ import { PluginKind, NodeCatogery } from '@/types/enums'
 import type { DriverItemInList } from '@/types/config'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import DataStatisticsDrawer from '../../components/dataStatisticsDrawer.vue'
+import useUser from '@/composables/useUser'
 
 const emit = defineEmits(['toggleStatus', 'clickOperation'])
 
 const props = defineProps({
   data: { type: Object as PropType<DriverItemInList>, required: true },
 })
+
+const { isAdminUser } = useUser()
 
 const { goNodeConfig, goGroupPage } = useNorthDriver(false)
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)

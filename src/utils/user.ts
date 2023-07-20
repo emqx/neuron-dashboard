@@ -1,6 +1,7 @@
 export const LOCAL_STORAGE_TOKEN_KEY = 'token'
 export const LOCAL_STORAGE_BREADCRUMB = 'breadcrumbs'
 export const LOCAL_STORAGE_NODE_GROUP = 'nodeGroupData'
+export const LOCAL_USER_IS_ADMIN = 'isAdmin'
 
 export const getToken = (): string | null => window.localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)
 
@@ -33,5 +34,14 @@ export const setNodeGroupData = (data: NodeGroup): void => {
 export const getNodeGroupData = (): NodeGroup => {
   const res: NodeGroup =
     JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_NODE_GROUP) || '{"node":"","groupName":""}') || ''
+  return res
+}
+
+export const setUserRole = (data: number): void => {
+  window.localStorage.setItem(LOCAL_USER_IS_ADMIN, JSON.stringify(data))
+}
+
+export const getUserRole = (): number => {
+  const res = JSON.parse(window.localStorage.getItem(LOCAL_USER_IS_ADMIN) || '0')
   return res
 }

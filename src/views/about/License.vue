@@ -72,7 +72,13 @@
             </i18n-t>
           </p>
         </div>
-        <emqx-upload action="" class="file-upload" :show-file-list="false" :before-upload="handleUpload">
+        <emqx-upload
+          v-if="isAdminUser"
+          action=""
+          class="file-upload"
+          :show-file-list="false"
+          :before-upload="handleUpload"
+        >
           <emqx-button size="small" type="primary" class="btn-upload">
             {{ hasLicense ? t('common.reUpload') : t('common.upload') }}
           </emqx-button>
@@ -92,6 +98,9 @@ import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import useLang from '@/composables/useLang'
+import useUser from '@/composables/useUser'
+
+const { isAdminUser } = useUser()
 
 const { t, locale } = useI18n()
 const isDataLoading = ref(false)

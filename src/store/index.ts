@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { getToken, setToken, clearLocalStorage, getNodeGroupData } from '@/utils/user'
+import { getToken, setToken, clearLocalStorage, getNodeGroupData, setUserRole, getUserRole } from '@/utils/user'
 import { DEFAULT_LANG } from '@/utils/constants'
 import { isSubApp } from '@/utils/forToBeSubApp'
 
@@ -29,7 +29,7 @@ interface State {
   projectId: string
   serviceId: string
   version: string
-  isAdmin: boolean
+  userRole: number
 }
 
 const checkLanguage = (lang: string) => (['en', 'zh'].includes(lang) ? lang : '')
@@ -64,7 +64,7 @@ export default createStore<State>({
       projectId: '',
       serviceId: '',
       version: '',
-      isAdmin: false,
+      userRole: getUserRole() || 0, // 1: admin
     }
   },
 
@@ -108,8 +108,9 @@ export default createStore<State>({
     },
 
     // ECP
-    SET_IS_ADMIN(state: State, payload: boolean) {
-      state.isAdmin = payload
+    SET_USER_ROLE(state: State, payload: number) {
+      state.userRole = payload
+      setUserRole(payload)
     },
     SET_HIDDEN_TAB(state: State, payload: boolean) {
       state.tabsNeedBeHidden = payload

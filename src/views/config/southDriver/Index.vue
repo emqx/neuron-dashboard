@@ -3,7 +3,14 @@
     <PageTitle :title="$t('config.southDeviceManagement')" />
     <ViewHeaderBar>
       <template v-slot:right>
-        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
+        <emqx-button
+          v-if="isAdminUser"
+          type="primary"
+          size="small"
+          icon="iconfont iconcreate"
+          class="header-item btn"
+          @click="addConfig"
+        >
           {{ $t('config.addDevice') }}
         </emqx-button>
       </template>
@@ -84,7 +91,7 @@
         <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable="custom" />
         <emqx-table-column align="left" :label="$t('common.oper')" width="180px">
           <template #default="{ row, index }">
-            <div class="operator-wrap">
+            <div v-if="isAdminUser" class="operator-wrap">
               <AComWithDesc :content="countNodeStartStopStatus(row) ? $t('common.stop') : $t('common.start')">
                 <i
                   :class="countNodeStartStopStatus(row) ? 'el-icon-video-pause' : 'el-icon-video-play'"
@@ -126,6 +133,14 @@
                   </emqx-dropdown-menu>
                 </template>
               </emqx-dropdown>
+            </div>
+            <div v-else class="operator-wrap">
+              <AComWithDesc :content="$t('config.dataStatistics')">
+                <i
+                  class="iconfont iconstatus operation-icon"
+                  @click.stop="handleClickOperator('dataStatistics', row)"
+                />
+              </AComWithDesc>
             </div>
           </template>
         </emqx-table-column>
@@ -193,6 +208,7 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import PageTitle from '@/components/PageTitle.vue'
 import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 import { isTheSameParentRoute } from '@/utils/utils'
+import useUser from '@/composables/useUser'
 
 export default defineComponent({
   beforeRouteEnter(to, from, next) {
@@ -208,6 +224,8 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
+const { isAdminUser } = useUser()
+
 const {
   queryKeyword,
   pageController,

@@ -9,7 +9,7 @@
           <!-- <i class="el-icon-edit icon-edit" :title="$t('common.edit')" @click="editNodeName" /> -->
         </p>
       </div>
-      <div class="btns common-flex">
+      <div v-if="isAdminUser" class="btns common-flex">
         <div class="btn-group">
           <emqx-button size="small" type="primary" @click="addSubscription">
             {{ $t('config.addSubscription') }}
@@ -42,7 +42,7 @@
       <emqx-table-column :label="$t('config.topic')">
         <template #default="{ row }">{{ row?.params?.topic }}</template>
       </emqx-table-column>
-      <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
+      <emqx-table-column v-if="isAdminUser" align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <AComWithDesc :content="$t('config.unsubscribe')">
             <i class="iconfont icondelete" @click="unsubscribeGroup(row)" />
@@ -59,6 +59,9 @@ import { ref } from 'vue'
 import { useSubscriptionList } from '@/composables/config/useSubscription'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import useUser from '@/composables/useUser'
+
+const { isAdminUser } = useUser()
 
 const {
   node,

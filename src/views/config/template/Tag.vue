@@ -10,15 +10,17 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <emqx-button size="small" type="primary" @click="goCreatePage">
-            {{ $t('common.create') }}
-          </emqx-button>
-          <emqx-button size="small" type="warning" :disabled="!tagList.length" @click="clearTag">{{
-            $t('common.clear')
-          }}</emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!tagCheckedList.length" @click="batchDeleteTag">{{
-            $t('common.delete')
-          }}</emqx-button>
+          <i v-if="isAdminUser">
+            <emqx-button size="small" type="primary" @click="goCreatePage">
+              {{ $t('common.create') }}
+            </emqx-button>
+            <emqx-button size="small" type="warning" :disabled="!tagList.length" @click="clearTag">{{
+              $t('common.clear')
+            }}</emqx-button>
+            <emqx-button size="small" type="danger" :disabled="!tagCheckedList.length" @click="batchDeleteTag">{{
+              $t('common.delete')
+            }}</emqx-button>
+          </i>
           <KeywordSerachInput
             v-model="queryKeyword.name"
             class="search_input"
@@ -57,7 +59,7 @@
         </emqx-table-column>
         <emqx-table-column :label="$t('config.desc')" prop="description" />
 
-        <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
+        <emqx-table-column v-if="isAdminUser" align="left" :label="$t('common.oper')" width="140px">
           <template #default="{ row }">
             <AComWithDesc :content="$t('common.edit')">
               <i class="el-icon-edit-outline" @click="editTag(row)" />
@@ -101,6 +103,9 @@ import {
   useTagPrecision,
   useTagDecimal,
 } from '@/composables/config/useAddTagCommon'
+import useUser from '@/composables/useUser'
+
+const { isAdminUser } = useUser()
 
 const {
   template,
