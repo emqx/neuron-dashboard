@@ -4,7 +4,7 @@
       <h3 class="card-title">{{ $t('admin.license') }}</h3>
     </div>
     <div class="license">
-      <emqx-descriptions :column="1" v-if="hasLicense">
+      <emqx-descriptions v-if="hasLicense" :column="1">
         <!-- <emqx-descriptions-item :label="$t('admin.licenseType')">
           {{ licenseData.license_type }}
         </emqx-descriptions-item>
@@ -55,10 +55,9 @@
         </emqx-descriptions-item>
       </emqx-descriptions>
       <div class="msg" :class="{ 'align-center': !hasLicense }">
-        <img :src="require('@/assets/images/license.png')" width="400" v-if="!hasLicense" />
+        <img v-if="!hasLicense" :src="require('@/assets/images/license.png')" width="400" />
         <div class="method-text">
-          <p v-if="!hasLicense">{{ $t('admin.licensePlaceholder') }}</p>
-          <p v-else>{{ $t('admin.howToGetTheCertificate') }}</p>
+          <p>{{ hasLicense ? $t('admin.howToGetTheCertificate') : $t('admin.licensePlaceholder') }}</p>
           <p>
             1.
             <i18n-t class="payload-desc" keypath="admin.getFreeLicense" tag="span">
@@ -119,6 +118,7 @@ const contactLink = computed(() => `https://www.emqx.com/${locale.value}/contact
 
 const getLicense = async () => {
   try {
+    isDataLoading.value = true
     const { data } = await queryLicense()
     const { error, ...license } = data
     const { max_nodes, used_nodes, used_tags, max_node_tags } = license
@@ -131,9 +131,12 @@ const getLicense = async () => {
     }
   } catch (error) {
     console.error(error)
+  } finally {
+    isDataLoading.value = false
   }
 }
 
+/**
 const licenseStatus = computed(() => {
   if (!licenseData.value) {
     return ''
@@ -150,7 +153,9 @@ const licenseStatus = computed(() => {
   }
   return t('admin.inEffect')
 })
+*/
 
+// upload | reload license
 const { readFile } = useUploadFileAndRead()
 const handleUpload = async (file: any) => {
   const nameStrings = file.name.split('.')
