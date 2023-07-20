@@ -94,7 +94,7 @@ const props = defineProps({
 
 const emit = defineEmits(['updated', 'toggleStatus', 'reload'])
 
-const { goGroupPage, goNodeConfig } = useSouthDriver(true, true)
+const { goGroupPage, goNodeConfig } = useSouthDriver(false)
 const { statusIcon, statusText, connectionStatusText } = useDriverStatus(props)
 
 const { countNodeStartStopStatus } = useNodeStartStopStatus()

@@ -162,6 +162,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       name: 'SouthDriverGroup',
       params: {
         node: node.name,
+        plugin: node.plugin,
       },
     })
   }
