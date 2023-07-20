@@ -121,6 +121,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
         name: 'NorthDriverGroup',
         params: {
           node: node.name,
+          plugin: node.plugin,
         },
       })
     }

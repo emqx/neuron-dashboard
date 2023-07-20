@@ -60,7 +60,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { hiddenBreadcrumb: true },
       },
       {
-        path: ':node',
+        path: ':node/:plugin',
         name: 'NorthDriverGroup',
         component: () => import('@/views/config/northDriver/Group.vue'),
         meta: { title: 'config.groupList' },
@@ -99,7 +99,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: 'config.deviceConfig' },
       },
       {
-        path: ':node',
+        path: ':node/:plugin',
         name: 'SouthDriverGroupG',
         component: () => import('@/components/LayoutContent.vue'),
         meta: { title: 'config.groupList' },
