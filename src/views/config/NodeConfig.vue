@@ -32,7 +32,7 @@
         </div>
       </template>
     </emqx-card>
-    <emqx-card shadow="none" class="node-config-ft" v-if="!isLoading && fieldList.length > 0">
+    <emqx-card v-if="!isLoading && fieldList.length > 0" shadow="none" class="node-config-ft">
       <emqx-button type="primary" :loading="isSubmitting" @click="submit">{{ $t('common.submit') }}</emqx-button>
       <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
       <emqx-button @click.stop="reset">{{ $t('common.reset') }}</emqx-button>
