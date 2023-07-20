@@ -31,7 +31,7 @@
         </emqx-select>
       </emqx-form-item>
 
-      <emqx-form-item v-if="isMQTTPugin(nodePlugin(currentNode))" :label="$t('config.topic')">
+      <emqx-form-item v-if="isMQTTPugin(nodePlugin(currentNode))" prop="topic" :label="$t('config.topic')">
         <emqx-input v-model="subscriptionForm.topic" />
       </emqx-form-item>
     </emqx-form>
