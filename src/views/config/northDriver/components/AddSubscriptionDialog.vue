@@ -29,7 +29,7 @@
           <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
         </emqx-select>
       </emqx-form-item>
-      <emqx-form-item v-if="isMQTTPugin" :label="$t('config.topic')">
+      <emqx-form-item v-if="isMQTTPugin" prop="topic" :label="$t('config.topic')">
         <emqx-input v-model="subscriptionForm.topic" />
       </emqx-form-item>
     </emqx-form>
