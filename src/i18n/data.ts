@@ -87,4 +87,12 @@ export default {
     zh: '以 16 进制展示值',
     en: 'Display the value in hexadecimal',
   },
+  nodeDeleted: {
+    zh: '节点不存在',
+    en: 'Node not exist',
+  },
+  groupDeleted: {
+    zh: '组不存在',
+    en: 'Group not exist',
+  },
 }
