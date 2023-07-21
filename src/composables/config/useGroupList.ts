@@ -1,7 +1,8 @@
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { MessageBoxConfirm } from '@/utils/element'
 import { queryGroupList, deleteGroup, queryTagList, addTag } from '@/api/config'
@@ -20,6 +21,9 @@ interface GroupDataInTable extends GroupData {
 export default () => {
   const { t } = useI18n()
   const route = useRoute()
+  const router = useRouter()
+  const store = useStore()
+
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
 
@@ -124,6 +128,19 @@ export default () => {
     exportTable(tags, node.value)
   }
 
+  // go to monitoring
+  const goMonitoringPage = ({ name }: GroupData) => {
+    const data = {
+      node: node.value,
+      groupName: name,
+    }
+    store.commit('SET_NODE_GROUP', data)
+
+    router.push({
+      name: 'DataMonitoring',
+    })
+  }
+
   getGroupList()
 
   return {
@@ -140,5 +157,6 @@ export default () => {
     importTagsByGroups,
     downloadTemplate,
     ExportTagsByGroups,
+    goMonitoringPage,
   }
 }

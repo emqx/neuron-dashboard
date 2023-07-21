@@ -87,6 +87,9 @@
             <AComWithDesc :content="$t('common.edit')">
               <i class="el-icon-edit-outline" @click.stop="operatorGroup(row, true)" />
             </AComWithDesc>
+            <AComWithDesc :content="$t('data.monitoring')">
+              <i class="iconfont iconstatus icon-monitoring" @click.stop="goMonitoringPage(row)" />
+            </AComWithDesc>
             <AComWithDesc :content="$t('common.delete')">
               <i class="iconfont icondelete" @click.stop="delGroup(row)" />
             </AComWithDesc>
@@ -131,6 +134,7 @@ const {
   downloadTemplate,
   importTagsByGroups,
   ExportTagsByGroups,
+  goMonitoringPage,
 } = useGroupList()
 
 const showGroupDialog = ref(false)
@@ -184,5 +188,9 @@ const goTagPage = ({ name }: GroupData) => {
 .btn-download-temp {
   font-weight: normal;
   border: none;
+}
+
+.icon-monitoring {
+  font-size: 22px !important;
 }
 </style>

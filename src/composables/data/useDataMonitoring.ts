@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useTagTypeSelect, useTagAttributeTypeSelect } from '@/composables/config/useAddTagCommon'
 import { debounce, cloneDeep } from 'lodash'
-import { setNodeGroupData } from '@/utils/user'
+import { EmqxMessage } from '@emqx/emqx-ui'
 
 export interface TagDataInTable extends TagDataInMonitoring {
   attribute: Array<number>
@@ -78,6 +78,8 @@ export default () => {
     count: 0,
   }
 
+  const isManualSelectNode = ref(true)
+
   const tableEmptyText = computed(() =>
     !currentGroup.value.node || !currentGroup.value.groupName ? t('data.selectGroupTip') : t('common.emptyData'),
   )
@@ -142,12 +144,20 @@ export default () => {
     }
   }
 
-  const groupIsDeleted = async () => {
-    currentGroup.value.groupName = ''
+  // group not exist: reload group list
+  const groupIsDeleted = async (reload = true) => {
+    currentGroup.value = {
+      ...currentGroup.value,
+      groupName: '',
+    }
+
     totalData.value = []
-    await getGroupList(currentGroup.value.node)
+    if (currentGroup.value.node && reload) {
+      await getGroupList(currentGroup.value.node)
+    }
   }
 
+  // node not exist: reset some data
   const nodeIsDeleted = async (reload = true) => {
     currentGroup.value = {
       node: '',
@@ -155,6 +165,7 @@ export default () => {
     }
     groupList.value = []
     totalData.value = []
+
     if (reload) {
       await getSouthNodeList()
     }
@@ -223,6 +234,7 @@ export default () => {
       }
 
       if (error?.response?.data?.error === 2106) {
+        // need reload group list
         groupIsDeleted()
       }
     }
@@ -280,20 +292,26 @@ export default () => {
 
   // change node
   const selectedNodeChanged = async (nodeName: string) => {
-    setNodeGroupData(currentGroup.value)
     if (nodeName) {
       try {
-        currentGroup.value.node = nodeName
+        currentGroup.value = {
+          ...currentGroup.value,
+          node: nodeName,
+        }
         selectedGroup = undefined
         totalData.value = []
         await getGroupList(currentGroup.value.node)
 
+        // check if the group is deleted
         await initCurrentGroupName()
       } catch (error) {
         groupList.value = []
       }
     } else {
-      currentGroup.value.groupName = ''
+      currentGroup.value = {
+        node: currentGroup.value.node,
+        groupName: '',
+      }
       resetKeywordSearch()
       groupList.value = []
       totalData.value = []
@@ -304,7 +322,10 @@ export default () => {
 
   // change group
   const selectedGroupChanged = async (groupName: string) => {
-    setNodeGroupData(currentGroup.value)
+    currentGroup.value = {
+      node: currentGroup.value.node,
+      groupName,
+    }
 
     resetKeywordSearch()
 
@@ -354,12 +375,28 @@ export default () => {
     return item.attribute && item.attribute.some((attr) => attr === TagAttributeType.Write)
   }
 
+  const isNodeDeleted = async () => {
+    const { node } = currentGroup.value
+    return node && !currentNodeName.value
+  }
+  const isGroupDeleted = async () => {
+    const { groupName } = currentGroup.value
+
+    const group = groupList.value.find(({ name }) => name === groupName)
+    return groupName && !group
+  }
+
+  // check and init node
   const initCurrentNode = async () => {
     const { node } = currentGroup.value
+    const isTheNodeDeleted = await isNodeDeleted()
 
     // reset default value when remove a node.
-    if (node && !currentNodeName.value) {
-      nodeIsDeleted(false)
+    if (isTheNodeDeleted) {
+      await nodeIsDeleted(false)
+      if (!isManualSelectNode.value) {
+        await EmqxMessage.error(t('data.nodeDeleted'))
+      }
     }
 
     if (currentGroup.value.node) {
@@ -367,13 +404,17 @@ export default () => {
     }
   }
 
+  // check and init group
   const initCurrentGroupName = async () => {
-    const { node, groupName } = currentGroup.value
+    const { node } = currentGroup.value
+    const isTheGroupExist = await isGroupDeleted()
 
-    // reset default value when remove a node.
-    const group = groupList.value.find(({ name }) => name === groupName)
-    if (groupName && !group) {
-      groupIsDeleted()
+    // reset default value when remove a group.
+    if (isTheGroupExist) {
+      await groupIsDeleted(false)
+      if (!isManualSelectNode.value) {
+        await EmqxMessage.error(t('data.groupDeleted'))
+      }
     }
 
     if (node && currentGroup.value.groupName) {
@@ -387,8 +428,10 @@ export default () => {
   }
 
   onMounted(async () => {
+    isManualSelectNode.value = false
     await getSouthNodeList()
     await initTagList()
+    isManualSelectNode.value = true
   })
 
   onUnmounted(() => {
