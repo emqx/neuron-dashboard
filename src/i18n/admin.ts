@@ -7,6 +7,10 @@ export default {
     zh: '日志',
     en: 'Logs',
   },
+  debugFiles: {
+    zh: '调试文件',
+    en: 'Debug files',
+  },
   logType: {
     zh: '日志类型',
     en: 'Log type',
