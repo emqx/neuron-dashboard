@@ -23,7 +23,7 @@
               </emqx-dropdown-item>
               <emqx-dropdown-item @click="downloadLogsFile">
                 <i class="iconfont icondownload"></i>
-                <span> {{ $t('admin.log') }}</span>
+                <span> {{ $t('admin.debugFiles') }}</span>
               </emqx-dropdown-item>
             </emqx-dropdown-menu>
           </template>
