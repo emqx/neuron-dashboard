@@ -143,7 +143,10 @@ export default () => {
   }
 
   const groupIsDeleted = async () => {
-    currentGroup.value.groupName = ''
+    currentGroup.value = {
+      node: currentGroup.value.node,
+      groupName: '',
+    }
     totalData.value = []
     await getGroupList(currentGroup.value.node)
   }
@@ -279,7 +282,11 @@ export default () => {
   const selectedNodeChanged = async (nodeName: string) => {
     if (nodeName) {
       try {
-        currentGroup.value.node = nodeName
+        currentGroup.value = {
+          ...currentGroup.value,
+          node: nodeName,
+        }
+
         selectedGroup = undefined
         totalData.value = []
 
@@ -290,7 +297,10 @@ export default () => {
         groupList.value = []
       }
     } else {
-      currentGroup.value.groupName = ''
+      currentGroup.value = {
+        node: currentGroup.value.node,
+        groupName: '',
+      }
       resetKeywordSearch()
       groupList.value = []
       totalData.value = []
@@ -301,6 +311,10 @@ export default () => {
 
   // change group
   const selectedGroupChanged = async (groupName: string) => {
+    currentGroup.value = {
+      node: currentGroup.value.node,
+      groupName,
+    }
     resetKeywordSearch()
 
     if (groupName) {
