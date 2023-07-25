@@ -8,3 +8,5 @@ export const BINARY_STRING_REGEX = /^(0|1)+$/
 
 export const UPPER_LOWERCASE_REGEX = /^[A-Z][a-z]+$/
 export const LOWERCASE_INITIAL_REGEX = /^[a-z]/
+
+export const EN_NUMBER_REGEX = /^[0-9a-zA-Z]+$/
