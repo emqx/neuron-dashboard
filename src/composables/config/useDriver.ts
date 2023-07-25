@@ -192,9 +192,12 @@ export const useDriverInfo = (node?: Record<string, any>) => {
 
   const isMQTTPugin = computed(() => nodePlugin.value && nodePlugin.value.toLocaleLowerCase() === 'mqtt')
 
+  const isGewuPugin = computed(() => nodePlugin.value && nodePlugin.value.toLocaleLowerCase() === 'gewu')
+
   return {
     nodePlugin,
     isMQTTPugin,
+    isGewuPugin,
   }
 }
 

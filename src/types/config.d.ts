@@ -41,6 +41,7 @@ export interface SubscriptionDataForm {
   driver: string
   group: string
   topic?: string
+  productKey?: string
 }
 
 export interface SubscriptionData extends SubscriptionDataForm {
