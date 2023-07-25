@@ -29,10 +29,18 @@
           <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
         </emqx-select>
       </emqx-form-item>
+
+      <!-- mqtt -->
       <emqx-form-item v-if="isMQTTPugin" prop="topic" :label="$t('config.topic')">
         <emqx-input v-model="subscriptionForm.topic" />
       </emqx-form-item>
+
+      <!-- gewu -->
+      <emqx-form-item v-if="isGewuPugin" prop="productKey" :label="$t('config.productKey')">
+        <emqx-input v-model="subscriptionForm.productKey" />
+      </emqx-form-item>
     </emqx-form>
+
     <template #footer>
       <span class="dialog-footer">
         <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
@@ -83,7 +91,7 @@ const {
   submitData,
 } = useAddSubscription(props)
 
-const { isMQTTPugin } = useDriverInfo()
+const { isMQTTPugin, isGewuPugin } = useDriverInfo()
 
 const submit = async () => {
   await submitData()
