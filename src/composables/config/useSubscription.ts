@@ -8,6 +8,8 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import useSouthDriver from './useSouthDriver'
 import { createCommonErrorMessage, OmitArrayFields } from '@/utils/utils'
+import { EN_NUMBER_REGEX } from '@/utils/regexps'
+import { useDriverInfo } from '@/composables/config/useDriver'
 
 interface SubscriptionDataInTable extends SubscriptionData {
   checked: boolean
@@ -113,6 +115,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     driver: '',
     group: '',
     topic: '',
+    productKey: '',
   })
 
   const formCom = ref()
@@ -126,13 +129,28 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     }
     return warningContent
   })
+
+  const checkProductKey = async (rule: unknown, value: string, callback: any) => {
+    if (!EN_NUMBER_REGEX.test(value)) {
+      callback(new Error(t('config.enNumberFormatError')))
+    } else if (value.length > 16) {
+      callback(new Error(t('config.enNumberLengthError', { max: 16 })))
+    } else {
+      callback()
+    }
+  }
   const rules = computed(() => {
     return {
       driver: [{ required: true, message: t('config.southDeviceRequired') }],
       group: [{ required: true, message: createCommonErrorMessage('select', t('config.group')) }],
       topic: [{ required: true, message: createCommonErrorMessage('input', t('config.topic')) }],
+      productKey: [
+        { required: true, message: createCommonErrorMessage('input', t('config.productKey')) },
+        { validator: checkProductKey, trigger: ['blur'] },
+      ],
     }
   })
+
   const subscriptionForm: Ref<SubscriptionDataForm> = ref(createRawSubscriptionForm())
   const isSubmitting = ref(false)
   const { totalSouthDriverList: deviceList } = useSouthDriver()
@@ -156,13 +174,16 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     formCom.value.$refs.form.clearValidate()
   }
 
+  const { isMQTTPugin, isGewuPugin } = useDriverInfo()
+
   const submitData = async () => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
       const { topic, ...baseSubscriptionForm } = subscriptionForm.value
       let data: SubscriptionData = { ...baseSubscriptionForm, app: props.currentNode }
-      if (topic) {
+
+      if (isMQTTPugin.value && topic) {
         data = {
           ...data,
           params: {
@@ -170,6 +191,11 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
           },
         }
       }
+
+      if (!isGewuPugin.value) {
+        data.productKey = undefined
+      }
+
       await addSubscription(data)
       EmqxMessage.success(t('common.submitSuccess'))
       return Promise.resolve()
