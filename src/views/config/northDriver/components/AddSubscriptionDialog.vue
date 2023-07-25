@@ -108,6 +108,9 @@ const submit = async () => {
 watch(showDialog, (val) => {
   if (val) {
     initForm()
+  } else {
+    formCom.value.resetField()
+    groupList.value = []
   }
 })
 </script>
