@@ -31,7 +31,7 @@
         </emqx-select>
       </emqx-form-item>
 
-      <emqx-form-item v-if="isMQTTPugin(nodePlugin(currentNode))" prop="topic" :label="$t('config.topic')">
+      <emqx-form-item v-if="isMQTTPugin" prop="topic" :label="$t('config.topic')">
         <emqx-input v-model="subscriptionForm.topic" />
       </emqx-form-item>
     </emqx-form>
@@ -50,7 +50,7 @@
 import { computed, defineProps, defineEmits, watch } from 'vue'
 import { ElDialog, ElAlert } from 'element-plus'
 import { useAddSubscription } from '@/composables/config/useSubscription'
-import useNorthDriver from '@/composables/config/useNorthDriver'
+import { useDriverInfo } from '@/composables/config/useDriver'
 
 const props = defineProps({
   modelValue: {
@@ -85,7 +85,7 @@ const {
   submitData,
 } = useAddSubscription(props)
 
-const { isMQTTPugin, nodePlugin } = useNorthDriver()
+const { isMQTTPugin } = useDriverInfo()
 
 const submit = async () => {
   await submitData()
