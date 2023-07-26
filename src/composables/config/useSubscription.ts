@@ -22,7 +22,6 @@ export const useSubscriptionList = () => {
   const isListLoading = ref(false)
   const subscriptionList: Ref<Array<SubscriptionDataInTable>> = ref([])
   const node = computed(() => route.params.node.toString())
-  const nodePlugin = computed(() => route.params.plugin.toString())
 
   const allChecked = computed({
     get() {
@@ -42,13 +41,6 @@ export const useSubscriptionList = () => {
     const checkedList: Array<SubscriptionDataInTable> = subscriptionList.value.filter((item) => item.checked)
     const newCheckedList: Array<SubscriptionData> = OmitArrayFields(checkedList, ['checked'])
     return newCheckedList
-  })
-
-  const isShowTopic = computed(() => {
-    const lowerCasePlugin = nodePlugin.value.toLocaleLowerCase()
-    const ignorePlugin = ['ekuiper', 'websocket', 'sparkplugb']
-    const noShowTopic = ignorePlugin.includes(lowerCasePlugin)
-    return !noShowTopic
   })
 
   const getSubscriptionList = async () => {
@@ -93,7 +85,6 @@ export const useSubscriptionList = () => {
     subCheckedList,
     isListLoading,
     allChecked,
-    isShowTopic,
 
     getSubscriptionList,
     unsubscribeGroup,
