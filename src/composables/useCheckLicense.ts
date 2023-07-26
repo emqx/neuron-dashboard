@@ -1,22 +1,54 @@
+import type { Ref } from 'vue'
+import { ref } from 'vue'
 import { queryLicense } from '@/api/admin'
-import { EmqxMessage } from '@emqx/emqx-ui'
-import { useI18n } from 'vue-i18n'
+import type { License } from '@/types/admin'
 
 export default () => {
-  const { t } = useI18n()
+  // currently unused
+  const licenseData: Ref<License | undefined> = ref(undefined)
+
+  const licenseTipVisible = ref(false)
+  const isHasLicense = ref(false)
+  const isLicenseExpiry = ref(false)
+  const isLicenseReadyExpiry = ref(false)
+  const isTrialLicense = ref(false)
+  const isLicenseInvalid = ref(false)
+  const isHardwareMismatch = ref(false)
+  const isOverMaximumTags = ref(false)
+  const isOverMaximumNodes = ref(false)
 
   const checkLicense = async () => {
     try {
       const { data } = await queryLicense()
-      const { error, ...license } = data
-      const { valid_until } = license
-      let message = ''
-      if (new Date(valid_until).getTime() < Date.now()) {
-        message = t('admin.licenseExpired')
-      } else if (new Date(valid_until).getTime() - 1000 * 60 * 60 * 24 * 5 < Date.now()) {
-        message = t('admin.licenseExpiredSoon')
+      licenseData.value = data
+
+      const isShowTip = localStorage.getItem('licenseTipVisible')
+      if (isShowTip !== 'false') {
+        const { error, valid_until, license_type } = data
+
+        isHasLicense.value = !(Number(error) === 2400) //  no License
+        isLicenseInvalid.value = Number(error) === 2401 // Invalid
+        isLicenseExpiry.value = Number(error) === 2402 // expired
+        isOverMaximumNodes.value = Number(error) === 2404 // over Maximum nodes
+        isOverMaximumTags.value = Number(error) === 2405 // over Maximum Tags
+        isHardwareMismatch.value = Number(error) === 2406 // hardware mismatch
+
+        isTrialLicense.value = license_type === 'trial' // trial license
+        isLicenseReadyExpiry.value = new Date(valid_until).getTime() - 1000 * 60 * 60 * 24 * 3 < Date.now()
+
+        if (
+          !isHasLicense.value ||
+          isTrialLicense.value ||
+          isLicenseInvalid.value ||
+          isLicenseExpiry.value ||
+          isHardwareMismatch.value ||
+          isOverMaximumNodes.value ||
+          isOverMaximumTags.value ||
+          isLicenseReadyExpiry.value
+        ) {
+          licenseTipVisible.value = true
+        }
       }
-      message ? EmqxMessage({ type: 'warning', message, duration: 20 * 1000 }) : void 0
     } catch (error) {
       console.error(error)
     }
@@ -24,5 +56,15 @@ export default () => {
 
   return {
     checkLicense,
+
+    licenseTipVisible,
+    isHasLicense,
+    isTrialLicense,
+    isLicenseInvalid,
+    isLicenseExpiry,
+    isLicenseReadyExpiry,
+    isHardwareMismatch,
+    isOverMaximumNodes,
+    isOverMaximumTags,
   }
 }
