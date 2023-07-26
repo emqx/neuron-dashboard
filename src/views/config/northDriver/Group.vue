@@ -39,7 +39,7 @@
       <emqx-table-column :label="$t('config.deviceName')" prop="name">
         <template #default="{ row }">{{ row.driver }}</template>
       </emqx-table-column>
-      <emqx-table-column v-if="isShowTopic" :label="$t('config.topic')">
+      <emqx-table-column v-if="isMQTTPugin" :label="$t('config.topic')">
         <template #default="{ row }">{{ row?.params?.topic }}</template>
       </emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
@@ -57,8 +57,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useSubscriptionList } from '@/composables/config/useSubscription'
+import { useDriverInfo } from '@/composables/config/useDriver'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+
+const { isMQTTPugin } = useDriverInfo()
 
 const {
   node,
@@ -66,7 +69,6 @@ const {
   subCheckedList,
   isListLoading,
   allChecked,
-  isShowTopic,
 
   unsubscribeGroup,
   clearSubscription,
