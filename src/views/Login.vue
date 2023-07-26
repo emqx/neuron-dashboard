@@ -22,7 +22,6 @@
 
 <script lang="ts" setup>
 import { login as requestLogin } from '@/api/common'
-import useCheckLicense from '@/composables/useCheckLicense'
 import { createCommonErrorMessage } from '@/utils/utils'
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -32,8 +31,6 @@ import { useStore } from 'vuex'
 const router = useRouter()
 const { t } = useI18n()
 const store = useStore()
-
-const { checkLicense } = useCheckLicense()
 
 const formCom = ref()
 const form = reactive({
@@ -74,7 +71,6 @@ const login = async () => {
     router.push({
       path: '/',
     })
-    checkLicense()
   } catch (error) {
     console.error(error)
   } finally {

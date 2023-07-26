@@ -164,6 +164,19 @@
     :node="editDriverData"
     @updated="reloadDriverList"
   />
+
+  <!-- check license -->
+  <LicenseTipDialog
+    v-model="licenseTipVisible"
+    :isHasLicense="isHasLicense"
+    :isTrialLicense="isTrialLicense"
+    :isLicenseInvalid="isLicenseInvalid"
+    :isLicenseExpiry="isLicenseExpiry"
+    :isLicenseReadyExpiry="isLicenseReadyExpiry"
+    :isHardwareMismatch="isHardwareMismatch"
+    :isOverMaximumNodes="isOverMaximumNodes"
+    :isOverMaximumTags="isOverMaximumTags"
+  />
 </template>
 
 <script lang="ts">
@@ -191,6 +204,8 @@ import ListCardSwitch from '@/components/ListCardSwitch.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 import { isTheSameParentRoute } from '@/utils/utils'
+import useCheckLicense from '@/composables/useCheckLicense'
+import LicenseTipDialog from '@/components/LicenseTipDialog.vue'
 
 export default defineComponent({
   beforeRouteEnter(to, from, next) {
@@ -273,6 +288,20 @@ const handleClickOperator = async (command: string, row: DriverItemInList) => {
     apiFunc(row)
   }
 }
+
+const {
+  checkLicense,
+  licenseTipVisible,
+  isHasLicense,
+  isTrialLicense,
+  isLicenseExpiry,
+  isLicenseReadyExpiry,
+  isLicenseInvalid,
+  isHardwareMismatch,
+  isOverMaximumNodes,
+  isOverMaximumTags,
+} = useCheckLicense()
+checkLicense()
 </script>
 
 <style lang="scss" scoped>
