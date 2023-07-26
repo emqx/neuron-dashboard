@@ -1,4 +1,5 @@
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { sendCommandToNode, updateNodeLogLevelToDebug } from '@/api/config'
 import { getStatisticByType } from '@/api/statistics'
 import type { DriverItemInList } from '@/types/config'
@@ -179,6 +180,21 @@ export const useDriverName = () => {
   return {
     isNotSupportRemoveNode,
     isMonitorNode,
+  }
+}
+
+export const useDriverInfo = (node?: Record<string, any>) => {
+  const route = useRoute()
+
+  const nodePlugin = computed(() => {
+    return node?.plugin || route.params?.plugin?.toString() || ''
+  })
+
+  const isMQTTPugin = computed(() => nodePlugin.value && nodePlugin.value.toLocaleLowerCase() === 'mqtt')
+
+  return {
+    nodePlugin,
+    isMQTTPugin,
   }
 }
 
