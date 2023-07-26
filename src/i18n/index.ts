@@ -39,6 +39,7 @@ const i18n = createI18n({
   locale: store.state.lang,
   fallbackLocale: 'zh',
   messages,
+  warnHtmlMessage: false,
 })
 
 initLang()
