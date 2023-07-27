@@ -525,10 +525,6 @@ export default {
     zh: '请选择组',
     en: 'Select group',
   },
-  productKey: {
-    zh: '产品密钥',
-    en: 'Product key',
-  },
   enNumberFormatError: {
     zh: '请输入英文、数字',
     en: 'Please enter English, number',
