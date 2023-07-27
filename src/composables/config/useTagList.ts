@@ -126,9 +126,7 @@ export default () => {
     const tagData: TagData = { ...restData }
 
     // When the decimal value is 0, does not display its value on the UI
-    if (!decimal) {
-      tagData.decimal = undefined
-    }
+    tagData.decimal = decimal || undefined
 
     currentTag.value = tagData
     showEditDialog.value = true
