@@ -136,7 +136,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
       group: [{ required: true, message: createCommonErrorMessage('select', t('config.group')) }],
       topic: [{ required: true, message: createCommonErrorMessage('input', t('config.topic')) }],
       productKey: [
-        { required: true, message: createCommonErrorMessage('input', t('config.productKey')) },
+        { required: true, message: createCommonErrorMessage('input', ' ProductKey') },
         { validator: checkProductKey, trigger: ['blur'] },
       ],
     }
@@ -171,7 +171,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
-      const { topic, ...baseSubscriptionForm } = subscriptionForm.value
+      const { topic, productKey, ...baseSubscriptionForm } = subscriptionForm.value
       let data: SubscriptionData = { ...baseSubscriptionForm, app: props.currentNode }
 
       if (isMQTTPugin.value && topic) {
@@ -183,8 +183,13 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
         }
       }
 
-      if (!isGewuPugin.value) {
-        data.productKey = undefined
+      if (isGewuPugin.value) {
+        data = {
+          ...data,
+          params: {
+            productKey,
+          },
+        }
       }
 
       await addSubscription(data)
