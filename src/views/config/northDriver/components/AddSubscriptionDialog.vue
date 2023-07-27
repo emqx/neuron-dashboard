@@ -36,7 +36,7 @@
       </emqx-form-item>
 
       <!-- gewu -->
-      <emqx-form-item v-if="isGewuPugin" prop="productKey" :label="$t('config.productKey')">
+      <emqx-form-item v-if="isGewuPugin" prop="productKey" label="ProductKey">
         <emqx-input v-model="subscriptionForm.productKey" />
       </emqx-form-item>
     </emqx-form>

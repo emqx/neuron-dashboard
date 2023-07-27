@@ -42,6 +42,9 @@
       <emqx-table-column v-if="isMQTTPugin" :label="$t('config.topic')">
         <template #default="{ row }">{{ row?.params?.topic }}</template>
       </emqx-table-column>
+      <emqx-table-column v-if="isGewuPugin" label="ProductKey">
+        <template #default="{ row }">{{ row?.params?.productKey }}</template>
+      </emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <AComWithDesc :content="$t('config.unsubscribe')">
@@ -61,7 +64,7 @@ import { useDriverInfo } from '@/composables/config/useDriver'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
 
-const { isMQTTPugin } = useDriverInfo()
+const { isMQTTPugin, isGewuPugin } = useDriverInfo()
 
 const {
   node,
