@@ -136,7 +136,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
       group: [{ required: true, message: createCommonErrorMessage('select', t('config.group')) }],
       topic: [{ required: true, message: createCommonErrorMessage('input', t('config.topic')) }],
       productKey: [
-        { required: true, message: createCommonErrorMessage('input', ' ProductKey') },
+        { required: true, message: createCommonErrorMessage('input', ' productKey') },
         { validator: checkProductKey, trigger: ['blur'] },
       ],
     }
