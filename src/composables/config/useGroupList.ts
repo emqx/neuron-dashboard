@@ -6,12 +6,12 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import { MessageBoxConfirm } from '@/utils/element'
 import { queryGroupList, deleteGroup, queryTagList, addTag } from '@/api/config'
 import type { GroupData } from '@/types/config'
-import { OmitArrayFields } from '@/utils/utils'
+import { OmitArrayFields, listOrderByKey } from '@/utils/utils'
 import useUploadTagList from '@/composables/config/useUploadTagList'
 import useExportTagTable from '@/composables/config/useExportTagTable'
 import useAddTag from '@/composables/config/useAddTag'
 import useGroupCommon from '@/composables/config/useGroupCommon'
-import { groupBy } from 'lodash'
+import { groupBy, cloneDeep } from 'lodash'
 
 interface GroupDataInTable extends GroupData {
   checked: boolean
@@ -21,7 +21,13 @@ export default () => {
   const { t } = useI18n()
   const route = useRoute()
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
+  const groupListBackup: Ref<Array<GroupDataInTable>> = ref([])
   const isListLoading = ref(false)
+
+  const sortBy = ref({
+    prop: '',
+    order: '',
+  })
 
   // for upload tags
   const { nodePluginInfo } = useAddTag()
@@ -52,11 +58,46 @@ export default () => {
     return newCheckedList
   })
 
+  // sort
+  const sortDataByKey = async (data: { prop: string | null; order: string | null }) => {
+    const { prop, order } = data
+
+    let sortData = []
+    if (order && prop) {
+      const sortByOrder = order.includes('asc') ? 'asc' : 'desc'
+      sortBy.value.order = sortByOrder
+      sortBy.value.prop = prop
+
+      sortData = listOrderByKey(groupListBackup.value, prop, sortByOrder)
+    } else {
+      sortBy.value = {
+        order: '',
+        prop: '',
+      }
+      sortData = cloneDeep(groupListBackup.value)
+    }
+    return sortData
+  }
+
   const getGroupList = async () => {
-    isListLoading.value = true
-    const data = await queryGroupList(node.value)
-    groupList.value = data.map((item) => Object.assign(item, { checked: false }))
-    isListLoading.value = false
+    try {
+      isListLoading.value = true
+
+      const data = await queryGroupList(node.value)
+      const groupListData = data.map((item) => Object.assign(item, { checked: false }))
+      groupListBackup.value = cloneDeep(groupListData)
+
+      // keep sorted after some operations, including add, delete, edit.
+      const { prop, order } = sortBy.value
+      groupList.value = await sortDataByKey({ prop, order })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isListLoading.value = false
+    }
+  }
+  const sortGroupListData = async (data: { prop: string | null; order: string | null }) => {
+    groupList.value = await sortDataByKey(data)
   }
 
   const delGroup = async ({ name }: GroupDataInTable) => {
@@ -135,6 +176,8 @@ export default () => {
     clearGroup,
     batchDeleteGroup,
     getGroupList,
+    sortBy,
+    sortGroupListData,
     delGroup,
     isExporting,
     importTagsByGroups,
