@@ -59,6 +59,8 @@
       :data="groupList"
       :empty-text="$t('common.emptyData')"
       :row-class-name="'table-row-click'"
+      :default-sort="{ prop: sortBy.prop, order: `${sortBy.order}ending` }"
+      @sort-change="sortGroupListData"
       @row-click="goTagPage"
     >
       <emqx-table-column :width="28">
@@ -72,7 +74,7 @@
       <emqx-table-column :label="$t('common.No')" :width="60">
         <template #default="{ index }">{{ index + 1 }}</template>
       </emqx-table-column>
-      <emqx-table-column :label="$t('config.groupName')" prop="name">
+      <emqx-table-column :label="$t('config.groupName')" prop="name" sortable="custom">
         <template #default="{ row }">
           <el-link type="primary" :underline="false" href="javascript:;" @click.stop="goTagPage(row)">
             {{ row.name }}
@@ -124,6 +126,8 @@ const {
   isListLoading,
   allChecked,
   getGroupList,
+  sortBy,
+  sortGroupListData,
   clearGroup,
   delGroup,
   batchDeleteGroup,
