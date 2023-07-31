@@ -42,7 +42,7 @@
       <emqx-table-column v-if="isMQTTPugin" :label="$t('config.topic')">
         <template #default="{ row }">{{ row?.params?.topic }}</template>
       </emqx-table-column>
-      <emqx-table-column v-if="isGewuPugin" label="ProductKey">
+      <emqx-table-column v-if="isGewuPugin" label="productKey">
         <template #default="{ row }">{{ row?.params?.productKey }}</template>
       </emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
