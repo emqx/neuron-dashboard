@@ -1,4 +1,16 @@
 export default {
+  driver: {
+    zh: '驱动',
+    en: 'Driver',
+  },
+  app: {
+    zh: '应用',
+    en: 'Application',
+  },
+  nodeType: {
+    zh: '节点类型',
+    en: 'Node type',
+  },
   config: {
     zh: '配置',
     en: 'Configuration',
@@ -532,5 +544,46 @@ export default {
   enNumberLengthError: {
     zh: '请输入长度小于 {max} 的数据',
     en: 'Please enter data with length less than {max}',
+  },
+  // data statistic
+  linkState: {
+    zh: '连接状态',
+    en: 'Connection status',
+  },
+  runningState: {
+    zh: '工作状态',
+    en: 'Working status',
+  },
+  lastRttMs: {
+    zh: '当前采集延迟',
+    en: 'Current acquisition delay',
+  },
+  tagReadsTotal: {
+    zh: '点位读取数总计',
+    en: 'Total tag reads',
+  },
+  tagReadErrorsTotal: {
+    zh: '点位读取错误数总计',
+    en: 'Total tag read errors',
+  },
+  groupTagsTotal: {
+    zh: '采集组 {group} 点位数',
+    en: 'Acquisition group {group} tags',
+  },
+  sendMsgsTotal: {
+    zh: '发送消息数总计',
+    en: 'Total messages sent',
+  },
+  sendMsgErrorsTotal: {
+    zh: '发送消息失败数总计',
+    en: 'Total messages sent failures',
+  },
+  recvMsgsTotal: {
+    zh: '下行消息指令数',
+    en: 'Total downlink messages commands',
+  },
+  cachedMsgs: {
+    zh: '缓存消息数',
+    en: 'Cached messages',
   },
 }
