@@ -1,7 +1,12 @@
 <template>
   <el-drawer v-model="visible" :title="nodeName" direction="rtl" size="35%" custom-class="dataStatisticsDrawer">
     <main ref="drawerRef" class="content">
-      {{ nodeStatisticData }}
+      <span v-for="item in nodeStatisticData" :key="item[0]">
+        <div class="text-row">
+          <span class="label">{{ item[0] }}:</span>
+          <span class="text"> {{ item[1] }}</span>
+        </div>
+      </span>
     </main>
     <span v-if="!nodeStatisticData && !loadingStatistic" class="empty-state">{{ $t('common.emptyData') }}</span>
   </el-drawer>
@@ -50,6 +55,7 @@ if (props.type && props.nodeName) {
 </style>
 
 <style lang="scss" scoped>
+@import '@/styles/mixins.scss';
 .content {
   line-height: 24px;
   padding: 20px;
@@ -62,5 +68,17 @@ if (props.type && props.nodeName) {
   font-size: 16px;
   text-align: center;
   color: #666;
+}
+
+.text-row {
+  @include display-flex(flex-start, center);
+}
+.label {
+  display: inline-block;
+  color: var(--main-label-color);
+}
+.text {
+  color: var(--card-title-color);
+  padding-left: 4px;
 }
 </style>

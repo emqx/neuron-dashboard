@@ -1,4 +1,4 @@
-import { NodeLinkState, NodeState } from '@/types/enums'
+import { NodeLinkState, NodeState, DriverDirection } from '@/types/enums'
 
 export const statusIconClassMap = {
   [NodeState.Init]: 'iconinit',
@@ -16,4 +16,9 @@ export const statusTextMap = {
 export const connectionStatusTextMap = {
   [NodeLinkState.Disconnected]: 'config.disconnected',
   [NodeLinkState.Connected]: 'config.connected',
+}
+
+export const nodeTypeClassMap = {
+  [DriverDirection.South]: 'config.driver',
+  [DriverDirection.North]: 'config.app',
 }
