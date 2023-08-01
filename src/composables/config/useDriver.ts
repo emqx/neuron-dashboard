@@ -9,7 +9,7 @@ import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constant
 import { computed, ref, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import { statusIconClassMap, statusTextMap, connectionStatusTextMap } from '@/utils/driver'
+import { statusIconClassMap, statusTextMap, connectionStatusTextMap, nodeTypeClassMap } from '@/utils/driver'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
   const { t } = useI18n()
@@ -89,10 +89,12 @@ export const useNodeType = () => {
 }
 
 export const dataStatistics = () => {
+  const { t } = useI18n()
+
   const drawerRef = ref()
   const dataStatisticsVisiable = ref(false)
   const loadingStatistic = ref(false)
-  const nodeStatisticData = ref('')
+  const nodeStatisticData = ref<string[][]>([])
   let timer: undefined | number
   const nodeItemData = ref({ name: '' })
 
@@ -106,6 +108,70 @@ export const dataStatistics = () => {
     dataStatisticsVisiable.value = value
   }
 
+  const convertToCamelCase = (data: string) => {
+    const stringData = data || ''
+
+    const camelCaseData = stringData.replace(/_([a-z])/g, (k) => k[1].toUpperCase())
+    return camelCaseData
+  }
+
+  const i18nValue = (key: string, value: string) => {
+    if (!value) return ''
+
+    const data = Number(value)
+
+    let newValue = value
+    if (key.includes('nodeType')) {
+      newValue = t(`${nodeTypeClassMap[data as keyof typeof nodeTypeClassMap]}`)
+    }
+
+    if (key.includes('linkState')) {
+      newValue = t(`${connectionStatusTextMap[data as keyof typeof connectionStatusTextMap]}`)
+    }
+    if (key.includes('runningState')) {
+      newValue = t(`${statusTextMap[data as keyof typeof statusTextMap]}`)
+    }
+
+    return newValue
+  }
+
+  const handleStatisticData = (data: string) => {
+    if (!data) return []
+
+    const res: string[][] = []
+
+    const dataOneDiemArray = data.split('\n')
+
+    dataOneDiemArray.forEach((item: string) => {
+      if (item) {
+        const keyRegex = /\{[^}]+\}/g
+        const itemSplitArr = item.replace(keyRegex, ':')
+
+        const keyValue = itemSplitArr.split(':')
+        const keyCamelCase = convertToCamelCase(keyValue[0] || '')
+
+        // Determine whether to include a group
+        const groupRegex = /(group=)[^}]+/g
+        const groupMatch = item.match(groupRegex)
+        let groupName = ''
+        if (groupMatch) {
+          const groupData = groupMatch[0].split('=')
+          const group = groupData[1] || ''
+          groupName = group.slice(1, group.length - 1)
+        }
+
+        const keyI18n = groupName ? t(`config.${keyCamelCase}`, { group: groupName }) : t(`config.${keyCamelCase}`)
+        let value = keyValue[1] || ''
+        value = i18nValue(keyCamelCase, value)
+
+        const arrItem = [keyI18n, value]
+        res.push(arrItem)
+      }
+    })
+
+    return res
+  }
+
   /**
    * Get north app node or south device node statistic data
    * @param params { node name }
@@ -114,8 +180,12 @@ export const dataStatistics = () => {
     loadingStatistic.value = true
     getStatisticByType(type, params)
       .then((res: any) => {
-        const statistics: string = res?.data || ''
-        nodeStatisticData.value = statistics.replace(/(#)(.*)(\n)/g, '')
+        nodeStatisticData.value = []
+        let statistics: string = res?.data || ''
+        statistics = statistics.replace(/(#)(.*)(\n)/g, '') // remove comments
+
+        nodeStatisticData.value = handleStatisticData(statistics)
+
         setTimer(type, params)
       })
       .finally(() => {
