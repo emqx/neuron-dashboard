@@ -38,7 +38,7 @@
       </emqx-radio-group>
       <!-- File -->
       <div class="file-param" v-else-if="paramInfo.type === TypeOfPluginParam.File">
-        <emqx-upload class="file-upload" :show-file-list="false" :before-upload="handleUpload">
+        <emqx-upload action="" class="file-upload" :show-file-list="false" :before-upload="handleUpload">
           <emqx-button size="mini">{{ t('common.uploadFile') }}</emqx-button>
         </emqx-upload>
         <emqx-button v-if="inputValue" size="mini" @click="clearFile" type="text">
@@ -148,6 +148,7 @@ const handleUpload = async (file: any) => {
   } catch (error) {
     console.error(error)
   }
+  return Promise.reject()
 }
 
 const clearFile = () => {
