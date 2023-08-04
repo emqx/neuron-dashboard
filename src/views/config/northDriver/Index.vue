@@ -75,6 +75,10 @@
               <i class="iconfont iconsetting operation-icon" @click.stop="goNodeConfig(row)" />
             </AComWithDesc>
 
+            <AComWithDesc :content="$t('config.dataStatistics')">
+              <i class="iconfont iconstatus operation-icon" @click.stop="handleClickOperator('dataStatistics', row)" />
+            </AComWithDesc>
+
             <emqx-dropdown trigger="click" @command="handleClickOperator($event, row)">
               <AComWithDesc :content="$t('common.more')">
                 <span class="el-dropdown-link" @click.stop>
@@ -86,10 +90,6 @@
                   <emqx-dropdown-item v-if="!isMonitorNode(row.name)" class="operation-item-wrap" command="edit">
                     <i class="el-icon-edit-outline operation-icon" />
                     <span>{{ $t(`common.edit`) }}</span>
-                  </emqx-dropdown-item>
-                  <emqx-dropdown-item class="operation-item-wrap" command="dataStatistics">
-                    <i class="iconfont iconstatus operation-icon" />
-                    <span>{{ $t(`config.dataStatistics`) }}</span>
                   </emqx-dropdown-item>
                   <emqx-dropdown-item class="operation-item-wrap" command="debugLogLevel">
                     <img
