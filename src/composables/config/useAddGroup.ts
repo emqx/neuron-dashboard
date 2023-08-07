@@ -1,6 +1,5 @@
 import { ref, computed } from 'vue'
 import type { GroupForm } from '@/types/config'
-import useNodeList from './useNodeList'
 import { addGroup, updateGroup } from '@/api/config'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
@@ -17,7 +16,6 @@ export default () => {
 
   const formCom = ref()
   const groupForm = ref(createRawForm())
-  const { nodeList } = useNodeList()
   const isSubmitting = ref(false)
 
   const groupFormRules = computed(() => {
@@ -98,7 +96,6 @@ export default () => {
   return {
     formCom,
     groupForm,
-    nodeList,
     isSubmitting,
     groupFormRules,
     resetFields,
