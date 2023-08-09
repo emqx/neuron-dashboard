@@ -40,8 +40,9 @@ export interface SubscriptionDataForm {
   app: string | null
   driver: string
   group: string
-  topic?: string
-  productKey?: string
+  driverGroups?: Record<string, Array<string>> | undefined // for mqtt and gewu plugin
+  topic?: string // mqtt plugin
+  productKey?: string // gewu plugin
 }
 
 export interface SubscriptionData extends SubscriptionDataForm {
@@ -52,6 +53,11 @@ export interface SubscriptionData extends SubscriptionDataForm {
     topic?: string
     productKey?: string
   }
+}
+
+export interface SubscriptionsData {
+  app: string | null
+  groups: Array<Omit<SubscriptionDataForm, 'app' | 'driverGroups'>>
 }
 
 export interface RawDriverData {

@@ -1,5 +1,5 @@
-import { addSubscription, deleteSubscription, queryGroupList, querySubscription } from '@/api/config'
-import type { GroupData, SubscriptionData, SubscriptionDataForm } from '@/types/config'
+import { addSubscription, addSubscriptions, deleteSubscription, queryGroupList, querySubscription } from '@/api/config'
+import type { GroupData, SubscriptionData, SubscriptionsData, SubscriptionDataForm } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref, computed, nextTick } from 'vue'
 import { EmqxMessage } from '@emqx/emqx-ui'
@@ -100,11 +100,13 @@ type AddSubscriptionProps = Readonly<{
 
 export const useAddSubscription = (props: AddSubscriptionProps) => {
   const { t } = useI18n()
+  const { isMQTTPugin, isGewuPugin } = useDriverInfo()
 
   const createRawSubscriptionForm = (): SubscriptionDataForm => ({
     app: null,
     driver: '',
     group: '',
+    driverGroups: {},
     topic: '',
     productKey: '',
   })
@@ -121,6 +123,18 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     return warningContent
   })
 
+  const checkDriverGroups = async (rule: unknown, value: string, callback: any) => {
+    const keys = Object.keys(value)
+    const values = Object.values(value)
+    const isAllEmpty = values.every((val) => !val?.length)
+
+    if (!keys.length || isAllEmpty) {
+      callback(new Error(t('config.subscribeSouthDriverDataRequired')))
+    } else {
+      callback()
+    }
+  }
+
   const checkProductKey = async (rule: unknown, value: string, callback: any) => {
     if (!EN_NUMBER_REGEX.test(value)) {
       callback(new Error(t('config.enNumberFormatError')))
@@ -134,6 +148,10 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     return {
       driver: [{ required: true, message: t('config.southDeviceRequired') }],
       group: [{ required: true, message: createCommonErrorMessage('select', t('config.group')) }],
+      driverGroups: [
+        { required: true, message: createCommonErrorMessage('select', t('config.subscribeSouthDriverData')) },
+        { validator: checkDriverGroups, trigger: ['blur'] },
+      ],
       topic: [{ required: true, message: createCommonErrorMessage('input', t('config.topic')) }],
       productKey: [
         { required: true, message: createCommonErrorMessage('input', ' productKey') },
@@ -153,35 +171,61 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     const data = await queryGroupList(subscriptionForm.value.driver as string)
     groupList.value = data
   }
-  const changeGroup = (val: string) => {
+
+  const setDefaultTopic = () => {
     const nodeName = props.currentNode
-    const groupName = val
-    const driverName = subscriptionForm.value.driver
-    subscriptionForm.value.topic = val && nodeName ? `/neuron/${nodeName}/${driverName}/${groupName}` : ''
+    subscriptionForm.value.topic = `/neuron/${nodeName}`
   }
+
   const initForm = async () => {
     subscriptionForm.value = createRawSubscriptionForm()
     await nextTick()
     formCom.value.$refs.form.clearValidate()
+
+    if (isMQTTPugin.value) {
+      setDefaultTopic()
+    }
   }
 
-  const { isMQTTPugin, isGewuPugin } = useDriverInfo()
+  const batchAddSubscriptions = async () => {
+    try {
+      const data: SubscriptionsData = {
+        app: props.currentNode,
+        groups: [],
+      }
+      const { driverGroups = {}, topic } = subscriptionForm.value
+      const nodeGroups = Object.entries(driverGroups)
+      nodeGroups.forEach(([key, value]) => {
+        const driver = key
+        const groupLen = value.length
+        if (groupLen) {
+          value.forEach((group) => {
+            const item = {
+              driver,
+              group,
+              params: {
+                topic,
+              },
+            }
+            data.groups.push(item)
+          })
+        }
+      })
+      await addSubscriptions(data)
+      return Promise.resolve()
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(error)
+    }
+  }
 
   const submitData = async () => {
     try {
       await formCom.value.validate()
       isSubmitting.value = true
-      const { topic, productKey, ...baseSubscriptionForm } = subscriptionForm.value
-      let data: SubscriptionData = { ...baseSubscriptionForm, app: props.currentNode }
 
-      if (isMQTTPugin.value && topic) {
-        data = {
-          ...data,
-          params: {
-            topic,
-          },
-        }
-      }
+      const { driver, group, productKey } = subscriptionForm.value
+      let data: SubscriptionData = { app: props.currentNode, driver, group }
 
       if (isGewuPugin.value) {
         data = {
@@ -192,7 +236,12 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
         }
       }
 
-      await addSubscription(data)
+      if (isMQTTPugin.value) {
+        await batchAddSubscriptions()
+      } else {
+        await addSubscription(data)
+      }
+
       EmqxMessage.success(t('common.submitSuccess'))
       return Promise.resolve()
     } catch (error) {
@@ -213,7 +262,6 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
 
     initForm,
     selectedNodeChanged,
-    changeGroup,
     submitData,
   }
 }

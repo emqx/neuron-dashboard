@@ -395,4 +395,12 @@ export default {
     zh: '数据格式发生错误，请检查数据',
     en: 'Data format error, please check the data',
   },
+  collapseAll: {
+    zh: '全部折叠',
+    en: 'Collapse all',
+  },
+  expandAll: {
+    zh: '全部展开',
+    en: 'Expand all',
+  },
 }

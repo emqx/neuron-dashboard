@@ -9,30 +9,32 @@
     <el-alert v-if="topicWarning" :title="topicWarning" type="warning" show-icon :closable="false" />
 
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
-      <emqx-form-item prop="driver" :label="$t('config.southDevice')">
-        <emqx-select
-          v-model="subscriptionForm.driver"
-          filterable
-          :placeholder="$t('common.pleaseSelect')"
-          @change="selectedNodeChanged"
-        >
-          <emqx-option v-for="{ name } in deviceList" :key="name" :value="name" :label="name" />
-        </emqx-select>
-      </emqx-form-item>
-      <emqx-form-item prop="group" :label="$t('config.group')">
-        <emqx-select
-          v-model="subscriptionForm.group"
-          filterable
-          :placeholder="$t('common.pleaseSelect')"
-          @change="changeGroup"
-        >
-          <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
-        </emqx-select>
-      </emqx-form-item>
+      <section v-if="!isMQTTPugin">
+        <emqx-form-item prop="driver" :label="$t('config.southDevice')">
+          <emqx-select
+            v-model="subscriptionForm.driver"
+            filterable
+            :placeholder="$t('common.pleaseSelect')"
+            @change="selectedNodeChanged"
+          >
+            <emqx-option v-for="{ name } in deviceList" :key="name" :value="name" :label="name" />
+          </emqx-select>
+        </emqx-form-item>
+        <emqx-form-item prop="group" :label="$t('config.group')">
+          <emqx-select v-model="subscriptionForm.group" filterable :placeholder="$t('common.pleaseSelect')">
+            <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
+          </emqx-select>
+        </emqx-form-item>
+      </section>
 
       <!-- mqtt -->
       <emqx-form-item v-if="isMQTTPugin" prop="topic" :label="$t('config.topic')">
         <emqx-input v-model="subscriptionForm.topic" />
+      </emqx-form-item>
+
+      <!-- mqtt -->
+      <emqx-form-item v-if="isMQTTPugin" prop="driverGroups" :label="$t('config.subscribeSouthDriverData')">
+        <SouthGroupsCheckbox v-model="subscriptionForm.driverGroups" />
       </emqx-form-item>
 
       <!-- gewu -->
@@ -57,6 +59,7 @@ import { computed, defineProps, defineEmits, watch } from 'vue'
 import { ElDialog, ElAlert } from 'element-plus'
 import { useAddSubscription } from '@/composables/config/useSubscription'
 import { useDriverInfo } from '@/composables/config/useDriver'
+import SouthGroupsCheckbox from '@/views/config/components/SouthGroupsCheckbox.vue'
 
 const props = defineProps({
   modelValue: {
@@ -87,7 +90,6 @@ const {
 
   initForm,
   selectedNodeChanged,
-  changeGroup,
   submitData,
 } = useAddSubscription(props)
 
