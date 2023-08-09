@@ -39,7 +39,7 @@
       <emqx-table-column :label="$t('config.deviceName')" prop="name">
         <template #default="{ row }">{{ row.driver }}</template>
       </emqx-table-column>
-      <emqx-table-column v-if="isMQTTPugin" :label="$t('config.topic')">
+      <emqx-table-column v-if="isMQTTPugin" :label="$t('config.topic')" show-overflow-tooltip>
         <template #default="{ row }">{{ row?.params?.topic }}</template>
       </emqx-table-column>
       <emqx-table-column v-if="isGewuPugin" label="productKey">
