@@ -586,4 +586,12 @@ export default {
     zh: '缓存消息数',
     en: 'Cached messages',
   },
+  subscribeSouthDriverData: {
+    zh: '订阅南向驱动数据',
+    en: 'Subscription south drive data',
+  },
+  subscribeSouthDriverDataRequired: {
+    zh: '请选择南向驱动数据',
+    en: 'Please select the south drive data',
+  },
 }
