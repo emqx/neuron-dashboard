@@ -101,7 +101,7 @@ const { currentLang } = useLang()
 const hasLicense = computed(() => !!licenseData.value)
 
 const labelWidth = computed(() => {
-  return currentLang.value === 'zh' ? '90px' : '120px'
+  return currentLang.value === 'zh' ? '120px' : '140px'
 })
 
 const pluginsStr = computed(() => {
