@@ -194,11 +194,11 @@ export default {
   },
   emailAddress: {
     zh: '签发邮箱',
-    en: 'Issuance of email',
+    en: 'Issuing email',
   },
   nodeUsage: {
-    zh: '节点使用情况',
-    en: 'Nodes usage',
+    zh: '商业节点使用情况',
+    en: 'Business node usage',
   },
   tagUsage: {
     zh: '点位使用情况',
