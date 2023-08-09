@@ -17,6 +17,7 @@ import type {
   PluginForm,
   ResponseDriverListData,
   SubscriptionData,
+  SubscriptionsData,
   TagData,
   TagForm,
 } from '@/types/config'
@@ -115,6 +116,10 @@ export const queryNodeState = (nodeName?: string) => {
 /* NORTH APP */
 export const addSubscription = (data: SubscriptionData) => {
   return http.post('/subscribe', data)
+}
+// batch add
+export const addSubscriptions = (data: SubscriptionsData) => {
+  return http.post('/subscribes', data)
 }
 
 export const deleteSubscription = (data: SubscriptionData) => {
