@@ -187,30 +187,37 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     }
   }
 
+  // MQTT | Gewu
   const batchAddSubscriptions = async () => {
     try {
       const data: SubscriptionsData = {
         app: props.currentNode,
         groups: [],
       }
-      const { driverGroups = {}, topic } = subscriptionForm.value
+
+      const { driverGroups = {}, topic, productKey } = subscriptionForm.value
       const nodeGroups = Object.entries(driverGroups)
       nodeGroups.forEach(([key, value]) => {
         const driver = key
         const groupLen = value.length
         if (groupLen) {
           value.forEach((group) => {
-            const item = {
+            let item: Omit<SubscriptionData, 'app'> = {
               driver,
               group,
-              params: {
-                topic,
-              },
             }
+            if (isMQTTPugin.value) {
+              item = { ...item, params: { topic } }
+            }
+            if (isGewuPugin.value) {
+              item = { ...item, params: { productKey } }
+            }
+
             data.groups.push(item)
           })
         }
       })
+
       await addSubscriptions(data)
       return Promise.resolve()
     } catch (error) {
@@ -224,19 +231,10 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
       await formCom.value.validate()
       isSubmitting.value = true
 
-      const { driver, group, productKey } = subscriptionForm.value
-      let data: SubscriptionData = { app: props.currentNode, driver, group }
+      const { driver, group } = subscriptionForm.value
+      const data: SubscriptionData = { app: props.currentNode, driver, group }
 
-      if (isGewuPugin.value) {
-        data = {
-          ...data,
-          params: {
-            productKey,
-          },
-        }
-      }
-
-      if (isMQTTPugin.value) {
+      if (isMQTTPugin.value || isGewuPugin.value) {
         await batchAddSubscriptions()
       } else {
         await addSubscription(data)
