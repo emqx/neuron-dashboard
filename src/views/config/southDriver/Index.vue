@@ -302,7 +302,11 @@ const {
   isOverMaximumNodes,
   isOverMaximumTags,
 } = useCheckLicense()
-checkLicense()
+
+const isShowLicenseTip = localStorage.getItem('licenseTipVisible')
+if (isShowLicenseTip !== 'false') {
+  checkLicense()
+}
 </script>
 
 <style lang="scss" scoped>
