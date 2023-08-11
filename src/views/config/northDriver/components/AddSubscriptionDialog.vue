@@ -9,7 +9,7 @@
     <el-alert v-if="topicWarning" :title="topicWarning" type="warning" show-icon :closable="false" />
 
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
-      <section v-if="!isMQTTPugin">
+      <section v-if="!(isMQTTPugin || isGewuPugin)">
         <emqx-form-item prop="driver" :label="$t('config.southDevice')">
           <emqx-select
             v-model="subscriptionForm.driver"
@@ -32,14 +32,18 @@
         <emqx-input v-model="subscriptionForm.topic" />
       </emqx-form-item>
 
-      <!-- mqtt -->
-      <emqx-form-item v-if="isMQTTPugin" prop="driverGroups" :label="$t('config.subscribeSouthDriverData')">
-        <SouthGroupsCheckbox v-model="subscriptionForm.driverGroups" />
-      </emqx-form-item>
-
       <!-- gewu -->
       <emqx-form-item v-if="isGewuPugin" prop="productKey" label="productKey">
         <emqx-input v-model="subscriptionForm.productKey" />
+      </emqx-form-item>
+
+      <!-- mqtt | gewu -->
+      <emqx-form-item
+        v-if="isMQTTPugin || isGewuPugin"
+        prop="driverGroups"
+        :label="$t('config.subscribeSouthDriverData')"
+      >
+        <SouthGroupsCheckbox v-model="subscriptionForm.driverGroups" />
       </emqx-form-item>
     </emqx-form>
 
