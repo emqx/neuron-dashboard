@@ -10,6 +10,7 @@ import { useGetPluginMsgIdMap } from './usePlugin'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep } from 'lodash'
+import { randomString } from '@/utils/utils'
 
 interface Field {
   key: string
@@ -38,6 +39,7 @@ export default (props: Props) => {
   const formCom = ref()
   const formComParmasRef: any = ref([])
   const isSubmitting = ref(false)
+  const pluginName = ref('')
 
   const setParamRef = (el: any) => {
     formComParmasRef.value.push(el)
@@ -138,11 +140,12 @@ export default (props: Props) => {
   // get plugin default data
   const getPluginInfo = async () => {
     const nodeInfo = getNodeMsgById(node.value)
-    const { plugin: pluginName } = nodeInfo
+    const { plugin } = nodeInfo
+    pluginName.value = plugin
 
-    const nodePluginToLower = pluginName.toLocaleLowerCase()
+    const nodePluginToLower = pluginName.value.toLocaleLowerCase()
 
-    const schemName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
+    const schemName = pluginMsgIdMap[pluginName.value]?.schema || nodePluginToLower
     const { data } = await queryPluginConfigInfo(schemName)
     const pluginInfo: PluginInfo = data
 
@@ -166,14 +169,21 @@ export default (props: Props) => {
     if (!defaultConfigDataL) {
       configForm.value = { ...defaultConfigData.value }
     } else {
+      // set default value when value is not set
       for (let i = 0; i < defaultConfigDataL; i += 1) {
         const key = defaultConfigDatakeys[i]
         const value = configuredData.value[key]
         if (value === '' || value === undefined || value === null) {
-          const defaultValue = defaultConfigData.value[key]
-          configForm.value[key] = defaultValue
+          if (key === 'client-id' && pluginName.value.toLocaleLowerCase() === 'mqtt') {
+            // Handle `client-id`: concatenate `random` strings of 6 lengths。
+            const randomStr = randomString(6)
+            configForm.value[key] = `neuron_${randomStr}`
+          } else {
+            const defaultValue = defaultConfigData.value[key]
+            configForm.value[key] = defaultValue
+          }
         } else {
-          configForm.value[key] = configuredData.value[key]
+          configForm.value[key] = value
         }
       }
     }
