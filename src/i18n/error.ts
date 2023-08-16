@@ -247,6 +247,14 @@ export default {
     zh: 'License 过期',
     en: 'License expired',
   },
+  uploadLicense2402: {
+    zh: `您的 License 已过期，
+    请<a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">更新 License</a>
+    或联系销售人员更新 License。`,
+    en: `Your License has expired,
+    please <a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">update the License</a>
+    or contact the sales staff to update the License.`,
+  },
   2403: {
     zh: 'License 未启用插件',
     en: 'Plugin disabled by license',
@@ -255,13 +263,37 @@ export default {
     zh: '达到 license 授权的最大节点数',
     en: 'Reach licensed max number of nodes',
   },
+  uploadLicense2404: {
+    zh: `节点数超过 License 限制，Neuron 无法正常使用，
+    请<a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">更新 License</a>
+    或删除部分驱动节点。`,
+    en: `The count of nodes exceeds the license limit, and Neuron cannot be used normally.
+    Please <a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">update the license</a>
+    or delete some driver nodes.`,
+  },
   2405: {
     zh: '达到 license 授权的节点最大点位数',
     en: 'Reach licensed max number of tags per node',
   },
+  uploadLicense2405: {
+    zh: `点位数超过 License 限制，Neuron 无法正常使用，
+    请<a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">更新 License</a>
+    或删除部分点位。`,
+    en: `The count of data tags exceeds the license limit, and Neuron cannot be used normally.
+    Please <a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">update the license</a>
+    or delete some data tags.`,
+  },
   2406: {
     zh: 'License 硬件不匹配',
     en: 'License hardware token not match',
+  },
+  uploadLicense2406: {
+    zh: `License 与该硬件不匹配，Neuron 无法正常使用，
+    请<a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">更新 License</a>
+    或联系销售人员更新 License。`,
+    en: `The license does not match the hardware, and Neuron cannot be used normally.
+    Please <a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">update the license</a>
+    or contact the sales staff to update the License.`,
   },
   2407: {
     zh: 'License 检测到时钟异常',

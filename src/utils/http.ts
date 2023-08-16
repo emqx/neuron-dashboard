@@ -4,6 +4,7 @@ import { EmqxMessage } from '@emqx/emqx-ui'
 import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
+import type { CompatibleErrorCode } from './utils'
 import { countBaseURL, popUpErrorMessage, dataType, isJSONData } from './utils'
 
 const baseURL = countBaseURL()
@@ -19,7 +20,11 @@ const option = {
 
 Object.assign(axios.defaults, option)
 
-export const handleBlobError = async (data: Blob, statusInfo: { status: number; statusText: string }) => {
+export const handleBlobError = async (
+  data: Blob,
+  statusInfo: { status: number; statusText: string },
+  compatibleErrorCodes?: CompatibleErrorCode,
+) => {
   const { statusText, status } = statusInfo
   const statusMsg = statusText || status
 
@@ -34,7 +39,7 @@ export const handleBlobError = async (data: Blob, statusInfo: { status: number; 
           const jsonText = JSON.parse(reader.result as string)
           const { error: errorNumber } = jsonText
           if (errorNumber) {
-            popUpErrorMessage(errorNumber)
+            popUpErrorMessage(errorNumber, compatibleErrorCodes)
           } else {
             EmqxMessage.error(statusMsg)
           }
@@ -49,10 +54,12 @@ export const handleBlobError = async (data: Blob, statusInfo: { status: number; 
 }
 
 export const handleError = (error: AxiosError) => {
-  const { response, message } = error
+  const { response, message, config } = error
+  const { _compatibleErrorCode, name } = (config as any) || {}
+  const errorParams = { compatibleErrorCode: !!_compatibleErrorCode, name }
 
   if (response?.data?.error) {
-    popUpErrorMessage(response.data.error)
+    popUpErrorMessage(response.data.error, errorParams)
   } else if (response?.data) {
     const { statusText, status } = response.data
 
@@ -60,7 +67,7 @@ export const handleError = (error: AxiosError) => {
     const newStatus = status || response?.status
 
     if (dataType(response.data) === 'blob') {
-      handleBlobError(response.data, { statusText: newStatusText, status: newStatus })
+      handleBlobError(response.data, { statusText: newStatusText, status: newStatus }, errorParams)
     } else {
       const msg = newStatusText || message || newStatus
       EmqxMessage.error(msg)
@@ -93,12 +100,15 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    const { status, data } = response
+    const { status, data, config } = response
+    const { _compatibleErrorCode, name } = (config as any) || {}
+    const errorParams = { compatibleErrorCode: !!_compatibleErrorCode, name }
+
     if (status !== 200) {
-      popUpErrorMessage(data.error)
+      popUpErrorMessage(data.error, errorParams)
     } else if (data?.error) {
       if (!(response.config as any)._handleCustomError) {
-        popUpErrorMessage(data.error)
+        popUpErrorMessage(data.error, errorParams)
       }
       return Promise.reject(response)
     }

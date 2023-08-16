@@ -27,6 +27,19 @@ export const ERROR_CODE_ARR = [
   10805,
 ]
 
+/**
+ * Specially handle errorCode in a scenarios:
+ *    When triggering a api, prompt the custom error code data instead of the uniform error code data of the document.
+ * The difference is different from `ERROR_CODE_ARR`, and belong to `ERROR_CODE_ARR`.
+ *
+ * To use this, please add the param `_compatibleErrorCode` and `name` to the `api`config in @/apis files,
+ *    and `name` is the same with `key` of SELF_HANDLE_ERROR_CODES,
+ *    and use `{name}{errorCode}` to update @i18n/error.ts file.
+ *  */
+export const SELF_HANDLE_ERROR_CODES: Record<string, any> = {
+  uploadLicense: [2402, 2404, 2405, 2406],
+}
+
 export const FILLER_IN_TAG_ATTR = ' '
 
 export const DASHBOARD_APP_NAME = 'default-dashboard-adapter'

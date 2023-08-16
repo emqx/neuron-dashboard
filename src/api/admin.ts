@@ -19,10 +19,21 @@ export const queryLicense = (): Promise<AxiosResponse<License & { error: number 
   } as AxiosRequestConfig)
 }
 
+/**
+ * To use `_compatibleErrorCode`, please update @/utils/constants.ts file  `SELF_HANDLE_ERROR_CODES`,
+ *   and use `compatible{errorCode}` to update @i18n/error.ts file.
+ *  */
 export const uploadLicense = (license: string): Promise<AxiosResponse<{ error: 0 }>> => {
-  return http.post('/license', {
-    license,
-  })
+  return http.post(
+    '/license',
+    {
+      license,
+    },
+    {
+      _compatibleErrorCode: true,
+      name: 'uploadLicense',
+    } as AxiosRequestConfig,
+  )
 }
 
 export const queryVersion = (): Promise<AxiosResponse<any>> => {
