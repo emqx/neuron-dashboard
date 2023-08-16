@@ -290,6 +290,10 @@ export default {
     zh: '写文件失败',
     en: 'File write failure',
   },
+  4104: {
+    zh: '文件为空',
+    en: 'File is empty',
+  },
   10101: {
     zh: '硬件错误',
     en: 'S7comm hardware error',
