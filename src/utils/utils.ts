@@ -1,5 +1,5 @@
 import i18n from '@/i18n/index'
-import { ERROR_CODE_ARR } from './constants'
+import { ERROR_CODE_ARR, SELF_HANDLE_ERROR_CODES } from './constants'
 import { utils as XLSXUtils, writeFile } from 'xlsx'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { omit, cloneDeep, orderBy } from 'lodash'
@@ -65,11 +65,6 @@ export const getErrorMsg = (errorCode: number): string => {
     return 'unknown'
   }
 
-  // 10701 - 10744
-  if (errorCode >= 10701 && errorCode <= 10744) {
-    return i18n.global.t(`error.10701`)
-  }
-
   return i18n.global.t(`error.${errorCode}`)
 }
 
@@ -106,8 +101,27 @@ export const countBaseURL = () => {
   return `${serverURL}/api/v2`
 }
 
-export const popUpErrorMessage = (error: number) => {
-  EmqxMessage.error(`Error (code: ${error}): ${getErrorMsg(error)}`)
+export interface CompatibleErrorCode {
+  compatibleErrorCode: boolean
+  name: string
+}
+export const popUpErrorMessage = (error: number, config?: CompatibleErrorCode) => {
+  const { compatibleErrorCode, name = '' } = config || {}
+
+  // 10701 - 10744: used 10701
+  const errorCode = error >= 10701 && error <= 10744 ? 10701 : error
+
+  const isHandleErrorCodeSelf = SELF_HANDLE_ERROR_CODES[name]?.includes(errorCode)
+  const errorMsg =
+    compatibleErrorCode && isHandleErrorCodeSelf
+      ? i18n.global.t(`error.${name}${errorCode}`)
+      : `Error (code: ${errorCode}): ${getErrorMsg(errorCode)}`
+
+  EmqxMessage({
+    message: errorMsg,
+    type: 'error',
+    dangerouslyUseHTMLString: true,
+  })
 }
 
 export const OmitArrayFields = (list: any, params: string[]) => {
