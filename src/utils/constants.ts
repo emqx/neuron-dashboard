@@ -38,6 +38,8 @@ export const ERROR_CODE_ARR = [
  *  */
 export const SELF_HANDLE_ERROR_CODES: Record<string, any> = {
   uploadLicense: [2402, 2404, 2405, 2406],
+  addDriverByPlugin: [2404],
+  addDriverByTemplate: [2404, 2405],
 }
 
 export const FILLER_IN_TAG_ATTR = ' '

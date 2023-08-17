@@ -84,11 +84,17 @@ export const queryWebDriver = async (): Promise<RawDriverData> => {
 }
 
 export const addDriverByPlugin = (driverData: NodeFormWithPlugin) => {
-  return http.post('/node', driverData)
+  return http.post('/node', driverData, {
+    _compatibleErrorCode: true,
+    name: 'addDriverByPlugin',
+  } as AxiosRequestConfig)
 }
 
 export const addDriverByTemplate = (driverData: { node: string; name: string }) => {
-  return http.post('/template/inst', driverData)
+  return http.post('/template/inst', driverData, {
+    _compatibleErrorCode: true,
+    name: 'addDriverByTemplate',
+  } as AxiosRequestConfig)
 }
 export const deleteDriver = (node: string) => {
   return http.delete('/node', { data: { name: node } })
