@@ -8,13 +8,14 @@ import type { PluginInfo, TagFormItem, AddTagListForm } from '@/types/config'
 import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
 import AddTagCommon, { createTagForm } from '@/composables/config/useAddTagCommon'
 import { useTemplatePluginInfo } from '@/composables/config/usePluginInfo'
+import { getErrorMsg, popUpErrorMessage } from '@/utils/utils'
 
 export default () => {
   const route = useRoute()
   const router = useRouter()
   const { t } = useI18n()
 
-  const { groupName, handlePartialSuc, sliceTagList, parseTagData, handleValidTagFormError } = AddTagCommon()
+  const { groupName, sliceTagList, parseTagData, handleValidTagFormError } = AddTagCommon()
 
   const tagFormRef = ref()
   const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])
@@ -50,6 +51,16 @@ export default () => {
     formData.value.tagList.splice(index, 1)
   }
 
+  const handlePartialSuc = (errIndex: number, errorNum: number) => {
+    if (errIndex === 0) {
+      popUpErrorMessage(errorNum)
+      return
+    }
+
+    EmqxMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
+    formData.value.tagList = sliceTagList(formData.value.tagList, errIndex)
+  }
+
   const addTags = async () => {
     try {
       const tags = await parseTagData(formData.value.tagList)
@@ -60,7 +71,6 @@ export default () => {
       const { data = {} } = error
       if (data.error !== 0 && data.index !== undefined) {
         handlePartialSuc(data.index, data.error)
-        formData.value.tagList = sliceTagList(formData.value.tagList, data.index)
       }
       return Promise.reject(error)
     }
