@@ -271,6 +271,14 @@ export default {
     Please <a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">update the license</a>
     or delete some driver nodes.`,
   },
+  addDriverByPlugin2404: {
+    zh: '节点数超过 License 限制，创建驱动失败',
+    en: 'The count of nodes exceeds the limit of the license, and the creation of the driver fails',
+  },
+  addDriverByTemplate2404: {
+    zh: '节点数超过 License 限制，创建驱动失败',
+    en: 'The count of nodes exceeds the limit of the license, and the creation of the driver fails',
+  },
   2405: {
     zh: '达到 license 授权的节点最大点位数',
     en: 'Reach licensed max number of tags per node',
@@ -282,6 +290,18 @@ export default {
     en: `The count of data tags exceeds the license limit, and Neuron cannot be used normally.
     Please <a target="_blank" rel="noopener norefferrer" href="https://www.emqx.com/zh/apply-licenses/neuron">update the license</a>
     or delete some data tags.`,
+  },
+  addDriverByTemplate2405: {
+    zh: `点位数超过 License 限制，模版创建驱动失败`,
+    en: `The count of data points exceeds the limit of the license, and the creation of the driver fails`,
+  },
+  addTagByNode2405: {
+    zh: `点位数超过 License 限制，添加失败`,
+    en: `The count of data points exceeds the license limit, and the addition fails`,
+  },
+  importTag2405: {
+    zh: `点位数超过 License 限制，导入失败`,
+    en: `The count of data points exceeds the license limit, and the import fails`,
   },
   2406: {
     zh: 'License 硬件不匹配',
