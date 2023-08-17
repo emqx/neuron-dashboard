@@ -1,14 +1,13 @@
 import { addTag } from '@/api/config'
-import type { TagFormItem, AddTagListForm, TagForm } from '@/types/config'
+import type { TagFormItem, AddTagListForm } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
-import { dataType, getErrorMsg, popUpErrorMessage } from '@/utils/utils'
-import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
-import { createTagForm } from '@/composables/config/useAddTagCommon'
+import { getErrorMsg, popUpErrorMessage } from '@/utils/utils'
+import AddTagCommon, { createTagForm } from '@/composables/config/useAddTagCommon'
 import { useNodePluginInfo } from './usePluginInfo'
 
 export default () => {
@@ -16,6 +15,8 @@ export default () => {
   const router = useRouter()
   const { t } = useI18n()
   const { createRawTagForm } = createTagForm()
+
+  const { groupName, parseTagData, handleValidTagFormError } = AddTagCommon()
 
   const tagFormComList: Ref<Array<typeof TagFormCom>> = ref([])
   const tagList: Ref<Array<TagFormItem>> = ref([createRawTagForm()])
@@ -45,30 +46,23 @@ export default () => {
 
   const handlePartialSuc = (errIndex: number, errorNum: number) => {
     if (errIndex === 0) {
-      popUpErrorMessage(errorNum)
+      if (errorNum === 2405) {
+        EmqxMessage.error(t('error.addTagByNode2405'))
+      } else {
+        popUpErrorMessage(errorNum)
+      }
       return
     }
+
     EmqxMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
     formData.value.tagList = formData.value.tagList.slice(errIndex)
   }
 
-  const { parseWriteData } = useWriteDataCheckNParse()
   const addTags = async () => {
     try {
-      const groupName: string = route.params.group as string
-      const tags: TagForm[] = formData.value.tagList.map(({ id, ...tagData }) => {
-        const data = tagData
-        const { type, value } = data
-        if (value !== undefined && value !== null) {
-          /** let it go, when the tags value use hexadecimal, and sync EditTagDialog.vue
-           * const newValue = isUseHexadecimal.value ? await transToDecimal({ ...tagData, value } as TagDataInTable): value
-           */
-          data.value = parseWriteData(Number(type), String(value))
-        }
+      const tags = await parseTagData(formData.value.tagList)
 
-        return data
-      })
-      await addTag({ tags, node: node.value, group: groupName })
+      await addTag({ tags, node: node.value, group: groupName.value })
       return Promise.resolve()
     } catch (error: any) {
       const { data = {} } = error
@@ -84,29 +78,7 @@ export default () => {
       await tagFormRef.value.validate()
       return Promise.resolve()
     } catch (error) {
-      let errorRows: string[] = []
-
-      const errorData = error || {}
-      if (dataType(errorData) === 'object') {
-        const keys = Object.keys(errorData)
-        keys.forEach((field: string) => {
-          const fieldSplit = field.split('.')
-          if (
-            fieldSplit &&
-            fieldSplit[1] &&
-            dataType(Number(fieldSplit[1])) === 'number' &&
-            !errorRows.includes(fieldSplit[1])
-          ) {
-            errorRows.push(fieldSplit[1])
-          }
-        })
-      }
-
-      errorRows = errorRows.sort()
-      const errorRow = errorRows[0]
-      if (errorRow) {
-        EmqxMessage.error(t('config.tableRowDataError', { rowNum: Number(errorRow) + 1 }))
-      }
+      handleValidTagFormError(error)
       return Promise.reject(error)
     }
   }

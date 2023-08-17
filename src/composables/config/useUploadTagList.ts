@@ -75,6 +75,7 @@ export default (pluginInfo: PluginInfo) => {
         }
 
         // when when `attribute` is includes `Static`， but `value` is empty
+        // TODO: 校验 value 与 type
         if (checkAttrIncludeStatic(attr) && dataType(value) !== 'number') {
           EmqxMessage.error(`${t('config.errorStaticWithValue', { rowNum: startIndex, name })}`)
           reject()
@@ -107,7 +108,11 @@ export default (pluginInfo: PluginInfo) => {
 
   const handlePartialSuc = (errIndex: number, errorNum: number) => {
     if (errIndex === 0) {
-      popUpErrorMessage(errorNum)
+      if (errorNum === 2405) {
+        EmqxMessage.error(t('error.importTag2405'))
+      } else {
+        popUpErrorMessage(errorNum)
+      }
     } else {
       EmqxMessage.error(t('config.partialUploadFailed', { reason: getErrorMsg(errorNum), errorRow: errIndex + 1 + 1 }))
     }

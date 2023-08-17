@@ -192,14 +192,6 @@ export default () => {
     return newList
   }
 
-  const handlePartialSuc = (errIndex: number, errorNum: number) => {
-    if (errIndex === 0) {
-      popUpErrorMessage(errorNum)
-      return
-    }
-    EmqxMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
-  }
-
   const handleValidTagFormError = (error: any) => {
     let errorRows: string[] = []
 
@@ -245,12 +237,8 @@ export default () => {
 
   return {
     groupName,
-
-    handlePartialSuc,
     sliceTagList,
-
     parseTagData,
-
     handleValidTagFormError,
   }
 }
