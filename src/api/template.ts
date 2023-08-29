@@ -55,11 +55,12 @@ export const addGroup = async (data: TemplateGroupForm): Promise<AxiosResponse> 
 }
 
 export const updateGroup = async (data: TemplateGroupForm): Promise<AxiosResponse> => {
-  const { group, interval, template } = data
+  const { group, interval, template, new_name } = data
   return http.put('/template/group', {
     group,
     template,
     interval: Number(interval),
+    new_name,
   })
 }
 
