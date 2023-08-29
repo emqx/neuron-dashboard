@@ -241,4 +241,5 @@ export interface TemplateFormData extends RawTemplateData {
 
 export interface TemplateGroupForm extends GroupFormDefault {
   template: string | null
+  new_name?: string | undefined
 }

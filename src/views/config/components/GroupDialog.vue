@@ -8,7 +8,7 @@
   >
     <emqx-form ref="formRef" :model="groupForm" :rules="groupRules">
       <emqx-form-item prop="group" :label="$t('config.groupName')" required>
-        <emqx-input v-model.trim="groupForm.group" :disabled="isEdit" />
+        <emqx-input v-model.trim="groupForm.group" />
       </emqx-form-item>
       <emqx-form-item prop="interval" :label="$t('config.interval')" required>
         <emqx-input v-model.number="groupForm.interval">
@@ -39,6 +39,7 @@ import type { GroupFormDefault, GroupForm, TemplateGroupForm } from '@/types/con
 const createRawForm = (): GroupFormDefault => ({
   group: '',
   interval: null,
+  new_name: undefined,
 })
 
 const emit = defineEmits(['update:modelValue', 'update:dialogVisible', 'submitted', 'close'])
@@ -64,6 +65,7 @@ const props = defineProps({
 const { t } = useI18n()
 
 const formRef = ref()
+const oldGroupName = ref('')
 const groupForm = computed({
   get: () => props.modelValue,
   set: (val: GroupFormDefault) => {
@@ -134,9 +136,18 @@ watch(showDialog, async (val) => {
     resetFields()
     initForm()
   }
+  oldGroupName.value = props.modelValue.group
 })
 
 const submit = async () => {
+  const { group, interval } = groupForm.value
+  if (props.isEdit) {
+    groupForm.value = {
+      group: oldGroupName.value,
+      new_name: group,
+      interval,
+    }
+  }
   await formRef.value.validate()
   emit('submitted')
 }
