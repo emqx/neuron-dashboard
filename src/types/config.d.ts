@@ -196,6 +196,7 @@ export interface GroupForm {
   group: string
   interval: number | null
   node: string | null
+  new_name?: string | null
 }
 
 export interface GroupData extends Omit<GroupForm, 'node'> {
