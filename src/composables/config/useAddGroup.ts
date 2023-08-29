@@ -17,6 +17,7 @@ export default () => {
   const formCom = ref()
   const groupForm = ref(createRawForm())
   const isSubmitting = ref(false)
+  const oldGroupName = ref('')
 
   const groupFormRules = computed(() => {
     return {
@@ -63,7 +64,9 @@ export default () => {
       if (!propsGroup) {
         await addGroup(groupForm.value)
       } else {
-        await updateGroup(groupForm.value)
+        const { group } = groupForm.value
+        const params = { ...groupForm.value, group: oldGroupName.value, new_name: group }
+        await updateGroup(params)
       }
       EmqxMessage.success(t('common.submitSuccess'))
     } catch (error) {
@@ -94,6 +97,7 @@ export default () => {
   }
 
   return {
+    oldGroupName,
     formCom,
     groupForm,
     isSubmitting,
