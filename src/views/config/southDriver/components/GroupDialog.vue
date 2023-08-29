@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import { computed, defineProps, defineEmits, watch, nextTick } from 'vue'
+import { computed, defineProps, defineEmits, watch, nextTick, ref } from 'vue'
 import { ElDialog } from 'element-plus'
 import useAddGroup from '@/composables/config/useAddGroup'
 import type { GroupForm } from '@/types/config'
@@ -57,9 +57,17 @@ const props = defineProps({
   },
   isEdit: { type: Boolean, deafult: false },
 })
-
-const { formCom, groupForm, isSubmitting, groupFormRules, resetFields, submitForm, initForm, getPluginConfigInfo } =
-  useAddGroup()
+const {
+  formCom,
+  groupForm,
+  oldGroupName,
+  isSubmitting,
+  groupFormRules,
+  resetFields,
+  submitForm,
+  initForm,
+  getPluginConfigInfo,
+} = useAddGroup()
 
 const showDialog = computed({
   get: () => props.modelValue,
@@ -87,6 +95,7 @@ watch(showDialog, async (val) => {
   } else if (props.group) {
     // edit group
     groupForm.value = props.group
+    oldGroupName.value = props.group.group
   } else if (props.currentNode) {
     // create group
     groupForm.value.node = props.currentNode

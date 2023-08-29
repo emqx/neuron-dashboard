@@ -208,11 +208,12 @@ export const addGroup = async (data: GroupForm): Promise<AxiosResponse> => {
 }
 
 export const updateGroup = async (data: GroupForm): Promise<AxiosResponse> => {
-  const { group, interval, node } = data
+  const { group, interval, node, new_name } = data
   return http.put('/group', {
     group,
     node,
     interval: Number(interval),
+    new_name,
   })
 }
 
