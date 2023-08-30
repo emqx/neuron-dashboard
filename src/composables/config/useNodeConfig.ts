@@ -86,6 +86,8 @@ export default (props: Props) => {
       let newDefaultValue = defaultValue
       const nodeNameReg = /\$\{node-name\}/
       const clientIdReg = /\{client-id\}/
+      const randomStringReg = /\$\{random_str\}/
+
       /**
        * if the default value contains ${node-name},
        * change the default value of ${node-name} to curent node name
@@ -95,6 +97,9 @@ export default (props: Props) => {
           newDefaultValue = defaultValue.replace(nodeNameReg, node.value)
         } else if (clientIdReg.test(defaultValue)) {
           newDefaultValue = defaultValue.replace(clientIdReg, node.value)
+        } else if (randomStringReg.test(defaultValue)) {
+          const randomStr = randomString(6)
+          newDefaultValue = defaultValue.replace(randomStringReg, randomStr)
         }
       }
 
@@ -174,14 +179,8 @@ export default (props: Props) => {
         const key = defaultConfigDatakeys[i]
         const value = configuredData.value[key]
         if (value === '' || value === undefined || value === null) {
-          if (key === 'client-id' && pluginName.value.toLocaleLowerCase() === 'mqtt') {
-            // Handle `client-id`: concatenate `random` strings of 6 lengths。
-            const randomStr = randomString(6)
-            configForm.value[key] = `neuron_${randomStr}`
-          } else {
-            const defaultValue = defaultConfigData.value[key]
-            configForm.value[key] = defaultValue
-          }
+          const defaultValue = defaultConfigData.value[key]
+          configForm.value[key] = defaultValue
         } else {
           configForm.value[key] = value
         }
