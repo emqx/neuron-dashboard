@@ -40,7 +40,7 @@ export interface SubscriptionDataForm {
   app: string | null
   driver: string
   group: string
-  driverGroups?: Record<string, Array<string>> | undefined // for mqtt and gewu plugin
+  driverGroups?: Record<string, Array<string>> | undefined
   topic?: string // mqtt plugin
   productKey?: string // gewu plugin
 }

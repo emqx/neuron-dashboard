@@ -264,10 +264,19 @@ export const useDriverInfo = (node?: Record<string, any>) => {
 
   const isGewuPugin = computed(() => nodePlugin.value && nodePlugin.value.toLocaleLowerCase() === 'gewu')
 
+  const isSupportBatchSub = computed(() => {
+    return (
+      isMQTTPugin.value ||
+      isGewuPugin.value ||
+      ['ekuiper', 'websocket', 'sparkplugb'].includes(nodePlugin.value.toLocaleLowerCase())
+    )
+  })
+
   return {
     nodePlugin,
     isMQTTPugin,
     isGewuPugin,
+    isSupportBatchSub,
   }
 }
 
