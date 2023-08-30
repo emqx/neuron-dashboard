@@ -6,8 +6,8 @@
     </el-radio-group>
   </div>
 
-  <section class="southGroupCheckboxGroups">
-    <el-collapse v-model="activeNames" @change="handleCollapseStatus">
+  <section class="southGroupCheckboxGroups" :class="{ 'empty-southGroupCheckboxGroups': !southNodeList.length }">
+    <el-collapse v-if="southNodeList.length" v-model="activeNames" @change="handleCollapseStatus">
       <el-collapse-item v-for="node in southNodeList" :key="node.name" :title="node.name" :name="node.name">
         <template #title>
           <i
@@ -38,6 +38,8 @@
         </main>
       </el-collapse-item>
     </el-collapse>
+
+    <span v-else class="empty-groups">{{ $t('common.emptyData') }}</span>
   </section>
 </template>
 
@@ -206,6 +208,8 @@ initData()
 </script>
 
 <style lang="scss" scoped>
+@import '~@/styles/mixins.scss';
+
 .collapse-all {
   text-align: right;
 
@@ -227,6 +231,9 @@ initData()
   border-radius: 10px;
   padding: 0 10px;
 }
+.empty-southGroupCheckboxGroups {
+  @include display-flex(center, center);
+}
 
 .icon-arrow {
   color: #c0c4cc;
@@ -246,6 +253,10 @@ initData()
 
 .empty-groups {
   color: var(--color-grey-font);
+}
+.empty-driver-groups {
+  @extend .empty-groups;
+  font-size: 16px;
 }
 </style>
 
