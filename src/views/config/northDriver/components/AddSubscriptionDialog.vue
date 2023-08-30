@@ -9,7 +9,7 @@
     <el-alert v-if="topicWarning" :title="topicWarning" type="warning" show-icon :closable="false" />
 
     <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
-      <section v-if="!(isMQTTPugin || isGewuPugin)">
+      <section v-if="!isSupportBatchSub">
         <emqx-form-item prop="driver" :label="$t('config.southDevice')">
           <emqx-select
             v-model="subscriptionForm.driver"
@@ -37,12 +37,7 @@
         <emqx-input v-model="subscriptionForm.productKey" />
       </emqx-form-item>
 
-      <!-- mqtt | gewu -->
-      <emqx-form-item
-        v-if="isMQTTPugin || isGewuPugin"
-        prop="driverGroups"
-        :label="$t('config.subscribeSouthDriverData')"
-      >
+      <emqx-form-item v-if="isSupportBatchSub" prop="driverGroups" :label="$t('config.subscribeSouthDriverData')">
         <SouthGroupsCheckbox v-model="subscriptionForm.driverGroups" />
       </emqx-form-item>
     </emqx-form>
@@ -97,7 +92,7 @@ const {
   submitData,
 } = useAddSubscription(props)
 
-const { isMQTTPugin, isGewuPugin } = useDriverInfo()
+const { isMQTTPugin, isGewuPugin, isSupportBatchSub } = useDriverInfo()
 
 const submit = async () => {
   await submitData()

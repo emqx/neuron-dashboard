@@ -100,7 +100,7 @@ type AddSubscriptionProps = Readonly<{
 
 export const useAddSubscription = (props: AddSubscriptionProps) => {
   const { t } = useI18n()
-  const { isMQTTPugin, isGewuPugin } = useDriverInfo()
+  const { isMQTTPugin, isGewuPugin, isSupportBatchSub } = useDriverInfo()
 
   const createRawSubscriptionForm = (): SubscriptionDataForm => ({
     app: null,
@@ -187,7 +187,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
     }
   }
 
-  // MQTT | Gewu
+  // MQTT | Gewu | ekuiper | websocket | sparkplugb
   const batchAddSubscriptions = async () => {
     try {
       const data: SubscriptionsData = {
@@ -234,7 +234,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
       const { driver, group } = subscriptionForm.value
       const data: SubscriptionData = { app: props.currentNode, driver, group }
 
-      if (isMQTTPugin.value || isGewuPugin.value) {
+      if (isSupportBatchSub.value) {
         await batchAddSubscriptions()
       } else {
         await addSubscription(data)
