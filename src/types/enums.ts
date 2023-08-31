@@ -51,7 +51,7 @@ export enum TagType {
   BIT,
   BOOL,
   STRING,
-  BYTE,
+  BYTES,
   WORD = 16,
   DWORD,
   LWORD,

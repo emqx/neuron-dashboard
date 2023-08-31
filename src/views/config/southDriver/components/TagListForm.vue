@@ -15,6 +15,9 @@
       <el-table-column width="180">
         <template #header>
           <span class="thead-title">{{ $t('common.attribute') }}</span>
+          <AComWithDesc :content="$t('config.staticNotSupportBytes')">
+            <i class="el-icon-info icon-label" />
+          </AComWithDesc>
         </template>
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.attribute`" :rules="rules.attribute" required>
@@ -35,6 +38,7 @@
                 :key="item.value"
                 :value="item.value"
                 :label="item.label"
+                :disabled="item.value === TagType.BYTES && isAttrsIncludeStatic(row.attribute)"
               />
             </emqx-select>
           </el-form-item>
@@ -147,6 +151,8 @@ import { useTagPrecision } from '@/composables/config/useAddTagCommon'
 import TagAttributeSelect from './TagAttributeSelect.vue'
 import type { PluginInfo, AddTagListForm, TagFormItem } from '@/types/config'
 import useTagForm from '@/composables/config/useTagForm'
+import { TagType } from '@/types/enums'
+import AComWithDesc from '@/components/AComWithDesc.vue'
 
 const props = defineProps({
   data: {
@@ -176,6 +182,8 @@ const formData: WritableComputedRef<AddTagListForm> = computed({
   },
 })
 
+const isBYTESType = computed(() => (index: number) => formData.value.tagList[index].type === TagType.BYTES)
+
 const changeAttribute = (row: TagFormItem, $index: number) => {
   const isStaticAttr = isAttrsIncludeStatic.value(row.attribute)
 
@@ -184,6 +192,9 @@ const changeAttribute = (row: TagFormItem, $index: number) => {
   } else {
     formData.value.tagList[$index].precision = undefined
     formData.value.tagList[$index].decimal = null
+    if (isBYTESType.value($index)) {
+      formData.value.tagList[$index].type = null
+    }
   }
 
   // validate  'address'
@@ -232,5 +243,9 @@ defineExpose({
     color: #f56c6c;
     padding-right: 2px;
   }
+}
+.icon-label {
+  padding-left: 4px;
+  color: #999;
 }
 </style>
