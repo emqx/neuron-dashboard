@@ -21,7 +21,7 @@ STRING    15  string
 
 import { TagType } from '@/types/enums'
 import { HEXADECIMAL_PREFIX } from '@/utils/constants'
-import { HEXADECIMAL_REGEX, FLOAT_REGEX, BIT_REGEX, INT_REGEX } from '@/utils/regexps'
+import { BYTES_REGEX, FLOAT_REGEX, BIT_REGEX, INT_REGEX } from '@/utils/regexps'
 import {
   transFloatNumberToHex,
   transNegativeNumberToHex,
@@ -31,6 +31,7 @@ import {
   transIntHexToDecimalNum,
 } from './convert'
 import type { TagDataInTable } from './useDataMonitoring'
+import { isJSONData } from '@/utils/utils'
 
 export enum WriteDataErrorCode {
   FormattingError = 1,
@@ -38,6 +39,7 @@ export enum WriteDataErrorCode {
   GreaterThanMaximum,
   LessThanMinSafeInteger,
   GreaterThanMaxSafeInteger,
+  BYTESValueLengthError,
 }
 
 interface RangeObj {
@@ -45,7 +47,7 @@ interface RangeObj {
   MAX: number
 }
 
-export default () => {
+export default (isWriteValue = true) => {
   const createIntTypeRange = (bitsNum: number): RangeObj => {
     return {
       MIN: -(2 ** (bitsNum - 1)),
@@ -64,15 +66,43 @@ export default () => {
   const INT32_RANGE = createIntTypeRange(32)
   const INT64_RANGE = createIntTypeRange(64)
 
+  const BYTES_RANGE = createUIntTypeRange(8)
   const UINT8_RANGE = createUIntTypeRange(8)
   const UINT16_RANGE = createUIntTypeRange(16)
   const UINT32_RANGE = createUIntTypeRange(32)
   const UINT64_RANGE = createUIntTypeRange(64)
 
-  const checkByte = (value: string): Promise<boolean | Error> =>
-    HEXADECIMAL_REGEX.test(value.replace(/\s/g, ''))
-      ? Promise.resolve(true)
-      : Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
+  const checkByte = async (value: string): Promise<boolean | Error> => {
+    // Static attribute do not currently support BYTES type, when creat a tag
+    if (!isWriteValue) return Promise.resolve(true)
+
+    try {
+      await isJSONData(value)
+      const arrValue = JSON.parse(value)
+      console.log('arrValue', arrValue)
+      if (!Array.isArray(arrValue)) {
+        return Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
+      }
+
+      const isElementAllInRange = arrValue.every((v: string | number) => {
+        const isIntNumber = BYTES_REGEX.test(String(v))
+        const isInRange = Number(v) >= BYTES_RANGE.MIN && Number(v) <= BYTES_RANGE.MAX
+
+        return isIntNumber && isInRange
+      })
+      if (!isElementAllInRange) {
+        return Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
+      }
+
+      if (arrValue.length > 128) {
+        return Promise.reject(new Error(WriteDataErrorCode.BYTESValueLengthError.toString()))
+      }
+    } catch (error) {
+      return Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
+    }
+
+    return Promise.resolve(true)
+  }
 
   const checkBit = (value: string): Promise<boolean | Error> =>
     BIT_REGEX.test(value)
@@ -120,7 +150,7 @@ export default () => {
 
   const check = (type: TagType, value: string) => {
     const checkMap = {
-      [TagType.BYTE]: checkByte.bind(null, value),
+      [TagType.BYTES]: checkByte.bind(null, value),
       [TagType.INT8]: checkInt.bind(null, INT8_RANGE, value),
       [TagType.INT16]: checkInt.bind(null, INT16_RANGE, value),
       [TagType.INT32]: checkInt.bind(null, INT32_RANGE, value),
@@ -142,9 +172,14 @@ export default () => {
   }
 
   const parseWriteData = (type: TagType, value: string) => {
-    if (type === TagType.BYTE || type === TagType.STRING || type === TagType.BOOL) {
+    if (type === TagType.STRING || type === TagType.BOOL) {
       return value
     }
+
+    if (type === TagType.BYTES) {
+      return value ? JSON.parse(value) : value
+    }
+
     return Number(value)
   }
   const checkWriteData = async (type: number, value: string): Promise<boolean | Error> => {

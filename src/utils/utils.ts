@@ -212,7 +212,7 @@ export const isTheSameParentRoute = (from: any, to: any) => {
 export const isJSONData = (data: string) => {
   try {
     JSON.parse(data)
-    return Promise.resolve()
+    return Promise.resolve(true)
   } catch (error) {
     console.error(error)
     return Promise.reject(error)

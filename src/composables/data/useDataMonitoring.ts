@@ -353,7 +353,7 @@ export default () => {
       }
       return value
     }
-    if (type === TagType.BYTE || type === TagType.BOOL || type === TagType.BIT || type === TagType.STRING) {
+    if (type === TagType.BYTES || type === TagType.BOOL || type === TagType.BIT || type === TagType.STRING) {
       return value
     }
     const data = await transToHexadecimal(tagData)
