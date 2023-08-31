@@ -89,15 +89,17 @@ export default (props: Props) => {
       const randomStringReg = /\$\{random_str\}/
 
       /**
-       * if the default value contains ${node-name},
+       * if the default value contains ${node-name}, {client-id}, {random_str}
        * change the default value of ${node-name} to curent node name
        *  */
       if (typeof defaultValue === 'string') {
         if (nodeNameReg.test(defaultValue)) {
           newDefaultValue = defaultValue.replace(nodeNameReg, node.value)
-        } else if (clientIdReg.test(defaultValue)) {
+        }
+        if (clientIdReg.test(defaultValue)) {
           newDefaultValue = defaultValue.replace(clientIdReg, node.value)
-        } else if (randomStringReg.test(defaultValue)) {
+        }
+        if (randomStringReg.test(defaultValue)) {
           const randomStr = randomString(6)
           newDefaultValue = defaultValue.replace(randomStringReg, randomStr)
         }
