@@ -4,6 +4,7 @@ export const DECIMAL_POSITIVE_REGEX = /^[0-9]\d*$/
 export const FLOAT_REGEX = /^-?\d*\.?\d+(e-?\d+)?$/
 export const BIT_REGEX = /^[0-9a-f]+$/
 export const INT_REGEX = /^-?\d+$/
+export const BYTES_REGEX = /^[0-9]+$/
 export const BINARY_STRING_REGEX = /^(0|1)+$/
 
 export const UPPER_LOWERCASE_REGEX = /^[A-Z][a-z]+$/

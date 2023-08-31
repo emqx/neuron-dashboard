@@ -51,6 +51,7 @@ export default (props: Props) => {
     ),
     [WriteDataErrorCode.LessThanMinSafeInteger]: t('data.writeDataSafeMinimumError'),
     [WriteDataErrorCode.GreaterThanMaxSafeInteger]: t('data.writeDataSafeMaximumError'),
+    [WriteDataErrorCode.BYTESValueLengthError]: t('data.arrayLengthError', { length: 128 }),
   }))
 
   const inputValue = ref('')
@@ -63,7 +64,7 @@ export default (props: Props) => {
   const showToggleHexadecimalSwitch = computed(() => {
     return (
       props.tag?.type &&
-      props.tag.type !== TagType.BYTE &&
+      props.tag.type !== TagType.BYTES &&
       props.tag.type !== TagType.BOOL &&
       props.tag.type !== TagType.BIT &&
       props.tag.type !== TagType.STRING
@@ -103,10 +104,11 @@ export default (props: Props) => {
         return Promise.resolve()
       }
 
-      const checkValueRes = await Promise.allSettled([
-        checkFloat.bind(null, trueValue)(),
-        checkWriteData(type, trueValue),
-      ])
+      const requests = [checkWriteData(type, trueValue)]
+      if (type !== TagType.BYTES) {
+        requests.push(checkFloat.bind(null, trueValue)())
+      }
+      const checkValueRes = await Promise.allSettled(requests)
       const checkRes = checkValueRes.map((item: any) => item?.value || false)
       if (!checkRes.includes(true)) {
         inputErrorMsg.value = errorMsgMap.value[Number('1') as keyof typeof errorMsgMap.value]

@@ -17,7 +17,13 @@
             </div>
           </div>
         </template>
-        <emqx-input v-if="tag.type !== TagType.BOOL" v-model="inputValue" @blur="validate" />
+        <emqx-input
+          v-if="tag.type !== TagType.BOOL"
+          v-model="inputValue"
+          :type="isBYTESType ? 'textarea' : 'text'"
+          :placeholder="isBYTESType ? '[0,0,0,0]' : ''"
+          @blur="validate"
+        />
         <emqx-radio-group v-else v-model="inputValue">
           <emqx-radio :label="true">True</emqx-radio>
           <emqx-radio :label="false">False</emqx-radio>
@@ -66,6 +72,7 @@ const showDialog = computed({
     emit('update:modelValue', val)
   },
 })
+const isBYTESType = computed(() => props.tag?.type === TagType.BYTES)
 const dialogTitle = computed(() => props.tag?.tagName)
 
 const {

@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import type { TagFormItem, TagForm, TagData } from '@/types/config'
 import { TagType, TagAttributeType } from '@/types/enums'
-import { getErrorMsg, popUpErrorMessage, dataType, createRandomString } from '@/utils/utils'
+import { dataType, createRandomString } from '@/utils/utils'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 
 export const useTagTypeSelect = () => {
@@ -151,7 +151,7 @@ export const createTagForm = () => {
     type: null,
     // for the key when use v-for
     id: createRandomString(6),
-    decimal: null,
+    decimal: undefined,
     description: '',
     precision: undefined,
     value: undefined,
@@ -181,10 +181,12 @@ export const useHandleTagValue = () => {
     handleTagValue,
   }
 }
+
 export default () => {
   const route = useRoute()
   const { t } = useI18n()
 
+  const { handleTagValue } = useHandleTagValue()
   const groupName = computed(() => route.params.group as string)
 
   const sliceTagList = (list: TagFormItem[], errIndex: number) => {
@@ -218,18 +220,9 @@ export default () => {
     }
   }
 
-  const { parseWriteData } = useWriteDataCheckNParse()
   const parseTagData = async (tagList: TagFormItem[]): Promise<TagForm[]> => {
     const tags: TagForm[] = tagList.map(({ id, ...tagData }) => {
-      const data = tagData
-      const { type, value } = data
-      if (value !== undefined && value !== null) {
-        /** let it go, when the tags value use hexadecimal, and sync EditTagDialog.vue
-         * const newValue = isUseHexadecimal.value ? await transToDecimal({ ...tagData, value } as TagDataInTable): value
-         */
-        data.value = parseWriteData(Number(type), String(value))
-      }
-
+      const data = handleTagValue(tagData)
       return data
     })
     return tags

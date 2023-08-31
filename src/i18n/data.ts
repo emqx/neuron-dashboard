@@ -51,6 +51,10 @@ export default {
     zh: ' 内容格式错误',
     en: ' content format error',
   },
+  arrayLengthError: {
+    zh: '请输入长度不大于 {length} 的数据',
+    en: 'Please enter data no longer than {length}',
+  },
   writeDataMinimumErrorPrefix: {
     zh: '小于数据类型 ',
     en: 'Less than the minimum value of data type ',
