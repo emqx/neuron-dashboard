@@ -27,7 +27,6 @@ import TagFormCom from './TagForm.vue'
 import type { PluginInfo, TagData } from '@/types/config'
 import { updateTag } from '@/api/config'
 import { useI18n } from 'vue-i18n'
-import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 import { useNodePluginInfo } from '@/composables/config/usePluginInfo'
 import { useHandleTagValue } from '@/composables/config/useAddTagCommon'
 
@@ -52,7 +51,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'submitted'])
 
 const { t } = useI18n()
-const { parseWriteData } = useWriteDataCheckNParse()
 
 const { getNodePluginInfo } = useNodePluginInfo()
 const pluginMsg: Ref<undefined | PluginInfo> = ref(undefined)

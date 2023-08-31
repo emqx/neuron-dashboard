@@ -71,7 +71,7 @@ export default (props: any) => {
   }
 
   // checkFloat,
-  const { checkWriteData } = useWriteDataCheckNParse()
+  const { checkWriteData } = useWriteDataCheckNParse(false)
   const createErrorMsg = (type: number, prefix: string, suffix: string) => {
     if (!type) return ''
     return prefix + TagType[type] + suffix
@@ -99,7 +99,6 @@ export default (props: any) => {
     const { field } = rule
     const $index = field.split('.')[1]
     const tag: TagDataInTable = props?.data?.tagList ? props.data.tagList[$index] : props?.data
-    // const { type, attribute, decimal } = tag
     const { type, attribute } = tag
 
     try {
@@ -127,6 +126,13 @@ export default (props: any) => {
           const errorMsg = errorMsgMap.value(type)[Number('1') as keyof typeof errorMsgMap.value]
           return callback(new Error(errorMsg))
         }
+
+        // validate bytes value length; when `static` support `bytes` support, let comment go
+        // const bytesValue = JSON.parse(trueValue)
+        // if (type === TagType.BYTES && bytesValue.length > 128) {
+        //   // checkWriteData(bytes) has valid `value` is `Array`
+        //   return callback(new Error(t('data.arrayLengthError', { length: 128 })))
+        // }
         return callback()
       }
 

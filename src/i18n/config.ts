@@ -594,4 +594,12 @@ export default {
     zh: '请选择南向驱动数据',
     en: 'Please select the south drive data',
   },
+  staticNotSupportBytes: {
+    zh: 'Static 属性暂不支持 BYTES 类型',
+    en: 'Static attribute do not currently support BYTES type',
+  },
+  arrayFormatError: {
+    zh: '请输入数组',
+    en: 'Please enter an array',
+  },
 }
