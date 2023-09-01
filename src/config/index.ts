@@ -136,3 +136,5 @@ export const UserLevels = [
 ]
 
 export const EN_LANG = process.env.VUE_APP_LANG_EN === 'true'
+
+export const API_TIMEOUT = 10000
