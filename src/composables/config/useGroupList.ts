@@ -141,7 +141,7 @@ export default () => {
         const groupTags: any = tagsByGroupName[groupName]
         let rqs = null
         return handleTagListInTableFile(groupTags).then((tags) => {
-          rqs = addTag({ tags, node: node.value, group: groupName })
+          rqs = addTag({ tags, node: node.value, group: groupName }, true)
           return rqs
         })
       })

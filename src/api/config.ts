@@ -21,6 +21,7 @@ import type {
   TagData,
   TagForm,
 } from '@/types/config'
+import { API_TIMEOUT } from '@/config/index'
 
 /* NODE(DRIVER & APP) */
 const queryDriverList = (params: any): Promise<AxiosResponse<ResponseDriverListData>> => {
@@ -223,8 +224,12 @@ export const queryTagList = async (params = {}): Promise<Array<TagData>> => {
   return Promise.resolve(data.tags || [])
 }
 
-export const addTag = (data: { node: string; group: string; tags: Array<TagForm> }) => {
-  return http.post('/tags', data, { _handleCustomError: true } as AxiosRequestConfig)
+export const addTag = (data: { node: string; group: string; tags: Array<TagForm> }, isImportTags = false) => {
+  const config = {
+    _handleCustomError: true,
+    timeout: isImportTags ? API_TIMEOUT + 100 : API_TIMEOUT,
+  }
+  return http.post('/tags', data, { ...config } as AxiosRequestConfig)
 }
 
 export const deleteTag = (data: { node: string; group: string; tags: Array<string> }): Promise<AxiosResponse> => {
