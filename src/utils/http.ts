@@ -6,6 +6,7 @@ import store from '@/store/index'
 import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
 import type { CompatibleErrorCode } from './utils'
 import { countBaseURL, popUpErrorMessage, dataType, isJSONData } from './utils'
+import { API_TIMEOUT } from '@/config/index'
 
 const baseURL = countBaseURL()
 const option = {
@@ -15,7 +16,7 @@ const option = {
     Accept: 'application/json',
   },
   baseURL,
-  timeout: 10000,
+  timeout: API_TIMEOUT,
 }
 
 Object.assign(axios.defaults, option)
