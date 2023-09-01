@@ -1,6 +1,7 @@
 import http from '@/utils/http'
 import type { AxiosResponse, AxiosRequestConfig } from 'axios'
 import type { RawTemplateData, TemplateFormData, GroupData, TemplateGroupForm, TagData, TagForm } from '@/types/config'
+import { API_TIMEOUT } from '@/config/index'
 
 /**
  * Template
@@ -76,8 +77,12 @@ export const deleteTag = (data: { template: string; group: string; tags: Array<s
   return http.delete('/template/tag', { data })
 }
 
-export const addTag = (data: { template: string; group: string; tags: Array<TagForm> }) => {
-  return http.post('/template/tag', data, { _handleCustomError: true } as AxiosRequestConfig)
+export const addTag = (data: { template: string; group: string; tags: Array<TagForm> }, isImportTags = false) => {
+  const config = {
+    _handleCustomError: true,
+    timeout: isImportTags ? API_TIMEOUT + 100 : API_TIMEOUT,
+  }
+  return http.post('/template/tag', data, { ...config } as AxiosRequestConfig)
 }
 
 export const updateTag = (template: string, group: string, tag: TagForm) => {
