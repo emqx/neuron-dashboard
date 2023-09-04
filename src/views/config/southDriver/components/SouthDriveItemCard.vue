@@ -7,8 +7,15 @@
           <i class="iconfont iconsetting" @click.stop="goNodeConfig(props.data)"></i>
         </AComWithDesc>
         <AComWithDesc :content="$t('config.dataStatistics')">
-          <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(data)"></i>
+          <span @click.stop="isShowDataStatistics(data)">
+            <img
+              class="operation-image icon-image img-statistic-log"
+              src="~@/assets/images/statistics.png"
+              alt="debug-log"
+            />
+          </span>
         </AComWithDesc>
+
         <emqx-dropdown trigger="click" @command="handleClickOperator">
           <AComWithDesc :content="$t('common.more')">
             <span class="el-dropdown-link" @click.stop>
@@ -137,5 +144,10 @@ const handleClickOperator = async (command: string) => {
 .operation-icon {
   font-size: 20px;
   color: #20466c;
+}
+.icon-image {
+  display: inline-block;
+  margin: 0 10px 0 -4px;
+  width: 24px;
 }
 </style>

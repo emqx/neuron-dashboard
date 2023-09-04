@@ -4,6 +4,7 @@
 /* If you need to change the layout and other styles, just replace the `layout-variables.scss` and `base.scss` */
 @import './layout-variables.scss';
 @import  './base.scss';
+@import  './mixins.scss';
 
 
 :root {
@@ -241,6 +242,7 @@ h3.card-title {
     line-height: 1;
   }
   .setup-item-handlers {
+    @include display-flex(flex-start, center);
     // visibility: hidden;
     flex-shrink: 0;
     .iconfont {

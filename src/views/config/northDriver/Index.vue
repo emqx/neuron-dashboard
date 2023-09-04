@@ -76,7 +76,13 @@
             </AComWithDesc>
 
             <AComWithDesc :content="$t('config.dataStatistics')">
-              <i class="iconfont iconstatus operation-icon" @click.stop="handleClickOperator('dataStatistics', row)" />
+              <span @click.stop="handleClickOperator('dataStatistics', row)">
+                <img
+                  class="operation-image icon-image img-statistic-log"
+                  src="~@/assets/images/statistics.png"
+                  alt="debug-log"
+                />
+              </span>
             </AComWithDesc>
 
             <emqx-dropdown trigger="click" @command="handleClickOperator($event, row)">
@@ -270,6 +276,12 @@ const handleClickOperator = async (command: string, row: DriverItemInList) => {
   width: 22px;
   cursor: pointer;
 }
+.icon-image {
+  display: inline-block;
+  margin: 0 10px 0 -6px;
+  width: 24px;
+}
+
 :deep(.row-disabled) {
   cursor: not-allowed;
 }

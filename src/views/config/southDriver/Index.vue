@@ -94,7 +94,13 @@
                 <i class="iconfont iconsetting" @click.stop="goNodeConfig(row)" />
               </AComWithDesc>
               <AComWithDesc :content="$t('config.dataStatistics')">
-                <i class="iconfont iconstatus" @click.stop="handleClickOperator('dataStatistics', row)" />
+                <span @click.stop="handleClickOperator('dataStatistics', row)">
+                  <img
+                    class="operation-image icon-image img-statistic-log"
+                    src="~@/assets/images/statistics.png"
+                    alt="debug-log"
+                  />
+                </span>
               </AComWithDesc>
 
               <emqx-dropdown trigger="click" @command="handleClickOperator($event, row)">
@@ -330,5 +336,10 @@ if (isShowLicenseTip !== 'false') {
   left: 2px;
   width: 22px;
   cursor: pointer;
+}
+.icon-image {
+  display: inline-block;
+  margin: 0 10px 0 -6px;
+  width: 24px;
 }
 </style>
