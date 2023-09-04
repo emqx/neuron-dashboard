@@ -11,7 +11,13 @@
           <i class="iconfont iconsetting" @click.stop="goNodeConfig(data)"></i>
         </AComWithDesc>
         <AComWithDesc :content="$t('config.dataStatistics')">
-          <i class="iconfont iconstatus" @click.stop="isShowDataStatistics(data)"></i>
+          <span @click.stop="isShowDataStatistics(data)">
+            <img
+              class="operation-image icon-image img-statistic-log"
+              src="~@/assets/images/statistics.png"
+              alt="debug-log"
+            />
+          </span>
         </AComWithDesc>
 
         <!-- monitor driver does not support deletion and editing -->
@@ -156,5 +162,10 @@ const { isNotSupportRemoveNode, isMonitorNode } = useDriverName()
   left: 2px;
   width: 18px;
   cursor: pointer;
+}
+.icon-image {
+  display: inline-block;
+  margin: 0 10px 0 -4px;
+  width: 24px;
 }
 </style>
