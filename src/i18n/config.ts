@@ -568,7 +568,35 @@ export default {
   },
   groupTagsTotal: {
     zh: '采集组 {group} 点位数',
-    en: 'Acquisition group {group} tags',
+    en: 'Group {group} tags total',
+  },
+  sendBytes: {
+    zh: '发送字节数',
+    en: 'Send bytes',
+  },
+  recvBytes: {
+    zh: '接收字节数',
+    en: 'Received bytes',
+  },
+  tagsTotal: {
+    zh: '点位总数',
+    en: 'Tags total',
+  },
+  groupLastSendMsgs: {
+    zh: '采集组 {group} 最近一次发送消息数',
+    en: 'Group {group} last send messages',
+  },
+  groupLastTimerMs: {
+    zh: '采集组 {group} 最近一次执行消耗时间',
+    en: 'Group {group} last execution time',
+  },
+  groupLastErrorCode: {
+    zh: '采集组 {group} 上一次采集错误信息',
+    en: 'Group {group} last error messages',
+  },
+  groupLastErrorTimestampMs: {
+    zh: '采集组 {group} 上一次采集错误信息时间戳',
+    en: 'Group {group} last error messages timestamp',
   },
   sendMsgsTotal: {
     zh: '发送消息数总计',
