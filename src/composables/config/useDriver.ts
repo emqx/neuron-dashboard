@@ -262,7 +262,11 @@ export const useDriverInfo = (node?: Record<string, any>) => {
 
   const isMQTTPugin = computed(() => nodePlugin.value && nodePlugin.value.toLocaleLowerCase() === 'mqtt')
 
-  const isGewuPugin = computed(() => nodePlugin.value && nodePlugin.value.toLocaleLowerCase() === 'gewu')
+  const isGewuPugin = computed(() => {
+    const nodePluginName = nodePlugin.value?.toLocaleLowerCase().replace(/\s/g, '')
+    const pluginNames = ['格物dmp-v1', 'gewu']
+    return pluginNames.includes(nodePluginName)
+  })
 
   const isSupportBatchSub = computed(() => {
     return (
