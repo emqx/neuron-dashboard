@@ -37,7 +37,7 @@ export const ERROR_CODE_ARR = [
  *    and use `{name}{errorCode}` to update @i18n/error.ts file.
  *  */
 export const SELF_HANDLE_ERROR_CODES: Record<string, any> = {
-  uploadLicense: [2402, 2404, 2405, 2406],
+  uploadLicense: [2402, 2403, 2404, 2405, 2406],
   addDriverByPlugin: [2404],
   addDriverByTemplate: [2404, 2405],
 }

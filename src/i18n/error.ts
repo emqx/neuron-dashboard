@@ -259,6 +259,10 @@ export default {
     zh: 'License 未启用插件',
     en: 'Plugin disabled by license',
   },
+  uploadLicense2403: {
+    zh: `导入 License 失败，请先删除 License 不包含的驱动`,
+    en: `Failed to import the License, please delete the driver not included in the License.`,
+  },
   2404: {
     zh: '达到 license 授权的最大节点数',
     en: 'Reach licensed max number of nodes',
