@@ -50,8 +50,8 @@ export interface SubscriptionData extends SubscriptionDataForm {
   driver: string
   group: string
   params?: {
-    topic?: string
-    productKey?: string
+    topic?: string | null
+    productKey?: string | null
   }
 }
 
