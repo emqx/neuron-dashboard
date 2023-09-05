@@ -264,7 +264,7 @@ export const useDriverInfo = (node?: Record<string, any>) => {
 
   const isGewuPugin = computed(() => {
     const nodePluginName = nodePlugin.value?.toLocaleLowerCase().replace(/\s/g, '')
-    const pluginNames = ['格物dmp-v1', 'gewu']
+    const pluginNames = ['gewudmp-v1']
     return pluginNames.includes(nodePluginName)
   })
 
