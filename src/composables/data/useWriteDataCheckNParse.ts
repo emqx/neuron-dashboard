@@ -79,7 +79,6 @@ export default (isWriteValue = true) => {
     try {
       await isJSONData(value)
       const arrValue = JSON.parse(value)
-      console.log('arrValue', arrValue)
       if (!Array.isArray(arrValue)) {
         return Promise.reject(new Error(WriteDataErrorCode.FormattingError.toString()))
       }

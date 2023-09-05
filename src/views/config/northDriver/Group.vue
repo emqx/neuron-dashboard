@@ -47,6 +47,9 @@
       </emqx-table-column>
       <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
+          <AComWithDesc v-if="isMQTTPugin || isGewuPugin" :content="$t('common.edit')">
+            <i class="el-icon-edit-outline" @click.stop="showEditGroupDialog(row)" />
+          </AComWithDesc>
           <AComWithDesc :content="$t('config.unsubscribe')">
             <i class="iconfont icondelete" @click="unsubscribeGroup(row)" />
           </AComWithDesc>
@@ -55,6 +58,14 @@
     </emqx-table>
   </emqx-card>
   <AddSubscriptionDialog v-model="showAddSubscriptionDialog" :current-node="node" @submitted="getSubscriptionList" />
+
+  <EditSubcriptionGroup
+    v-model="editGroupForm"
+    v-model:dialog-visible="showEditGroupDailog"
+    :is-edit="isEditGroup"
+    :is-submitting="isSubmitting"
+    @submitted="updateGroup"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -63,6 +74,8 @@ import { useSubscriptionList } from '@/composables/config/useSubscription'
 import { useDriverInfo } from '@/composables/config/useDriver'
 import AddSubscriptionDialog from './components/AddSubscriptionDialog.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
+import EditSubcriptionGroup from './components/EditSubcriptionGroup.vue'
+import { DriverDirection } from '@/types/enums'
 
 const { isMQTTPugin, isGewuPugin } = useDriverInfo()
 
@@ -77,6 +90,13 @@ const {
   clearSubscription,
   batchUnsubscribeGroups,
   getSubscriptionList,
+
+  isEditGroup,
+  showEditGroupDailog,
+  editGroupForm,
+  showEditGroupDialog,
+  updateGroup,
+  isSubmitting,
 } = useSubscriptionList()
 
 const showAddSubscriptionDialog = ref(false)
