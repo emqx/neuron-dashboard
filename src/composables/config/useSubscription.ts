@@ -1,4 +1,11 @@
-import { addSubscription, addSubscriptions, deleteSubscription, queryGroupList, querySubscription } from '@/api/config'
+import {
+  addSubscription,
+  addSubscriptions,
+  deleteSubscription,
+  updateSubscription,
+  queryGroupList,
+  querySubscription,
+} from '@/api/config'
 import type { GroupData, SubscriptionData, SubscriptionsData, SubscriptionDataForm } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref, computed, nextTick } from 'vue'
@@ -10,6 +17,7 @@ import useSouthDriver from './useSouthDriver'
 import { createCommonErrorMessage, OmitArrayFields } from '@/utils/utils'
 import { EN_NUMBER_REGEX } from '@/utils/regexps'
 import { useDriverInfo } from '@/composables/config/useDriver'
+import { cloneDeep, omit } from 'lodash'
 
 interface SubscriptionDataInTable extends SubscriptionData {
   checked: boolean
@@ -21,6 +29,20 @@ export const useSubscriptionList = () => {
 
   const isListLoading = ref(false)
   const subscriptionList: Ref<Array<SubscriptionDataInTable>> = ref([])
+
+  const isEditGroup = ref(false)
+  const showEditGroupDailog = ref(false)
+  const isSubmitting = ref(false)
+  const editGroupForm: Ref<SubscriptionData> = ref({
+    app: '',
+    driver: '',
+    group: '',
+    params: {
+      topic: '',
+      productKey: '',
+    },
+  })
+
   const node = computed(() => route.params.node.toString())
 
   const allChecked = computed({
@@ -77,6 +99,32 @@ export const useSubscriptionList = () => {
 
   const batchUnsubscribeGroups = () => unsubscribe(t('config.unsubscribeInBulkConfirm'), subCheckedList.value)
 
+  const showEditGroupDialog = (group: SubscriptionDataInTable) => {
+    const groupData = cloneDeep(group)
+    isEditGroup.value = true
+    showEditGroupDailog.value = true
+    editGroupForm.value = omit(groupData, ['checked'])
+  }
+  const updateGroup = async (data: SubscriptionData) => {
+    try {
+      isSubmitting.value = true
+      const params = {
+        ...data,
+        app: node.value,
+      }
+      showEditGroupDailog.value = false
+
+      EmqxMessage.success(t('common.submitSuccess'))
+
+      await updateSubscription(params)
+      getSubscriptionList()
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isSubmitting.value = false
+    }
+  }
+
   getSubscriptionList()
 
   return {
@@ -90,6 +138,13 @@ export const useSubscriptionList = () => {
     unsubscribeGroup,
     clearSubscription,
     batchUnsubscribeGroups,
+
+    isEditGroup,
+    showEditGroupDailog,
+    showEditGroupDialog,
+    editGroupForm,
+    updateGroup,
+    isSubmitting,
   }
 }
 
@@ -98,31 +153,8 @@ type AddSubscriptionProps = Readonly<{
   currentNode: string
 }>
 
-export const useAddSubscription = (props: AddSubscriptionProps) => {
+export const useSubscriptionGroup = () => {
   const { t } = useI18n()
-  const { isMQTTPugin, isGewuPugin, isSupportBatchSub } = useDriverInfo()
-
-  const createRawSubscriptionForm = (): SubscriptionDataForm => ({
-    app: null,
-    driver: '',
-    group: '',
-    driverGroups: {},
-    topic: '',
-    productKey: '',
-  })
-
-  const formCom = ref()
-
-  const topicWarning = computed(() => {
-    let warningContent = ''
-    const { topic } = subscriptionForm.value
-    if (topic) {
-      const isContainWildcard = topic.includes('#') || topic.includes('+')
-      warningContent = isContainWildcard ? t('config.topicContainWildcard') : ''
-    }
-    return warningContent
-  })
-
   const checkDriverGroups = async (rule: unknown, value: string, callback: any) => {
     const keys = Object.keys(value)
     const values = Object.values(value)
@@ -152,13 +184,49 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
         { required: true, message: createCommonErrorMessage('select', t('config.subscribeSouthDriverData')) },
         { validator: checkDriverGroups, trigger: ['blur'] },
       ],
+      'params.topic': [{ required: true, message: createCommonErrorMessage('input', t('config.topic')) }],
       topic: [{ required: true, message: createCommonErrorMessage('input', t('config.topic')) }],
+
+      'params.productKey': [
+        { required: true, message: createCommonErrorMessage('input', ' productKey') },
+        { validator: checkProductKey, trigger: ['blur'] },
+      ],
       productKey: [
         { required: true, message: createCommonErrorMessage('input', ' productKey') },
         { validator: checkProductKey, trigger: ['blur'] },
       ],
     }
   })
+  return {
+    rules,
+  }
+}
+export const useAddSubscription = (props: AddSubscriptionProps) => {
+  const { t } = useI18n()
+  const { isMQTTPugin, isGewuPugin, isSupportBatchSub } = useDriverInfo()
+
+  const createRawSubscriptionForm = (): SubscriptionDataForm => ({
+    app: null,
+    driver: '',
+    group: '',
+    driverGroups: {},
+    topic: '',
+    productKey: '',
+  })
+
+  const formCom = ref()
+
+  const topicWarning = computed(() => {
+    let warningContent = ''
+    const { topic } = subscriptionForm.value
+    if (topic) {
+      const isContainWildcard = topic.includes('#') || topic.includes('+')
+      warningContent = isContainWildcard ? t('config.topicContainWildcard') : ''
+    }
+    return warningContent
+  })
+
+  const { rules } = useSubscriptionGroup()
 
   const subscriptionForm: Ref<SubscriptionDataForm> = ref(createRawSubscriptionForm())
   const isSubmitting = ref(false)

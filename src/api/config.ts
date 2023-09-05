@@ -132,6 +132,9 @@ export const addSubscriptions = (data: SubscriptionsData) => {
 export const deleteSubscription = (data: SubscriptionData) => {
   return http.delete('/subscribe', { data })
 }
+export const updateSubscription = (data: SubscriptionData) => {
+  return http.put('/subscribe', data)
+}
 
 export const querySubscription = async (node: string): Promise<Array<SubscriptionData>> => {
   try {
