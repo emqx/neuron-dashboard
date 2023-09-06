@@ -8,8 +8,8 @@
     :z-index="2000"
   >
     <span class="tip-text">
-      <!-- No License | Trial -->
-      <span v-if="!isHasLicense || isTrialLicense" v-html="$t('admin.licenseEvaluationTip')" />
+      <!-- No License -->
+      <span v-if="!isHasLicense" v-html="$t('admin.licenseEvaluationTip')" />
 
       <!-- License-->
       <span v-else-if="isHasLicense">
@@ -42,6 +42,7 @@
 <script lang="ts" setup>
 import { computed, defineEmits, defineProps, ref } from 'vue'
 import { ElDialog, ElCheckbox } from 'element-plus'
+import Cookies from 'js-cookie'
 
 const props = defineProps({
   modelValue: {
@@ -49,7 +50,6 @@ const props = defineProps({
     required: true,
   },
   isHasLicense: { type: Boolean, default: false },
-  isTrialLicense: { type: Boolean, default: false },
   isLicenseInvalid: { type: Boolean, default: false },
   isLicenseExpiry: { type: Boolean, default: false },
   isLicenseReadyExpiry: { type: Boolean, default: false },
@@ -69,13 +69,12 @@ const showDialog = computed({
   },
 })
 
-const noPromptTips = (val: boolean) => {
-  const licenseTipVisible = !val
-  localStorage.setItem('licenseTipVisible', JSON.stringify(licenseTipVisible))
-}
-
 const submit = async () => {
-  noPromptTips(noPrompt.value)
+  if (noPrompt.value) {
+    Cookies.set('licenseTipVisible', 'false', { expires: 3 })
+  } else {
+    Cookies.set('licenseTipVisible', 'false')
+  }
   showDialog.value = false
   emit('submitted')
 }
