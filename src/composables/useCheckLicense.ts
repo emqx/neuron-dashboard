@@ -2,6 +2,7 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { queryLicense } from '@/api/admin'
 import type { License } from '@/types/admin'
+import Cookies from 'js-cookie'
 
 export default () => {
   // currently unused
@@ -22,7 +23,8 @@ export default () => {
       const { data } = await queryLicense()
       licenseData.value = data
 
-      const isShowTip = localStorage.getItem('licenseTipVisible')
+      const isShowTip = Cookies.get('licenseTipVisible')
+
       if (isShowTip !== 'false') {
         const { error, valid_until, license_type } = data
 
@@ -38,7 +40,6 @@ export default () => {
 
         if (
           !isHasLicense.value ||
-          isTrialLicense.value ||
           isLicenseInvalid.value ||
           isLicenseExpiry.value ||
           isHardwareMismatch.value ||
