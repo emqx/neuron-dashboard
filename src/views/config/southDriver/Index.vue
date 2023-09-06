@@ -175,7 +175,6 @@
   <LicenseTipDialog
     v-model="licenseTipVisible"
     :isHasLicense="isHasLicense"
-    :isTrialLicense="isTrialLicense"
     :isLicenseInvalid="isLicenseInvalid"
     :isLicenseExpiry="isLicenseExpiry"
     :isLicenseReadyExpiry="isLicenseReadyExpiry"
@@ -212,6 +211,7 @@ import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
 import { isTheSameParentRoute } from '@/utils/utils'
 import useCheckLicense from '@/composables/useCheckLicense'
 import LicenseTipDialog from '@/components/LicenseTipDialog.vue'
+import Cookies from 'js-cookie'
 
 export default defineComponent({
   beforeRouteEnter(to, from, next) {
@@ -308,7 +308,7 @@ const {
   isOverMaximumTags,
 } = useCheckLicense()
 
-const isShowLicenseTip = localStorage.getItem('licenseTipVisible')
+const isShowLicenseTip = Cookies.get('licenseTipVisible')
 if (isShowLicenseTip !== 'false') {
   checkLicense()
 }
