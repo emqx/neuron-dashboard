@@ -425,6 +425,10 @@ export default {
     zh: '请下载模版，根据模版填充表格数据再尝试上传',
     en: 'Please download the template, fill in the form data according to the template and try to upload',
   },
+  errorTableAddress: {
+    zh: `表格第 {rowNum} 行的点位 {name} 的地址无效，请填入有效的地址后再尝试提交`,
+    en: `The address of tag {name} in row {rowNum} of the table. Please fill in valid address before attempting to submit`,
+  },
   errorStaticWithValue: {
     zh: `表格第 {rowNum} 行的点位 {name} 的属性包含 'Static'，请填入有效的值后再尝试提交`,
     en: `The attribute of tag {name} in row {rowNum} of the table contains 'Static'. Please fill in valid value before attempting to submit`,

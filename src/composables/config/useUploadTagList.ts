@@ -1,17 +1,20 @@
 import useTableFileReader from '@/composables/useTableFileReader'
-import type { TagForm, TagData, PluginInfo } from '@/types/config'
+import type { TagForm, TagData, PluginInfo, TagRegex } from '@/types/config'
 import type { TagType } from '@/types/enums'
 import { TagAttributeType } from '@/types/enums'
 import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
-import { getErrorMsg, matchObjShape, popUpErrorMessage, dataType } from '@/utils/utils'
+import { getErrorMsg, matchObjShape, popUpErrorMessage } from '@/utils/utils'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { useTagTypeSelect, useTagAttributeTypeSelect, createTagForm } from '@/composables/config/useAddTagCommon'
+import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 
 export default (pluginInfo: PluginInfo) => {
   const { fileReader } = useTableFileReader()
   const { createRawTagForm } = createTagForm()
   const { t } = useI18n()
+
+  const { checkWriteData } = useWriteDataCheckNParse()
 
   const { findValueByLabel: findTypeValueByLabel, findLabelByValue: findTypeLabelByValue } = useTagTypeSelect()
   const { getTotalValueByStr: getAttrTotalValueByStr, isAttrsIncludeTheValue } = useTagAttributeTypeSelect()
@@ -29,9 +32,31 @@ export default (pluginInfo: PluginInfo) => {
     }
 
     // description, value fields are not required, void uploading failures due to not matching
-    const { id, description, value, precision, decimal, ...requiredData } = createRawTagForm()
+    const { name, attribute, type, address, value } = createRawTagForm()
+    const requireData = {
+      name,
+      attribute,
+      type,
+      address,
+      value,
+    }
+    let requireFields = {}
 
-    if (!matchObjShape(data[0], requiredData)) {
+    if (!data[0]?.attribute) {
+      EmqxMessage.warning(t('config.errorTableError'))
+      return false
+    }
+    const attr = getAttrTotalValueByStr(String(data[0].attribute), FILLER_IN_TAG_ATTR)
+    const isAttrIncludeStatic = attr ? checkAttrIncludeStatic(attr) : false
+    if (isAttrIncludeStatic) {
+      const { address: addr, ...restData } = requireData
+      requireFields = restData
+    } else {
+      const { value: val, ...restData } = requireData
+      requireFields = restData
+    }
+
+    if (!matchObjShape(data[0], requireFields)) {
       EmqxMessage.warning(t('config.errorTableError'))
       return false
     }
@@ -40,12 +65,19 @@ export default (pluginInfo: PluginInfo) => {
 
   const checkTagType = (type: TagType) => pluginInfo?.tag_type?.some((item) => item === type) || true
 
+  const getTagRegex = (type: TagType) => {
+    const tagRegex = pluginInfo?.tag_regex?.find((item: TagRegex) => item.type === type)
+    const regex = tagRegex?.regex ? new RegExp(tagRegex.regex) : undefined
+    return regex
+  }
+
   // when a filed is added to tag（refer to the `createRawTagForm` in useAddTag.ts）, sync here.
   const handleTagListInTableFile = async (tagList: Array<Record<string, any>>): Promise<Array<TagForm>> => {
-    return new Promise((resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) => {
       let startIndex = 2
       const ret = []
-      for (const {
+      for await (const {
         group,
         name,
         address,
@@ -74,21 +106,35 @@ export default (pluginInfo: PluginInfo) => {
           break
         }
 
-        // when when `attribute` is includes `Static`， but `value` is empty
-        // TODO: 校验 value 与 type
-        if (checkAttrIncludeStatic(attr) && dataType(value) !== 'number') {
-          EmqxMessage.error(`${t('config.errorStaticWithValue', { rowNum: startIndex, name })}`)
+        const tagRegex = getTagRegex(type)
+        const isIncludeStaticAttr = checkAttrIncludeStatic(attr)
+
+        // vaild address: `attribute` isnot includes `Static`
+        if (!isIncludeStaticAttr && tagRegex && !tagRegex.test(address)) {
+          EmqxMessage.error(`${t('config.errorTableAddress', { rowNum: startIndex, name })}`)
           reject()
           break
         }
 
+        // valid value: when when `attribute` is includes `Static`， but `value` is empty
+        if (checkAttrIncludeStatic(attr)) {
+          try {
+            const trueValue = String(value)
+            await checkWriteData(type, trueValue)
+          } catch (error) {
+            EmqxMessage.error(`${t('config.errorStaticWithValue', { rowNum: startIndex, name })}`)
+            reject()
+            break
+          }
+        }
+
         let tagItem: TagData = {
           group,
-          name: name.toString(),
-          address: address.toString(),
+          name: name?.toString() || '',
+          address: address?.toString() || '',
           attribute: attr,
           type,
-          description: description.toString(),
+          description: description?.toString() || '',
           decimal,
           precision,
         }
