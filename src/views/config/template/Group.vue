@@ -111,7 +111,11 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import GroupDialog from '@/views/config/components/GroupDialog.vue'
 import useGroupList from '@/composables/config/useTemplateGroupList'
 import useTemplateAddGroup from '@/composables/config/useTemplateGroupDialog'
+import { useTemplatePluginInfo } from '@/composables/config/usePluginInfo'
 
+const { templatePluginInfo, getTemplatePluginInfo } = useTemplatePluginInfo()
+
+await getTemplatePluginInfo()
 const {
   template,
   isListLoading,
@@ -129,7 +133,7 @@ const {
   ExportTagsByGroups,
 
   goTagPage,
-} = useGroupList()
+} = useGroupList(templatePluginInfo.value)
 
 const { handleAddGroup, handleEditGroup, isEditGroup, groupDialogVisible, groupForm, isSubmitting, submitForm } =
   useTemplateAddGroup()
