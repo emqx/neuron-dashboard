@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import type { TagFormItem, TagForm, TagData } from '@/types/config'
 import { TagType, TagAttributeType } from '@/types/enums'
-import { getErrorMsg, popUpErrorMessage, dataType, createRandomString } from '@/utils/utils'
+import { dataType, createRandomString } from '@/utils/utils'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
 
 export const useTagTypeSelect = () => {
@@ -96,7 +96,8 @@ export const useTagAttributeTypeSelect = () => {
       return Number(total) === value
     })
     const attrValues = tagAttrValueMap[Number(key) as keyof typeof tagAttrValueMap]
-    return attrValues.includes(attr)
+
+    return attrValues?.includes(attr)
   }
 
   return {

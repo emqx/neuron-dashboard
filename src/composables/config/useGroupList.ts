@@ -5,11 +5,10 @@ import { useRoute } from 'vue-router'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { MessageBoxConfirm } from '@/utils/element'
 import { queryGroupList, deleteGroup, queryTagList, addTag } from '@/api/config'
-import type { GroupData } from '@/types/config'
+import type { GroupData, PluginInfo } from '@/types/config'
 import { OmitArrayFields, listOrderByKey } from '@/utils/utils'
 import useUploadTagList from '@/composables/config/useUploadTagList'
 import useExportTagTable from '@/composables/config/useExportTagTable'
-import useAddTag from '@/composables/config/useAddTag'
 import useGroupCommon from '@/composables/config/useGroupCommon'
 import { groupBy, cloneDeep } from 'lodash'
 
@@ -17,7 +16,7 @@ interface GroupDataInTable extends GroupData {
   checked: boolean
 }
 
-export default () => {
+export default (nodePluginInfo: PluginInfo) => {
   const { t } = useI18n()
   const route = useRoute()
   const groupList: Ref<Array<GroupDataInTable>> = ref([])
@@ -29,12 +28,9 @@ export default () => {
     order: '',
   })
 
-  // for upload tags
-  const { nodePluginInfo } = useAddTag()
-
   // download | import | export
   const { downloadTemplate, getTagsByGroups } = useGroupCommon()
-  const { readTagListFile, handleTagListInTableFile, batchAddTags } = useUploadTagList(nodePluginInfo.value)
+  const { readTagListFile, handleTagListInTableFile, batchAddTags } = useUploadTagList(nodePluginInfo)
   const { isExporting, exportTable } = useExportTagTable()
 
   const node = computed(() => route.params.node.toString())

@@ -116,8 +116,12 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import useGroupList from '@/composables/config/useGroupList'
 import type { GroupData, GroupForm } from '@/types/config'
 import GroupDialog from './components/GroupDialog.vue'
+import { useNodePluginInfo } from '@/composables/config/usePluginInfo'
 
 const router = useRouter()
+
+const { nodePluginInfo, getNodePluginInfo } = useNodePluginInfo()
+await getNodePluginInfo()
 
 const {
   node,
@@ -135,7 +139,7 @@ const {
   downloadTemplate,
   importTagsByGroups,
   ExportTagsByGroups,
-} = useGroupList()
+} = useGroupList(nodePluginInfo.value)
 
 const showGroupDialog = ref(false)
 const isEditGroup = ref(false)
