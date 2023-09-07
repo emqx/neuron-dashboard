@@ -96,7 +96,8 @@ export const useTagAttributeTypeSelect = () => {
       return Number(total) === value
     })
     const attrValues = tagAttrValueMap[Number(key) as keyof typeof tagAttrValueMap]
-    return attrValues.includes(attr)
+
+    return attrValues?.includes(attr)
   }
 
   return {
