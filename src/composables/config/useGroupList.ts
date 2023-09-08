@@ -141,10 +141,8 @@ export default (nodePluginInfo: PluginInfo) => {
       await batchAddTags(requestList)
       getGroupList()
     } catch (error) {
-      // no upload empty content file
-      if (error) {
-        getGroupList()
-      }
+      // no upload empty content file || excel error
+      getGroupList()
     }
 
     return Promise.reject()

@@ -176,7 +176,7 @@ export default (pluginInfo: PluginInfo) => {
           resolve(true)
         })
         .catch((error: any) => {
-          const { data = {} } = error
+          const { data = {} } = error || {}
           if (data.index !== undefined && data.error !== undefined) {
             handlePartialSuc(data.index, data.error)
           }
