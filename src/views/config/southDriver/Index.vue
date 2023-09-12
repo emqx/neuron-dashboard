@@ -181,6 +181,7 @@
     :isHardwareMismatch="isHardwareMismatch"
     :isOverMaximumNodes="isOverMaximumNodes"
     :isOverMaximumTags="isOverMaximumTags"
+    :isDefaultLicense="isDefaultLicense"
   />
 </template>
 
@@ -299,13 +300,13 @@ const {
   checkLicense,
   licenseTipVisible,
   isHasLicense,
-  isTrialLicense,
   isLicenseExpiry,
   isLicenseReadyExpiry,
   isLicenseInvalid,
   isHardwareMismatch,
   isOverMaximumNodes,
   isOverMaximumTags,
+  isDefaultLicense,
 } = useCheckLicense()
 
 const isShowLicenseTip = Cookies.get('licenseTipVisible')
