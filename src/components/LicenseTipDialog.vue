@@ -25,6 +25,8 @@
         <span v-else-if="isHardwareMismatch" v-html="$t('admin.licenseHardwareMismatchTip')" />
         <!-- Ready Expiry -->
         <span v-else-if="isLicenseReadyExpiry" v-html="$t('admin.licenseReadyExpiryTip')" />
+        <!-- Default License -->
+        <span v-else-if="isDefaultLicense" v-html="$t('admin.licenseEvaluationTip')" />
       </span>
     </span>
 
@@ -56,6 +58,7 @@ const props = defineProps({
   isHardwareMismatch: { type: Boolean, default: false },
   isOverMaximumNodes: { type: Boolean, default: false },
   isOverMaximumTags: { type: Boolean, default: false },
+  isDefaultLicense: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['update:modelValue', 'submitted'])
