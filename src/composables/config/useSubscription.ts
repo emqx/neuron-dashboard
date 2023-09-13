@@ -159,7 +159,24 @@ export const useSubscriptionGroup = () => {
     const keys = Object.keys(value)
     const values = Object.values(value)
     const isAllEmpty = values.every((val) => !val?.length)
-
+    const re = /^[0-9a-zA-Z]*$/g
+    const nodeGroups = Object.entries(value)
+    nodeGroups.forEach(([key, groups]) => {
+      const groupLen = groups.length
+      if (groupLen) {
+        if (!re.test(key)) {
+          callback(new Error(t('config.subscribeSouthDriverDeviceIllegal')))
+        } else {
+          Object.values(groups).forEach((item) => {
+            // 数据更新
+            console.log(re.test(item))
+            if (!re.test(item)) {
+              callback(new Error(t('config.subscribeSouthDriverGroupIllegal')))
+            }
+          })
+        }
+      }
+    })
     if (!keys.length || isAllEmpty) {
       callback(new Error(t('config.subscribeSouthDriverDataRequired')))
     } else {

@@ -634,4 +634,12 @@ export default {
     zh: '请输入数组',
     en: 'Please enter an array',
   },
+  subscribeSouthDriverDeviceIllegal: {
+    zh: '注册的设备，名称只能包含数字和字母',
+    en: 'Subscribed devices, names can only contain numbers and letters',
+  },
+  subscribeSouthDriverGroupIllegal: {
+    zh: '设备下的分组，名称只能包含数字和字母',
+    en: 'The group name under the device can only contain numbers and letters',
+  },
 }
