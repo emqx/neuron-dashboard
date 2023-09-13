@@ -8,35 +8,37 @@
 
   <section class="southGroupCheckboxGroups" :class="{ 'empty-southGroupCheckboxGroups': !southNodeList.length }">
     <el-collapse v-if="southNodeList.length" v-model="activeNames" @change="handleCollapseStatus">
-      <el-collapse-item v-for="node in southNodeList" :key="node.name" :title="node.name" :name="node.name">
-        <template #title>
-          <i
-            class="icon-arrow"
-            :class="activeNames.includes(node.name) ? 'el-icon-arrow-down' : 'el-icon-arrow-right'"
-          />
-          <el-checkbox
-            v-model="node.checkedAll"
-            :indeterminate="isIndeterminateValues[node.name]"
-            class="node-name"
-            @change="handelCheckedAll($event, node.name)"
-          >
-            {{ node.name }}
-          </el-checkbox>
-        </template>
-
-        <main class="groups-wrapper">
-          <el-checkbox-group
-            v-if="isHasGroups(node.name)"
-            v-model="checkedValue[node.name]"
-            @change="handleCheckedGroups($event, node.name)"
-          >
-            <el-checkbox v-for="group in allSouthGroups[node.name]" :key="group" :label="group" class="group-item">
-              {{ group }}
+      <template v-for="node in southNodeList" :key="node.name">
+        <el-collapse-item v-if="isHasGroups(node.name)" :title="node.name" :name="node.name">
+          <template #title>
+            <i
+              class="icon-arrow"
+              :class="activeNames.includes(node.name) ? 'el-icon-arrow-down' : 'el-icon-arrow-right'"
+            />
+            <el-checkbox
+              v-model="node.checkedAll"
+              :indeterminate="isIndeterminateValues[node.name]"
+              class="node-name"
+              @change="handelCheckedAll($event, node.name)"
+            >
+              {{ node.name }}
             </el-checkbox>
-          </el-checkbox-group>
-          <span v-else class="empty-groups">{{ $t('common.emptyData') }}</span>
-        </main>
-      </el-collapse-item>
+          </template>
+
+          <main class="groups-wrapper">
+            <el-checkbox-group
+              v-if="isHasGroups(node.name)"
+              v-model="checkedValue[node.name]"
+              @change="handleCheckedGroups($event, node.name)"
+            >
+              <el-checkbox v-for="group in allSouthGroups[node.name]" :key="group" :label="group" class="group-item">
+                {{ group }}
+              </el-checkbox>
+            </el-checkbox-group>
+            <span v-else class="empty-groups">{{ $t('common.emptyData') }}</span>
+          </main>
+        </el-collapse-item>
+      </template>
     </el-collapse>
 
     <span v-else class="empty-groups">{{ $t('common.emptyData') }}</span>
