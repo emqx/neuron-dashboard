@@ -155,6 +155,7 @@ type AddSubscriptionProps = Readonly<{
 
 export const useSubscriptionGroup = () => {
   const { t } = useI18n()
+  const { isGewuPugin } = useDriverInfo()
   const checkDriverGroups = async (rule: unknown, value: string, callback: any) => {
     const keys = Object.keys(value)
     const values = Object.values(value)
@@ -163,18 +164,8 @@ export const useSubscriptionGroup = () => {
     const nodeGroups = Object.entries(value)
     nodeGroups.forEach(([key, groups]) => {
       const groupLen = groups.length
-      if (groupLen) {
-        if (!re.test(key)) {
-          callback(new Error(t('config.subscribeSouthDriverDeviceIllegal')))
-        } else {
-          Object.values(groups).forEach((item) => {
-            // 数据更新
-            console.log(re.test(item))
-            if (!re.test(item)) {
-              callback(new Error(t('config.subscribeSouthDriverGroupIllegal')))
-            }
-          })
-        }
+      if (groupLen && isGewuPugin.value && !re.test(key)) {
+        callback(new Error(t('config.subscribeSouthDriverDeviceIllegal')))
       }
     })
     if (!keys.length || isAllEmpty) {
