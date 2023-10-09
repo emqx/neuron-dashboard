@@ -223,10 +223,15 @@ export const dataStatistics = () => {
 export const useNodeDebugLogLevel = () => {
   const { t } = useI18n()
 
-  const modifyNodeLogLevelToDebug = async (nodeName: string) => {
+  const modifyNodeLogLevelToDebug = async (nodeName: string, logLevel: string) => {
     try {
-      await updateNodeLogLevelToDebug(nodeName)
-      EmqxMessage.success(t('config.modifyNodeLogLevelSuc'))
+      const currentLogLevel = logLevel === 'debug' ? 'notice' : 'debug'
+      await updateNodeLogLevelToDebug(nodeName, currentLogLevel)
+      if (currentLogLevel === 'debug') {
+        EmqxMessage.success(t('config.enableNodeLogDebugSuc'))
+      } else {
+        EmqxMessage.success(t('config.disableNodeLogDebugSuc'))
+      }
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()
