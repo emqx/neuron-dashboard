@@ -186,7 +186,6 @@
     :isLicenseExpiry="isLicenseExpiry"
     :isLicenseReadyExpiry="isLicenseReadyExpiry"
     :isHardwareMismatch="isHardwareMismatch"
-    :isOverMaximumNodes="isOverMaximumNodes"
     :isOverMaximumTags="isOverMaximumTags"
     :isDefaultLicense="isDefaultLicense"
   />
@@ -311,7 +310,6 @@ const {
   isLicenseReadyExpiry,
   isLicenseInvalid,
   isHardwareMismatch,
-  isOverMaximumNodes,
   isOverMaximumTags,
   isDefaultLicense,
 } = useCheckLicense()
