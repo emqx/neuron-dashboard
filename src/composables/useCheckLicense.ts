@@ -15,7 +15,6 @@ export default () => {
   const isLicenseInvalid = ref(false)
   const isHardwareMismatch = ref(false)
   const isOverMaximumTags = ref(false)
-  const isOverMaximumNodes = ref(false)
   const isDefaultLicense = ref(false)
 
   const checkLicense = async () => {
@@ -31,7 +30,6 @@ export default () => {
         isHasLicense.value = !(Number(error) === 2400) //  no License
         isLicenseInvalid.value = Number(error) === 2401 // Invalid
         isLicenseExpiry.value = Number(error) === 2402 // expired
-        isOverMaximumNodes.value = Number(error) === 2404 // over Maximum nodes
         isOverMaximumTags.value = Number(error) === 2405 // over Maximum Tags
         isHardwareMismatch.value = Number(error) === 2406 // hardware mismatch
 
@@ -43,7 +41,6 @@ export default () => {
           isLicenseInvalid.value ||
           isLicenseExpiry.value ||
           isHardwareMismatch.value ||
-          isOverMaximumNodes.value ||
           isOverMaximumTags.value ||
           isLicenseReadyExpiry.value ||
           isDefaultLicense
@@ -65,7 +62,6 @@ export default () => {
     isLicenseExpiry,
     isLicenseReadyExpiry,
     isHardwareMismatch,
-    isOverMaximumNodes,
     isOverMaximumTags,
     isDefaultLicense,
   }

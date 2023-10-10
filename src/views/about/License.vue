@@ -15,11 +15,11 @@
         <emqx-descriptions-item :label="$t('admin.object')">
           {{ licenseData.object }}
         </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.nodeUsage')">
+        <!-- <emqx-descriptions-item :label="$t('admin.nodeUsage')">
           <el-progress :stroke-width="14" :percentage="licenseData.nodesUsage" status="success" class="progress-bar">
             <span class="progress-text">{{ licenseData.used_nodes }} / {{ licenseData.max_nodes }}</span>
           </el-progress>
-        </emqx-descriptions-item>
+        </emqx-descriptions-item> -->
         <emqx-descriptions-item :label="$t('admin.tagUsage')">
           <el-progress :stroke-width="14" :percentage="licenseData.tagsUsage" status="success" class="progress-bar">
             <span class="progress-text">{{ licenseData.used_tags }} / {{ licenseData.max_node_tags }}</span>
@@ -121,12 +121,10 @@ const getLicense = async () => {
     isDataLoading.value = true
     const { data } = await queryLicense()
     const { error, ...license } = data
-    const { max_nodes, used_nodes, used_tags, max_node_tags } = license
-    const nodesUsage = parseFloat((Number(used_nodes) / Number(max_nodes)).toFixed(2)) * 100
+    const { used_tags, max_node_tags } = license
     const tagsUsage = parseFloat((Number(used_tags) / Number(max_node_tags)).toFixed(2)) * 100
     licenseData.value = {
       ...license,
-      nodesUsage,
       tagsUsage,
     }
   } catch (error) {

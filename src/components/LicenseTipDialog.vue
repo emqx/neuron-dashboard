@@ -17,8 +17,6 @@
         <span v-if="isLicenseInvalid" v-html="$t('admin.licenseInvalidTip')" />
         <!-- Expired  -->
         <span v-else-if="isLicenseExpiry" v-html="$t('admin.licenseExpiryTip')" />
-        <!--  Over Maximum Nodes-->
-        <span v-else-if="isOverMaximumNodes" v-html="$t('admin.licenseOverMaximumNodesTip')" />
         <!--  Over Maximum Tags-->
         <span v-else-if="isOverMaximumTags" v-html="$t('admin.licenseOverMaximumTagsTip')" />
         <!--  Hardware Mismatch-->
@@ -56,7 +54,6 @@ const props = defineProps({
   isLicenseExpiry: { type: Boolean, default: false },
   isLicenseReadyExpiry: { type: Boolean, default: false },
   isHardwareMismatch: { type: Boolean, default: false },
-  isOverMaximumNodes: { type: Boolean, default: false },
   isOverMaximumTags: { type: Boolean, default: false },
   isDefaultLicense: { type: Boolean, default: false },
 })
