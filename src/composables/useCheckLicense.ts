@@ -43,7 +43,7 @@ export default () => {
           isHardwareMismatch.value ||
           isOverMaximumTags.value ||
           isLicenseReadyExpiry.value ||
-          isDefaultLicense
+          isDefaultLicense.value
         ) {
           licenseTipVisible.value = true
         }
