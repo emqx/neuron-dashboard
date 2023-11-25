@@ -1,3 +1,4 @@
+import i18n from '@/i18n/index'
 import type { ParamInfo } from '@/types/config'
 import { dataType } from '@/utils/utils'
 import { TypeOfPluginParam, SchameBase } from '@/types/enums'
@@ -57,6 +58,9 @@ export default () => {
   }
 
   const upperFirstLetter = (str: string) => {
+    if (str.startsWith('$') && str.indexOf('.')) {
+      return i18n.global.t(str.split('$')[1])
+    }
     if (LOWERCASE_INITIAL_REGEX.test(str)) {
       return str.slice(0, 1).toUpperCase() + str.slice(1)
     }

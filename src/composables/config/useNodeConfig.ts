@@ -154,6 +154,16 @@ export default (props: Props) => {
 
     const schemName = pluginMsgIdMap[pluginName.value]?.schema || nodePluginToLower
     const { data } = await queryPluginConfigInfo(schemName)
+    if (schemName === 'gewu' && data.operator && data.operator.valid) {
+      const validData: Array<any> = [
+        { key: '$config.gewuOperator1', value: 0 },
+        { key: '$config.gewuOperator2', value: 1 },
+        { key: '$config.gewuOperator3', value: 2 },
+        { key: '$config.gewuOperator4', value: 3 },
+        { key: '$config.gewuOperator5', value: 4 },
+      ]
+      data.operator.valid = { map: validData }
+    }
     const pluginInfo: PluginInfo = data
 
     if (!pluginInfo) {

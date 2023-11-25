@@ -646,4 +646,24 @@ export default {
     zh: '注册的设备，名称只能包含数字和字母',
     en: 'Subscribed devices, names can only contain numbers and letters',
   },
+  gewuOperator1: {
+    zh: '未使用蜂窝网络',
+    en: 'Not using cellular network',
+  },
+  gewuOperator2: {
+    zh: '联通',
+    en: 'China Unicom',
+  },
+  gewuOperator3: {
+    zh: '移动',
+    en: 'China Mobile',
+  },
+  gewuOperator4: {
+    zh: '电信',
+    en: 'China Telecom',
+  },
+  gewuOperator5: {
+    zh: '广电',
+    en: 'China Broadnet',
+  },
 }
