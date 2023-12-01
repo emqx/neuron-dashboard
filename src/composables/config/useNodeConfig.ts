@@ -4,13 +4,14 @@ import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCom
 import type { ParamInfo, PluginInfo } from '@/types/config'
 import type { DriverDirection } from '@/types/enums'
 import type { Ref } from 'vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGetPluginMsgIdMap } from './usePlugin'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep } from 'lodash'
 import { randomString } from '@/utils/utils'
+import i18n from '@/i18n/index'
 
 interface Field {
   key: string
@@ -46,6 +47,11 @@ export default (props: Props) => {
   }
 
   const node = computed(() => route.params.node.toString())
+
+  watch(i18n.global.locale, () => {
+    // TODO only udpate message
+    formCom.value.form.clearValidate()
+  })
 
   /**
    * Handle Hexadecimal
