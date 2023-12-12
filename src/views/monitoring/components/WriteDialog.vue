@@ -18,7 +18,7 @@
           </div>
         </template>
         <emqx-input
-          v-if="tag.type !== TagType.BOOL"
+          v-if="tag?.type !== TagType.BOOL"
           v-model="inputValue"
           :type="isBYTESType ? 'textarea' : 'text'"
           :placeholder="isBYTESType ? '[0,0,0,0]' : ''"
@@ -98,6 +98,9 @@ watch(showDialog, (val) => {
     inputErrorMsg.value = ''
     isUseHexadecimal.value = false
   }
+})
+watch(inputValue, () => {
+  inputErrorMsg.value = ''
 })
 const submitData = async () => {
   await submit()
