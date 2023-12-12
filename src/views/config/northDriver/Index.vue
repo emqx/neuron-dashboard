@@ -11,124 +11,131 @@
       </template>
     </ViewHeaderBar>
 
-    <ul v-if="showType === 'card'" class="setup-list">
-      <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in northDriverList" :key="item.name" tag="li" class="setup-item">
-          <SetupItemCard
-            :data="item"
-            @toggle-status="setNodeStartStopStatus(item, $event, index)"
-            @clickOperation="handleClickOperator($event, item)"
-          />
-        </emqx-col>
-      </emqx-row>
-    </ul>
+    <emqx-empty v-if="!isListLoading && northDriverList.length === 0 && !isSwitchListLoading" class="empty" />
+    <div v-else>
+      <ul v-if="showType === 'card'" class="setup-list">
+        <emqx-row :gutter="24">
+          <emqx-col :span="8" v-for="(item, index) in northDriverList" :key="item.name" tag="li" class="setup-item">
+            <SetupItemCard
+              :data="item"
+              @toggle-status="setNodeStartStopStatus(item, $event, index)"
+              @clickOperation="handleClickOperator($event, item)"
+            />
+          </emqx-col>
+        </emqx-row>
+      </ul>
 
-    <emqx-table
-      v-if="showType === 'list'"
-      :data="northDriverList"
-      :empty-text="$t('common.emptyData')"
-      :row-class-name="rowClassName"
-      :default-sort="{ prop: sortBy.prop, order: `${sortBy.order}ending` }"
-      @sort-change="sortDataByKey"
-      @row-click="goGroupPage"
-    >
-      <emqx-table-column :label="$t('common.name')" prop="name" sortable="custom" show-overflow-tooltip>
-        <template #default="{ row }">
-          <span v-if="isMonitorNode(row.name)">{{ row.name }}</span>
-          <el-link v-else type="primary" :underline="false" href="javascript:;" @click.stop="goGroupPage(row, $event)">
-            {{ row.name }}
-          </el-link>
-        </template>
-      </emqx-table-column>
-      <!--  workStatus-->
-      <emqx-table-column :label="$t('config.workStatus')" prop="statusText" sortable="custom">
-        <template #default="{ row }">
-          <svg class="iconfont icon-svg" aria-hidden="true">
-            <use :xlink:href="`#${getNodeValue(row).statusIcon.value}`" />
-          </svg>
-          {{ getNodeValue(row).statusText.value }}
-        </template>
-      </emqx-table-column>
-      <!-- connectionStatus -->
-      <emqx-table-column
-        :label="$t('config.connectionStatus')"
-        prop="connectionStatusText"
-        sortable="custom"
-        min-width="90"
+      <emqx-table
+        v-if="showType === 'list'"
+        :data="northDriverList"
+        :empty-text="$t('common.emptyData')"
+        :row-class-name="rowClassName"
+        :default-sort="{ prop: sortBy.prop, order: `${sortBy.order}ending` }"
+        @sort-change="sortDataByKey"
+        @row-click="goGroupPage"
       >
-        <template #default="{ row }">
-          {{ getNodeValue(row).connectionStatusText.value }}
-        </template>
-      </emqx-table-column>
-      <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable="custom" />
-      <emqx-table-column align="left" :label="$t('common.oper')" width="180px">
-        <template #default="{ row, index }">
-          <div class="operator-wrap">
-            <AComWithDesc :content="countNodeStartStopStatus(row) ? $t('common.stop') : $t('common.start')">
-              <i
-                :class="countNodeStartStopStatus(row) ? 'el-icon-video-pause' : 'el-icon-video-play'"
-                class="operation-icon"
-                @click.stop="setNodeStartStopStatus(row, !countNodeStartStopStatus(row), index)"
-              />
-            </AComWithDesc>
-            <AComWithDesc :content="$t('config.appConfig')">
-              <i class="iconfont iconsetting operation-icon" @click.stop="goNodeConfig(row)" />
-            </AComWithDesc>
-
-            <AComWithDesc :content="$t('config.dataStatistics')">
-              <span @click.stop="handleClickOperator('dataStatistics', row)">
-                <img
-                  class="operation-image icon-image img-statistic-log"
-                  src="~@/assets/images/statistics.png"
-                  alt="debug-log"
+        <emqx-table-column :label="$t('common.name')" prop="name" sortable="custom" show-overflow-tooltip>
+          <template #default="{ row }">
+            <span v-if="isMonitorNode(row.name)">{{ row.name }}</span>
+            <el-link
+              v-else
+              type="primary"
+              :underline="false"
+              href="javascript:;"
+              @click.stop="goGroupPage(row, $event)"
+            >
+              {{ row.name }}
+            </el-link>
+          </template>
+        </emqx-table-column>
+        <!--  workStatus-->
+        <emqx-table-column :label="$t('config.workStatus')" prop="statusText" sortable="custom">
+          <template #default="{ row }">
+            <svg class="iconfont icon-svg" aria-hidden="true">
+              <use :xlink:href="`#${getNodeValue(row).statusIcon.value}`" />
+            </svg>
+            {{ getNodeValue(row).statusText.value }}
+          </template>
+        </emqx-table-column>
+        <!-- connectionStatus -->
+        <emqx-table-column
+          :label="$t('config.connectionStatus')"
+          prop="connectionStatusText"
+          sortable="custom"
+          min-width="90"
+        >
+          <template #default="{ row }">
+            {{ getNodeValue(row).connectionStatusText.value }}
+          </template>
+        </emqx-table-column>
+        <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable="custom" />
+        <emqx-table-column align="left" :label="$t('common.oper')" width="180px">
+          <template #default="{ row, index }">
+            <div class="operator-wrap">
+              <AComWithDesc :content="countNodeStartStopStatus(row) ? $t('common.stop') : $t('common.start')">
+                <i
+                  :class="countNodeStartStopStatus(row) ? 'el-icon-video-pause' : 'el-icon-video-play'"
+                  class="operation-icon"
+                  @click.stop="setNodeStartStopStatus(row, !countNodeStartStopStatus(row), index)"
                 />
-              </span>
-            </AComWithDesc>
+              </AComWithDesc>
+              <AComWithDesc :content="$t('config.appConfig')">
+                <i class="iconfont iconsetting operation-icon" @click.stop="goNodeConfig(row)" />
+              </AComWithDesc>
 
-            <emqx-dropdown trigger="click" @command="handleClickOperator($event, row)">
-              <AComWithDesc :content="$t('common.more')">
-                <span class="el-dropdown-link" @click.stop>
-                  <i class="el-icon-more operation-icon" />
+              <AComWithDesc :content="$t('config.dataStatistics')">
+                <span @click.stop="handleClickOperator('dataStatistics', row)">
+                  <img
+                    class="operation-image icon-image img-statistic-log"
+                    src="~@/assets/images/statistics.png"
+                    alt="debug-log"
+                  />
                 </span>
               </AComWithDesc>
-              <template #dropdown>
-                <emqx-dropdown-menu>
-                  <emqx-dropdown-item v-if="!isMonitorNode(row.name)" class="operation-item-wrap" command="edit">
-                    <i class="el-icon-edit-outline operation-icon" />
-                    <span>{{ $t(`common.edit`) }}</span>
-                  </emqx-dropdown-item>
-                  <emqx-dropdown-item class="operation-item-wrap" command="debugLogLevel">
-                    <img
-                      v-if="row.log_level === 'debug'"
-                      class="operation-image img-debug-log"
-                      src="~@/assets/images/debug-log-off.png"
-                      alt="debug-log"
-                    />
-                    <img
-                      v-else
-                      class="operation-image img-debug-log"
-                      src="~@/assets/images/debug-log-on.png"
-                      alt="debug-log"
-                    />
-                    <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
-                  </emqx-dropdown-item>
-                  <emqx-dropdown-item
-                    v-if="!isNotSupportRemoveNode(row.name)"
-                    command="delete"
-                    class="operation-item-wrap"
-                  >
-                    <i class="iconfont icondelete operation-icon" />
-                    <span>{{ $t(`common.delete`) }}</span>
-                  </emqx-dropdown-item>
-                </emqx-dropdown-menu>
-              </template>
-            </emqx-dropdown>
-          </div>
-        </template>
-      </emqx-table-column>
-    </emqx-table>
 
-    <emqx-empty v-if="!isListLoading && northDriverList.length === 0" />
+              <emqx-dropdown trigger="click" @command="handleClickOperator($event, row)">
+                <AComWithDesc :content="$t('common.more')">
+                  <span class="el-dropdown-link" @click.stop>
+                    <i class="el-icon-more operation-icon" />
+                  </span>
+                </AComWithDesc>
+                <template #dropdown>
+                  <emqx-dropdown-menu>
+                    <emqx-dropdown-item v-if="!isMonitorNode(row.name)" class="operation-item-wrap" command="edit">
+                      <i class="el-icon-edit-outline operation-icon" />
+                      <span>{{ $t(`common.edit`) }}</span>
+                    </emqx-dropdown-item>
+                    <emqx-dropdown-item class="operation-item-wrap" command="debugLogLevel">
+                      <img
+                        v-if="row.log_level === 'debug'"
+                        class="operation-image img-debug-log"
+                        src="~@/assets/images/debug-log-off.png"
+                        alt="debug-log"
+                      />
+                      <img
+                        v-else
+                        class="operation-image img-debug-log"
+                        src="~@/assets/images/debug-log-on.png"
+                        alt="debug-log"
+                      />
+                      <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
+                    </emqx-dropdown-item>
+                    <emqx-dropdown-item
+                      v-if="!isNotSupportRemoveNode(row.name)"
+                      command="delete"
+                      class="operation-item-wrap"
+                    >
+                      <i class="iconfont icondelete operation-icon" />
+                      <span>{{ $t(`common.delete`) }}</span>
+                    </emqx-dropdown-item>
+                  </emqx-dropdown-menu>
+                </template>
+              </emqx-dropdown>
+            </div>
+          </template>
+        </emqx-table-column>
+      </emqx-table>
+    </div>
   </emqx-card>
 
   <DriverDialog v-model="showDialog" :type="DriverDirection.North" @submitted="getNorthDriverList" />
@@ -202,6 +209,7 @@ const {
 
   sortBy,
   sortDataByKey,
+  isSwitchListLoading,
   changeListShowMode,
 
   addConfig,
