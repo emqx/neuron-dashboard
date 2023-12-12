@@ -119,6 +119,8 @@ export default () => {
       }
     } catch (error) {
       EmqxMessage.error(t('common.jsonFormatError'))
+    } finally {
+      isImportTemplate.value = false
     }
 
     // Capture uploader action
