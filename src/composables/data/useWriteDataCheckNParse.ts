@@ -21,7 +21,7 @@ STRING    15  string
 
 import { TagType } from '@/types/enums'
 import { HEXADECIMAL_PREFIX } from '@/utils/constants'
-import { BYTES_REGEX, FLOAT_REGEX, BIT_REGEX, INT_REGEX } from '@/utils/regexps'
+import { HEXADECIMAL_REGEX, BYTES_REGEX, FLOAT_REGEX, BIT_REGEX, INT_REGEX } from '@/utils/regexps'
 import {
   transFloatNumberToHex,
   transNegativeNumberToHex,
@@ -190,7 +190,7 @@ export default (isWriteValue = true) => {
       value.slice(0, HEXADECIMAL_PREFIX.length).toLowerCase() === HEXADECIMAL_PREFIX
         ? value
         : HEXADECIMAL_PREFIX + value
-    return checkByte(str)
+    return HEXADECIMAL_REGEX.test(str)
   }
   const transToDecimal = async (tagData: TagDataInTable) => {
     const { value, type } = tagData
@@ -199,7 +199,7 @@ export default (isWriteValue = true) => {
         ? value
         : HEXADECIMAL_PREFIX + value
     try {
-      await checkByte(str)
+      await HEXADECIMAL_REGEX.test(str)
       const hexStr = str.slice(HEXADECIMAL_PREFIX.length)
       if (type === TagType.FLOAT || type === TagType.DOUBLE) {
         return transFloatHexToDecimalNum(hexStr, type)
