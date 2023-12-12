@@ -25,6 +25,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
   const northDriverList: Ref<Array<DriverItemInList>> = ref([])
   const northDriverListBackup: Ref<Array<DriverItemInList>> = ref([])
   const isListLoading: Ref<boolean> = ref(false)
+  const isSwitchListLoading: Ref<boolean> = ref(false)
 
   const sortBy = ref({
     prop: '',
@@ -124,7 +125,9 @@ export default (autoLoad = true, needRefreshStatus = false) => {
       order: '',
       prop: '',
     }
+    isSwitchListLoading.value = true
     await sortDataByKey(sortBy.value)
+    isSwitchListLoading.value = false
   }
 
   const goGroupPage = (node: DriverItemInList) => {
@@ -180,6 +183,7 @@ export default (autoLoad = true, needRefreshStatus = false) => {
 
     sortBy,
     sortDataByKey,
+    isSwitchListLoading,
     changeListShowMode,
 
     addConfig,
