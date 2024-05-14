@@ -99,7 +99,6 @@ export default () => {
       EmqxMessage.error(t('common.notJSONData'))
     }
 
-    isImportTemplate.value = true
     const fileData: unknown = await readTextFile(file)
 
     try {
@@ -114,13 +113,12 @@ export default () => {
         EmqxMessage.error(t('template.missingPluginInFile'))
       }
       if (name && plugin) {
+        isImportTemplate.value = true
         editTemplateData.value = jsonData
         templateDialogVisible.value = true
       }
     } catch (error) {
       EmqxMessage.error(t('common.jsonFormatError'))
-    } finally {
-      isImportTemplate.value = false
     }
 
     // Capture uploader action
