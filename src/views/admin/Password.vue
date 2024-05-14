@@ -68,6 +68,13 @@ const isNewPassMatch = computed(() => {
 const checkNewPassMatch = (rule: any, value: string, callback: any) => {
   const { newPassConfirm } = formState.formData
 
+  const strongRegex = new RegExp(
+    '^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~`!@#$%^&*()_+\\-=:;<>?,./|\\\\])[a-zA-Z\\d~`!@#$%^&*()_+\\-=:;<>?,./|\\\\]{8,20}$',
+  )
+  if (value && !strongRegex.test(value)) {
+    callback(new Error(`${t('common.passwordStrengthTip')}`))
+  }
+
   if (!newPassConfirm || (newPassConfirm && isNewPassMatch.value)) {
     if (newPassConfirm) {
       const { form } = formRef.value

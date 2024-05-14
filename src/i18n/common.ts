@@ -63,6 +63,10 @@ export default {
     zh: '请再次输入新密码',
     en: 'Please enter a new password again',
   },
+  passwordStrengthTip: {
+    zh: '密码必须由数字、英文字母、特殊字符组成，且长度在 8 到 20 之间',
+    en: 'Passwords should be between 8 and 20 in length and combination of letters, numbers, or symbols',
+  },
   newPassNotMatch: {
     zh: '两次密码不匹配',
     en: 'Password does not match',
