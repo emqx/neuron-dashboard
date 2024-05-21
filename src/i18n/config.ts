@@ -344,21 +344,30 @@ export default {
     zh: '请输入数字',
     en: 'Please enter a number',
   },
-  hexadecimalFormatError: {
-    zh: '请输入格式正确的 16 进制数',
-    en: 'Please enter a hexadecimal number in the correct format',
+  numberRangeErrorMsg: {
+    zh: '请输入 {min} - {max} 之间的数字',
+    en: 'Please enter a number between {min} - {max}',
   },
-  decimalFormatError: {
-    zh: '请输入格式正确的 10 进制数',
-    en: 'Please enter a decimal number in the correct format',
+  numberMinimumErrorMsg: {
+    zh: '请输入不小于 {min} 的数字',
+    en: 'Please enter a number not less than {min}',
   },
-  numberErrorPrefix: {
-    zh: '请输入',
-    en: 'Please enter a number between',
+  numberMaximumErrorMsg: {
+    zh: '请输入不大于 {max} 的数字',
+    en: 'Please enter a number no greater than {max}',
   },
-  numberErrorSuffix: {
-    zh: '之间的数字',
-    en: '',
+
+  lengthRangeErrorMsg: {
+    zh: '请输入长度在 {min} - {max} 之间的数据',
+    en: 'Please enter data between {min} - {max} in length',
+  },
+  lengthMinimumErrorMsg: {
+    zh: '请输入长度不小于 {length} 的数据',
+    en: 'Please enter data with a length not less than {length}',
+  },
+  lengthMaximumErrorMsg: {
+    zh: '请输入长度不大于 {length} 的数据',
+    en: 'Please enter data with a length no greater than {length}',
   },
   stringLengthErrorPrefix: {
     zh: '请输入',

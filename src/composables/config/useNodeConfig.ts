@@ -3,7 +3,6 @@ import { useNodeMsgMap } from '@/composables/config/useNodeList'
 import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
 import type { ParamInfo, PluginInfo } from '@/types/config'
 import type { DriverDirection } from '@/types/enums'
-import { TypeOfPluginParam } from '@/types/enums'
 import type { Ref } from 'vue'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -28,7 +27,7 @@ export default (props: Props) => {
 
   const { initMap, getNodeMsgById } = useNodeMsgMap(props.direction, false)
   const { pluginMsgIdMap, initMsgIdMap } = useGetPluginMsgIdMap()
-  const { isParamHexadecimalBase, transToHexadecimal, transToDecimal } = useNodeConfigParamCommon()
+  const { isParamHexadecimalBase, transToHexadecimal, initParamDefaultValueByType } = useNodeConfigParamCommon()
 
   const configForm: Ref<Record<string, any>> = ref({})
   const defaultConfigData: Ref<Record<string, any>> = ref({})
@@ -36,7 +35,12 @@ export default (props: Props) => {
   const fieldList: Ref<Array<Field>> = ref([])
   const isLoading = ref(false)
   const formCom = ref()
+  const formComParmasRef: any = ref([])
   const isSubmitting = ref(false)
+
+  const setParamRef = (el: any) => {
+    formComParmasRef.value.push(el)
+  }
 
   const node = computed(() => route.params.node.toString())
 
@@ -100,21 +104,14 @@ export default (props: Props) => {
       return newDefaultValue
     }
 
-    const initValueMap = {
-      [TypeOfPluginParam.Int]: null,
-      [TypeOfPluginParam.String]: '',
-      [TypeOfPluginParam.Boolean]: null,
-      [TypeOfPluginParam.Enum]: '',
-      [TypeOfPluginParam.Map]: '',
-      [TypeOfPluginParam.File]: '',
-    }
-    return initValueMap[param.type as TypeOfPluginParam] || ''
+    return initParamDefaultValueByType(param.type)
   }
 
   // init plugin default data
   const initFormFromPluginInfo = (info: PluginInfo) => {
     // TODO: delete params after api changed
     const { tag_type, params, ...fields } = info
+
     const keys = Object.keys(fields)
     return keys.reduce((obj, currentKey) => {
       obj[currentKey] = createInitValue(info[currentKey])
@@ -126,6 +123,7 @@ export default (props: Props) => {
   const createFieldListFormPluginInfo = (info: PluginInfo) => {
     // TODO: delete params after api changed
     const { params, tag_type, ...fields } = info
+
     return Object.keys(fields).map((key) => {
       return {
         key,
@@ -143,6 +141,7 @@ export default (props: Props) => {
     const schemName = pluginMsgIdMap[pluginName]?.schema || nodePluginToLower
     const { data } = await queryPluginConfigInfo(schemName)
     const pluginInfo: PluginInfo = data
+
     if (!pluginInfo) {
       defaultConfigData.value = {}
       fieldList.value = []
@@ -174,65 +173,61 @@ export default (props: Props) => {
     }
   }
 
-  const shouldFieldShow = (fieldData: Field) => {
-    const { key } = fieldData
-    const whiteList = ['tag_regex', 'group_interval']
-    if (whiteList.includes(key)) return false
-
-    if (!fieldData.info.condition) {
-      return true
-    }
-
-    const { field, regex, value } = fieldData.info.condition
-    const fieldValue = configForm.value[field]
-    if (regex) {
-      const regexExpression = new RegExp(regex)
-      return regexExpression.test(fieldValue)
-    }
-    return value !== undefined || value !== null ? fieldValue === value : true
-  }
-
   const cancel = () => {
     router.back()
   }
 
+  const validateFileds = async (fields: Array<string>) => {
+    const { form } = formCom.value
+    await form.validateField(fields)
+  }
+
+  const validateAll = async () => {
+    const validateList = [formCom.value.validate()]
+
+    // counts array parmas
+    formComParmasRef.value.forEach((item: { arrayRef: any; validateArrayParam: any }) => {
+      const { arrayRef, validateArrayParam } = item
+      if (arrayRef && validateArrayParam) {
+        validateList.push(validateArrayParam())
+      }
+    })
+
+    const valids = await Promise.allSettled(validateList)
+    const valid = valids.every((item: any) => item?.value || false)
+    return Promise.resolve(valid)
+  }
+
   const submit = async () => {
     try {
-      await formCom.value.validate()
-
       isSubmitting.value = true
-      // delete `tag_regex`
-      const bodyData = cloneDeep(configForm.value)
-      const { tag_regex } = bodyData
-      if (tag_regex !== undefined) {
-        delete bodyData.tag_regex
-      }
+      const valid = await validateAll()
 
-      const dataKeys = Object.keys(bodyData)
-      dataKeys.forEach((key) => {
-        const value = bodyData[key]
-        const field = fieldList.value.find((item: { key: string; info: any }) => item.key === key)
-
+      if (valid) {
+        // // delete `tag_regex`
+        const { tag_regex } = configForm.value
+        if (tag_regex !== undefined) {
+          delete configForm.value.tag_regex
+        }
         // if configForm value is '' or 'undefined' or null, change its value to `default` value or delete it.
-        if (value === '' || value === undefined || value == null) {
-          const isOptional = field?.info?.attribute
-          const isDefaultValue = field?.info?.default !== undefined
-          if (isOptional && isDefaultValue) {
-            bodyData[key] = defaultConfigData.value[key]
-          } else {
-            delete bodyData[key]
+        const dataKeys = Object.keys(configForm.value)
+        dataKeys.forEach((key) => {
+          const value = configForm.value[key]
+          if (value === '' || value === undefined || value == null) {
+            const field = fieldList.value.find((item: { key: string; info: any }) => item.key === key)
+            const isOptional = field?.info?.attribute
+            const isDefaultValue = field?.info?.default !== undefined
+            if (isOptional && isDefaultValue) {
+              configForm.value[key] = defaultConfigData.value[key]
+            } else {
+              delete configForm.value[key]
+            }
           }
-        }
-
-        // if base = 16, transefer value to 10
-        if (field && field.info && isParamHexadecimalBase(field.info)) {
-          bodyData[key] = transToDecimal(value)
-        }
-      })
-
-      await submitNodeConfig(node.value, bodyData)
-      EmqxMessage.success(t('common.submitSuccess'))
-      router.back()
+        })
+        await submitNodeConfig(node.value, configForm.value)
+        EmqxMessage.success(t('common.submitSuccess'))
+        router.back()
+      }
     } catch (error) {
       console.error(error)
     } finally {
@@ -260,10 +255,11 @@ export default (props: Props) => {
     fieldList,
     isLoading,
     formCom,
+    setParamRef,
     isSubmitting,
-    shouldFieldShow,
     submit,
     cancel,
     reset,
+    validateFileds,
   }
 }

@@ -1,9 +1,8 @@
-import type { NumberParamInfo, ParamInfo, StringParamInfo } from '@/types/config'
-import { ParamRequired, TypeOfPluginParam, SchameBase } from '@/types/enums'
-import { createCommonErrorMessage } from '@/utils/utils'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
+import type { NumberParamInfo, ParamInfo, StringParamInfo, ArrayParamInfo } from '@/types/config'
+import { ParamRequired, TypeOfPluginParam } from '@/types/enums'
+import { createCommonErrorMessage, dataType } from '@/utils/utils'
 import useLang from '@/composables/useLang'
 
 type Props = Readonly<{
@@ -16,48 +15,75 @@ export default (props: Props) => {
   const { t } = useI18n()
   const { i18nContent } = useLang()
 
-  const { isParamHexadecimalBase, checkHexadecimalValue, transToDecimal } = useNodeConfigParamCommon()
+  enum RangeErrorEnums {
+    All = 'all',
+    Max = 'max',
+    Min = 'min',
+    Default = '',
+  }
+
+  const comparisonRange = (
+    val: number,
+    range: { min: number; max: number },
+  ): { errorMsgType: string; inRange: boolean } => {
+    const value = Number(val)
+    const { min, max } = range
+    const emptyNumbers = ['undefined', 'null']
+    const minNumberType = String(dataType(min))
+    const maxNumberType = String(dataType(max))
+    const isMinEmpty = emptyNumbers.includes(minNumberType)
+    const isMaxEmpty = emptyNumbers.includes(maxNumberType)
+
+    let inRange = true // default with all undefined ro all null
+    let errorMsgType = RangeErrorEnums.Default
+
+    if (!isMinEmpty && !isMaxEmpty) {
+      // all not undefined or all not null
+      errorMsgType = RangeErrorEnums.All
+      inRange = value >= min && value <= max
+    }
+    if (!isMinEmpty && isMaxEmpty) {
+      errorMsgType = RangeErrorEnums.Min
+      inRange = value >= min
+    }
+    if (isMinEmpty && !isMaxEmpty) {
+      errorMsgType = RangeErrorEnums.Max
+      inRange = value >= 0 && value <= max
+    }
+    return {
+      errorMsgType,
+      inRange,
+    }
+  }
 
   // valid number limit
   const checkNumberParamLimit = async (rule: unknown, value: string, callback: any) => {
-    const trueValue = isParamHexadecimalBase(props.paramInfo) ? transToDecimal(value) : value
     const { valid, attribute } = props.paramInfo as NumberParamInfo
     const { max, min } = valid
 
-    if (max === undefined || max === null || min === undefined || min === null) {
-      callback()
-    }
+    const isInRange = comparisonRange(Number(value), { min, max })
 
-    const isNumber = Number.isNaN(Number(trueValue)) || Number(trueValue) > valid.max || Number(trueValue) < valid.min
+    const { inRange, errorMsgType } = isInRange
+
+    const errorMsgMap = new Map([
+      [String(RangeErrorEnums.All), t('config.numberRangeErrorMsg', { min, max })],
+      [String(RangeErrorEnums.Min), t('config.numberMinimumErrorMsg', { min })],
+      [String(RangeErrorEnums.Max), t('config.numberMaximumErrorMsg', { max })],
+      [String(RangeErrorEnums.Default), ''],
+    ])
+
     if (attribute === 'required') {
-      if (isNumber) {
-        callback(new Error(`${t('config.numberErrorPrefix') + valid.min}-${valid.max}${t('config.numberErrorSuffix')}`))
+      if (!inRange) {
+        const errorMsg = errorMsgMap.get(errorMsgType)
+        callback(new Error(errorMsg))
+      } else {
+        callback()
       }
-    } else if (trueValue !== '' && isNumber) {
-      callback(new Error(`${t('config.numberErrorPrefix') + valid.min}-${valid.max}${t('config.numberErrorSuffix')}`))
+    } else if (value !== '' && !inRange) {
+      const errorMsg = errorMsgMap.get(errorMsgType)
+      callback(new Error(errorMsg))
     }
     callback()
-  }
-
-  // check number hexadecimal | decimal
-  const checkNumberParamHexadecimal = async (rule: unknown, value: string, callback: any) => {
-    const { base } = props.paramInfo as NumberParamInfo
-
-    const trueVlue = String(value).replace(/\s/g, '')
-    if (base === SchameBase.hexadecimal) {
-      if (!checkHexadecimalValue(trueVlue)) {
-        callback(new Error(t('config.hexadecimalFormatError')))
-      } else {
-        callback()
-      }
-    } else {
-      const isDecimalValue = /^[0-9]\d*$/.test(trueVlue)
-      if (!isDecimalValue) {
-        callback(new Error(t('config.decimalFormatError')))
-      } else {
-        callback()
-      }
-    }
   }
 
   // valid string length
@@ -88,6 +114,28 @@ export default (props: Props) => {
     callback()
   }
 
+  const checkArrayParamLength = (rule: unknown, value: string, callback: any) => {
+    const { valid } = props.paramInfo as ArrayParamInfo
+    const { min_length, max_length } = valid
+
+    const isInRange = comparisonRange(value.length, { min: min_length, max: max_length })
+    const { inRange, errorMsgType } = isInRange
+
+    const errorMsgMap = new Map([
+      [String(RangeErrorEnums.All), t('config.lengthRangeErrorMsg', { min: min_length, max: max_length })],
+      [String(RangeErrorEnums.Min), t('config.lengthMinimumErrorMsg', { min: min_length })],
+      [String(RangeErrorEnums.Max), t('config.lengthMaximumErrorMsg', { max: max_length })],
+      [String(RangeErrorEnums.Default), ''],
+    ])
+
+    if (!inRange) {
+      const errorMsg = errorMsgMap.get(errorMsgType)
+      callback(new Error(errorMsg))
+    } else {
+      callback()
+    }
+  }
+
   const createNumberParamRules = () => [
     {
       // required: !!props.paramInfo.default,
@@ -95,17 +143,15 @@ export default (props: Props) => {
       message: createCommonErrorMessage('input', i18nContent(props.paramInfo, 'name')),
     },
     {
-      type: isParamHexadecimalBase(props.paramInfo) ? 'string' : 'number',
-      message: isParamHexadecimalBase(props.paramInfo)
-        ? t('config.hexadecimalFormatError')
-        : t('config.numberFormatError'),
+      type: 'number',
+      message: t('config.numberFormatError'),
     },
-    { validator: checkNumberParamHexadecimal, trigger: 'blur' },
     { validator: checkNumberParamLimit, trigger: 'blur' },
   ]
 
   const createStringParamRules = () => [
     {
+      type: 'string',
       // required: !!props.paramInfo.default,
       required: props.paramInfo.attribute === ParamRequired.True,
       message: createCommonErrorMessage('input', i18nContent(props.paramInfo, 'name')),
@@ -128,6 +174,14 @@ export default (props: Props) => {
     },
   ]
 
+  const createArrayParamRules = () => [
+    {
+      required: props.paramInfo.attribute === ParamRequired.True,
+      message: createCommonErrorMessage('input', props.paramInfo.name),
+    },
+    { validator: checkArrayParamLength, trigger: ['blur', 'change'] },
+  ]
+
   const rules = computed(() => {
     const createMap = {
       [TypeOfPluginParam.Int]: createNumberParamRules,
@@ -136,6 +190,7 @@ export default (props: Props) => {
       [TypeOfPluginParam.Enum]: createSelectParamRules,
       [TypeOfPluginParam.Map]: createSelectParamRules,
       [TypeOfPluginParam.File]: createFileParamRules,
+      [TypeOfPluginParam.Array]: createArrayParamRules,
     }
     return (createMap[props.paramInfo.type] && createMap[props.paramInfo.type]()) || []
   })
