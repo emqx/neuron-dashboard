@@ -8,21 +8,23 @@
           <span>{{ node }}</span>
         </p>
       </div>
-      <emqx-row>
-        <emqx-col :span="12">
-          <emqx-form ref="formCom" :model="configForm">
-            <template v-for="field in fieldList" :key="field.key">
-              <NodeConfigParamItem
-                v-if="shouldFieldShow(field)"
-                v-model="configForm[field.key]"
-                :param-key="field.key"
-                :param-info="field.info"
-                :default-data="defaultConfigData"
-              />
-            </template>
-          </emqx-form>
-        </emqx-col>
-      </emqx-row>
+
+      <emqx-form ref="formCom" :model="configForm">
+        <template v-for="field in fieldList" :key="field.key">
+          <emqx-row>
+            <NodeConfigParamItem
+              :ref="setParamRef"
+              v-if="shouldFieldShow(field, configForm)"
+              v-model="configForm[field.key]"
+              :param-key="field.key"
+              :param-info="field.info"
+              :default-data="defaultConfigData"
+              @validateFileds="validateFileds"
+            />
+          </emqx-row>
+        </template>
+      </emqx-form>
+
       <template v-if="!isLoading && fieldList.length === 0">
         <div class="empty-placeholder">
           <emqx-empty :description="$t('config.noConfigInfoDesc')" />
@@ -45,6 +47,7 @@ import useNodeConfig from '@/composables/config/useNodeConfig'
 import { DriverDirection } from '@/types/enums'
 import NodeConfigParamItem from './components/NodeConfigParamItem.vue'
 import { useI18n } from 'vue-i18n'
+import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
 
 const props = defineProps({
   direction: {
@@ -52,6 +55,7 @@ const props = defineProps({
     required: true,
   },
 })
+
 const { t } = useI18n()
 const cardTitle = computed(() =>
   t(props.direction === DriverDirection.North ? 'config.appConfig' : 'config.deviceConfig'),
@@ -60,6 +64,8 @@ const labelForNodeName = computed(() =>
   t(props.direction === DriverDirection.North ? 'config.appName' : 'config.deviceName'),
 )
 
+const { shouldFieldShow } = useNodeConfigParamCommon()
+
 const {
   node,
   configForm,
@@ -67,11 +73,13 @@ const {
   fieldList,
   isLoading,
   formCom,
+  setParamRef,
   isSubmitting,
-  shouldFieldShow,
+  // shouldFieldShow,
   submit,
   cancel,
   reset,
+  validateFileds,
 } = useNodeConfig(props)
 </script>
 
