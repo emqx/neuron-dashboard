@@ -43,7 +43,7 @@ import { reactive, ref, toRefs, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { changePassword } from '@/api/common'
 import { EmqxMessage } from '@emqx/emqx-ui'
-import { createCommonErrorMessage } from '@/utils/utils'
+import { createCommonErrorMessage, encryptStr } from '@/utils/utils'
 import { useStore } from 'vuex'
 
 const { t } = useI18n()
@@ -66,32 +66,51 @@ const isNewPassMatch = computed(() => {
 })
 
 const checkNewPassMatch = (rule: any, value: string, callback: any) => {
-  const { newPassConfirm } = formState.formData
-
   const strongRegex = new RegExp(
-    '^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~`!@#$%^&*()_+\\-=:;<>?,./|\\\\])[a-zA-Z\\d~`!@#$%^&*()_+\\-=:;<>?,./|\\\\]{8,20}$',
+    '^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~`!@#$%^&*()_+\\-=\\[\\]:;\'"<>?,./|\\\\])[a-zA-Z\\d~`!@#$%^&*()_+\\-=\\[\\]:;\'"<>?,./|\\\\]{8,20}$',
+  )
+  const repeatRegex = new RegExp('(.)\\1{2,}')
+  const filterMeta = [
+    // eslint-disable-next-line prettier/prettier
+    "qwertyuiop[]\\", "asdfghjkl;'", "zxcvbnm,./", "01234567890-=", "901", "abcdefghijklmnopqrstuvwxyz"
+  ]
+  const filterList = [
+    // eslint-disable-next-line prettier/prettier
+    "qaz", "wsx", "edc", "rfv", "tgb", "yhn", "ujm", "ik,", "ol.", "p;/", "esz", "rdx",
+    // eslint-disable-next-line prettier/prettier
+    "tfc", "ygv", "uhb", "ijn", "okm", "pl,", "[;.", "]'/", "1qa", "2ws", "3ed", "4rf",
+    // eslint-disable-next-line prettier/prettier
+    "5tg", "6yh", "7uj", "8ik", "9ol", "0p;", "-['", "=[;", "-pl", "0ok", "9ij", "8uh",
+    // eslint-disable-next-line prettier/prettier
+    "7yg", "6tf", "5rd", "4es", "3wa", "root", "admin", "mysql", "oracle", "system",
+    // eslint-disable-next-line prettier/prettier
+    "windows", "linux", "java", "python", "unix", "test"
+  ]
+  filterMeta.forEach((item) => {
+    let i
+    for (i = 0; i < item.length - 2; i += 1) {
+      filterList.push(item.substring(i, i + 3))
+    }
+  })
+  const metaRegex = new RegExp(
+    filterList.join('|').replace(/\\/g, '\\\\\\\\').replace(/\[/g, '\\[').replace(/\]/g, '\\]'),
+    'g',
   )
   if (value && !strongRegex.test(value)) {
     callback(new Error(`${t('common.passwordStrengthTip')}`))
   }
-
-  if (!newPassConfirm || (newPassConfirm && isNewPassMatch.value)) {
-    if (newPassConfirm) {
-      const { form } = formRef.value
-      form.validateField(['newPassConfirm'])
-    }
-    callback()
-  } else {
-    callback(new Error(`${t('common.newPassNotMatch')}`))
+  if (value && (repeatRegex.test(value) || value.match(metaRegex))) {
+    callback(new Error(`${t('common.passwordStrengthTip')}`))
+  }
+  const { form } = formRef.value
+  const { newPassConfirm } = formState.formData
+  if (newPassConfirm) {
+    form.validateField(['newPassConfirm'])
   }
 }
 
 const checkNewPassConfirmMatch = (rule: any, value: string, callback: any) => {
-  const { form } = formRef.value
-  if (isNewPassMatch.value) {
-    form.validateField(['newPass'])
-    callback()
-  } else {
+  if (!isNewPassMatch.value) {
     callback(new Error(`${t('common.newPassNotMatch')}`))
   }
 }
@@ -148,7 +167,7 @@ const changeUserPassword = async () => {
   try {
     isSubmitting.value = true
     const { name, oldPass: old_pass, newPass: new_pass } = formState.formData
-    await changePassword({ name, old_pass, new_pass })
+    await changePassword({ name, old_pass: encryptStr(old_pass), new_pass: encryptStr(new_pass) })
     EmqxMessage.success(t('common.changePwSuccessful'))
     formRef.value.resetField()
   } catch (error) {
@@ -171,5 +190,8 @@ const submit = () => {
 .pw-form {
   width: 50%;
   min-width: 500px;
+  :deep(.el-form-item) {
+    margin-bottom: 30px;
+  }
 }
 </style>

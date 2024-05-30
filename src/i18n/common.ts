@@ -64,7 +64,7 @@ export default {
     en: 'Please enter a new password again',
   },
   passwordStrengthTip: {
-    zh: '密码必须由数字、英文字母、特殊字符组成，且长度在 8 到 20 之间',
+    zh: '密码必须由数字、英文字母、特殊字符组成，且长度在 8 到 20 之间。不能连续输入 3 位及以上一样的字符；不能输入键盘连接 3 位及以上的字符；不能包含 admin、mysql、oracle、system、windows、linux、java、python、unix、test',
     en: 'Passwords should be between 8 and 20 in length and combination of letters, numbers, or symbols',
   },
   newPassNotMatch: {

@@ -20,6 +20,7 @@
     "base64-js": "^1.5.1",
     "blueimp-md5": "^2.19.0",
     "core-js": "^3.6.5",
+    "crypto-js": "^4.2.0",
     "dateformat": "^5.0.2",
     "dayjs": "^1.10.4",
     "echarts": "^5.2.2",
