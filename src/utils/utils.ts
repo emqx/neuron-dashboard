@@ -3,6 +3,7 @@ import { ERROR_CODE_ARR, SELF_HANDLE_ERROR_CODES } from './constants'
 import { utils as XLSXUtils, writeFile } from 'xlsx'
 import { EmqxMessage } from '@emqx/emqx-ui'
 import { omit, cloneDeep, orderBy } from 'lodash'
+import CryptoJS from 'crypto-js'
 
 /**
  * when the value is int, can use this func to create option list
@@ -254,4 +255,15 @@ export const randomString = (stringLen: number): string => {
   }
 
   return str
+}
+
+export const encryptStr = (str: string): string => {
+  const utf8Str = CryptoJS.enc.Utf8.parse(str)
+  const kStr = '0000neuronex0000'
+  const encrypted = CryptoJS.AES.encrypt(utf8Str, kStr, {
+    iv: kStr,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+  })
+  return encrypted.ciphertext.toString()
 }

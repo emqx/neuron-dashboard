@@ -2,6 +2,7 @@
 type $TSFixed = any
 declare module '@emqx/emqx-ui'
 declare module 'dateformat'
+declare module 'crypto-js'
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>

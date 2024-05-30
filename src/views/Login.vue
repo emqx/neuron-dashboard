@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { login as requestLogin } from '@/api/common'
-import { createCommonErrorMessage } from '@/utils/utils'
+import { createCommonErrorMessage, encryptStr } from '@/utils/utils'
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -64,7 +64,7 @@ const login = async () => {
     await formCom.value.validate()
     isLoading.value = true
     const { userName, password } = form
-    const { data } = await requestLogin({ name: userName, pass: password })
+    const { data } = await requestLogin({ name: userName, pass: encryptStr(password) })
     store.commit('SET_TOKEN', data.token)
     setLang()
 
