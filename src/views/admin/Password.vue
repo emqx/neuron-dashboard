@@ -107,11 +107,14 @@ const checkNewPassMatch = (rule: any, value: string, callback: any) => {
   if (newPassConfirm) {
     form.validateField(['newPassConfirm'])
   }
+  callback()
 }
 
 const checkNewPassConfirmMatch = (rule: any, value: string, callback: any) => {
   if (!isNewPassMatch.value) {
     callback(new Error(`${t('common.newPassNotMatch')}`))
+  } else {
+    callback()
   }
 }
 

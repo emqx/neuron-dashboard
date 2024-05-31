@@ -259,11 +259,12 @@ export const randomString = (stringLen: number): string => {
 
 export const encryptStr = (str: string): string => {
   const utf8Str = CryptoJS.enc.Utf8.parse(str)
-  const kStr = '0000neuronex0000'
-  const encrypted = CryptoJS.AES.encrypt(utf8Str, kStr, {
-    iv: kStr,
+  const key = CryptoJS.enc.Base64.parse('Wi02CrYTNIJtl8r8+LGII+rMvAJI1880FgXBNOTgnRw=')
+  const iv = CryptoJS.enc.Base64.parse('7+OE7gThf0PKTR9Py0aVhA==')
+  const encrypted = CryptoJS.AES.encrypt(utf8Str, key, {
+    iv,
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7,
   })
-  return encrypted.ciphertext.toString()
+  return encrypted.toString()
 }
