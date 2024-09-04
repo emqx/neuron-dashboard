@@ -57,7 +57,7 @@ The following are all the github repos related to Neuron development.
 
 ## Community
 
-Please visit our [offical website](https://neugates.io) to have a good inspiration of how to apply Neuron in your big data and IIoT project.
+Please visit our [offical website](https://www.emqx.com/en/products/neuronex) to have a good inspiration of how to apply Neuron in your big data and IIoT project.
 
 If you found any bugs or issues, please drop it in [Github Issues](https://github.com/emqx/neuron/issues). Your help is much appriceiated. 
 
